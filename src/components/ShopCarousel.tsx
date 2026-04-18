@@ -158,9 +158,9 @@ export function ShopCarousel({ shops, hideAbove = "lg" }: Props) {
         </button>
       </div>
 
-      {/* Footer: pagination + counter */}
-      <div className="mt-4 flex items-center justify-between gap-4 px-1">
-        {/* Pagination — dots OR segmented progress */}
+      {/* Footer: unified control bar */}
+      <div className="mt-5 flex items-center justify-between gap-3 px-1">
+        {/* Pagination — dots OR slim progress bar */}
         <div className="flex flex-1 items-center min-w-0">
           {useDots ? (
             <div className="flex items-center gap-1.5" role="tablist" aria-label="انتقال بين المحلات">
@@ -175,62 +175,60 @@ export function ShopCarousel({ shops, hideAbove = "lg" }: Props) {
                     aria-label={`اذهب إلى المحل ${idx + 1}`}
                     onClick={() => scrollToIndex(idx)}
                     className={cn(
-                      "h-1.5 rounded-full transition-all duration-300",
+                      "h-1 rounded-full transition-all duration-300",
                       isActive
-                        ? "w-7 bg-primary shadow-[0_0_10px_-2px_hsl(var(--primary)/0.6)]"
-                        : "w-1.5 bg-border hover:bg-muted-foreground/40",
+                        ? "w-6 bg-foreground"
+                        : "w-1 bg-border hover:bg-muted-foreground/50",
                     )}
                   />
                 );
               })}
             </div>
           ) : (
-            <div className="relative h-1.5 w-full max-w-[180px] overflow-hidden rounded-full bg-border/70">
+            <div className="relative h-0.5 w-full max-w-[200px] overflow-hidden rounded-full bg-border">
               <div
-                className="absolute inset-y-0 right-0 rounded-full bg-gradient-to-l from-primary via-primary to-accent transition-[width] duration-300 ease-out"
-                style={{ width: `${Math.max(8, progress * 100)}%` }}
+                className="absolute inset-y-0 right-0 rounded-full bg-foreground transition-[width] duration-300 ease-out"
+                style={{ width: `${Math.max(6, progress * 100)}%` }}
               />
             </div>
           )}
         </div>
 
-        {/* Counter pill */}
-        <div className="flex items-center gap-2">
-          <div className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-3 py-1 text-[11px] font-bold tabular-nums shadow-sm">
-            <span className="text-primary">{(activeIndex + 1).toLocaleString("ar")}</span>
-            <span className="text-muted-foreground/60">/</span>
-            <span className="text-foreground/82">{total.toLocaleString("ar")}</span>
+        {/* Unified control: arrows + counter in one pill */}
+        <div className="inline-flex items-center gap-0.5 rounded-full border border-border/70 bg-card/80 p-0.5 shadow-sm backdrop-blur-md">
+          <button
+            type="button"
+            onClick={() => scrollByDir("prev")}
+            disabled={!canPrev}
+            aria-label="السابق"
+            className={cn(
+              "flex h-7 w-7 items-center justify-center rounded-full transition-all",
+              "hover:bg-surface hover:text-primary active:scale-95",
+              "disabled:opacity-30 disabled:pointer-events-none",
+            )}
+          >
+            <ChevronRight className="h-3.5 w-3.5" />
+          </button>
+
+          <div className="px-2 text-[11px] font-bold tabular-nums text-foreground/90">
+            <span>{(activeIndex + 1).toLocaleString("ar")}</span>
+            <span className="mx-1 text-muted-foreground/50">/</span>
+            <span className="text-muted-foreground">{total.toLocaleString("ar")}</span>
           </div>
 
-          {/* Compact arrows for mobile (no floating) */}
-          <div className="flex sm:hidden items-center gap-1">
-            <button
-              type="button"
-              onClick={() => scrollByDir("prev")}
-              disabled={!canPrev}
-              aria-label="السابق"
-              className={cn(
-                "flex h-8 w-8 items-center justify-center rounded-full border border-border bg-background transition-all",
-                "active:scale-95 hover:text-primary hover:border-primary/40",
-                "disabled:opacity-30 disabled:pointer-events-none",
-              )}
-            >
-              <ChevronRight className="h-4 w-4" />
-            </button>
-            <button
-              type="button"
-              onClick={() => scrollByDir("next")}
-              disabled={!canNext}
-              aria-label="التالي"
-              className={cn(
-                "flex h-8 w-8 items-center justify-center rounded-full border border-border bg-background transition-all",
-                "active:scale-95 hover:text-primary hover:border-primary/40",
-                "disabled:opacity-30 disabled:pointer-events-none",
-              )}
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={() => scrollByDir("next")}
+            disabled={!canNext}
+            aria-label="التالي"
+            className={cn(
+              "flex h-7 w-7 items-center justify-center rounded-full transition-all",
+              "hover:bg-surface hover:text-primary active:scale-95",
+              "disabled:opacity-30 disabled:pointer-events-none",
+            )}
+          >
+            <ChevronLeft className="h-3.5 w-3.5" />
+          </button>
         </div>
       </div>
     </div>
