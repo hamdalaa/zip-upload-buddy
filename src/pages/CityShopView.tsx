@@ -147,13 +147,20 @@ export default function CityShopView() {
         <header className="overflow-hidden rounded-[2rem] border border-border/70 bg-card/88 shadow-soft-xl backdrop-blur-sm">
           <div className="relative h-56 sm:h-72 md:h-80 bg-muted">
             {heroImage ? (
-              <img
-                src={optimizeImageUrl(heroImage, { width: 1600, height: 700 }) ?? heroImage}
-                alt={shop.name}
-                className="h-full w-full object-cover"
-                loading="eager"
-                referrerPolicy="no-referrer"
-              />
+              <button
+                type="button"
+                onClick={() => setLightboxIndex(0)}
+                className="absolute inset-0 h-full w-full focus:outline-none"
+                aria-label="عرض الصورة"
+              >
+                <img
+                  src={optimizeImageUrl(heroImage, { width: 1600, height: 700 }) ?? heroImage}
+                  alt={shop.name}
+                  className="h-full w-full object-cover transition-transform duration-500 hover:scale-[1.02]"
+                  loading="eager"
+                  referrerPolicy="no-referrer"
+                />
+              </button>
             ) : (
               <div className="flex h-full items-center justify-center bg-[radial-gradient(circle_at_top,hsl(var(--primary)/0.14),transparent_58%),linear-gradient(180deg,hsl(var(--muted))_0%,hsl(var(--background))_100%)]">
                 <Store className="h-14 w-14 text-muted-foreground" />
