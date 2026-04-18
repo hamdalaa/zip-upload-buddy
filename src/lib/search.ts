@@ -320,10 +320,10 @@ export function isStale(iso: string, thresholdDays = 30): boolean {
 }
 
 export const SUGGESTED_QUERIES = [
-  "RTX 4060",
-  "RX 7800 XT",
-  "iPhone 15 Pro Max case",
-  "Anker 65W charger",
-  "Wi-Fi 6 router",
-  "Power Bank 20000mAh",
+  "RTX 5090",
+  "MacBook Air M5",
+  "iPhone 17 Pro Max",
+  "Galaxy S25 Ultra",
+  "RX 9070 XT",
+  "PlayStation 5 Pro",
 ];
