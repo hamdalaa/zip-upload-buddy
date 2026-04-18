@@ -65,10 +65,6 @@ export function ShopCard({ shop }: { shop: Shop }) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-foreground/55 via-transparent to-transparent" />
 
-        <div className="absolute right-3 top-3">
-          <VerifiedBadge verified={shop.verified} />
-        </div>
-
         <div className="absolute bottom-3 left-3">
           <div className="inline-flex items-center gap-1.5 rounded-full bg-background/95 px-2.5 py-1 text-[10px] font-semibold text-foreground shadow-soft-md backdrop-blur-sm">
             <span className="pin-pulse inline-flex">
