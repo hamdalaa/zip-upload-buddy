@@ -407,7 +407,7 @@ export function TopNav() {
                 className="group/dev flex items-center justify-center gap-2 rounded-full border border-violet/25 bg-gradient-to-r from-violet/10 via-violet/5 to-rose/10 px-4 py-3 text-sm font-bold text-violet transition-all hover:border-violet/50 hover:shadow-[0_4px_14px_-4px_hsl(var(--violet)/0.4)]"
               >
                 <Heart className="h-4 w-4 fill-current transition-transform group-hover/dev:scale-110" />
-                <span>المطوّر والرعاية</span>
+                <span>المطوّر</span>
               </Link>
             </div>
           </SheetContent>
