@@ -168,28 +168,78 @@ export function TopNav() {
                 <span>{selectedCity.cityAr}</span>
                 <ChevronDown className="h-3 w-3 text-muted-foreground" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="max-h-[70vh] w-72 overflow-y-auto rounded-xl">
-                <DropdownMenuLabel>المحافظات</DropdownMenuLabel>
-                {CITIES.slice().sort((a, b) => b.count - a.count).map((city) => {
-                  const active = city.slug === selectedCity.slug;
-                  return (
-                    <DropdownMenuItem
-                      key={city.slug}
-                      onClick={() => pickCity(city.slug, city.cityAr, `/city/${city.slug}`)}
-                      className="flex cursor-pointer items-center justify-between rounded-lg"
-                    >
-                      <span className="flex items-center gap-2">
-                        {active ? <Check className="h-4 w-4 text-primary" /> : <MapPin className="h-4 w-4 text-muted-foreground" />}
-                        {city.cityAr}
-                      </span>
-                      <span className="font-numeric text-[10px] text-muted-foreground">{city.count.toLocaleString("ar")}</span>
-                    </DropdownMenuItem>
-                  );
-                })}
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => nav("/iraq")} className="cursor-pointer rounded-lg font-semibold text-primary">
-                  كل محلات العراق
-                </DropdownMenuItem>
+              <DropdownMenuContent
+                align="end"
+                className="max-h-[78vh] w-80 overflow-hidden rounded-2xl border-border/60 bg-card/95 p-0 shadow-soft-xl backdrop-blur-xl"
+              >
+                <div className="relative overflow-hidden border-b border-border/60 bg-gradient-to-br from-primary/12 via-primary/5 to-transparent px-4 py-3">
+                  <div className="pointer-events-none absolute -top-10 -right-8 h-24 w-24 rounded-full bg-primary/15 blur-2xl" />
+                  <div className="relative flex items-center justify-between">
+                    <div>
+                      <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">المحافظات</div>
+                      <div className="mt-0.5 text-sm font-semibold text-foreground">اختر مدينتك</div>
+                    </div>
+                    <div className="rounded-full border border-primary/25 bg-primary/10 px-2.5 py-1 text-[10px] font-bold text-primary">
+                      {CITIES.length.toLocaleString("ar")} محافظة
+                    </div>
+                  </div>
+                </div>
+
+                <div className="max-h-[52vh] overflow-y-auto px-1.5 py-1.5">
+                  {CITIES.slice()
+                    .sort((a, b) => b.count - a.count)
+                    .map((city) => {
+                      const active = city.slug === selectedCity.slug;
+                      return (
+                        <DropdownMenuItem
+                          key={city.slug}
+                          onClick={() => pickCity(city.slug, city.cityAr, `/city/${city.slug}`)}
+                          className={cn(
+                            "group/item flex cursor-pointer items-center justify-between gap-2 rounded-xl px-2.5 py-2 text-sm transition-all",
+                            active
+                              ? "bg-primary/10 text-primary"
+                              : "text-foreground hover:bg-muted/70",
+                          )}
+                        >
+                          <span className="flex items-center gap-2.5">
+                            <span
+                              className={cn(
+                                "flex h-7 w-7 items-center justify-center rounded-lg transition-colors",
+                                active
+                                  ? "bg-primary text-primary-foreground"
+                                  : "bg-muted text-muted-foreground group-hover/item:bg-primary/10 group-hover/item:text-primary",
+                              )}
+                            >
+                              {active ? <Check className="h-3.5 w-3.5" /> : <MapPin className="h-3.5 w-3.5" />}
+                            </span>
+                            <span className={cn("font-semibold", active && "text-primary")}>{city.cityAr}</span>
+                          </span>
+                          <span
+                            className={cn(
+                              "font-numeric rounded-full px-2 py-0.5 text-[10px] font-bold transition-colors",
+                              active
+                                ? "bg-primary/15 text-primary"
+                                : "bg-muted text-muted-foreground group-hover/item:bg-background",
+                            )}
+                          >
+                            {city.count.toLocaleString("ar")}
+                          </span>
+                        </DropdownMenuItem>
+                      );
+                    })}
+                </div>
+
+                <div className="border-t border-border/60 bg-muted/30 p-2">
+                  <DropdownMenuItem
+                    onClick={() => nav("/iraq")}
+                    className="group/all cursor-pointer rounded-xl bg-gradient-to-r from-primary to-primary/85 px-3 py-2.5 text-center text-sm font-bold text-primary-foreground transition-all hover:shadow-soft-md focus:bg-primary"
+                  >
+                    <span className="flex w-full items-center justify-center gap-1.5">
+                      كل محلات العراق
+                      <ChevronLeft className="h-3.5 w-3.5 transition-transform group-hover/all:-translate-x-0.5" />
+                    </span>
+                  </DropdownMenuItem>
+                </div>
               </DropdownMenuContent>
             </DropdownMenu>
 
