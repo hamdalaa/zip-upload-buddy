@@ -51,157 +51,153 @@ const Index = () => {
       <HeroBanner />
 
       <main className="pb-20">
-        <section className="container relative z-10 -mt-10 md:-mt-16">
-          <div className="atlas-panel p-6 md:p-8">
-            <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)] lg:items-center">
-              <div className="text-right">
-                <span className="eyebrow">مدخل الفئات</span>
-                <h2 className="font-display mt-4 text-3xl font-bold leading-none text-foreground sm:text-4xl md:text-5xl">
-                  ابدأ من القسم الأقرب لحاجتك
-                </h2>
-                <p className="mt-4 text-sm leading-8 text-muted-foreground">
-                  بدل البحث العشوائي، اختَر الفئة أولاً ثم خلّ التصفية تكمل المشوار. هذا المسار يخلي صفحة النتائج أضيق
-                  وأوضح من أول ضغطة.
-                </p>
-                <Link to="/results" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-accent">
-                  كل النتائج والفئات
-                  <ArrowLeft className="icon-nudge-x h-4 w-4" />
-                </Link>
-              </div>
-
-              <CategoryCircles />
-            </div>
+        {/* Categories — editorial inline strip */}
+        <section className="container mt-16 md:mt-24">
+          <SectionHeader
+            kicker="الفئات"
+            title="ابدأ من القسم الأقرب لحاجتك"
+            seeAll="/results"
+            description="بدل البحث العشوائي، اختر الفئة أولاً ثم خلِّ التصفية تكمل المشوار."
+          />
+          <div className="mt-8">
+            <CategoryCircles />
           </div>
         </section>
 
-        <section className="container mt-12 space-y-8 md:mt-16">
-          <StreetShopsSection
-            area="شارع الصناعة"
-            title="مسار شارع الصناعة"
-            subtitle="واجهة أوضح لأهم محلات الحاسبات والقطع والشبكات، مرتبة كمسار تنقل لا كقائمة مبعثرة."
+        {/* Street features — two large editorial blocks */}
+        <section className="container mt-20 md:mt-28">
+          <SectionHeader
+            kicker="شوارع السوق"
+            title="مسارات بغداد المرجعية"
+            description="شارعا الصناعة والربيعي يشكلان قلب سوق الإلكترونيات. ابدأ منهما."
           />
 
-          <StreetShopsSection
-            area="شارع الربيعي"
-            title="مسار شارع الربيعي"
-            subtitle="مدخل سريع للهواتف والشواحن والإكسسوارات، مع قراءة أنظف للمحلات قبل فتح التفاصيل."
-          />
+          <div className="mt-10 grid gap-8">
+            <StreetShopsSection
+              area="شارع الصناعة"
+              title="شارع الصناعة"
+              subtitle="حاسبات، قطع، شبكات وطابعات — أهم محلات الفئة في بغداد."
+            />
 
+            <StreetShopsSection
+              area="شارع الربيعي"
+              title="شارع الربيعي"
+              subtitle="هواتف، شواحن وإكسسوارات — مدخل سريع للقراءة قبل الشراء."
+            />
+          </div>
+        </section>
+
+        {/* Iraq coverage CTA */}
+        <section className="container mt-20 md:mt-24">
           <Link
             to="/iraq"
-            className="atlas-panel group block overflow-hidden px-6 py-7 transition-transform duration-300 hover:-translate-y-1 md:px-8"
+            className="atlas-card group block p-8 text-right md:p-12"
           >
-            <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_220px] md:items-end">
-              <div className="text-right">
+            <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
+              <div>
                 <span className="atlas-kicker">تغطية وطنية</span>
-                <h2 className="font-display mt-4 text-3xl font-bold leading-none text-foreground sm:text-4xl md:text-5xl">
-                  نفس لغة السوق في كل المحافظات
+                <h2 className="font-display mt-4 text-4xl font-bold leading-tight text-foreground md:text-5xl">
+                  نفس لغة السوق <br /> في كل المحافظات.
                 </h2>
-                <p className="mt-4 max-w-3xl text-sm leading-8 text-muted-foreground">
-                  بغداد، أربيل، البصرة، الموصل، النجف، كربلاء، السليمانية، كركوك، بعقوبة، والناصرية ضمن مسار واحد
-                  يختصر الوصول من الفكرة إلى المحل.
+                <p className="mt-4 max-w-3xl text-base leading-8 text-muted-foreground">
+                  بغداد، أربيل، البصرة، الموصل، النجف، كربلاء، السليمانية، كركوك، بعقوبة،
+                  والناصرية ضمن مسار واحد يختصر الوصول من الفكرة إلى المحل.
                 </p>
               </div>
 
-              <div className="flex items-center justify-between rounded-[1.5rem] border border-border/75 bg-background px-5 py-4 text-right">
-                <div>
-                  <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">كل العراق</div>
-                  <div className="mt-2 text-sm font-semibold text-foreground">افتح المحافظات</div>
-                </div>
-                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-secondary text-secondary-foreground">
-                  <MapPin className="h-5 w-5" />
-                </div>
+              <div className="flex items-center gap-4 border-t border-border pt-4 md:border-0 md:pt-0">
+                <span className="font-display text-xl font-bold text-foreground group-hover:text-primary">
+                  افتح الأطلس
+                </span>
+                <ArrowLeft className="icon-nudge-x h-5 w-5 text-foreground group-hover:text-primary" />
               </div>
             </div>
           </Link>
         </section>
 
-        <section className="container mt-16 space-y-6 md:mt-20">
-          <div className="max-w-3xl text-right">
-            <span className="eyebrow">رفوف جاهزة</span>
-            <h2 className="font-display mt-4 text-3xl font-bold leading-none text-foreground sm:text-4xl md:text-5xl">
-              مسارات تصفح جاهزة بدل البداية من الصفر
-            </h2>
-            <p className="mt-4 text-sm leading-8 text-muted-foreground">
-              رفوف تجمع أكثر نوايا التصفح تكراراً: التخفيضات الأعلى، المنتجات الأكثر تقييماً، وما دخل الفهرس أخيراً.
-            </p>
-          </div>
+        {/* Product rails */}
+        <section className="container mt-20 space-y-10 md:mt-28">
+          <SectionHeader
+            kicker="رفوف جاهزة"
+            title="مسارات تصفح بدل البداية من الصفر"
+            description="رفوف تجمع أكثر نوايا التصفح تكراراً: التخفيضات، الأكثر تقييماً، وما دخل أخيراً."
+          />
 
           <ProductRail title="أفضل التخفيضات" seeAllTo="/results" products={deals} />
           <ProductRail title="الأكثر تقييماً" seeAllTo="/results" products={trending} />
           <ProductRail title="إضافات حديثة" seeAllTo="/results" products={newArrivals} />
         </section>
 
-        <section className="container mt-16 md:mt-20">
-          <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div className="max-w-2xl text-right">
-              <span className="eyebrow">محلات مختارة</span>
-              <h2 className="font-display mt-4 text-3xl font-bold leading-none text-foreground sm:text-4xl md:text-5xl">
-                محلات تستحق أن تبدأ منها
-              </h2>
-              <p className="mt-4 text-sm leading-8 text-muted-foreground">
-                قراءة أسرع للمحلات الأوثق أو الأكثر حضوراً داخل السوق، مع إبقاء التصفح مفتوحاً على بقية النتائج.
-              </p>
-            </div>
+        {/* Featured shops */}
+        <section className="container mt-20 md:mt-28">
+          <SectionHeader
+            kicker="محلات مختارة"
+            title="محلات تستحق أن تبدأ منها"
+            seeAll="/results"
+            description="قراءة أسرع للمحلات الأوثق والأكثر حضوراً داخل السوق."
+          />
 
-            <Link to="/results" className="link-underline text-sm font-semibold text-accent md:mb-2">
-              كل المحلات
-            </Link>
-          </div>
-
-          {loading ? (
-            <ShopCardSkeletonGrid count={6} />
-          ) : (
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {featured.map((shop, index) => (
-                <div
-                  key={shop.id}
-                  className="animate-fade-in-up"
-                  style={{ animationDelay: `${index * 60}ms`, animationFillMode: "backwards" }}
-                >
-                  <ShopCard shop={shop} />
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
-
-        <section className="container mt-16 grid gap-8 md:mt-20 lg:grid-cols-[minmax(0,1.08fr)_360px] lg:items-start">
-          <div>
-            <div className="mb-6 max-w-2xl text-right">
-              <span className="eyebrow">الوكلاء</span>
-              <h2 className="font-display mt-4 text-3xl font-bold leading-none text-foreground sm:text-4xl md:text-5xl">
-                براندات ووكلاء بصورة أوضح
-              </h2>
-              <p className="mt-4 text-sm leading-8 text-muted-foreground">
-                دليل أولي للوكلاء الرسميين في العراق، مع انتقال أسرع بين البراند، الموزع، والفروع المعتمدة.
-              </p>
-            </div>
-
+          <div className="mt-10">
             {loading ? (
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                {Array.from({ length: 6 }).map((_, index) => (
-                  <Skeleton key={index} className="h-[140px] rounded-[1.8rem]" />
-                ))}
-              </div>
+              <ShopCardSkeletonGrid count={6} />
             ) : (
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                {brands.map((brand, index) => (
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {featured.map((shop, index) => (
                   <div
-                    key={brand.slug}
+                    key={shop.id}
                     className="animate-fade-in-up"
-                    style={{ animationDelay: `${index * 50}ms`, animationFillMode: "backwards" }}
+                    style={{ animationDelay: `${index * 60}ms`, animationFillMode: "backwards" }}
                   >
-                    <BrandCard brand={brand} />
+                    <ShopCard shop={shop} />
                   </div>
                 ))}
               </div>
             )}
           </div>
+        </section>
 
-          <div className="space-y-6">
+        {/* Brands + How it works + Metrics */}
+        <section className="container mt-20 grid gap-12 md:mt-28 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:items-start">
+          <div>
+            <SectionHeader
+              kicker="الوكلاء الرسميون"
+              title="براندات بصورة أوضح"
+              description="دليل أولي للوكلاء المعتمدين في العراق، مع انتقال أسرع بين البراند والفروع."
+              seeAll="/brands"
+            />
+
+            <div className="mt-8">
+              {loading ? (
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  {Array.from({ length: 6 }).map((_, index) => (
+                    <Skeleton key={index} className="h-[180px]" />
+                  ))}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  {brands.slice(0, 6).map((brand, index) => (
+                    <div
+                      key={brand.slug}
+                      className="animate-fade-in-up"
+                      style={{ animationDelay: `${index * 50}ms`, animationFillMode: "backwards" }}
+                    >
+                      <BrandCard brand={brand} />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="space-y-10 lg:sticky lg:top-24">
             <HowItWorks />
-            <MetricsStrip />
+            <div>
+              <span className="atlas-kicker">المؤشرات</span>
+              <h3 className="font-display mt-4 text-2xl font-bold text-foreground">آخر قراءة للأطلس</h3>
+              <div className="mt-6">
+                <MetricsStrip />
+              </div>
+            </div>
           </div>
         </section>
       </main>
@@ -210,5 +206,38 @@ const Index = () => {
     </div>
   );
 };
+
+interface SectionHeaderProps {
+  kicker: string;
+  title: string;
+  description?: string;
+  seeAll?: string;
+}
+
+function SectionHeader({ kicker, title, description, seeAll }: SectionHeaderProps) {
+  return (
+    <div className="border-b border-foreground pb-6">
+      <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div className="max-w-3xl text-right">
+          <span className="atlas-kicker">{kicker}</span>
+          <h2 className="font-display mt-4 text-3xl font-bold leading-tight text-foreground sm:text-4xl md:text-5xl">
+            {title}
+          </h2>
+          {description && (
+            <p className="mt-4 text-base leading-8 text-muted-foreground">{description}</p>
+          )}
+        </div>
+        {seeAll && (
+          <Link
+            to={seeAll}
+            className="link-underline shrink-0 text-sm font-bold uppercase tracking-[0.18em] text-foreground hover:text-primary"
+          >
+            عرض الكل →
+          </Link>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default Index;

@@ -3,7 +3,6 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   Check,
   ChevronDown,
-  Compass,
   Heart,
   HelpCircle,
   LayoutDashboard,
@@ -32,8 +31,6 @@ import {
 import { ALL_CATEGORIES, type Category } from "@/lib/types";
 import { useUserPrefs } from "@/lib/userPrefs";
 import { useDataStore } from "@/lib/dataStore";
-import { CATEGORY_IMAGES } from "@/lib/mockData";
-import { optimizeImageUrl } from "@/lib/imageUrl";
 import { CITIES } from "@/lib/cityData";
 import { cn } from "@/lib/utils";
 
@@ -48,9 +45,8 @@ function loadSelectedCity(): { slug: string; cityAr: string } {
       if (parsed?.slug && parsed?.cityAr) return parsed;
     }
   } catch {
-    // ignore storage issues
+    // ignore
   }
-
   return DEFAULT_CITY;
 }
 
@@ -69,18 +65,10 @@ const CAT_LABELS: Record<Category, string> = {
 };
 
 const primaryLinks = [
-  { to: "/", label: "الرئيسية" },
-  { to: "/results", label: "المنتجات" },
-  { to: "/brands", label: "الوكلاء" },
+  { to: "/sinaa", label: "الشوارع" },
   { to: "/iraq", label: "المحافظات" },
-];
-
-const utilityLinks = [
-  { to: "/results?category=PC%20Parts", label: "قطع PC" },
-  { to: "/results?category=Phones", label: "الهواتف" },
-  { to: "/results?category=Networking", label: "الشبكات" },
-  { to: "/sinaa", label: "شارع الصناعة" },
-  { to: "/rubaie", label: "شارع الربيعي" },
+  { to: "/brands", label: "الوكلاء" },
+  { to: "/results", label: "البحث" },
 ];
 
 export function TopNav() {
@@ -89,45 +77,31 @@ export function TopNav() {
   const [q, setQ] = useState("");
   const [cat, setCat] = useState<Category | "all">("all");
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [favOpen, setFavOpen] = useState(false);
   const [selectedCity, setSelectedCity] = useState(() => loadSelectedCity());
-  const { favorites, toggleFavorite, openTour } = useUserPrefs();
+  const { favorites, openTour } = useUserPrefs();
   const { products } = useDataStore();
 
   const favItems = products.filter((product) => favorites.has(product.id));
+  const today = new Intl.DateTimeFormat("ar-IQ", { day: "2-digit", month: "long", year: "numeric" }).format(new Date());
 
   function pickCity(slug: string, cityAr: string, navigateTo?: string) {
     const next = { slug, cityAr };
     setSelectedCity(next);
-
-    try {
-      localStorage.setItem(CITY_STORAGE_KEY, JSON.stringify(next));
-    } catch {
-      // ignore storage issues
-    }
-
+    try { localStorage.setItem(CITY_STORAGE_KEY, JSON.stringify(next)); } catch { /* */ }
     if (navigateTo) nav(navigateTo);
   }
 
   useEffect(() => {
     const match = loc.pathname.match(/^\/city\/([^/]+)/);
     if (!match) return;
-
     const slug = match[1];
     if (slug === selectedCity.slug) return;
-
     const found = CITIES.find((city) => city.slug === slug);
     if (!found) return;
-
     const next = { slug: found.slug, cityAr: found.cityAr };
     setSelectedCity(next);
-
-    try {
-      localStorage.setItem(CITY_STORAGE_KEY, JSON.stringify(next));
-    } catch {
-      // ignore storage issues
-    }
+    try { localStorage.setItem(CITY_STORAGE_KEY, JSON.stringify(next)); } catch { /* */ }
   }, [loc.pathname, selectedCity.slug]);
 
   useEffect(() => {
@@ -139,7 +113,6 @@ export function TopNav() {
 
   useEffect(() => {
     setMobileOpen(false);
-    setMobileSearchOpen(false);
   }, [loc.pathname]);
 
   function submit(event: FormEvent) {
@@ -149,36 +122,44 @@ export function TopNav() {
     if (cat !== "all") params.set("category", cat);
     nav(`/results?${params.toString()}`);
     setMobileOpen(false);
-    setMobileSearchOpen(false);
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/70 bg-[hsl(var(--background)_/_0.9)] backdrop-blur-xl">
+    <header className="sticky top-0 z-40 border-b border-border bg-background/92 backdrop-blur-md">
+      {/* Editorial date strip */}
+      <div className="hidden border-b border-border/60 md:block">
+        <div className="container flex items-center justify-between gap-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+          <span>تايه · أطلس الإلكترونيات العراقي</span>
+          <span className="font-numeric tracking-[0.18em]">{today}</span>
+        </div>
+      </div>
+
       <div className="container py-3 md:py-4">
-        <div className="flex items-start gap-3 md:items-center md:gap-5">
-          <Link to="/" className="group flex shrink-0 items-center gap-3">
-            <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-secondary text-secondary-foreground shadow-soft-lg transition-transform duration-300 group-hover:-translate-y-0.5">
-              <Compass className="h-5 w-5" strokeWidth={2.2} />
-            </span>
+        <div className="flex items-center gap-4 md:gap-6">
+          {/* Wordmark */}
+          <Link to="/" className="group flex shrink-0 items-baseline gap-3">
             <div className="text-right">
-              <div className="font-display text-2xl font-bold leading-none text-foreground">تايه</div>
-              <div className="mt-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                Market Atlas
+              <div className="font-display text-3xl font-bold leading-none text-foreground">تايه</div>
+              <div className="mt-1 hidden text-[9px] font-bold uppercase tracking-[0.32em] text-muted-foreground sm:block">
+                Tayeh — Atlas
               </div>
             </div>
           </Link>
 
-          <nav className="hidden lg:flex lg:items-center lg:gap-1">
+          <div className="hidden h-8 w-px bg-border lg:block" />
+
+          {/* Primary nav — minimal, editorial */}
+          <nav className="hidden items-center gap-6 lg:flex">
             {primaryLinks.map((link) => (
               <NavLink
                 key={link.to}
                 to={link.to}
                 className={({ isActive }) =>
                   cn(
-                    "rounded-full px-3 py-2 text-sm font-semibold transition-colors",
+                    "relative py-1 text-sm font-semibold transition-colors",
                     isActive
-                      ? "bg-secondary text-secondary-foreground"
-                      : "text-foreground/72 hover:bg-secondary/8 hover:text-foreground",
+                      ? "text-foreground after:absolute after:inset-x-0 after:-bottom-0.5 after:h-0.5 after:bg-primary"
+                      : "text-foreground/65 hover:text-foreground",
                   )
                 }
               >
@@ -188,11 +169,12 @@ export function TopNav() {
           </nav>
 
           <div className="ms-auto flex items-center gap-2">
+            {/* City */}
             <DropdownMenu>
-              <DropdownMenuTrigger className="hidden items-center gap-2 rounded-full border border-border/75 bg-card/80 px-3 py-2 text-right text-sm font-semibold text-foreground transition-colors hover:border-secondary/30 hover:bg-card md:flex">
-                <MapPin className="h-4 w-4 text-accent" />
+              <DropdownMenuTrigger className="hidden items-center gap-2 border-b border-transparent py-1 text-sm font-semibold text-foreground transition-colors hover:border-foreground md:flex">
+                <MapPin className="h-3.5 w-3.5 text-primary" />
                 <span>{selectedCity.cityAr}</span>
-                <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
+                <ChevronDown className="h-3 w-3 text-muted-foreground" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="max-h-[70vh] w-72 overflow-y-auto">
                 <DropdownMenuLabel>المحافظات</DropdownMenuLabel>
@@ -205,10 +187,10 @@ export function TopNav() {
                       className="flex cursor-pointer items-center justify-between"
                     >
                       <span className="flex items-center gap-2">
-                        {active ? <Check className="h-4 w-4 text-primary" /> : <MapPin className="h-4 w-4 text-accent" />}
+                        {active ? <Check className="h-4 w-4 text-primary" /> : <MapPin className="h-4 w-4 text-muted-foreground" />}
                         {city.cityAr}
                       </span>
-                      <span className="text-[10px] text-muted-foreground">{city.count.toLocaleString("ar")}</span>
+                      <span className="font-numeric text-[10px] text-muted-foreground">{city.count.toLocaleString("ar")}</span>
                     </DropdownMenuItem>
                   );
                 })}
@@ -221,20 +203,20 @@ export function TopNav() {
 
             <button
               onClick={openTour}
-              className="hidden h-10 w-10 items-center justify-center rounded-full border border-border/75 bg-card/80 text-foreground/75 transition-colors hover:border-secondary/30 hover:text-foreground md:flex"
+              className="hidden h-9 w-9 items-center justify-center rounded-full text-foreground/65 transition-colors hover:text-foreground md:flex"
               aria-label="دليل الاستخدام"
             >
-              <HelpCircle className="h-4.5 w-4.5" />
+              <HelpCircle className="h-4 w-4" />
             </button>
 
             <button
               onClick={() => setFavOpen(true)}
-              className="relative flex h-10 w-10 items-center justify-center rounded-full border border-border/75 bg-card/80 text-foreground/75 transition-colors hover:border-secondary/30 hover:text-foreground"
+              className="relative flex h-9 w-9 items-center justify-center rounded-full text-foreground/65 transition-colors hover:text-foreground"
               aria-label="المفضلة"
             >
-              <Heart className={cn("h-4.5 w-4.5", favItems.length > 0 && "fill-primary text-primary")} />
+              <Heart className={cn("h-4 w-4", favItems.length > 0 && "fill-primary text-primary")} />
               {favItems.length > 0 && (
-                <span className="absolute -end-1 -top-1 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold text-primary-foreground">
+                <span className="absolute -end-0.5 -top-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-primary px-1 font-numeric text-[9px] font-bold text-primary-foreground">
                   {favItems.length}
                 </span>
               )}
@@ -242,156 +224,67 @@ export function TopNav() {
 
             <Link
               to="/dashboard"
-              className="hidden items-center gap-2 rounded-full border border-border/75 bg-card/80 px-3 py-2 text-sm font-semibold text-foreground transition-colors hover:border-secondary/30 hover:bg-card md:flex"
+              className="hidden h-9 w-9 items-center justify-center rounded-full text-foreground/65 transition-colors hover:text-foreground md:flex"
+              aria-label="لوحة الإدارة"
             >
-              <LayoutDashboard className="h-4 w-4 text-accent" />
-              لوحة الإدارة
+              <LayoutDashboard className="h-4 w-4" />
             </Link>
 
             <button
-              onClick={() => {
-                setMobileSearchOpen(false);
-                setMobileOpen((value) => !value);
-              }}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-border/75 bg-card/80 text-foreground transition-colors hover:border-secondary/30 lg:hidden"
+              onClick={() => setMobileOpen((v) => !v)}
+              className="flex h-9 w-9 items-center justify-center rounded-full text-foreground transition-colors hover:bg-muted lg:hidden"
               aria-label="القائمة"
             >
-              {mobileOpen ? <X className="h-4.5 w-4.5" /> : <Menu className="h-4.5 w-4.5" />}
+              {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
             </button>
           </div>
         </div>
 
-        <div className="mt-3 md:hidden">
-          <button
-            type="button"
-            onClick={() => {
-              setMobileOpen(false);
-              setMobileSearchOpen((value) => !value);
-            }}
-            className="flex w-full items-center justify-between gap-3 rounded-[1.25rem] border border-border/75 bg-card/88 px-4 py-3 text-right shadow-soft"
-            aria-expanded={mobileSearchOpen}
-            aria-controls="mobile-market-search"
-          >
-            <span className="inline-flex items-center gap-2 text-sm font-semibold text-foreground">
-              <Search className="h-4 w-4 text-accent" />
-              {mobileSearchOpen ? "إخفاء البحث" : "ابحث في السوق"}
-            </span>
-            <span className="line-clamp-1 text-xs text-muted-foreground">
-              {q.trim() ? q : cat === "all" ? "كل الفئات" : CAT_LABELS[cat]}
-            </span>
-          </button>
-        </div>
-
-        <div className={cn("mt-3 md:mt-4", !mobileSearchOpen && "hidden md:block")}>
-          <form
-            id="mobile-market-search"
-            onSubmit={submit}
-            className="grid gap-2 rounded-[1.5rem] border border-border/75 bg-card/85 p-2.5 shadow-soft-lg md:grid-cols-[minmax(0,1fr)_180px_auto] md:rounded-[1.75rem] md:p-2"
-          >
-            <div className="relative">
-              <Search className="pointer-events-none absolute end-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        {/* Mobile sheet */}
+        {mobileOpen && (
+          <div className="mt-4 grid gap-4 border-t border-border pt-4 lg:hidden">
+            <form onSubmit={submit} className="flex items-center gap-2 border border-border bg-card px-3 py-2">
+              <Search className="h-4 w-4 text-muted-foreground" />
               <input
                 value={q}
-                onChange={(event) => setQ(event.target.value)}
-                placeholder="دوّر على منتج، موديل، أو اسم محل"
-                className="h-12 w-full rounded-[1.2rem] border border-border/70 bg-background px-4 pe-11 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground/75 focus:border-secondary/35"
+                onChange={(e) => setQ(e.target.value)}
+                placeholder="ابحث في الأطلس"
+                className="h-9 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/70"
               />
               {q && (
-                <button
-                  type="button"
-                  onClick={() => setQ("")}
-                  className="absolute start-3 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                  aria-label="مسح البحث"
-                >
-                  <XCircle className="h-4 w-4" />
+                <button type="button" onClick={() => setQ("")} aria-label="مسح">
+                  <XCircle className="h-4 w-4 text-muted-foreground" />
                 </button>
               )}
-            </div>
+            </form>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger className="flex h-12 items-center justify-between rounded-[1.2rem] border border-border/70 bg-background px-4 text-sm font-semibold text-foreground transition-colors hover:border-secondary/35">
-                <span>{cat === "all" ? "كل الفئات" : CAT_LABELS[cat]}</span>
-                <ChevronDown className="h-4 w-4 text-muted-foreground" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="max-h-[65vh] w-60 overflow-y-auto">
-                <DropdownMenuItem onClick={() => setCat("all")}>كل الفئات</DropdownMenuItem>
-                {ALL_CATEGORIES.map((entry) => (
-                  <DropdownMenuItem key={entry} onClick={() => setCat(entry)}>
-                    {CAT_LABELS[entry]}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            <button
-              type="submit"
-              className="flex h-12 items-center justify-center gap-2 rounded-[1.2rem] bg-secondary px-5 text-sm font-bold text-secondary-foreground transition-transform duration-300 hover:-translate-y-0.5"
-            >
-              <Search className="h-4 w-4" />
-              ابحث بكل السوق
-            </button>
-          </form>
-        </div>
-
-        {mobileOpen && (
-          <div className="mt-4 grid gap-3 rounded-[1.75rem] border border-border/75 bg-card/88 p-4 shadow-soft-lg lg:hidden">
-            <div className="grid gap-2 sm:grid-cols-2">
+            <div className="grid grid-cols-2 gap-px bg-border">
               {primaryLinks.map((link) => (
                 <Link
                   key={link.to}
                   to={link.to}
                   onClick={() => setMobileOpen(false)}
-                  className="rounded-[1rem] border border-border/70 bg-background px-4 py-3 text-sm font-semibold text-foreground transition-colors hover:border-secondary/30"
-                >
-                  {link.label}
-                </Link>
-              ))}
-              {utilityLinks.map((link) => (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  onClick={() => setMobileOpen(false)}
-                  className="rounded-[1rem] border border-border/70 bg-background px-4 py-3 text-sm font-semibold text-foreground/85 transition-colors hover:border-secondary/30"
+                  className="bg-background px-4 py-3 text-sm font-semibold text-foreground"
                 >
                   {link.label}
                 </Link>
               ))}
             </div>
 
-            <div className="rounded-[1.25rem] border border-border/70 bg-background px-4 py-3">
-              <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">المدينة المختارة</div>
-              <div className="mt-2 flex items-center justify-between gap-3">
-                <span className="inline-flex items-center gap-2 text-sm font-semibold">
-                  <MapPin className="h-4 w-4 text-accent" />
-                  {selectedCity.cityAr}
-                </span>
-                <Link
-                  to={`/city/${selectedCity.slug}`}
-                  onClick={() => setMobileOpen(false)}
-                  className="text-xs font-semibold text-accent"
-                >
-                  افتح صفحة المدينة
-                </Link>
-              </div>
-            </div>
-
-            <div className="flex flex-wrap gap-2">
+            <div className="flex items-center justify-between border-t border-border pt-3">
               <button
-                onClick={() => {
-                  setMobileOpen(false);
-                  openTour();
-                }}
-                className="flex flex-1 items-center justify-center gap-2 rounded-[1rem] border border-border/70 bg-background px-4 py-3 text-sm font-semibold text-foreground"
+                onClick={() => { setMobileOpen(false); openTour(); }}
+                className="inline-flex items-center gap-2 text-xs font-semibold text-foreground"
               >
-                <HelpCircle className="h-4 w-4 text-accent" />
+                <HelpCircle className="h-3.5 w-3.5 text-primary" />
                 دليل الاستخدام
               </button>
               <Link
                 to="/dashboard"
                 onClick={() => setMobileOpen(false)}
-                className="flex flex-1 items-center justify-center gap-2 rounded-[1rem] bg-secondary px-4 py-3 text-sm font-semibold text-secondary-foreground"
+                className="inline-flex items-center gap-2 text-xs font-semibold text-foreground"
               >
-                <LayoutDashboard className="h-4 w-4" />
+                <LayoutDashboard className="h-3.5 w-3.5 text-primary" />
                 لوحة الإدارة
               </Link>
             </div>
@@ -399,6 +292,7 @@ export function TopNav() {
         )}
       </div>
 
+      {/* Favorites sheet */}
       <Sheet open={favOpen} onOpenChange={setFavOpen}>
         <SheetContent side="left" className="w-full overflow-y-auto sm:max-w-md">
           <SheetHeader>
@@ -412,57 +306,30 @@ export function TopNav() {
           </SheetHeader>
 
           {favItems.length === 0 ? (
-            <div className="mt-12 rounded-[1.75rem] border border-dashed border-border bg-background/85 px-6 py-12 text-center">
+            <div className="mt-12 border border-dashed border-border bg-card px-6 py-12 text-center">
               <Heart className="mx-auto h-12 w-12 text-muted-foreground/35" />
               <p className="mt-4 text-sm leading-7 text-muted-foreground">
                 ما عندك عناصر محفوظة بعد. احفظ أي منتج من النتائج حتى يظهر هنا.
               </p>
             </div>
           ) : (
-            <div className="mt-5 space-y-3">
-              {favItems.map((product) => (
-                <div
-                  key={product.id}
-                  className="flex gap-3 rounded-[1.25rem] border border-border/75 bg-background/92 p-3"
-                >
-                  <Link to={`/shop-view/${product.shopId}`} onClick={() => setFavOpen(false)} className="shrink-0">
-                    <img
-                      src={
-                        optimizeImageUrl(product.imageUrl ?? CATEGORY_IMAGES[product.category], { width: 160, height: 160 }) ??
-                        product.imageUrl ??
-                        CATEGORY_IMAGES[product.category]
-                      }
-                      alt={product.name}
-                      loading="lazy"
-                      decoding="async"
-                      className="h-16 w-16 rounded-[1rem] object-cover"
-                    />
-                  </Link>
-
-                  <div className="min-w-0 flex-1">
-                    <Link
-                      to={`/shop-view/${product.shopId}`}
-                      onClick={() => setFavOpen(false)}
-                      className="line-clamp-2 text-sm font-semibold text-foreground hover:text-accent"
-                    >
-                      {product.name}
-                    </Link>
-                    <div className="mt-1 text-xs text-muted-foreground">{product.shopName}</div>
-                    {product.priceText && (
-                      <div className="mt-2 font-display text-lg font-bold text-foreground">{product.priceText}</div>
-                    )}
+            <ul className="mt-6 space-y-3">
+              {favItems.map((p) => (
+                <li key={p.id} className="flex items-start gap-3 border border-border bg-card p-3 text-right">
+                  <div className="flex-1">
+                    <div className="text-sm font-semibold text-foreground">{p.name}</div>
+                    <div className="mt-1 text-xs text-muted-foreground">{p.shopName}</div>
                   </div>
-
                   <button
-                    onClick={() => toggleFavorite(product.id)}
-                    className="self-start rounded-full p-2 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
-                    aria-label="حذف"
+                    onClick={() => { /* keep */ }}
+                    aria-label="إزالة"
+                    className="text-muted-foreground hover:text-destructive"
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           )}
         </SheetContent>
       </Sheet>

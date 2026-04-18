@@ -6,24 +6,24 @@ export function VerifiedBadge({ verified, className }: { verified: boolean; clas
     return (
       <span
         className={cn(
-          "inline-flex items-center gap-1 rounded-full border border-white/12 bg-black/32 px-2.5 py-1 text-[10px] font-bold text-white backdrop-blur-sm",
+          "inline-flex items-center gap-1 bg-primary px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-primary-foreground",
           className,
         )}
       >
         <BadgeCheck className="h-3 w-3" />
-        محل موثّق
+        موثّق
       </span>
     );
   }
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1 rounded-full border border-border/75 bg-background/94 px-2.5 py-1 text-[10px] font-bold text-muted-foreground",
+        "inline-flex items-center gap-1 bg-background/95 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground",
         className,
       )}
     >
       <Clock4 className="h-3 w-3" />
-      غير موثّق
+      —
     </span>
   );
 }
@@ -32,7 +32,7 @@ export function StaleBadge({ className }: { className?: string }) {
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1 rounded-full border border-warning/20 bg-warning/14 px-2.5 py-1 text-[10px] font-bold text-warning",
+        "inline-flex items-center gap-1 border border-warning/40 bg-warning/10 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-warning",
         className,
       )}
     >

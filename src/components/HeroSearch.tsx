@@ -33,86 +33,52 @@ export function HeroSearch({
     nav(`/results?${params.toString()}`);
   }
 
-  const isHero = variant === "hero";
-
   return (
     <form
       onSubmit={submit}
-      className={
-        isHero
-          ? "rounded-[1.7rem] border border-white/16 bg-[hsl(var(--background)_/_0.94)] p-2.5 shadow-[0_32px_80px_-42px_rgba(6,17,28,0.55)] backdrop-blur-xl md:rounded-[2rem] md:p-4"
-          : "rounded-[1.5rem] border border-border/75 bg-card/90 p-3 shadow-soft-lg"
-      }
+      className="border-y-2 border-foreground bg-background"
     >
-      <div className="grid gap-2 md:grid-cols-[minmax(0,1fr)_180px_180px_auto]">
-        <div className="relative">
+      <div className="grid gap-px bg-border md:grid-cols-[minmax(0,1fr)_180px_180px_auto]">
+        <div className="relative bg-background">
           <Search className="pointer-events-none absolute end-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             value={q}
             onChange={(event) => setQ(event.target.value)}
-            placeholder="ابحث عن موديل، براند، أو اسم محل"
-            className="h-12 rounded-[1.1rem] border-border/80 bg-white/95 pe-11 text-sm text-foreground shadow-none placeholder:text-muted-foreground/70 focus-visible:ring-secondary"
+            placeholder="ابحث عن موديل، براند، أو اسم محل…"
+            className="h-14 rounded-none border-0 bg-transparent pe-12 text-base text-foreground shadow-none focus-visible:ring-0 placeholder:text-muted-foreground/70"
           />
         </div>
 
         <Select value={area} onValueChange={(value) => setArea(value as Area | "all")}>
-          <SelectTrigger className="h-12 rounded-[1.1rem] border-border/80 bg-white/95 text-foreground shadow-none">
+          <SelectTrigger className="h-14 rounded-none border-0 bg-background text-foreground shadow-none focus:ring-0">
             <SelectValue placeholder="المنطقة" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">كل المناطق</SelectItem>
             {ALL_AREAS.map((entry) => (
-              <SelectItem key={entry} value={entry}>
-                {entry}
-              </SelectItem>
+              <SelectItem key={entry} value={entry}>{entry}</SelectItem>
             ))}
           </SelectContent>
         </Select>
 
         <Select value={category} onValueChange={(value) => setCategory(value as Category | "all")}>
-          <SelectTrigger className="h-12 rounded-[1.1rem] border-border/80 bg-white/95 text-foreground shadow-none">
+          <SelectTrigger className="h-14 rounded-none border-0 bg-background text-foreground shadow-none focus:ring-0">
             <SelectValue placeholder="الفئة" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">كل الفئات</SelectItem>
             {ALL_CATEGORIES.map((entry) => (
-              <SelectItem key={entry} value={entry}>
-                {entry}
-              </SelectItem>
+              <SelectItem key={entry} value={entry}>{entry}</SelectItem>
             ))}
           </SelectContent>
         </Select>
 
         <Button
           type="submit"
-          size="lg"
-          className="h-12 rounded-[1.1rem] bg-secondary px-5 text-sm font-bold text-secondary-foreground hover:bg-secondary/94"
+          className="h-14 rounded-none bg-foreground px-8 text-sm font-bold uppercase tracking-[0.16em] text-background hover:bg-primary"
         >
-          <Search className="h-4 w-4" />
-          ابحث الآن
-        </Button>
-      </div>
-
-      <div
-        className={
-          isHero
-            ? "mt-3 flex flex-col gap-3 border-t border-border/55 pt-3 md:flex-row md:items-center md:justify-between"
-            : "mt-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between"
-        }
-      >
-        <p className={isHero ? "hidden text-xs leading-6 text-muted-foreground sm:block" : "text-xs leading-6 text-muted-foreground"}>
-          ابحث مرّة واحدة، ثم ضيّق النتيجة حسب الشارع أو الفئة بدون ما تبدّل بين واجهات مختلفة.
-        </p>
-
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          className="w-fit gap-1.5 rounded-full px-3 text-foreground/72 hover:bg-secondary/8 hover:text-foreground"
-          onClick={() => nav("/results")}
-        >
-          كل النتائج
-          <ArrowLeft className="h-3.5 w-3.5" />
+          ابحث
+          <ArrowLeft className="ms-2 h-4 w-4" />
         </Button>
       </div>
     </form>
