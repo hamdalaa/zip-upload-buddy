@@ -68,11 +68,11 @@ export default function About() {
 
             <div className="mt-6 flex flex-col items-start gap-5 sm:flex-row sm:items-center">
               <div className="relative shrink-0">
-                <div className="absolute inset-0 -m-1 rounded-2xl bg-gradient-to-br from-primary via-cyan to-primary opacity-60 blur-md" />
+                <div className="absolute -inset-1 rounded-full bg-gradient-to-tr from-primary via-cyan to-violet opacity-90" />
                 <img
                   src={developerPortrait}
                   alt="محمد علاء"
-                  className="relative h-20 w-20 rounded-2xl object-cover shadow-soft-md ring-2 ring-background"
+                  className="relative h-24 w-24 rounded-full object-cover ring-4 ring-background"
                 />
               </div>
               <div className="text-right">
