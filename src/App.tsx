@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { DataStoreProvider } from "@/lib/dataStore";
 import { UserPrefsProvider } from "@/lib/userPrefs";
 import { CompareBar } from "@/components/CompareBar";
+import { CommandPalette } from "@/components/CommandPalette";
 import { WelcomeTour } from "@/components/WelcomeTour";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import Index from "./pages/Index.tsx";
@@ -48,6 +49,7 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Routes>
             <CompareBar />
+            <CommandPalette />
           </BrowserRouter>
         </UserPrefsProvider>
       </DataStoreProvider>
