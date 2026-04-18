@@ -114,6 +114,29 @@ const Results = () => {
 
   const { groups, loose } = useMemo(() => groupComparable(results), [results]);
 
+  // Fallback counters (shown when no products match) — keep numbers meaningful
+  // instead of showing 0 0 0 because the product index is empty.
+  const fallbackShops = useMemo(
+    () =>
+      shops.filter(
+        (s) =>
+          !s.archivedAt &&
+          (area === "all" || s.area === area) &&
+          (category === "all" || s.category === category || s.categories?.includes(category as Category)),
+      ),
+    [shops, area, category],
+  );
+  const fallbackShopsCount = fallbackShops.length;
+  const areasCount = useMemo(() => new Set(fallbackShops.map((s) => s.area)).size, [fallbackShops]);
+  const categoriesCount = useMemo(() => {
+    const set = new Set<string>();
+    fallbackShops.forEach((s) => {
+      if (s.category) set.add(s.category);
+      s.categories?.forEach((c) => set.add(c));
+    });
+    return set.size;
+  }, [fallbackShops]);
+
   const activeFilterLabels = useMemo(() => {
     const labels: string[] = [];
     if (area !== "all") labels.push(area);
