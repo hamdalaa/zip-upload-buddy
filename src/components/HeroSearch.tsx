@@ -49,7 +49,7 @@ export function HeroSearch({
       </div>
 
       {/* Filters + CTA row */}
-      <div className="grid grid-cols-2 gap-px bg-border md:grid-cols-[160px_160px_1fr]">
+      <div className="grid grid-cols-1 gap-px bg-border sm:grid-cols-2 md:grid-cols-[160px_160px_1fr]">
         <Select value={area} onValueChange={(value) => setArea(value as Area | "all")}>
           <SelectTrigger className="h-12 sm:h-14 rounded-none border-0 bg-card text-sm text-foreground shadow-none focus:ring-0 hover:bg-surface transition-colors">
             <SelectValue placeholder="المنطقة" />
