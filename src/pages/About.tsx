@@ -89,7 +89,7 @@ export default function About() {
 
             <div className="mt-6 grid grid-cols-2 gap-3">
               <ContactPill icon={<Mail className="h-4 w-4" />} label="إيميل" href="mailto:hamadalaat@gmail.com" tone="primary" />
-              <ContactPill icon={<Instagram className="h-4 w-4" />} label="إنستغرام" href="https://instagram.com/hamadalaat" tone="cyan" />
+              <ContactPill icon={<Instagram className="h-4 w-4" />} label="إنستغرام" href="https://instagram.com/hamadalaatech" tone="cyan" />
             </div>
           </div>
         </section>
@@ -134,8 +134,8 @@ export default function About() {
                 size="lg"
                 className="h-11 w-full rounded-full bg-gradient-to-r from-violet to-rose text-white shadow-soft-md hover:opacity-95"
               >
-                <a href="mailto:sponsor@example.com">
-                  <Heart className="h-4 w-4" />
+                <a href="https://instagram.com/hamadalaatech" target="_blank" rel="noreferrer noopener">
+                  <Instagram className="h-4 w-4" />
                   راسلنا للرعاية
                 </a>
               </Button>
