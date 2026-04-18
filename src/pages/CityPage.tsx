@@ -127,16 +127,11 @@ export default function CityPage() {
               <div className="pointer-events-none absolute -top-16 -right-16 h-40 w-40 rounded-full bg-primary/10 blur-3xl transition-opacity group-hover/panel:opacity-80" />
               <div className="pointer-events-none absolute -bottom-20 -left-10 h-36 w-36 rounded-full bg-accent/10 blur-3xl" />
 
-              <div className="relative grid grid-cols-2 gap-3">
+              <div className="relative">
                 <Metric
                   label="كل المحلات"
                   value={(data?.stores.length ?? meta.count).toLocaleString("ar")}
                   tone="primary"
-                />
-                <Metric
-                  label="بعد التصفية"
-                  value={filtered.length.toLocaleString("ar")}
-                  tone="accent"
                 />
               </div>
 
