@@ -54,6 +54,7 @@ const Brand = () => {
   const background = getBrandBackground(brand.slug);
   const initial = brand.brandName.slice(0, 1);
   const isApple = brand.slug === "apple";
+  const isSamsung = brand.slug === "samsung";
 
   return (
     <div className="min-h-screen flex flex-col bg-[linear-gradient(180deg,hsl(var(--surface))_0%,hsl(var(--background))_14%,hsl(var(--surface))_100%)]">
