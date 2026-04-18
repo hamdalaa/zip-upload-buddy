@@ -535,22 +535,47 @@ function SummaryTile({
 function QuickFlag({
   label,
   ok,
+  icon: Icon,
   neutral = false,
 }: {
   label: string;
   ok?: boolean | null;
+  icon?: ComponentType<{ className?: string }>;
   neutral?: boolean;
 }) {
+  const isOk = ok === true;
+  const isOff = ok === false && !neutral;
+  const StatusIcon = neutral ? Minus : isOk ? CheckCircle2 : XCircle;
   return (
     <div
       className={cn(
-        "rounded-2xl border px-3 py-3 text-center text-xs font-bold",
-        ok === true && "border-success/30 bg-success/10 text-success",
-        ok === false && !neutral && "border-destructive/20 bg-destructive/10 text-destructive",
-        neutral && "border-border/70 bg-background/80 text-muted-foreground",
+        "group relative flex items-center gap-2 overflow-hidden rounded-2xl border px-3 py-2.5 text-xs font-bold transition-all duration-200",
+        isOk && "border-success/30 bg-success/8 text-success hover:border-success/50 hover:bg-success/12 hover:shadow-soft-md",
+        isOff && "border-destructive/20 bg-destructive/8 text-destructive/85 hover:border-destructive/40 hover:bg-destructive/12",
+        neutral && "border-border/70 bg-background/80 text-muted-foreground hover:border-border",
       )}
     >
-      {label}
+      {Icon && (
+        <span
+          className={cn(
+            "flex h-7 w-7 shrink-0 items-center justify-center rounded-full transition-transform group-hover:scale-110",
+            isOk && "bg-success/15 text-success",
+            isOff && "bg-destructive/12 text-destructive/80",
+            neutral && "bg-muted text-muted-foreground",
+          )}
+        >
+          <Icon className="h-3.5 w-3.5" />
+        </span>
+      )}
+      <span className="flex-1 truncate text-start">{label}</span>
+      <StatusIcon
+        className={cn(
+          "h-3.5 w-3.5 shrink-0 opacity-70",
+          isOk && "text-success",
+          isOff && "text-destructive/70",
+          neutral && "text-muted-foreground",
+        )}
+      />
     </div>
   );
 }
