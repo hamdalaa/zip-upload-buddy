@@ -75,7 +75,7 @@ export default function About() {
               <div className="text-right">
                 <h2 className="font-display text-2xl font-bold tracking-tight">المطوّر</h2>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  مهندس برمجيات عراقي — بنيت هذي المنصّة لخدمة السوق التقني المحلّي.
+                  خبير ذكاء اصطناعي — مبرمج مواقع — صانع محتوى تقني
                 </p>
               </div>
             </div>
