@@ -50,29 +50,29 @@ const Index = () => {
       <TopNav />
       <HeroBanner />
 
-      <main className="pb-20">
+      <main className="pb-16 sm:pb-20">
         {/* Categories — editorial inline strip */}
-        <section className="container mt-16 md:mt-24">
+        <section className="container mt-10 sm:mt-16 md:mt-24">
           <SectionHeader
             kicker="الفئات"
             title="ابدأ من القسم الأقرب لحاجتك"
             seeAll="/results"
             description="بدل البحث العشوائي، اختر الفئة أولاً ثم خلِّ التصفية تكمل المشوار."
           />
-          <div className="mt-8">
+          <div className="mt-6 sm:mt-8">
             <CategoryCircles />
           </div>
         </section>
 
         {/* Street features — two large editorial blocks */}
-        <section className="container mt-20 md:mt-28">
+        <section className="container mt-12 sm:mt-20 md:mt-28">
           <SectionHeader
             kicker="شوارع السوق"
             title="مسارات بغداد المرجعية"
             description="شارعا الصناعة والربيعي يشكلان قلب سوق الإلكترونيات. ابدأ منهما."
           />
 
-          <div className="mt-10 grid gap-8">
+          <div className="mt-6 grid gap-6 sm:mt-10 sm:gap-8">
             <StreetShopsSection
               area="شارع الصناعة"
               title="شارع الصناعة"
