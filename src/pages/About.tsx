@@ -191,11 +191,11 @@ function ContactPill({
       ? "border-primary/30 bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground"
       : tone === "cyan"
         ? "border-cyan/30 bg-cyan/10 text-cyan hover:bg-cyan hover:text-white"
-        : tone === "instagram"
-          ? "border-transparent bg-[linear-gradient(45deg,#F58529,#DD2A7B,#8134AF,#515BD4)] text-white hover:opacity-90 hover:brightness-110"
-          : tone === "gmail"
-            ? "border-transparent bg-[linear-gradient(135deg,#4285F4,#34A853,#FBBC05,#EA4335)] text-white hover:opacity-90 hover:brightness-110"
-            : "border-border/70 bg-background text-foreground hover:bg-foreground hover:text-background";
+          : tone === "instagram"
+            ? "border-transparent bg-[linear-gradient(45deg,#F58529,#DD2A7B,#8134AF,#515BD4)] text-white hover:opacity-90 hover:brightness-110"
+            : tone === "gmail"
+              ? "border-border/70 bg-white text-foreground hover:bg-neutral-100"
+              : "border-border/70 bg-background text-foreground hover:bg-foreground hover:text-background";
   return (
     <a
       href={href}
