@@ -77,19 +77,7 @@ export default function CityShopView() {
     };
   }, [slug]);
 
-  // Keyboard navigation for lightbox
-  useEffect(() => {
-    if (lightboxIndex === null) return;
-    const handler = (e: KeyboardEvent) => {
-      const total = data?.stores.find((s) => s.id === shopId || s.place_id === shopId)?.gallery?.length ?? 0;
-      if (total === 0) return;
-      if (e.key === "Escape") setLightboxIndex(null);
-      if (e.key === "ArrowLeft") setLightboxIndex((i) => (i! + 1) % total);
-      if (e.key === "ArrowRight") setLightboxIndex((i) => (i! - 1 + total) % total);
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, [lightboxIndex, data, shopId]);
+  // Keyboard navigation handled inside LightboxViewer
 
   const shop = data?.stores.find((entry) => entry.id === shopId || entry.place_id === shopId);
 
