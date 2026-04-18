@@ -377,6 +377,45 @@ export default function CityShopView() {
         </div>
       </main>
 
+      <Dialog open={lightboxIndex !== null} onOpenChange={(open) => !open && setLightboxIndex(null)}>
+        <DialogContent className="max-w-5xl border-0 bg-black/95 p-0 sm:rounded-2xl">
+          <DialogTitle className="sr-only">معرض صور {shop.name}</DialogTitle>
+          {lightboxIndex !== null && uniqueGallery[lightboxIndex] && (
+            <div className="relative">
+              <img
+                src={optimizeImageUrl(uniqueGallery[lightboxIndex], { width: 1600, height: 1200 }) ?? uniqueGallery[lightboxIndex]}
+                alt={`${shop.name} - صورة ${lightboxIndex + 1}`}
+                className="max-h-[85vh] w-full object-contain"
+                referrerPolicy="no-referrer"
+              />
+              {uniqueGallery.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => setLightboxIndex((i) => (i! - 1 + uniqueGallery.length) % uniqueGallery.length)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur transition hover:bg-white/30"
+                    aria-label="السابق"
+                  >
+                    <ChevronRight className="h-5 w-5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setLightboxIndex((i) => (i! + 1) % uniqueGallery.length)}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur transition hover:bg-white/30"
+                    aria-label="التالي"
+                  >
+                    <ChevronLeft className="h-5 w-5" />
+                  </button>
+                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-black/60 px-3 py-1 text-xs font-bold text-white">
+                    {lightboxIndex + 1} / {uniqueGallery.length}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
       <SiteFooter />
     </div>
   );
