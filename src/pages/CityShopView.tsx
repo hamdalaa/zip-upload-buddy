@@ -154,7 +154,7 @@ export default function CityShopView() {
 
       <main className="flex-1 container py-6 space-y-6 md:py-8">
         <header className="overflow-hidden rounded-[2rem] border border-border/70 bg-card/88 shadow-soft-xl backdrop-blur-sm">
-          <div className="relative h-56 sm:h-72 md:h-80 bg-muted">
+          <div className="relative h-44 sm:h-52 md:h-60 bg-muted">
             {heroImage ? (
               <button
                 type="button"
