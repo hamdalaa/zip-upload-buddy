@@ -49,7 +49,7 @@ export default function About() {
               ليش <span className="text-gradient">تايه</span>؟
             </h1>
             <p className="mt-3 mx-auto max-w-2xl text-sm leading-7 text-muted-foreground md:text-base">
-              لأن أي واحد يدوّر على جهاز إلكتروني بالعراق يصير <span className="font-semibold text-foreground">تايه</span> — هذا يكول "أنا الأرخص"، وهذاك يكول "عندي الأصلي"، والثالث "أنا الأقرب لبيتك". تتنطّر بين عشرة محلات بدون ما تعرف منو الصدق ومنو يبالغ.
+              تشتري موبايل أو لابتوب بالعراق؟ تفتح كروبات، تسأل صديق، تلف على عشر محلات — وبالآخر ما تدري <span className="font-semibold text-foreground">منو الصدق ومنو يبالغ</span>. كل واحد يحلف إن سعره الأرخص وبضاعته الأصلية.
             </p>
             <p className="mt-3 mx-auto max-w-2xl text-sm leading-7 text-muted-foreground md:text-base">
               <span className="font-semibold text-foreground">تايه</span> منصّة عراقية تجمع محلّات التقنية من كل المحافظات بمكان واحد — تقارن الأسعار، تشوف تقييمات Google الحقيقية للمحلّ، وتوصل لأقرب نقطة بيع موثوقة بنقرة وحدة. بدون إعلانات مدفوعة، بدون تحيّز، بس معلومة صريحة.
