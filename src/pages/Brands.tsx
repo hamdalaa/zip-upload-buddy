@@ -198,10 +198,10 @@ export default function Brands() {
                       </div>
                     )}
 
-                    {/* Centered logo plate */}
-                    {logo && (
-                      <div className="absolute inset-x-0 top-1/2 flex -translate-y-[62%] justify-center px-6 pointer-events-none">
-                        <div className="flex h-20 w-20 sm:h-24 sm:w-24 items-center justify-center rounded-2xl bg-white/95 p-3 shadow-[0_12px_30px_-10px_hsl(0_0%_0%/0.5)] ring-1 ring-white/40 backdrop-blur-sm transition-transform duration-500 group-hover:scale-105">
+                    {/* Centered logo plate — large & prominent */}
+                    <div className="absolute inset-x-0 top-1/2 flex -translate-y-[58%] justify-center px-5 pointer-events-none">
+                      <div className="flex h-32 w-32 sm:h-40 sm:w-40 items-center justify-center rounded-[1.75rem] bg-white/98 p-5 sm:p-6 shadow-[0_20px_50px_-12px_hsl(0_0%_0%/0.55)] ring-1 ring-white/50 backdrop-blur-sm transition-transform duration-500 group-hover:scale-[1.06]">
+                        {logo ? (
                           <img
                             src={logo}
                             alt={`${brand.brandName} logo`}
@@ -209,9 +209,13 @@ export default function Brands() {
                             decoding="async"
                             className="max-h-full max-w-full object-contain"
                           />
-                        </div>
+                        ) : (
+                          <span className="font-display text-5xl sm:text-6xl font-extrabold text-foreground">
+                            {brand.brandName.slice(0, 1)}
+                          </span>
+                        )}
                       </div>
-                    )}
+                    </div>
 
                     {/* Bottom block — same as /iraq */}
                     <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
