@@ -163,7 +163,7 @@ export default function About() {
               </Button>
             </div>
 
-            <p className="mt-4 text-[11px] text-muted-foreground">
+            <p className="mt-4 text-center text-[11px] text-muted-foreground">
               مفتوحين للتعاون مع المتاجر، الوكلاء الرسميين، والشركات التقنية.
             </p>
           </div>
