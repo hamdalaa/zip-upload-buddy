@@ -45,11 +45,30 @@ export default function About() {
               قصّة المشروع
             </div>
             <h1 className="font-display mt-4 text-3xl font-bold tracking-tight md:text-5xl">
-              من <span className="text-gradient">صنع</span> ولِمن؟
+              ليش <span className="text-gradient">تايه</span>؟
             </h1>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-muted-foreground md:text-base">
-              منصّة عراقية تجمع محلّات التقنية من كل المحافظات بمكان واحد — تكدر تقارن الأسعار، تشوف تقييمات المحلّات، وتوصل لأقرب محل ثقة بدون لفّ ودوران.
+              لأن أي واحد يدوّر على جهاز إلكتروني بالعراق يصير <span className="font-semibold text-foreground">تايه</span> — هذا يكول "أنا الأرخص"، وهذاك يكول "عندي الأصلي"، والثالث "أنا الأقرب لبيتك". تتنطّر بين عشرة محلات بدون ما تعرف منو الصدق ومنو يبالغ.
             </p>
+            <p className="mt-3 max-w-2xl text-sm leading-7 text-muted-foreground md:text-base">
+              <span className="font-semibold text-foreground">تايه</span> منصّة عراقية تجمع محلّات التقنية من كل المحافظات بمكان واحد — تقارن الأسعار، تشوف تقييمات Google الحقيقية للمحلّ، وتوصل لأقرب نقطة بيع موثوقة بنقرة وحدة. بدون إعلانات مدفوعة، بدون تحيّز، بس معلومة صريحة.
+            </p>
+
+            <div className="mt-5 grid gap-2 sm:grid-cols-3">
+              {[
+                { label: "محافظات مغطّاة", value: "10+" },
+                { label: "محلات موثّقة", value: "200+" },
+                { label: "بحث مجاني للأبد", value: "100%" },
+              ].map((stat) => (
+                <div
+                  key={stat.label}
+                  className="rounded-2xl border border-border/60 bg-card/70 px-3 py-2.5 text-center backdrop-blur"
+                >
+                  <div className="font-display text-lg font-bold text-foreground">{stat.value}</div>
+                  <div className="text-[11px] text-muted-foreground">{stat.label}</div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
