@@ -253,29 +253,131 @@ export default function CityShopView() {
           </div>
         </header>
 
-        {!!shop.quickSignals && (
-          <section className="relative overflow-hidden rounded-[1.75rem] border border-border/70 bg-card/82 p-5 shadow-soft-lg backdrop-blur-sm md:p-6">
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" aria-hidden />
-            <div className="relative mb-4 flex items-center justify-between gap-3">
-              <div className="inline-flex items-center gap-2">
-                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <Sparkles className="h-3.5 w-3.5" />
-                </span>
-                <h2 className="text-sm font-bold tracking-tight text-foreground">إشارات سريعة</h2>
+        {!!shop.quickSignals && (() => {
+          const signals = [
+            { label: "موقع", icon: Globe, ok: shop.quickSignals.has_website === true },
+            { label: "خرائط", icon: MapPin, ok: shop.quickSignals.has_google_maps === true },
+            { label: "تقييم", icon: Star, ok: shop.quickSignals.has_rating === true },
+            { label: "مراجعات", icon: MessageSquare, ok: shop.quickSignals.has_reviews === true },
+            { label: "صور", icon: Camera, ok: shop.quickSignals.has_photos === true },
+            { label: "نشط", icon: Activity, ok: shop.quickSignals.business_status === "OPERATIONAL" },
+            {
+              label: "مفتوح الآن",
+              icon: DoorOpen,
+              ok: shop.quickSignals.open_now === true,
+              neutral: shop.quickSignals.open_now === null || shop.quickSignals.open_now === undefined,
+            },
+          ];
+          const total = signals.length;
+          const scored = signals.filter((s) => !s.neutral);
+          const positive = scored.filter((s) => s.ok).length;
+          const denominator = scored.length || total;
+          const ratio = denominator > 0 ? positive / denominator : 0;
+          const percent = Math.round(ratio * 100);
+          const tier =
+            ratio >= 0.85
+              ? { label: "ممتاز", tone: "success" as const, icon: ShieldCheck }
+              : ratio >= 0.6
+                ? { label: "جيد", tone: "primary" as const, icon: CheckCircle2 }
+                : ratio >= 0.35
+                  ? { label: "مقبول", tone: "amber" as const, icon: Sparkles }
+                  : { label: "محدود", tone: "muted" as const, icon: Minus };
+          const toneRing = {
+            success: "stroke-success",
+            primary: "stroke-primary",
+            amber: "stroke-amber-500",
+            muted: "stroke-muted-foreground",
+          }[tier.tone];
+          const toneBadge = {
+            success: "bg-success/12 text-success border-success/30",
+            primary: "bg-primary/10 text-primary border-primary/30",
+            amber: "bg-amber-500/12 text-amber-700 border-amber-500/30",
+            muted: "bg-muted text-muted-foreground border-border",
+          }[tier.tone];
+          const radius = 32;
+          const circumference = 2 * Math.PI * radius;
+          const dash = circumference * ratio;
+
+          return (
+            <section className="relative overflow-hidden rounded-[1.75rem] border border-border/70 bg-card/82 p-5 shadow-soft-lg backdrop-blur-sm md:p-6">
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" aria-hidden />
+              <div className="relative flex flex-col gap-5 md:flex-row md:items-center">
+                {/* Score badge */}
+                <div className="flex items-center gap-4">
+                  <div className="relative h-[88px] w-[88px] shrink-0">
+                    <svg viewBox="0 0 80 80" className="h-full w-full -rotate-90">
+                      <circle
+                        cx="40"
+                        cy="40"
+                        r={radius}
+                        className="fill-none stroke-muted"
+                        strokeWidth="6"
+                      />
+                      <circle
+                        cx="40"
+                        cy="40"
+                        r={radius}
+                        className={cn("fill-none transition-all duration-700 ease-out", toneRing)}
+                        strokeWidth="6"
+                        strokeLinecap="round"
+                        strokeDasharray={`${dash} ${circumference}`}
+                      />
+                    </svg>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                      <span className="font-numeric text-xl font-bold leading-none tabular-nums text-foreground">
+                        {positive}
+                        <span className="text-sm text-muted-foreground">/{denominator}</span>
+                      </span>
+                      <span className="font-numeric mt-0.5 text-[10px] font-semibold tabular-nums text-muted-foreground">
+                        {percent}%
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <div className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                      <Sparkles className="h-3 w-3" /> درجة الجودة
+                    </div>
+                    <div
+                      className={cn(
+                        "inline-flex w-fit items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-bold",
+                        toneBadge,
+                      )}
+                    >
+                      <tier.icon className="h-3.5 w-3.5" />
+                      {tier.label}
+                    </div>
+                    <p className="text-[11px] leading-relaxed text-muted-foreground">
+                      {positive} من {denominator} إشارات إيجابية تم التحقق منها
+                    </p>
+                  </div>
+                </div>
+
+                {/* Divider */}
+                <div className="hidden h-16 w-px bg-border md:block" />
+
+                {/* Compact signal pills */}
+                <div className="flex flex-1 flex-wrap gap-1.5">
+                  {signals.map((s) => (
+                    <span
+                      key={s.label}
+                      className={cn(
+                        "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-semibold transition-colors",
+                        s.neutral
+                          ? "border-border/70 bg-background/80 text-muted-foreground"
+                          : s.ok
+                            ? "border-success/30 bg-success/8 text-success"
+                            : "border-border bg-muted/60 text-muted-foreground line-through decoration-muted-foreground/40",
+                      )}
+                    >
+                      <s.icon className="h-3 w-3" />
+                      {s.label}
+                    </span>
+                  ))}
+                </div>
               </div>
-              <span className="text-[11px] font-medium text-muted-foreground">حالة المتجر في لمحة</span>
-            </div>
-            <div className="relative grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-7">
-              <QuickFlag label="موقع" icon={Globe} ok={shop.quickSignals.has_website} />
-              <QuickFlag label="خرائط" icon={MapPin} ok={shop.quickSignals.has_google_maps} />
-              <QuickFlag label="تقييم" icon={Star} ok={shop.quickSignals.has_rating} />
-              <QuickFlag label="مراجعات" icon={MessageSquare} ok={shop.quickSignals.has_reviews} />
-              <QuickFlag label="صور" icon={Camera} ok={shop.quickSignals.has_photos} />
-              <QuickFlag label="نشط" icon={Activity} ok={shop.quickSignals.business_status === "OPERATIONAL"} />
-              <QuickFlag label="مفتوح الآن" icon={DoorOpen} ok={shop.quickSignals.open_now === true} neutral={shop.quickSignals.open_now === null} />
-            </div>
-          </section>
-        )}
+            </section>
+          );
+        })()}
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
