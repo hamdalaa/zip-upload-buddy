@@ -37,7 +37,7 @@ export function HeroSearch({
       onSubmit={submit}
       className="rounded-2xl border border-border bg-card shadow-soft-xl overflow-hidden"
     >
-      {/* Search input — full width */}
+      {/* Search input — full width on all sizes */}
       <div className="relative bg-card border-b border-border">
         <Search className="pointer-events-none absolute end-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
@@ -48,10 +48,10 @@ export function HeroSearch({
         />
       </div>
 
-      {/* Filters + CTA row */}
-      <div className="grid grid-cols-1 gap-px bg-border sm:grid-cols-2 md:grid-cols-[160px_160px_1fr]">
+      {/* Filters row (mobile: stacked; desktop: side by side) */}
+      <div className="flex flex-col gap-px bg-border md:flex-row">
         <Select value={area} onValueChange={(value) => setArea(value as Area | "all")}>
-          <SelectTrigger className="h-12 sm:h-14 rounded-none border-0 bg-card text-sm text-foreground shadow-none focus:ring-0 hover:bg-surface transition-colors">
+          <SelectTrigger className="h-12 sm:h-14 rounded-none border-0 bg-card text-sm text-foreground shadow-none focus:ring-0 hover:bg-surface transition-colors md:w-[160px]">
             <SelectValue placeholder="المنطقة" />
           </SelectTrigger>
           <SelectContent className="rounded-xl">
@@ -63,7 +63,7 @@ export function HeroSearch({
         </Select>
 
         <Select value={category} onValueChange={(value) => setCategory(value as Category | "all")}>
-          <SelectTrigger className="h-12 sm:h-14 rounded-none border-0 bg-card text-sm text-foreground shadow-none focus:ring-0 hover:bg-surface transition-colors">
+          <SelectTrigger className="h-12 sm:h-14 rounded-none border-0 bg-card text-sm text-foreground shadow-none focus:ring-0 hover:bg-surface transition-colors md:w-[160px]">
             <SelectValue placeholder="الفئة" />
           </SelectTrigger>
           <SelectContent className="rounded-xl">
@@ -76,7 +76,7 @@ export function HeroSearch({
 
         <Button
           type="submit"
-          className="h-12 sm:h-14 sm:col-span-2 md:col-span-1 rounded-none bg-gradient-primary px-6 md:px-8 text-sm font-semibold text-primary-foreground hover:opacity-95 transition-opacity shadow-glow"
+          className="h-12 sm:h-14 rounded-none bg-gradient-primary px-6 md:flex-1 md:px-8 text-sm font-semibold text-primary-foreground hover:opacity-95 transition-opacity shadow-glow"
         >
           ابحث
           <ArrowLeft className="ms-2 h-4 w-4" />
