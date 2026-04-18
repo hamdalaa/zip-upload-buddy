@@ -37,44 +37,50 @@ export function HeroSearch({
       onSubmit={submit}
       className="rounded-2xl border border-border bg-card shadow-soft-xl overflow-hidden"
     >
-      <div className="grid grid-cols-1 gap-px bg-border md:grid-cols-[minmax(0,1fr)_160px_160px_auto]">
-        <div className="relative bg-card">
-          <Search className="pointer-events-none absolute end-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            value={q}
-            onChange={(event) => setQ(event.target.value)}
-            placeholder="ابحث عن موديل، براند، أو اسم محل…"
-            className="h-14 rounded-none border-0 bg-transparent pe-12 text-base text-foreground shadow-none focus-visible:ring-0 placeholder:text-muted-foreground/70"
-          />
+      {/* Search input — full width on all sizes */}
+      <div className="relative bg-card border-b border-border">
+        <Search className="pointer-events-none absolute end-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <Input
+          value={q}
+          onChange={(event) => setQ(event.target.value)}
+          placeholder="ابحث عن موديل، براند، أو محل…"
+          className="h-12 sm:h-14 rounded-none border-0 bg-transparent pe-12 text-sm sm:text-base text-foreground shadow-none focus-visible:ring-0 placeholder:text-muted-foreground/70"
+        />
+      </div>
+
+      {/* Filters row (mobile: stacked; desktop: side by side) */}
+      <div className="flex flex-col gap-px bg-border md:flex-row">
+        <div className="bg-card md:w-[170px] md:shrink-0">
+          <Select value={area} onValueChange={(value) => setArea(value as Area | "all")}>
+            <SelectTrigger className="h-12 sm:h-14 w-full rounded-none border-0 bg-card text-sm text-foreground shadow-none focus:ring-0 hover:bg-surface transition-colors">
+              <SelectValue placeholder="المنطقة" />
+            </SelectTrigger>
+            <SelectContent className="rounded-xl">
+              <SelectItem value="all">كل المناطق</SelectItem>
+              {ALL_AREAS.map((entry) => (
+                <SelectItem key={entry} value={entry}>{entry}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
-        <Select value={area} onValueChange={(value) => setArea(value as Area | "all")}>
-          <SelectTrigger className="h-14 rounded-none border-0 bg-card text-foreground shadow-none focus:ring-0 hover:bg-surface transition-colors">
-            <SelectValue placeholder="المنطقة" />
-          </SelectTrigger>
-          <SelectContent className="rounded-xl">
-            <SelectItem value="all">كل المناطق</SelectItem>
-            {ALL_AREAS.map((entry) => (
-              <SelectItem key={entry} value={entry}>{entry}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        <Select value={category} onValueChange={(value) => setCategory(value as Category | "all")}>
-          <SelectTrigger className="h-14 rounded-none border-0 bg-card text-foreground shadow-none focus:ring-0 hover:bg-surface transition-colors">
-            <SelectValue placeholder="الفئة" />
-          </SelectTrigger>
-          <SelectContent className="rounded-xl">
-            <SelectItem value="all">كل الفئات</SelectItem>
-            {ALL_CATEGORIES.map((entry) => (
-              <SelectItem key={entry} value={entry}>{entry}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="bg-card md:w-[170px] md:shrink-0">
+          <Select value={category} onValueChange={(value) => setCategory(value as Category | "all")}>
+            <SelectTrigger className="h-12 sm:h-14 w-full rounded-none border-0 bg-card text-sm text-foreground shadow-none focus:ring-0 hover:bg-surface transition-colors">
+              <SelectValue placeholder="الفئة" />
+            </SelectTrigger>
+            <SelectContent className="rounded-xl">
+              <SelectItem value="all">كل الفئات</SelectItem>
+              {ALL_CATEGORIES.map((entry) => (
+                <SelectItem key={entry} value={entry}>{entry}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
         <Button
           type="submit"
-          className="h-14 rounded-none bg-gradient-primary px-6 md:px-8 text-sm font-semibold text-primary-foreground hover:opacity-95 transition-opacity shadow-glow"
+          className="h-12 sm:h-14 rounded-none bg-gradient-primary px-6 md:flex-1 md:px-8 text-sm font-semibold text-primary-foreground hover:opacity-95 transition-opacity shadow-glow"
         >
           ابحث
           <ArrowLeft className="ms-2 h-4 w-4" />

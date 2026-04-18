@@ -20,7 +20,7 @@ export function HeroBanner() {
       {/* Subtle grid */}
       <div className="absolute inset-0 -z-10 bg-grid opacity-50" />
 
-      <div className="container relative pt-12 pb-16 sm:pt-16 sm:pb-20 md:pt-24 md:pb-28">
+      <div className="container relative pt-10 pb-12 sm:pt-16 sm:pb-20 md:pt-24 md:pb-28">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-16">
           {/* Headline */}
           <div className="text-right">
@@ -29,28 +29,27 @@ export function HeroBanner() {
               دليل الإلكترونيات · العراق
             </div>
 
-            <h1 className="font-display mt-6 text-[clamp(2.5rem,8vw,6rem)] font-semibold leading-[0.95] text-foreground tracking-tight">
+            <h1 className="font-display mt-5 text-[clamp(2rem,7vw,5.5rem)] font-semibold leading-[1.05] text-foreground tracking-tight sm:mt-6 sm:leading-[0.95]">
               أطلس
               <span className="text-gradient"> سوق </span>
-              الإلكترونيات
-              <br />
+              الإلكترونيات{" "}
               <span className="text-foreground/45">العراقي.</span>
             </h1>
 
-            <p className="mt-6 max-w-[58ch] text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
+            <p className="mt-5 max-w-[58ch] text-sm leading-7 text-muted-foreground sm:mt-6 sm:text-lg sm:leading-8">
               مرجع واحد لمحلات وشوارع ومحافظات العراق. تعرف على المحل الصحيح،
               ثقته، وأقرب طريق له — قبل ما تتحرك من البيت.
             </p>
 
             {/* Search */}
-            <div className="mt-8 sm:mt-10">
+            <div className="mt-6 sm:mt-10">
               <HeroSearch />
             </div>
 
             {/* Quick queries */}
             <div className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-2 text-xs text-muted-foreground">
-              <span className="font-semibold uppercase tracking-[0.16em] text-foreground/55">الأكثر بحثاً</span>
-              {SUGGESTED_QUERIES.slice(0, 5).map((query) => (
+              <span className="hidden font-semibold uppercase tracking-[0.16em] text-foreground/55 sm:inline">الأكثر بحثاً</span>
+              {SUGGESTED_QUERIES.slice(0, 4).map((query) => (
                 <Link
                   key={query}
                   to={`/results?q=${encodeURIComponent(query)}`}
@@ -116,13 +115,13 @@ export function HeroBanner() {
         </div>
 
         {/* Stats — premium numerals */}
-        <div className="mt-12 grid grid-cols-3 gap-2 sm:gap-4 md:mt-16">
+        <div className="mt-10 grid grid-cols-3 gap-2 sm:gap-4 md:mt-16">
           {stats.map((stat) => (
-            <div key={stat.label} className="atlas-card px-4 py-5 text-right sm:px-6 sm:py-6 md:px-8 md:py-8">
-              <div className="font-numeric text-3xl font-semibold leading-none text-gradient sm:text-4xl md:text-5xl lg:text-6xl">
+            <div key={stat.label} className="atlas-card px-3 py-4 text-right sm:px-6 sm:py-6 md:px-8 md:py-8">
+              <div className="font-numeric text-2xl font-semibold leading-none text-gradient sm:text-4xl md:text-5xl lg:text-6xl">
                 {stat.value.toLocaleString("ar")}
               </div>
-              <div className="mt-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground sm:text-[11px]">
+              <div className="mt-2 text-[9px] font-semibold uppercase tracking-[0.14em] text-muted-foreground sm:text-[11px] sm:tracking-[0.18em]">
                 {stat.label}
               </div>
             </div>

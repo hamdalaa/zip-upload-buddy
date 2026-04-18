@@ -26,27 +26,27 @@ export function ProductRail({ title, seeAllTo, products }: Props) {
   };
 
   return (
-    <section className="atlas-panel py-5">
-      <div className="flex items-center justify-between gap-3 px-5 md:px-6">
-        <div className="text-right">
-          <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">رف مختار</div>
-          <h2 className="font-display mt-2 text-3xl font-bold leading-none text-foreground">{title}</h2>
+    <section className="atlas-panel py-4 sm:py-5">
+      <div className="flex items-center justify-between gap-3 px-4 sm:px-6">
+        <div className="text-right min-w-0">
+          <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground sm:text-[11px]">رف مختار</div>
+          <h2 className="font-display mt-1 text-xl font-bold leading-tight text-foreground sm:mt-2 sm:text-2xl md:text-3xl">{title}</h2>
         </div>
         {seeAllTo && (
-          <Link to={seeAllTo} className="link-underline text-sm font-semibold text-accent whitespace-nowrap">
+          <Link to={seeAllTo} className="link-underline shrink-0 text-xs font-semibold text-accent whitespace-nowrap sm:text-sm">
             شوف الكل
           </Link>
         )}
       </div>
 
-      <div className="relative mt-5 group/rail">
+      <div className="relative mt-4 sm:mt-5 group/rail">
         <div
           ref={railRef}
-          className="flex gap-4 overflow-x-auto px-5 pb-2 pt-1 snap-x snap-mandatory scroll-smooth md:px-6"
+          className="flex gap-3 overflow-x-auto px-4 pb-2 pt-1 snap-x snap-mandatory scroll-smooth sm:gap-4 sm:px-6"
           style={{ scrollbarWidth: "none" }}
         >
           {products.map((product) => (
-            <div key={product.id} className="w-[210px] shrink-0 snap-start sm:w-[230px] md:w-[250px]">
+            <div key={product.id} className="w-[170px] shrink-0 snap-start sm:w-[210px] md:w-[230px] lg:w-[250px]">
               <ProductCard product={product} />
             </div>
           ))}

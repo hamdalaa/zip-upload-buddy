@@ -50,29 +50,29 @@ const Index = () => {
       <TopNav />
       <HeroBanner />
 
-      <main className="pb-20">
+      <main className="pb-16 sm:pb-20">
         {/* Categories — editorial inline strip */}
-        <section className="container mt-16 md:mt-24">
+        <section className="container mt-10 sm:mt-16 md:mt-24">
           <SectionHeader
             kicker="الفئات"
             title="ابدأ من القسم الأقرب لحاجتك"
             seeAll="/results"
             description="بدل البحث العشوائي، اختر الفئة أولاً ثم خلِّ التصفية تكمل المشوار."
           />
-          <div className="mt-8">
+          <div className="mt-6 sm:mt-8">
             <CategoryCircles />
           </div>
         </section>
 
         {/* Street features — two large editorial blocks */}
-        <section className="container mt-20 md:mt-28">
+        <section className="container mt-12 sm:mt-20 md:mt-28">
           <SectionHeader
             kicker="شوارع السوق"
             title="مسارات بغداد المرجعية"
             description="شارعا الصناعة والربيعي يشكلان قلب سوق الإلكترونيات. ابدأ منهما."
           />
 
-          <div className="mt-10 grid gap-8">
+          <div className="mt-6 grid gap-6 sm:mt-10 sm:gap-8">
             <StreetShopsSection
               area="شارع الصناعة"
               title="شارع الصناعة"
@@ -88,35 +88,35 @@ const Index = () => {
         </section>
 
         {/* Iraq coverage CTA */}
-        <section className="container mt-20 md:mt-24">
+        <section className="container mt-12 sm:mt-20 md:mt-24">
           <Link
             to="/iraq"
-            className="atlas-card group block p-8 text-right md:p-12"
+            className="atlas-card group block p-6 text-right sm:p-8 md:p-12"
           >
-            <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
+            <div className="grid gap-5 sm:gap-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
               <div>
                 <span className="atlas-kicker">تغطية وطنية</span>
-                <h2 className="font-display mt-3 text-3xl font-semibold leading-tight text-foreground sm:text-4xl md:text-5xl tracking-tight">
-                  نفس لغة السوق <br /> في كل المحافظات.
+                <h2 className="font-display mt-3 text-2xl font-semibold leading-tight text-foreground sm:text-4xl md:text-5xl tracking-tight">
+                  نفس لغة السوق <br className="hidden sm:inline" /> في كل المحافظات.
                 </h2>
-                <p className="mt-4 max-w-3xl text-base leading-8 text-muted-foreground">
+                <p className="mt-3 max-w-3xl text-sm leading-7 text-muted-foreground sm:mt-4 sm:text-base sm:leading-8">
                   بغداد، أربيل، البصرة، الموصل، النجف، كربلاء، السليمانية، كركوك، بعقوبة،
                   والناصرية ضمن مسار واحد يختصر الوصول من الفكرة إلى المحل.
                 </p>
               </div>
 
-              <div className="flex items-center gap-4 border-t border-border pt-4 md:border-0 md:pt-0">
-                <span className="font-display text-xl font-bold text-foreground group-hover:text-primary">
+              <div className="flex items-center gap-3 border-t border-border pt-4 sm:gap-4 md:border-0 md:pt-0">
+                <span className="font-display text-base font-bold text-foreground group-hover:text-primary sm:text-xl">
                   افتح الأطلس
                 </span>
-                <ArrowLeft className="icon-nudge-x h-5 w-5 text-foreground group-hover:text-primary" />
+                <ArrowLeft className="icon-nudge-x h-4 w-4 text-foreground group-hover:text-primary sm:h-5 sm:w-5" />
               </div>
             </div>
           </Link>
         </section>
 
         {/* Product rails */}
-        <section className="container mt-20 space-y-10 md:mt-28">
+        <section className="container mt-12 space-y-6 sm:mt-20 sm:space-y-10 md:mt-28">
           <SectionHeader
             kicker="رفوف جاهزة"
             title="مسارات تصفح بدل البداية من الصفر"
@@ -129,7 +129,7 @@ const Index = () => {
         </section>
 
         {/* Featured shops */}
-        <section className="container mt-20 md:mt-28">
+        <section className="container mt-12 sm:mt-20 md:mt-28">
           <SectionHeader
             kicker="محلات مختارة"
             title="محلات تستحق أن تبدأ منها"
@@ -137,11 +137,11 @@ const Index = () => {
             description="قراءة أسرع للمحلات الأوثق والأكثر حضوراً داخل السوق."
           />
 
-          <div className="mt-10">
+          <div className="mt-6 sm:mt-10">
             {loading ? (
               <ShopCardSkeletonGrid count={6} />
             ) : (
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
                 {featured.map((shop, index) => (
                   <div
                     key={shop.id}
@@ -157,7 +157,7 @@ const Index = () => {
         </section>
 
         {/* Brands + How it works + Metrics */}
-        <section className="container mt-20 grid gap-12 md:mt-28 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:items-start">
+        <section className="container mt-12 grid gap-10 sm:mt-20 sm:gap-12 md:mt-28 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:items-start">
           <div>
             <SectionHeader
               kicker="الوكلاء الرسميون"
@@ -166,7 +166,7 @@ const Index = () => {
               seeAll="/brands"
             />
 
-            <div className="mt-8">
+            <div className="mt-6 sm:mt-8">
               {loading ? (
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   {Array.from({ length: 6 }).map((_, index) => (
@@ -189,12 +189,12 @@ const Index = () => {
             </div>
           </div>
 
-          <div className="space-y-10 lg:sticky lg:top-24">
+          <div className="space-y-8 sm:space-y-10 lg:sticky lg:top-24">
             <HowItWorks />
             <div>
               <span className="atlas-kicker">المؤشرات</span>
-              <h3 className="font-display mt-4 text-2xl font-bold text-foreground">آخر قراءة للأطلس</h3>
-              <div className="mt-6">
+              <h3 className="font-display mt-4 text-xl font-bold text-foreground sm:text-2xl">آخر قراءة للأطلس</h3>
+              <div className="mt-5 sm:mt-6">
                 <MetricsStrip />
               </div>
             </div>
@@ -216,15 +216,15 @@ interface SectionHeaderProps {
 
 function SectionHeader({ kicker, title, description, seeAll }: SectionHeaderProps) {
   return (
-    <div className="pb-6 border-b border-border">
-      <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+    <div className="pb-5 sm:pb-6 border-b border-border">
+      <div className="flex flex-col gap-3 sm:gap-4 md:flex-row md:items-end md:justify-between">
         <div className="max-w-3xl text-right">
           <span className="atlas-kicker">{kicker}</span>
-          <h2 className="font-display mt-3 text-2xl font-semibold leading-tight text-foreground sm:text-3xl md:text-4xl tracking-tight">
+          <h2 className="font-display mt-3 text-xl font-semibold leading-tight text-foreground sm:text-3xl md:text-4xl tracking-tight">
             {title}
           </h2>
           {description && (
-            <p className="mt-3 text-sm leading-7 text-muted-foreground sm:text-base sm:leading-8">{description}</p>
+            <p className="mt-2 text-sm leading-7 text-muted-foreground sm:mt-3 sm:text-base sm:leading-8">{description}</p>
           )}
         </div>
         {seeAll && (
