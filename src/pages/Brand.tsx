@@ -100,13 +100,13 @@ const Brand = () => {
           <div className="flex flex-col items-start gap-5 md:flex-row md:items-center">
             {/* Logo tile */}
             <div className="relative shrink-0">
-              <div className="flex h-24 w-24 items-center justify-center rounded-3xl bg-background shadow-lg ring-4 ring-background overflow-hidden md:h-28 md:w-28">
+              <div className={`flex h-24 w-24 items-center justify-center rounded-3xl shadow-lg ring-4 ring-background overflow-hidden md:h-28 md:w-28 ${isApple ? "bg-foreground" : "bg-background"}`}>
                 {logo ? (
                   <img
                     src={logo}
                     alt={`${brand.brandName} logo`}
                     loading="lazy"
-                    className="h-full w-full object-contain p-3"
+                    className={`h-full w-full object-contain p-3 ${isApple ? "brightness-0 invert" : ""}`}
                   />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center bg-gradient-primary font-display text-4xl font-bold text-primary-foreground md:text-5xl">
