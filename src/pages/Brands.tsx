@@ -225,10 +225,7 @@ export default function Brands() {
                             <ShieldCheck className="h-3 w-3" />
                             وكيل رسمي
                           </div>
-                          <h3 className="mt-1.5 font-display text-2xl sm:text-[1.75rem] font-extrabold leading-tight text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
-                            {brand.brandName}
-                          </h3>
-                          <p className="mt-1.5 line-clamp-1 text-[11px] sm:text-xs text-white/80 leading-relaxed">
+                          <p className="mt-1.5 line-clamp-1 text-xs sm:text-sm font-semibold text-white/90 leading-relaxed">
                             {tagline}
                           </p>
                         </div>
