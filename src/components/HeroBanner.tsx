@@ -94,24 +94,38 @@ export function HeroBanner() {
 
             <div className="space-y-1">
               {[
-                { to: "/sinaa", title: "شارع الصناعة", note: "حاسبات · قطع · شبكات", num: "01", color: "chip-cyan" },
-                { to: "/rubaie", title: "شارع الربيعي", note: "هواتف · شواحن · إكسسوارات", num: "02", color: "chip-rose" },
-                { to: "/iraq", title: "كل المحافظات", note: "بغداد · أربيل · البصرة + 7", num: "03", color: "chip-violet" },
-                { to: "/brands", title: "الوكلاء الرسميون", note: `${brands.length} وكيل معتمد`, num: "04", color: "chip-emerald" },
+                { to: "/sinaa", title: "شارع الصناعة", note: "حاسبات · قطع · شبكات", num: "01", color: "chip-cyan", img: sinaaImg },
+                { to: "/rubaie", title: "شارع الربيعي", note: "هواتف · شواحن · إكسسوارات", num: "02", color: "chip-rose", img: rubaieImg },
+                { to: "/iraq", title: "كل المحافظات", note: "بغداد · أربيل · البصرة + 7", num: "03", color: "chip-violet", img: iraqImg },
+                { to: "/brands", title: "الوكلاء الرسميون", note: `${brands.length} وكيل معتمد`, num: "04", color: "chip-emerald", img: null },
               ].map((entry) => (
                 <Link
                   key={entry.to}
                   to={entry.to}
-                  className="group flex items-start justify-between gap-3 rounded-xl px-3 py-3 transition-colors hover:bg-primary-soft"
+                  className="group flex items-center justify-between gap-3 rounded-xl px-2.5 py-2.5 transition-colors hover:bg-primary-soft"
                 >
-                  <span className={`${entry.color} font-numeric inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-[10px] font-bold mt-0.5`}>{entry.num}</span>
-                  <div className="flex-1 text-right">
-                    <div className="font-display text-base font-semibold leading-tight text-foreground group-hover:text-primary">
-                      {entry.title}
+                  <span className={`${entry.color} font-numeric inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-[10px] font-bold`}>{entry.num}</span>
+                  <div className="flex flex-1 items-center gap-3 text-right">
+                    <div className="min-w-0 flex-1">
+                      <div className="font-display text-base font-semibold leading-tight text-foreground group-hover:text-primary truncate">
+                        {entry.title}
+                      </div>
+                      <div className="mt-0.5 text-xs leading-5 text-muted-foreground truncate">{entry.note}</div>
                     </div>
-                    <div className="mt-1 text-xs leading-5 text-muted-foreground">{entry.note}</div>
+                    {entry.img ? (
+                      <img
+                        src={entry.img}
+                        alt=""
+                        loading="lazy"
+                        width={48}
+                        height={48}
+                        className="h-11 w-11 shrink-0 rounded-lg object-cover ring-1 ring-border transition-transform group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="h-11 w-11 shrink-0 rounded-lg bg-gradient-to-br from-emerald-soft to-card ring-1 ring-border" />
+                    )}
                   </div>
-                  <ArrowLeft className="icon-nudge-x mt-1 h-3.5 w-3.5 shrink-0 text-muted-foreground group-hover:text-primary" />
+                  <ArrowLeft className="icon-nudge-x h-3.5 w-3.5 shrink-0 text-muted-foreground group-hover:text-primary" />
                 </Link>
               ))}
             </div>
