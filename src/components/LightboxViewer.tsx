@@ -208,10 +208,10 @@ export function LightboxViewer({ images, index, onClose, onIndexChange, title }:
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-6xl gap-0 border-0 bg-transparent p-0 shadow-none [&>button]:hidden sm:rounded-none">
+      <DialogContent className="h-[100dvh] w-screen max-w-none gap-0 border-0 bg-black/95 p-0 shadow-none [&>button]:hidden sm:rounded-none">
         <DialogTitle className="sr-only">معرض صور {title}</DialogTitle>
         {current && index !== null && (
-          <div className="relative flex flex-col">
+          <div className="relative flex h-full w-full flex-col">
             {/* Top bar */}
             <div className="absolute inset-x-0 top-0 z-20 flex items-center justify-between gap-3 bg-gradient-to-b from-black/70 to-transparent px-4 py-3">
               <div className="flex items-center gap-2.5 text-white">
@@ -278,7 +278,7 @@ export function LightboxViewer({ images, index, onClose, onIndexChange, title }:
 
             {/* Image stage */}
             <div
-              className="relative flex touch-none select-none items-center justify-center overflow-hidden bg-black/95 sm:rounded-2xl"
+              className="relative flex min-h-0 flex-1 touch-none select-none items-center justify-center overflow-hidden bg-black"
               onWheel={handleWheel}
               onPointerDown={handlePointerDown}
               onPointerMove={handlePointerMove}
@@ -296,7 +296,7 @@ export function LightboxViewer({ images, index, onClose, onIndexChange, title }:
                   e.stopPropagation();
                 }}
                 onDragStart={(e) => e.preventDefault()}
-                className="max-h-[80vh] w-full object-contain animate-in fade-in zoom-in-95 duration-300"
+                className="max-h-full max-w-full object-contain animate-in fade-in zoom-in-95 duration-300"
                 style={{
                   transform: `translate3d(${translate.x}px, ${translate.y}px, 0) scale(${scale})`,
                   transition: dragRef.current || pinchBaseRef.current ? "none" : "transform 0.2s cubic-bezier(0.22, 1, 0.36, 1)",
@@ -329,7 +329,7 @@ export function LightboxViewer({ images, index, onClose, onIndexChange, title }:
 
             {/* Thumbnail strip */}
             {total > 1 && (
-              <div className="mt-3 flex justify-center">
+              <div className="shrink-0 bg-gradient-to-t from-black/80 to-transparent px-3 pb-4 pt-3 flex justify-center">
                 <div className="flex max-w-full gap-1.5 overflow-x-auto rounded-xl bg-black/60 p-1.5 ring-1 ring-white/10 backdrop-blur-md">
                   {images.map((image, i) => (
                     <button
