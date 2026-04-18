@@ -16,8 +16,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['"Tayeh Sans"', "system-ui", "sans-serif"],
-        display: ['"Tayeh Display"', '"Tayeh Sans"', "system-ui", "sans-serif"],
+        sans: ['"IBM Plex Sans Arabic"', '"Inter"', "system-ui", "sans-serif"],
+        display: ['"IBM Plex Sans Arabic"', '"Inter"', "system-ui", "sans-serif"],
+        mono: ['"JetBrains Mono"', '"Inter"', "monospace"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -28,11 +29,13 @@ export default {
         surface: {
           DEFAULT: "hsl(var(--surface))",
           2: "hsl(var(--surface-2))",
+          elevated: "hsl(var(--surface-elevated))",
         },
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
           glow: "hsl(var(--primary-glow))",
+          soft: "hsl(var(--primary-soft))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -49,8 +52,12 @@ export default {
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
+          soft: "hsl(var(--accent-soft))",
         },
-        success: "hsl(var(--success))",
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          soft: "hsl(var(--success-soft))",
+        },
         warning: "hsl(var(--warning))",
         nav: {
           DEFAULT: "hsl(var(--nav))",
