@@ -88,7 +88,7 @@ export default function About() {
             </p>
 
             <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-              <ContactPill icon={<Mail className="h-4 w-4" />} label="إيميل" href="mailto:hello@example.com" tone="primary" />
+              <ContactPill icon={<Mail className="h-4 w-4" />} label="إيميل" href="mailto:hamadalaat@gmail.com" tone="primary" />
               <ContactPill icon={<Github className="h-4 w-4" />} label="GitHub" href="https://github.com" tone="foreground" />
               <ContactPill icon={<Globe className="h-4 w-4" />} label="الموقع" href="https://example.com" tone="cyan" />
               <ContactPill icon={<Send className="h-4 w-4" />} label="تيليغرام" href="https://t.me/" tone="primary" />
@@ -136,7 +136,7 @@ export default function About() {
                 size="lg"
                 className="h-11 flex-1 rounded-full bg-gradient-to-r from-violet to-rose text-white shadow-soft-md hover:opacity-95"
               >
-                <a href="mailto:sponsor@example.com">
+                <a href="mailto:hamadalaat@gmail.com">
                   <Heart className="h-4 w-4" />
                   راسلنا للرعاية
                 </a>
