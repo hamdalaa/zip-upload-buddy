@@ -1,0 +1,62 @@
+[
+  {
+    "slug": "baghdad",
+    "city": "Baghdad",
+    "cityAr": "بغداد",
+    "count": 450
+  },
+  {
+    "slug": "erbil",
+    "city": "Erbil",
+    "cityAr": "أربيل",
+    "count": 348
+  },
+  {
+    "slug": "basra",
+    "city": "Basra",
+    "cityAr": "البصرة",
+    "count": 319
+  },
+  {
+    "slug": "najaf",
+    "city": "Najaf",
+    "cityAr": "النجف",
+    "count": 335
+  },
+  {
+    "slug": "karbala",
+    "city": "Karbala",
+    "cityAr": "كربلاء",
+    "count": 302
+  },
+  {
+    "slug": "mosul",
+    "city": "Mosul",
+    "cityAr": "الموصل",
+    "count": 370
+  },
+  {
+    "slug": "sulaymaniyah",
+    "city": "Sulaymaniyah",
+    "cityAr": "السليمانية",
+    "count": 290
+  },
+  {
+    "slug": "baqubah",
+    "city": "Baqubah",
+    "cityAr": "ديالى",
+    "count": 197
+  },
+  {
+    "slug": "kirkuk",
+    "city": "Kirkuk",
+    "cityAr": "كركوك",
+    "count": 293
+  },
+  {
+    "slug": "nasiriyah",
+    "city": "Nasiriyah",
+    "cityAr": "الناصرية",
+    "count": 192
+  }
+]
