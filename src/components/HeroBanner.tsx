@@ -115,13 +115,13 @@ export function HeroBanner() {
         </div>
 
         {/* Stats — premium numerals */}
-        <div className="mt-12 grid grid-cols-3 gap-2 sm:gap-4 md:mt-16">
+        <div className="mt-10 grid grid-cols-3 gap-2 sm:gap-4 md:mt-16">
           {stats.map((stat) => (
-            <div key={stat.label} className="atlas-card px-4 py-5 text-right sm:px-6 sm:py-6 md:px-8 md:py-8">
-              <div className="font-numeric text-3xl font-semibold leading-none text-gradient sm:text-4xl md:text-5xl lg:text-6xl">
+            <div key={stat.label} className="atlas-card px-3 py-4 text-right sm:px-6 sm:py-6 md:px-8 md:py-8">
+              <div className="font-numeric text-2xl font-semibold leading-none text-gradient sm:text-4xl md:text-5xl lg:text-6xl">
                 {stat.value.toLocaleString("ar")}
               </div>
-              <div className="mt-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground sm:text-[11px]">
+              <div className="mt-2 text-[9px] font-semibold uppercase tracking-[0.14em] text-muted-foreground sm:text-[11px] sm:tracking-[0.18em]">
                 {stat.label}
               </div>
             </div>
