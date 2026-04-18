@@ -171,7 +171,9 @@ export function TopNav() {
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 align="end"
-                className="max-h-[78vh] w-80 overflow-hidden rounded-2xl border-border/60 bg-card/95 p-0 shadow-soft-xl backdrop-blur-xl"
+                sideOffset={8}
+                collisionPadding={12}
+                className="max-h-[78vh] w-[min(20rem,calc(100vw-1.5rem))] overflow-hidden rounded-2xl border-border/60 bg-card/95 p-0 shadow-soft-xl backdrop-blur-xl"
               >
                 <div className="relative overflow-hidden border-b border-border/60 bg-gradient-to-br from-primary/12 via-primary/5 to-transparent px-4 py-3">
                   <div className="pointer-events-none absolute -top-10 -right-8 h-24 w-24 rounded-full bg-primary/15 blur-2xl" />
