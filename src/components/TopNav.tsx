@@ -122,52 +122,62 @@ export function TopNav() {
       className={cn(
         "sticky top-0 z-40 transition-all duration-300",
         scrolled
-          ? "glass-panel border-b border-border/60 shadow-soft-md"
+          ? "border-b border-border/40 bg-background/80 shadow-[0_1px_0_0_hsl(var(--border)/0.4),0_8px_24px_-12px_hsl(var(--foreground)/0.08)] backdrop-blur-xl"
           : "border-b border-transparent bg-background",
       )}
     >
-      <div className="container py-3 md:py-4">
-        <div className="flex items-center gap-3 md:gap-6">
+      <div className="container py-2.5 md:py-3">
+        <div className="flex items-center gap-2 md:gap-5">
           {/* Wordmark */}
-          <Link to="/" className="group flex shrink-0 items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-primary shadow-glow">
+          <Link to="/" className="group flex shrink-0 items-center gap-2.5 transition-opacity hover:opacity-90">
+            <div className="relative flex h-9 w-9 items-center justify-center rounded-[10px] bg-gradient-primary shadow-[0_4px_14px_-4px_hsl(var(--primary)/0.5)]">
               <span className="font-display text-lg font-bold leading-none text-primary-foreground">ت</span>
+              <div className="pointer-events-none absolute inset-0 rounded-[10px] bg-gradient-to-b from-white/20 to-transparent" />
             </div>
-            <div className="text-right">
-              <div className="font-display text-xl font-semibold leading-none text-foreground">تايه</div>
-              <div className="mt-0.5 hidden text-[9px] font-semibold uppercase tracking-[0.22em] text-muted-foreground sm:block">
+            <div className="text-right leading-none">
+              <div className="font-display text-[19px] font-semibold tracking-tight text-foreground">تايه</div>
+              <div className="mt-1 hidden text-[8.5px] font-semibold uppercase tracking-[0.24em] text-muted-foreground/70 sm:block">
                 Tayeh
               </div>
             </div>
           </Link>
 
           {/* Primary nav — premium minimal */}
-          <nav className="hidden items-center gap-1 lg:flex ms-4">
+          <nav className="hidden items-center gap-0.5 lg:flex ms-3">
             {primaryLinks.map((link) => (
               <NavLink
                 key={link.to}
                 to={link.to}
                 className={({ isActive }) =>
                   cn(
-                    "relative rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200",
+                    "relative rounded-lg px-3 py-1.5 text-[13px] font-medium transition-all duration-200",
                     isActive
-                      ? "bg-primary-soft text-primary"
-                      : "text-muted-foreground hover:bg-surface hover:text-foreground",
+                      ? "text-foreground"
+                      : "text-muted-foreground hover:text-foreground",
+                    "after:absolute after:inset-x-3 after:-bottom-0.5 after:h-0.5 after:rounded-full after:bg-primary after:transition-all after:duration-300",
+                    "after:scale-x-0 after:opacity-0",
                   )
                 }
               >
-                {link.label}
+                {({ isActive }) => (
+                  <>
+                    {link.label}
+                    {isActive && (
+                      <span className="absolute inset-x-3 -bottom-0.5 h-0.5 rounded-full bg-primary" />
+                    )}
+                  </>
+                )}
               </NavLink>
             ))}
           </nav>
 
-          <div className="ms-auto flex items-center gap-1 sm:gap-2">
+          <div className="ms-auto flex items-center gap-1 sm:gap-1.5">
             {/* City */}
             <DropdownMenu>
-              <DropdownMenuTrigger className="hidden items-center gap-1.5 rounded-lg border border-border bg-surface px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:border-primary/40 hover:bg-primary-soft md:flex">
-                <MapPin className="h-3.5 w-3.5 text-primary" />
+              <DropdownMenuTrigger className="group/city hidden items-center gap-1.5 rounded-full border border-border/60 bg-surface/60 px-3 py-1.5 text-[13px] font-medium text-foreground transition-all hover:border-primary/30 hover:bg-primary-soft hover:shadow-soft md:flex">
+                <MapPin className="h-3.5 w-3.5 text-primary transition-transform group-hover/city:scale-110" />
                 <span>{selectedCity.cityAr}</span>
-                <ChevronDown className="h-3 w-3 text-muted-foreground" />
+                <ChevronDown className="h-3 w-3 text-muted-foreground transition-transform group-data-[state=open]/city:rotate-180" />
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 align="end"
