@@ -6,7 +6,7 @@ export function VerifiedBadge({ verified, className }: { verified: boolean; clas
     return (
       <span
         className={cn(
-          "inline-flex items-center gap-1 bg-primary px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-primary-foreground",
+          "inline-flex items-center gap-1 rounded-full bg-success px-2.5 py-1 text-[10px] font-semibold tracking-wide text-primary-foreground shadow-soft-md",
           className,
         )}
       >
@@ -18,7 +18,7 @@ export function VerifiedBadge({ verified, className }: { verified: boolean; clas
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1 bg-background/95 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground",
+        "inline-flex items-center gap-1 rounded-full bg-background/95 px-2.5 py-1 text-[10px] font-semibold tracking-wide text-muted-foreground shadow-soft backdrop-blur-sm",
         className,
       )}
     >
@@ -32,7 +32,7 @@ export function StaleBadge({ className }: { className?: string }) {
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1 border border-warning/40 bg-warning/10 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-warning",
+        "inline-flex items-center gap-1 rounded-full border border-warning/30 bg-warning/10 px-2 py-1 text-[10px] font-semibold tracking-wide text-warning",
         className,
       )}
     >

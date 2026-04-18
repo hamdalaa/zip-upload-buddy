@@ -15,19 +15,17 @@ export function MetricsStrip() {
   ];
 
   return (
-    <div className="border-y border-foreground">
-      {items.map((it, idx) => (
+    <div className="atlas-panel divide-y divide-border overflow-hidden">
+      {items.map((it) => (
         <div
           key={it.label}
-          className={`flex items-baseline justify-between gap-4 px-1 py-5 text-right ${
-            idx < items.length - 1 ? "border-b border-border" : ""
-          }`}
+          className="flex items-baseline justify-between gap-4 px-5 py-4 text-right"
         >
           <div className="min-w-0">
             <div className="text-sm font-semibold text-foreground">{it.label}</div>
             <div className="mt-1 text-[11px] text-muted-foreground">{it.sub}</div>
           </div>
-          <div className="font-numeric text-3xl font-bold leading-none text-foreground">{it.value}</div>
+          <div className="font-numeric text-2xl sm:text-3xl font-semibold leading-none text-gradient">{it.value}</div>
         </div>
       ))}
     </div>

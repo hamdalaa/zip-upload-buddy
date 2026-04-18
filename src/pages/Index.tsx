@@ -96,7 +96,7 @@ const Index = () => {
             <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
               <div>
                 <span className="atlas-kicker">تغطية وطنية</span>
-                <h2 className="font-display mt-4 text-4xl font-bold leading-tight text-foreground md:text-5xl">
+                <h2 className="font-display mt-3 text-3xl font-semibold leading-tight text-foreground sm:text-4xl md:text-5xl tracking-tight">
                   نفس لغة السوق <br /> في كل المحافظات.
                 </h2>
                 <p className="mt-4 max-w-3xl text-base leading-8 text-muted-foreground">
@@ -216,23 +216,23 @@ interface SectionHeaderProps {
 
 function SectionHeader({ kicker, title, description, seeAll }: SectionHeaderProps) {
   return (
-    <div className="border-b border-foreground pb-6">
+    <div className="pb-6 border-b border-border">
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div className="max-w-3xl text-right">
           <span className="atlas-kicker">{kicker}</span>
-          <h2 className="font-display mt-4 text-3xl font-bold leading-tight text-foreground sm:text-4xl md:text-5xl">
+          <h2 className="font-display mt-3 text-2xl font-semibold leading-tight text-foreground sm:text-3xl md:text-4xl tracking-tight">
             {title}
           </h2>
           {description && (
-            <p className="mt-4 text-base leading-8 text-muted-foreground">{description}</p>
+            <p className="mt-3 text-sm leading-7 text-muted-foreground sm:text-base sm:leading-8">{description}</p>
           )}
         </div>
         {seeAll && (
           <Link
             to={seeAll}
-            className="link-underline shrink-0 text-sm font-bold uppercase tracking-[0.18em] text-foreground hover:text-primary"
+            className="link-underline shrink-0 text-xs font-semibold uppercase tracking-[0.16em] text-primary hover:text-primary-glow"
           >
-            عرض الكل →
+            عرض الكل ←
           </Link>
         )}
       </div>

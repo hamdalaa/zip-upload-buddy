@@ -3,89 +3,106 @@
 @tailwind utilities;
 
 /* =========================================================
-   Atlas Editorial — Tayeh Design System
-   Paper-warm background, deep ink foreground, brass accent.
-   Plex Arabic for everything, Space Grotesk for numerals.
+   Tayeh Lumen — Premium Tech Design System
+   Calm teal primary, warm amber accents, soft surfaces.
+   Color psychology: teal lowers stress + builds trust,
+   amber motivates action, generous whitespace = clarity.
    ========================================================= */
 
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;450;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap");
 
 @layer base {
   :root {
     color-scheme: light;
 
-    /* ---- Surfaces ------------------------------------------------ */
-    --background: 38 32% 96%;        /* warm paper #FAF6EF */
-    --foreground: 213 38% 9%;        /* deep ink #0E1620 */
-    --surface: 36 28% 93%;
-    --surface-2: 34 22% 88%;
-    --border: 32 14% 78%;
-    --input: 32 14% 84%;
-    --ring: 23 64% 44%;
+    /* ---- Surfaces — soft, clean, calming ----------------------- */
+    --background: 210 20% 99%;          /* near-white #FAFBFC */
+    --foreground: 215 28% 12%;          /* deep slate-ink */
+    --surface: 210 22% 97%;
+    --surface-2: 210 20% 94%;
+    --surface-elevated: 0 0% 100%;
+    --border: 215 16% 90%;
+    --input: 215 16% 88%;
+    --ring: 178 72% 38%;
 
-    --card: 40 36% 98%;
-    --card-foreground: 213 38% 9%;
+    --card: 0 0% 100%;
+    --card-foreground: 215 28% 12%;
 
-    --popover: 40 36% 98%;
-    --popover-foreground: 213 38% 9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 28% 12%;
 
-    /* ---- Brand ---------------------------------------------------
-       Brass = trust / verification / primary CTA
-       Ink   = secondary surfaces / mastheads / dark UI
-       Rust  = rare alerts only
+    /* ---- Brand — teal primary, amber accent --------------------
+       Teal: trust, focus, calm — encourages exploration.
+       Amber: warm CTA — motivates without aggression.
     */
-    --primary: 23 64% 44%;           /* brass #B8732A */
-    --primary-foreground: 40 36% 98%;
-    --primary-glow: 23 70% 56%;
+    --primary: 178 72% 36%;             /* calm teal #0EA5A4 */
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 178 80% 48%;
+    --primary-soft: 178 60% 95%;
 
-    --secondary: 213 38% 11%;        /* ink */
-    --secondary-foreground: 40 36% 98%;
+    --secondary: 215 28% 12%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 36 18% 90%;
-    --muted-foreground: 215 12% 36%;
+    --muted: 215 18% 95%;
+    --muted-foreground: 215 14% 42%;
 
-    --accent: 23 64% 44%;            /* same as brass for unified accent */
-    --accent-foreground: 40 36% 98%;
+    --accent: 38 92% 50%;               /* warm amber for CTAs */
+    --accent-foreground: 215 28% 12%;
+    --accent-soft: 38 95% 95%;
 
-    --destructive: 12 70% 36%;       /* rust #9C3B1B */
-    --destructive-foreground: 40 36% 98%;
+    --destructive: 0 72% 50%;
+    --destructive-foreground: 0 0% 100%;
 
-    --success: 158 38% 28%;
-    --warning: 32 78% 42%;
+    --success: 158 64% 38%;             /* calm green = safety */
+    --success-soft: 158 70% 94%;
+    --warning: 32 92% 48%;
 
-    --radius: 0.5rem;                /* tighter, editorial */
+    --radius: 0.875rem;                 /* rounded-xl base */
 
-    --shadow-xs: 0 1px 0 hsl(213 30% 8% / 0.04);
-    --shadow-sm: 0 1px 2px hsl(213 30% 8% / 0.06);
+    /* Apple-style soft layered shadows */
+    --shadow-xs: 0 1px 2px hsl(215 30% 12% / 0.04);
+    --shadow-sm:
+      0 1px 2px hsl(215 30% 12% / 0.05),
+      0 1px 3px hsl(215 30% 12% / 0.04);
     --shadow-md:
-      0 12px 28px -22px hsl(213 30% 8% / 0.18),
-      0 1px 0 hsl(40 60% 100% / 0.6) inset;
+      0 4px 6px -2px hsl(215 30% 12% / 0.05),
+      0 2px 4px -2px hsl(215 30% 12% / 0.04);
     --shadow-lg:
-      0 24px 56px -32px hsl(213 30% 8% / 0.24),
-      0 1px 0 hsl(40 60% 100% / 0.7) inset;
+      0 12px 24px -8px hsl(215 30% 12% / 0.08),
+      0 4px 8px -4px hsl(215 30% 12% / 0.05);
     --shadow-xl:
-      0 36px 88px -42px hsl(213 30% 8% / 0.32),
-      0 1px 0 hsl(40 60% 100% / 0.7) inset;
-    --shadow-glow: 0 16px 44px -28px hsl(var(--primary) / 0.45);
+      0 24px 48px -16px hsl(215 30% 12% / 0.12),
+      0 8px 16px -8px hsl(215 30% 12% / 0.06);
+    --shadow-2xl:
+      0 40px 80px -24px hsl(215 30% 12% / 0.18),
+      0 12px 24px -12px hsl(215 30% 12% / 0.08);
+    --shadow-glow: 0 8px 32px -8px hsl(var(--primary) / 0.35);
     --shadow-panel: var(--shadow-md);
 
-    --nav: 213 38% 11%;
-    --nav-2: 213 30% 16%;
-    --nav-foreground: 40 36% 98%;
-    --nav-hover: 213 26% 22%;
+    --nav: 0 0% 100%;
+    --nav-2: 210 20% 99%;
+    --nav-foreground: 215 28% 12%;
+    --nav-hover: 210 22% 96%;
 
-    --sidebar-background: 40 36% 98%;
-    --sidebar-foreground: 213 38% 9%;
-    --sidebar-primary: 23 64% 44%;
-    --sidebar-primary-foreground: 40 36% 98%;
-    --sidebar-accent: 36 22% 90%;
-    --sidebar-accent-foreground: 213 38% 9%;
-    --sidebar-border: 32 14% 78%;
-    --sidebar-ring: 23 64% 44%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 215 28% 12%;
+    --sidebar-primary: 178 72% 36%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 215 18% 95%;
+    --sidebar-accent-foreground: 215 28% 12%;
+    --sidebar-border: 215 16% 90%;
+    --sidebar-ring: 178 72% 38%;
 
-    --gradient-hero: linear-gradient(180deg, hsl(38 32% 96%) 0%, hsl(36 26% 92%) 100%);
-    --gradient-primary: linear-gradient(135deg, hsl(23 70% 52%) 0%, hsl(23 64% 40%) 100%);
+    --gradient-hero:
+      radial-gradient(at 20% 0%, hsl(178 72% 36% / 0.08) 0px, transparent 50%),
+      radial-gradient(at 80% 0%, hsl(38 92% 50% / 0.06) 0px, transparent 50%),
+      linear-gradient(180deg, hsl(210 20% 99%) 0%, hsl(210 22% 97%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(178 72% 42%) 0%, hsl(178 72% 32%) 100%);
+    --gradient-mesh:
+      radial-gradient(at 0% 0%, hsl(178 72% 36% / 0.06) 0px, transparent 40%),
+      radial-gradient(at 100% 100%, hsl(38 92% 50% / 0.05) 0px, transparent 40%);
 
+    --ease-premium: cubic-bezier(0.4, 0, 0.2, 1);
     --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
     --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
   }
@@ -95,7 +112,7 @@
   }
 
   html {
-    font-family: "IBM Plex Sans Arabic", "Tayeh Sans", system-ui, sans-serif;
+    font-family: "IBM Plex Sans Arabic", "Inter", system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -104,48 +121,36 @@
 
   body {
     min-height: 100vh;
-    position: relative;
-    isolation: isolate;
+    overflow-x: hidden;
     color: hsl(var(--foreground));
     background: hsl(var(--background));
     font-feature-settings: "ss01", "calt", "kern";
     letter-spacing: -0.005em;
   }
 
-  /* Subtle paper grain — fixed, behind everything */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    opacity: 0.5;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.06 0 0 0 0 0.04 0 0 0 0 0.02 0 0 0 0.04 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-  }
-
   h1, h2, h3, h4 {
-    font-family: "IBM Plex Sans Arabic", "Tayeh Display", system-ui, sans-serif;
-    font-weight: 700;
+    font-family: "IBM Plex Sans Arabic", "Inter", system-ui, sans-serif;
+    font-weight: 600;
     letter-spacing: -0.025em;
   }
 
-  h1 { line-height: 0.95; }
-  h2 { line-height: 1.04; }
-  h3 { line-height: 1.18; }
+  h1 { line-height: 1.05; letter-spacing: -0.04em; }
+  h2 { line-height: 1.1; letter-spacing: -0.03em; }
+  h3 { line-height: 1.2; }
 
   ::selection {
-    background: hsl(var(--primary) / 0.28);
+    background: hsl(var(--primary) / 0.2);
     color: hsl(var(--foreground));
   }
 
   .font-display {
-    font-family: "IBM Plex Sans Arabic", "Tayeh Display", system-ui, sans-serif;
-    font-weight: 700;
+    font-family: "IBM Plex Sans Arabic", "Inter", system-ui, sans-serif;
+    font-weight: 600;
     letter-spacing: -0.035em;
   }
 
   .font-numeric {
-    font-family: "Space Grotesk", "IBM Plex Sans Arabic", system-ui, sans-serif;
+    font-family: "JetBrains Mono", "Inter", system-ui, sans-serif;
     font-feature-settings: "tnum", "ss01";
     letter-spacing: -0.02em;
   }
@@ -158,33 +163,35 @@
   .shadow-soft-lg  { box-shadow: var(--shadow-md); }
   .shadow-soft-xl  { box-shadow: var(--shadow-lg); }
   .shadow-soft-2xl { box-shadow: var(--shadow-xl); }
+  .shadow-glow     { box-shadow: var(--shadow-glow); }
 
-  /* ---- Editorial atlas surfaces ------------------------------ */
+  /* ---- Premium surfaces -------------------------------------- */
   .atlas-shell {
     background: hsl(var(--background));
   }
 
   .atlas-panel {
     position: relative;
-    border-radius: 0.75rem;
-    border: 1px solid hsl(var(--border) / 0.85);
+    border-radius: 1rem;
+    border: 1px solid hsl(var(--border));
     background: hsl(var(--card));
     box-shadow: var(--shadow-md);
   }
 
   .atlas-card {
-    border-radius: 0.5rem;
+    border-radius: 1rem;
     border: 1px solid hsl(var(--border));
     background: hsl(var(--card));
     transition:
-      border-color 0.25s ease,
-      box-shadow 0.3s var(--ease-out-expo),
-      transform 0.3s var(--ease-out-expo);
+      border-color 0.3s var(--ease-premium),
+      box-shadow 0.4s var(--ease-premium),
+      transform 0.4s var(--ease-premium);
   }
 
   .atlas-card:hover {
-    border-color: hsl(var(--foreground) / 0.35);
-    box-shadow: var(--shadow-md);
+    border-color: hsl(var(--primary) / 0.3);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
   }
 
   .atlas-chip {
@@ -193,10 +200,10 @@
     gap: 0.4rem;
     border-radius: 999px;
     border: 1px solid hsl(var(--border));
-    background: hsl(var(--card));
-    padding: 0.4rem 0.75rem;
+    background: hsl(var(--surface));
+    padding: 0.4rem 0.8rem;
     font-size: 0.72rem;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 1;
     color: hsl(var(--foreground));
   }
@@ -206,13 +213,10 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    color: hsl(var(--muted-foreground));
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.28em;
+    color: hsl(var(--primary));
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
   }
 
@@ -220,22 +224,10 @@
   .eyebrow::before {
     content: "";
     display: inline-block;
-    width: 1.6rem;
-    height: 1px;
+    width: 1.4rem;
+    height: 2px;
     background: hsl(var(--primary));
-  }
-
-  .atlas-separator {
-    position: relative;
-  }
-
-  .atlas-separator::after {
-    content: "";
-    position: absolute;
-    inset-inline: 0;
-    bottom: 0;
-    height: 1px;
-    background: hsl(var(--border));
+    border-radius: 2px;
   }
 
   .editorial-rule {
@@ -245,9 +237,9 @@
   }
 
   .editorial-rule-bold {
-    height: 2px;
+    height: 1px;
     width: 100%;
-    background: hsl(var(--foreground));
+    background: hsl(var(--border));
   }
 
   .atlas-subtle {
@@ -255,38 +247,40 @@
   }
 
   .text-gradient {
-    color: hsl(var(--primary));
-    background: none;
-    -webkit-background-clip: initial;
-    background-clip: initial;
-    animation: none;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
   .mesh-bg {
-    background:
-      radial-gradient(at 12% 20%, hsl(var(--primary) / 0.06) 0px, transparent 52%),
-      radial-gradient(at 84% 12%, hsl(var(--secondary) / 0.04) 0px, transparent 46%);
+    background: var(--gradient-mesh);
+  }
+
+  .hero-bg {
+    background: var(--gradient-hero);
   }
 
   .bg-grid {
     background-image:
-      linear-gradient(hsl(var(--border) / 0.5) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(var(--border) / 0.5) 1px, transparent 1px);
+      linear-gradient(hsl(var(--border) / 0.4) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.4) 1px, transparent 1px);
     background-size: 64px 64px;
-    mask-image: linear-gradient(180deg, black 0%, black 60%, transparent 100%);
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
   }
 
   .glass-panel {
-    background: hsl(var(--card));
-    border: 1px solid hsl(var(--border));
-    box-shadow: var(--shadow-md);
+    background: hsl(var(--background) / 0.72);
+    backdrop-filter: saturate(180%) blur(16px);
+    -webkit-backdrop-filter: saturate(180%) blur(16px);
+    border: 1px solid hsl(var(--border) / 0.6);
   }
 
   /* ---- Interactions ----------------------------------------- */
   .hover-lift {
     transition:
-      transform 0.4s var(--ease-out-expo),
-      box-shadow 0.4s var(--ease-out-expo);
+      transform 0.4s var(--ease-premium),
+      box-shadow 0.4s var(--ease-premium);
   }
   .hover-lift:hover {
     transform: translateY(-3px);
@@ -302,11 +296,12 @@
     inset-inline-end: 0;
     bottom: -3px;
     width: 100%;
-    height: 1px;
+    height: 1.5px;
     background: currentColor;
+    border-radius: 2px;
     transform: scaleX(0);
     transform-origin: right;
-    transition: transform 0.3s var(--ease-out-expo);
+    transition: transform 0.3s var(--ease-premium);
   }
   .link-underline:hover::after {
     transform: scaleX(1);
@@ -324,37 +319,37 @@
 
   .press {
     transition:
-      transform 0.18s var(--ease-out-expo),
-      filter 0.18s var(--ease-out-expo);
+      transform 0.18s var(--ease-premium),
+      filter 0.18s var(--ease-premium);
   }
   .press:active {
     transform: translateY(1px) scale(0.99);
   }
 
   .smooth-img {
-    transition: transform 0.7s var(--ease-out-expo), filter 0.7s var(--ease-out-expo);
+    transition: transform 0.7s var(--ease-premium), filter 0.7s var(--ease-premium);
   }
   .group:hover .smooth-img {
-    transform: scale(1.04);
+    transform: scale(1.05);
   }
 
   .icon-nudge-x {
-    transition: transform 0.3s var(--ease-out-expo);
+    transition: transform 0.3s var(--ease-premium);
   }
   .group:hover .icon-nudge-x {
-    transform: translateX(-3px);
+    transform: translateX(-4px);
   }
 
   .card-elevate {
     transition:
-      transform 0.35s var(--ease-out-expo),
-      box-shadow 0.35s var(--ease-out-expo),
-      border-color 0.25s ease;
+      transform 0.4s var(--ease-premium),
+      box-shadow 0.4s var(--ease-premium),
+      border-color 0.3s var(--ease-premium);
   }
   .card-elevate:hover {
     transform: translateY(-3px);
     box-shadow: var(--shadow-lg);
-    border-color: hsl(var(--foreground) / 0.32);
+    border-color: hsl(var(--primary) / 0.3);
   }
 
   .shimmer-bg {
@@ -366,5 +361,19 @@
     );
     background-size: 200% 100%;
     animation: shimmer 2.5s linear infinite;
+  }
+
+  /* Premium gradient borders */
+  .border-gradient {
+    position: relative;
+    background:
+      linear-gradient(hsl(var(--card)), hsl(var(--card))) padding-box,
+      linear-gradient(135deg, hsl(var(--primary) / 0.5), hsl(var(--accent) / 0.5)) border-box;
+    border: 1px solid transparent;
+  }
+
+  /* Safe-area + responsive helpers */
+  .safe-bottom {
+    padding-bottom: max(env(safe-area-inset-bottom), 1rem);
   }
 }
