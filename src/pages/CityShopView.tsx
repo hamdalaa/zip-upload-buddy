@@ -1,12 +1,14 @@
 import { useEffect, useState, type ComponentType } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
+  Activity,
   ArrowRight,
   Camera,
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
   Clock,
+  DoorOpen,
   ExternalLink,
   Expand,
   Globe,
@@ -14,8 +16,11 @@ import {
   Image as ImageIcon,
   MapPin,
   MessageCircle,
+  MessageSquare,
+  Minus,
   Phone,
   ShieldCheck,
+  Sparkles,
   Star,
   Store,
   X,
