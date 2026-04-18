@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useUserPrefs } from "@/lib/userPrefs";
+import developerAvatar from "@/assets/developer-avatar.jpg";
 
 const steps = [
   {
