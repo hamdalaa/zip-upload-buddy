@@ -323,7 +323,7 @@ export const SUGGESTED_QUERIES = [
   "RTX 5090",
   "MacBook Air M5",
   "iPhone 17 Pro Max",
-  "Galaxy S25 Ultra",
+  "Galaxy S26 Ultra",
   "RX 9070 XT",
   "PlayStation 5 Pro",
 ];
