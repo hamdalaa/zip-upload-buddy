@@ -40,7 +40,6 @@ export function StreetPage({ area, title, subtitle, emoji }: Props) {
           area={area}
           title={title}
           subtitle={subtitle}
-          emoji={emoji}
           limit={null}
           hideHeaderCta
         />
