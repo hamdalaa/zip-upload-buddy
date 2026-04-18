@@ -216,12 +216,12 @@ const Results = () => {
               <p className="mt-2 text-xs leading-6 text-muted-foreground">
                 ابدأ من استعلام جاهز ثم عدّل الفلاتر من نفس الصفحة.
               </p>
-              <div className="mt-4 flex flex-wrap gap-2">
+              <div className="mt-4 flex flex-wrap gap-1.5">
                 {SUGGESTED_QUERIES.slice(0, 6).map((suggestion) => (
                   <Link
                     key={suggestion}
                     to={`/results?q=${encodeURIComponent(suggestion)}`}
-                    className="rounded-full border border-border/80 bg-background px-3 py-1.5 text-xs font-medium text-foreground/85 transition-colors hover:border-primary/40 hover:bg-primary/5 hover:text-primary"
+                    className="inline-flex max-w-full items-center truncate rounded-full border border-border/80 bg-background px-2.5 py-1 text-[11px] font-medium leading-none text-foreground/85 transition-colors hover:border-primary/40 hover:bg-primary/5 hover:text-primary"
                   >
                     {suggestion}
                   </Link>
