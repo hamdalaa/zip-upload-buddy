@@ -166,16 +166,21 @@ export default function CityShopView() {
               <button
                 type="button"
                 onClick={() => setLightboxIndex(0)}
-                className="absolute inset-0 h-full w-full focus:outline-none"
+                className="group absolute inset-0 h-full w-full focus:outline-none"
                 aria-label="عرض الصورة"
               >
                 <img
                   src={optimizeImageUrl(heroImage, { width: 1600, height: 700 }) ?? heroImage}
                   alt={shop.name}
-                  className="h-full w-full object-cover transition-transform duration-500 hover:scale-[1.02]"
+                  className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                   loading="eager"
                   referrerPolicy="no-referrer"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                <div className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-black/50 px-3 py-1.5 text-xs font-medium text-white opacity-0 backdrop-blur-md transition-all duration-300 group-hover:opacity-100">
+                  <Expand className="h-3.5 w-3.5" />
+                  عرض المعرض
+                </div>
               </button>
             ) : (
               <div className="flex h-full items-center justify-center bg-[radial-gradient(circle_at_top,hsl(var(--primary)/0.14),transparent_58%),linear-gradient(180deg,hsl(var(--muted))_0%,hsl(var(--background))_100%)]">
