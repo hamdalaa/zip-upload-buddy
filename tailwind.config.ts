@@ -60,6 +60,22 @@ export default {
           soft: "hsl(var(--success-soft))",
         },
         warning: "hsl(var(--warning))",
+        violet: {
+          DEFAULT: "hsl(var(--accent-violet))",
+          soft: "hsl(var(--accent-violet-soft))",
+        },
+        rose: {
+          DEFAULT: "hsl(var(--accent-rose))",
+          soft: "hsl(var(--accent-rose-soft))",
+        },
+        emerald: {
+          DEFAULT: "hsl(var(--accent-emerald))",
+          soft: "hsl(var(--accent-emerald-soft))",
+        },
+        cyan: {
+          DEFAULT: "hsl(var(--accent-cyan))",
+          soft: "hsl(var(--accent-cyan-soft))",
+        },
         nav: {
           DEFAULT: "hsl(var(--nav))",
           2: "hsl(var(--nav-2))",
@@ -89,6 +105,8 @@ export default {
         "gradient-primary": "var(--gradient-primary)",
         "gradient-hero": "var(--gradient-hero)",
         "gradient-mesh": "var(--gradient-mesh)",
+        "gradient-aurora": "var(--gradient-aurora)",
+        "gradient-rainbow": "var(--gradient-rainbow)",
       },
       boxShadow: {
         glow: "var(--shadow-glow)",
