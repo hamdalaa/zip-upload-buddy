@@ -49,9 +49,9 @@ const steps = [
     icon: Code2,
     title: "من المطور — مرحبا 👋",
     body:
-      "تايه مشروع شخصي بنيته لأن دوامة البحث عن سعر أو محل بالعراق تعبتني. لو عندك ملاحظة، اقتراح، محل ناقص، أو فرصة تعاون — راسلني مباشرة بإنستغرام وراح أرد بأقرب وقت.",
+      "تايه مشروع شخصي بنيته لأن دوامة البحث عن سعر أو محل بالعراق تعبتني. لو عندك ملاحظة، اقتراح، أو محل ناقص — راسلني بإنستغرام وراح أرد بأقرب وقت.\n\nوإذا جنت صاحب محل وحاب ترعى الموقع، تثبّت محلك بالواجهة، أو تفتح فرصة شراكة وإعلان — تواصل وياي مباشرة ونتفاهم.",
     instagram: "https://instagram.com/",
-    highlights: ["تطوير فردي", "تحديثات أسبوعية", "اقتراحاتك تفرق"],
+    highlights: ["تطوير فردي", "رعاية وشراكات", "تثبيت محلك", "اقتراحاتك تفرق"],
   },
 ];
 
@@ -94,7 +94,7 @@ export function WelcomeTour() {
             <Icon className="h-6 w-6" />
           </div>
           <h3 className="text-lg font-bold">{current.title}</h3>
-          <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{current.body}</p>
+          <p className="mt-2 whitespace-pre-line text-sm text-muted-foreground leading-relaxed">{current.body}</p>
 
           {current.highlights && (
             <div className="mt-4 flex flex-wrap items-center justify-center gap-1.5">
