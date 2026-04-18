@@ -208,77 +208,47 @@ export function LightboxViewer({ images, index, onClose, onIndexChange, title }:
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="h-[100dvh] w-screen max-w-none gap-0 border-0 bg-black/95 p-0 shadow-none [&>button]:hidden sm:rounded-none">
+      <DialogContent className="h-[100dvh] w-screen max-w-none gap-0 border-0 bg-black p-0 shadow-none [&>button]:hidden sm:rounded-none">
         <DialogTitle className="sr-only">معرض صور {title}</DialogTitle>
         {current && index !== null && (
           <div className="relative flex h-full w-full flex-col">
-            {/* Top bar */}
-            <div className="absolute inset-x-0 top-0 z-20 flex items-center justify-between gap-3 bg-gradient-to-b from-black/70 to-transparent px-4 py-3">
-              <div className="flex items-center gap-2.5 text-white">
-                <div className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/15 backdrop-blur-md">
-                  <Camera className="h-4 w-4" />
-                </div>
-                <div className="flex flex-col leading-tight">
-                  <span className="max-w-[60vw] truncate text-sm font-semibold">{title}</span>
-                  <span className="font-numeric text-[11px] tabular-nums text-white/70">
-                    {index + 1} / {total}
-                  </span>
-                </div>
+            {/* Top bar — minimal */}
+            <div className="absolute inset-x-0 top-0 z-20 flex items-center justify-between gap-3 px-4 py-3">
+              <div className="flex min-w-0 items-center gap-2 text-white/85">
+                <span className="font-numeric text-xs tabular-nums text-white/55">
+                  {index + 1} / {total}
+                </span>
+                <span className="hidden h-3 w-px bg-white/15 sm:block" />
+                <span className="hidden max-w-[40vw] truncate text-xs font-medium sm:inline">{title}</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <button
-                  type="button"
-                  onClick={zoomOut}
-                  disabled={scale <= MIN_SCALE}
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur-md transition-all duration-200 hover:bg-white/25 hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:scale-100"
-                  aria-label="تصغير"
-                >
-                  <ZoomOut className="h-4 w-4" />
-                </button>
-                <span className="font-numeric min-w-[2.75rem] rounded-full bg-white/10 px-2 py-1 text-center text-[11px] font-semibold tabular-nums text-white backdrop-blur-md">
+
+              <div className="flex items-center gap-1">
+                <IconButton onClick={zoomOut} disabled={scale <= MIN_SCALE} label="تصغير">
+                  <ZoomOut className="h-[15px] w-[15px]" />
+                </IconButton>
+                <span className="font-numeric min-w-[2.5rem] text-center text-[11px] tabular-nums text-white/60">
                   {Math.round(scale * 100)}%
                 </span>
-                <button
-                  type="button"
-                  onClick={zoomIn}
-                  disabled={scale >= MAX_SCALE}
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur-md transition-all duration-200 hover:bg-white/25 hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:scale-100"
-                  aria-label="تكبير"
-                >
-                  <ZoomIn className="h-4 w-4" />
-                </button>
-                <span className="mx-1 hidden h-5 w-px bg-white/20 sm:block" />
-                <button
-                  type="button"
-                  onClick={handleDownload}
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur-md transition-all duration-200 hover:bg-white/25 hover:scale-105 active:scale-95"
-                  aria-label="تنزيل"
-                >
-                  <Download className="h-4 w-4" />
-                </button>
-                <button
-                  type="button"
-                  onClick={handleShare}
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur-md transition-all duration-200 hover:bg-white/25 hover:scale-105 active:scale-95"
-                  aria-label="مشاركة"
-                >
-                  <Share2 className="h-4 w-4" />
-                </button>
-                <span className="mx-1 hidden h-5 w-px bg-white/20 sm:block" />
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur-md transition-all duration-200 hover:bg-white/25 hover:scale-105 active:scale-95"
-                  aria-label="إغلاق"
-                >
+                <IconButton onClick={zoomIn} disabled={scale >= MAX_SCALE} label="تكبير">
+                  <ZoomIn className="h-[15px] w-[15px]" />
+                </IconButton>
+                <span className="mx-1 h-4 w-px bg-white/15" />
+                <IconButton onClick={handleDownload} label="تنزيل">
+                  <Download className="h-[15px] w-[15px]" />
+                </IconButton>
+                <IconButton onClick={handleShare} label="مشاركة">
+                  <Share2 className="h-[15px] w-[15px]" />
+                </IconButton>
+                <span className="mx-1 h-4 w-px bg-white/15" />
+                <IconButton onClick={onClose} label="إغلاق">
                   <X className="h-4 w-4" />
-                </button>
+                </IconButton>
               </div>
             </div>
 
             {/* Image stage */}
             <div
-              className="relative flex min-h-0 flex-1 touch-none select-none items-center justify-center overflow-hidden bg-black"
+              className="relative flex min-h-0 flex-1 touch-none select-none items-center justify-center overflow-hidden"
               onWheel={handleWheel}
               onPointerDown={handlePointerDown}
               onPointerMove={handlePointerMove}
@@ -291,12 +261,11 @@ export function LightboxViewer({ images, index, onClose, onIndexChange, title }:
                 src={optimizeImageUrl(current, { width: 1600, height: 1200 }) ?? current}
                 alt={`${title} - صورة ${index + 1}`}
                 onClick={(e) => {
-                  // Only toggle zoom if it wasn't a swipe/pan
                   if (!dragRef.current) toggleZoom();
                   e.stopPropagation();
                 }}
                 onDragStart={(e) => e.preventDefault()}
-                className="max-h-full max-w-full object-contain animate-in fade-in zoom-in-95 duration-300"
+                className="max-h-full max-w-full object-contain animate-in fade-in duration-200"
                 style={{
                   transform: `translate3d(${translate.x}px, ${translate.y}px, 0) scale(${scale})`,
                   transition: dragRef.current || pinchBaseRef.current ? "none" : "transform 0.2s cubic-bezier(0.22, 1, 0.36, 1)",
@@ -307,40 +276,30 @@ export function LightboxViewer({ images, index, onClose, onIndexChange, title }:
 
               {total > 1 && (
                 <>
-                  <button
-                    type="button"
-                    onClick={goPrev}
-                    className="absolute right-4 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white ring-1 ring-white/20 backdrop-blur-md transition-all duration-200 hover:bg-white/25 hover:scale-110 active:scale-95"
-                    aria-label="السابق"
-                  >
+                  <NavButton side="right" onClick={goPrev} label="السابق">
                     <ChevronRight className="h-5 w-5" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={goNext}
-                    className="absolute left-4 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white ring-1 ring-white/20 backdrop-blur-md transition-all duration-200 hover:bg-white/25 hover:scale-110 active:scale-95"
-                    aria-label="التالي"
-                  >
+                  </NavButton>
+                  <NavButton side="left" onClick={goNext} label="التالي">
                     <ChevronLeft className="h-5 w-5" />
-                  </button>
+                  </NavButton>
                 </>
               )}
             </div>
 
-            {/* Thumbnail strip */}
+            {/* Thumbnail strip — minimal */}
             {total > 1 && (
-              <div className="shrink-0 bg-gradient-to-t from-black/80 to-transparent px-3 pb-4 pt-3 flex justify-center">
-                <div className="flex max-w-full gap-1.5 overflow-x-auto rounded-xl bg-black/60 p-1.5 ring-1 ring-white/10 backdrop-blur-md">
+              <div className="shrink-0 px-3 pb-4 pt-2">
+                <div className="mx-auto flex max-w-full justify-center gap-1.5 overflow-x-auto">
                   {images.map((image, i) => (
                     <button
                       key={`${image}-thumb-${i}`}
                       type="button"
                       onClick={() => onIndexChange(i)}
                       className={cn(
-                        "relative h-12 w-16 shrink-0 overflow-hidden rounded-md transition-all duration-200",
+                        "relative h-10 w-14 shrink-0 overflow-hidden rounded-md transition-all duration-150",
                         i === index
-                          ? "scale-105 opacity-100 ring-2 ring-primary"
-                          : "opacity-50 ring-1 ring-white/15 hover:opacity-90",
+                          ? "opacity-100 ring-2 ring-white"
+                          : "opacity-40 hover:opacity-80",
                       )}
                       aria-label={`الصورة ${i + 1}`}
                     >
@@ -359,5 +318,55 @@ export function LightboxViewer({ images, index, onClose, onIndexChange, title }:
         )}
       </DialogContent>
     </Dialog>
+  );
+}
+
+function IconButton({
+  children,
+  onClick,
+  disabled,
+  label,
+}: {
+  children: React.ReactNode;
+  onClick: () => void;
+  disabled?: boolean;
+  label: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={label}
+      className="inline-flex h-8 w-8 items-center justify-center rounded-md text-white/75 transition-colors hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
+    >
+      {children}
+    </button>
+  );
+}
+
+function NavButton({
+  children,
+  onClick,
+  label,
+  side,
+}: {
+  children: React.ReactNode;
+  onClick: () => void;
+  label: string;
+  side: "left" | "right";
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      className={cn(
+        "absolute top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/8 text-white/80 backdrop-blur-sm transition-all duration-150 hover:bg-white/15 hover:text-white",
+        side === "left" ? "left-3" : "right-3",
+      )}
+    >
+      {children}
+    </button>
   );
 }
