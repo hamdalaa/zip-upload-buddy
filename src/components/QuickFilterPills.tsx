@@ -17,7 +17,7 @@ export function QuickFilterPills() {
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="-mx-1 flex items-center gap-1.5 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible sm:gap-2">
       {FILTERS.map((f) => {
         const Icon = f.icon;
         return (
@@ -25,7 +25,7 @@ export function QuickFilterPills() {
             key={f.id}
             type="button"
             onClick={() => go(f.params)}
-            className="filter-pill press"
+            className="filter-pill press shrink-0"
           >
             <Icon className="h-3.5 w-3.5" />
             {f.label}
