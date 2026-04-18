@@ -192,7 +192,7 @@ export default function Brands() {
 
                     {/* Top-left verified pill */}
                     {isVerified && (
-                      <div className="absolute top-3 start-3 inline-flex items-center gap-1 rounded-full bg-success/95 px-2 py-1 text-[10px] font-bold text-success-foreground shadow-[0_4px_14px_-4px_hsl(0_0%_0%/0.3)] backdrop-blur-md ring-1 ring-white/20">
+                      <div className="absolute top-3 start-3 inline-flex items-center gap-1 rounded-full bg-success px-2 py-1 text-[10px] font-bold text-white shadow-[0_4px_14px_-4px_hsl(0_0%_0%/0.3)] backdrop-blur-md ring-1 ring-white/20">
                         <ShieldCheck className="h-3 w-3" />
                         موثّق
                       </div>
