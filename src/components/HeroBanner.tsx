@@ -6,11 +6,11 @@ import { SUGGESTED_QUERIES } from "@/lib/search";
 import { CITIES } from "@/lib/cityData";
 
 export function HeroBanner() {
-  const { shops, brands } = useDataStore();
-  const activeShops = shops.filter((shop) => !shop.archivedAt).length;
+  const { brands } = useDataStore();
+  const totalShops = CITIES.reduce((sum, city) => sum + (city.count ?? 0), 0);
 
   const stats = [
-    { value: activeShops, label: "محل ميداني" },
+    { value: totalShops, label: "محل ميداني" },
     { value: brands.length, label: "وكيل وبراند" },
     { value: CITIES.length, label: "محافظة" },
   ];
