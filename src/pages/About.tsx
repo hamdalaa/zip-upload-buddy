@@ -24,10 +24,11 @@ export default function About() {
       <TopNav />
 
       {/* Hero */}
-      <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-background via-surface to-background">
-        <div className="pointer-events-none absolute inset-0 bg-grid opacity-20" />
-        <div className="pointer-events-none absolute -top-24 left-1/2 h-72 w-[42rem] -translate-x-1/2 rounded-full bg-violet/15 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-24 right-1/4 h-64 w-[36rem] rounded-full bg-rose/15 blur-3xl" />
+      <section className="relative overflow-hidden border-b border-border bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.18),transparent_55%),radial-gradient(ellipse_at_bottom_left,hsl(var(--cyan)/0.18),transparent_50%),radial-gradient(ellipse_at_bottom_right,hsl(var(--rose)/0.16),transparent_50%)]">
+        <div className="pointer-events-none absolute inset-0 bg-grid opacity-[0.07]" />
+        <div className="pointer-events-none absolute -top-32 left-1/3 h-80 w-[44rem] -translate-x-1/2 rounded-full bg-primary/25 blur-[120px]" />
+        <div className="pointer-events-none absolute -bottom-32 right-1/4 h-72 w-[40rem] rounded-full bg-cyan/20 blur-[120px]" />
+        <div className="pointer-events-none absolute top-1/2 -left-20 h-60 w-60 -translate-y-1/2 rounded-full bg-rose/15 blur-3xl" />
 
         <div className="container relative py-8 md:py-12">
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
