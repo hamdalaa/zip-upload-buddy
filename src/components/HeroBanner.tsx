@@ -174,7 +174,7 @@ export function HeroBanner() {
         {/* Stats — premium numerals + count-up */}
         <div className="mt-10 grid grid-cols-3 gap-2 sm:gap-4 md:mt-16">
           {stats.map((stat) => (
-            <div key={stat.label} className="atlas-card hover-lift px-3 py-4 text-right sm:px-6 sm:py-6 md:px-8 md:py-8">
+            <div key={stat.label} className="atlas-card hover-lift flex flex-col items-center justify-center px-3 py-4 text-center sm:px-6 sm:py-6 md:px-8 md:py-8">
               <CountUp
                 value={stat.value}
                 className="font-numeric text-2xl font-semibold leading-none text-rainbow sm:text-4xl md:text-5xl lg:text-6xl"
