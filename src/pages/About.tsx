@@ -16,6 +16,7 @@ import {
 import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Button } from "@/components/ui/button";
+import developerPortrait from "@/assets/developer-portrait.jpg";
 
 export default function About() {
   return (
@@ -68,9 +69,11 @@ export default function About() {
             <div className="mt-6 flex flex-col items-start gap-5 sm:flex-row sm:items-center">
               <div className="relative shrink-0">
                 <div className="absolute inset-0 -m-1 rounded-2xl bg-gradient-to-br from-primary via-cyan to-primary opacity-60 blur-md" />
-                <div className="relative flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-cyan font-display text-3xl font-bold text-primary-foreground shadow-soft-md">
-                  م
-                </div>
+                <img
+                  src={developerPortrait}
+                  alt="محمد علاء"
+                  className="relative h-20 w-20 rounded-2xl object-cover shadow-soft-md ring-2 ring-background"
+                />
               </div>
               <div className="text-right">
                 <h2 className="font-display text-2xl font-bold tracking-tight">محمد علاء</h2>
