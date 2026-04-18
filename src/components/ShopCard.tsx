@@ -41,7 +41,7 @@ export function ShopCard({ shop }: { shop: Shop }) {
       : null;
 
   return (
-    <article className="group atlas-card tilt-3d relative overflow-hidden text-right shadow-soft-md">
+    <article className="group atlas-card relative overflow-hidden text-right shadow-soft-md">
       {ribbon && (
         <span className={ribbon.className}>
           <ribbon.icon className="h-3 w-3" />
