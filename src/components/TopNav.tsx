@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
+  Building2,
   Check,
   ChevronDown,
   ChevronLeft,
@@ -10,6 +11,7 @@ import {
   MapPin,
   Menu,
   Search,
+  Store,
   Trash2,
   X,
   XCircle,
@@ -52,10 +54,10 @@ function loadSelectedCity(): { slug: string; cityAr: string } {
 }
 
 const primaryLinks = [
-  { to: "/sinaa", label: "الشوارع" },
-  { to: "/iraq", label: "المحافظات" },
-  { to: "/brands", label: "الوكلاء" },
-  { to: "/results", label: "البحث" },
+  { to: "/sinaa", label: "الشوارع", icon: Store },
+  { to: "/iraq", label: "المحافظات", icon: Building2 },
+  { to: "/brands", label: "الوكلاء", icon: Heart },
+  { to: "/results", label: "البحث", icon: Search },
 ];
 
 export function TopNav() {
@@ -285,55 +287,131 @@ export function TopNav() {
         </div>
 
         {/* Mobile sheet */}
-        {mobileOpen && (
-          <div className="mt-4 grid gap-4 border-t border-border pt-4 lg:hidden animate-fade-in">
-            <form onSubmit={submit} className="flex items-center gap-2 rounded-xl border border-border bg-surface px-3 py-2 focus-within:border-primary focus-within:bg-card transition-colors">
-              <Search className="h-4 w-4 text-muted-foreground" />
-              <input
-                value={q}
-                onChange={(e) => setQ(e.target.value)}
-                placeholder="ابحث في الأطلس"
-                className="h-9 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/70"
-              />
-              {q && (
-                <button type="button" onClick={() => setQ("")} aria-label="مسح">
-                  <XCircle className="h-4 w-4 text-muted-foreground" />
-                </button>
-              )}
-            </form>
-
-            <div className="grid grid-cols-2 gap-2">
-              {primaryLinks.map((link) => (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  onClick={() => setMobileOpen(false)}
-                  className="rounded-xl border border-border bg-surface px-4 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-primary-soft hover:border-primary/40 hover:text-primary"
-                >
-                  {link.label}
-                </Link>
-              ))}
+        <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+          <SheetContent
+            side="right"
+            className="w-[88vw] max-w-sm overflow-y-auto border-l border-border/60 bg-background p-0"
+          >
+            {/* Header */}
+            <div className="flex items-center gap-3 border-b border-border/50 px-5 pb-4 pt-5">
+              <div className="relative flex h-10 w-10 items-center justify-center rounded-[12px] bg-gradient-primary shadow-[0_4px_14px_-4px_hsl(var(--primary)/0.5)]">
+                <span className="font-display text-xl font-bold leading-none text-primary-foreground">ت</span>
+                <div className="pointer-events-none absolute inset-0 rounded-[12px] bg-gradient-to-b from-white/20 to-transparent" />
+              </div>
+              <div className="text-right leading-tight">
+                <SheetTitle className="font-display text-lg font-semibold tracking-tight">تايه</SheetTitle>
+                <SheetDescription className="text-[11px] text-muted-foreground">
+                  دليل التقنية بالعراق
+                </SheetDescription>
+              </div>
             </div>
 
-            <div className="flex items-center justify-between border-t border-border pt-3">
-              <button
-                onClick={() => { setMobileOpen(false); openTour(); }}
-                className="inline-flex items-center gap-2 text-xs font-semibold text-foreground"
+            {/* Search */}
+            <div className="px-5 pt-4">
+              <form
+                onSubmit={submit}
+                className="flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-2 transition-colors focus-within:border-primary focus-within:bg-card"
               >
-                <HelpCircle className="h-3.5 w-3.5 text-primary" />
-                دليل الاستخدام
-              </button>
+                <Search className="h-4 w-4 text-muted-foreground" />
+                <input
+                  value={q}
+                  onChange={(e) => setQ(e.target.value)}
+                  placeholder="ابحث في الأطلس"
+                  className="h-8 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/70"
+                />
+                {q && (
+                  <button type="button" onClick={() => setQ("")} aria-label="مسح">
+                    <XCircle className="h-4 w-4 text-muted-foreground" />
+                  </button>
+                )}
+              </form>
+            </div>
+
+            {/* Primary nav */}
+            <nav className="px-3 pt-5">
+              <div className="px-2 pb-2 text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/70">
+                التصفّح
+              </div>
+              <ul className="space-y-1">
+                {primaryLinks.map((link) => {
+                  const Icon = link.icon;
+                  const active = loc.pathname === link.to;
+                  return (
+                    <li key={link.to}>
+                      <Link
+                        to={link.to}
+                        onClick={() => setMobileOpen(false)}
+                        className={cn(
+                          "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all",
+                          active
+                            ? "bg-primary-soft text-primary"
+                            : "text-foreground hover:bg-surface",
+                        )}
+                      >
+                        <span
+                          className={cn(
+                            "flex h-8 w-8 items-center justify-center rounded-lg transition-colors",
+                            active
+                              ? "bg-primary text-primary-foreground"
+                              : "bg-muted text-muted-foreground",
+                          )}
+                        >
+                          <Icon className="h-4 w-4" />
+                        </span>
+                        <span className="flex-1 text-right">{link.label}</span>
+                        <ChevronLeft className="h-3.5 w-3.5 text-muted-foreground/60" />
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav>
+
+            {/* Utility links */}
+            <div className="mt-5 border-t border-border/50 px-3 py-3">
+              <div className="px-2 pb-2 text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/70">
+                المزيد
+              </div>
+              <ul className="space-y-1">
+                <li>
+                  <button
+                    onClick={() => { setMobileOpen(false); openTour(); }}
+                    className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-surface"
+                  >
+                    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-muted text-muted-foreground">
+                      <HelpCircle className="h-4 w-4" />
+                    </span>
+                    <span className="flex-1 text-right">دليل الاستخدام</span>
+                  </button>
+                </li>
+                <li>
+                  <Link
+                    to="/dashboard"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-surface"
+                  >
+                    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-muted text-muted-foreground">
+                      <LayoutDashboard className="h-4 w-4" />
+                    </span>
+                    <span className="flex-1 text-right">لوحة الإدارة</span>
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Developer pill */}
+            <div className="px-5 pb-6 pt-2">
               <Link
-                to="/dashboard"
+                to="/about"
                 onClick={() => setMobileOpen(false)}
-                className="inline-flex items-center gap-2 text-xs font-semibold text-foreground"
+                className="group/dev flex items-center justify-center gap-2 rounded-full border border-violet/25 bg-gradient-to-r from-violet/10 via-violet/5 to-rose/10 px-4 py-3 text-sm font-bold text-violet transition-all hover:border-violet/50 hover:shadow-[0_4px_14px_-4px_hsl(var(--violet)/0.4)]"
               >
-                <LayoutDashboard className="h-3.5 w-3.5 text-primary" />
-                لوحة الإدارة
+                <Heart className="h-4 w-4 fill-current transition-transform group-hover/dev:scale-110" />
+                <span>المطوّر والرعاية</span>
               </Link>
             </div>
-          </div>
-        )}
+          </SheetContent>
+        </Sheet>
       </div>
 
       {/* Favorites sheet */}
