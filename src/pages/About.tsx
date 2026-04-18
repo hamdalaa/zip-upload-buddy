@@ -128,26 +128,15 @@ export default function About() {
               ))}
             </ul>
 
-            <div className="mt-6 flex flex-col gap-2.5 sm:flex-row">
+            <div className="mt-6">
               <Button
                 asChild
                 size="lg"
-                className="h-11 flex-1 rounded-full bg-gradient-to-r from-violet to-rose text-white shadow-soft-md hover:opacity-95"
+                className="h-11 w-full rounded-full bg-gradient-to-r from-violet to-rose text-white shadow-soft-md hover:opacity-95"
               >
-                <a href="mailto:sponsor@example.com">
-                  <Heart className="h-4 w-4" />
+                <a href="https://instagram.com/hamadalaatech" target="_blank" rel="noreferrer noopener">
+                  <Instagram className="h-4 w-4" />
                   راسلنا للرعاية
-                </a>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="h-11 rounded-full border-violet/30 bg-background/70 text-violet hover:border-violet hover:bg-violet/10"
-              >
-                <a href="https://wa.me/" target="_blank" rel="noreferrer noopener">
-                  <MessageCircle className="h-4 w-4" />
-                  واتساب
                 </a>
               </Button>
             </div>
