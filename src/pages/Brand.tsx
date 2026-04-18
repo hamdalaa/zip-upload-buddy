@@ -76,26 +76,40 @@ const Brand = () => {
       </div>
 
       {/* HERO */}
-      <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-background via-surface to-background">
-        {background && (
+      <section className="relative overflow-hidden border-b border-border bg-background">
+        {background ? (
           <>
+            {/* Sharp background image */}
             <div
-              className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-40"
+              className="pointer-events-none absolute inset-0 bg-cover bg-center"
               style={{ backgroundImage: `url(${background})` }}
               aria-hidden
             />
+            {/* Subtle darkening for depth */}
             <div
-              className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background/70 via-background/55 to-background/90"
+              className="pointer-events-none absolute inset-0 bg-black/30"
               aria-hidden
             />
+            {/* Directional gradient (RTL: readable side on the right) */}
             <div
-              className="pointer-events-none absolute inset-0 backdrop-blur-[2px]"
+              className="pointer-events-none absolute inset-0 bg-gradient-to-l from-background via-background/85 to-background/20"
               aria-hidden
             />
+            {/* Bottom fade into page */}
+            <div
+              className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent"
+              aria-hidden
+            />
+            {/* Premium glow accent */}
+            <div className="pointer-events-none absolute -top-32 -left-20 h-80 w-80 rounded-full bg-primary/20 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-24 right-1/3 h-72 w-72 rounded-full bg-accent/15 blur-3xl" />
+          </>
+        ) : (
+          <>
+            <div className="pointer-events-none absolute inset-0 bg-grid opacity-20" />
+            <div className="pointer-events-none absolute -top-24 left-1/2 h-72 w-[42rem] -translate-x-1/2 rounded-full bg-primary/8 blur-3xl" />
           </>
         )}
-        <div className="pointer-events-none absolute inset-0 bg-grid opacity-20" />
-        <div className="pointer-events-none absolute -top-24 left-1/2 h-72 w-[42rem] -translate-x-1/2 rounded-full bg-primary/8 blur-3xl" />
         <div className="container relative py-8 md:py-10">
           <div className="flex flex-col items-start gap-5 md:flex-row md:items-center">
             {/* Logo tile */}
