@@ -1,7 +1,22 @@
-import { useCallback, useContext, useMemo, useState, type ReactNode } from "react";
-import type { Area, Category, CrawlRun, ProductIndex, Shop, ShopSource } from "./types";
+import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
+import type { Area, BrandDealer, Category, CrawlRun, ProductIndex, Shop, ShopSource } from "./types";
 import { initialBrands, initialCrawlRuns, initialProducts, initialShopSources, initialShops } from "./mockData";
-import { DataStoreContext, type DataStoreValue } from "./dataStoreContext";
+
+interface DataStoreValue {
+  shops: Shop[];
+  shopSources: ShopSource[];
+  products: ProductIndex[];
+  brands: BrandDealer[];
+  crawlRuns: CrawlRun[];
+  // Actions
+  addShop: (input: Omit<Shop, "id" | "slug" | "seedKey" | "createdAt" | "updatedAt" | "discoverySource" | "verified" | "verificationStatus"> & { verified?: boolean }) => Shop;
+  toggleVerify: (shopId: string) => void;
+  mergeShops: (primaryId: string, secondaryId: string) => void;
+  runAreaScan: (area: Area) => CrawlRun;
+  recrawlShop: (shopId: string) => CrawlRun;
+}
+
+const DataStoreContext = createContext<DataStoreValue | null>(null);
 
 const slugify = (s: string) =>
   s.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "-").replace(/^-|-$/g, "") || `shop-${Date.now()}`;
@@ -10,7 +25,7 @@ export function DataStoreProvider({ children }: { children: ReactNode }) {
   const [shops, setShops] = useState<Shop[]>(initialShops);
   const [shopSources, setShopSources] = useState<ShopSource[]>(initialShopSources);
   const [products, setProducts] = useState<ProductIndex[]>(initialProducts);
-  const [brands] = useState(initialBrands);
+  const [brands] = useState<BrandDealer[]>(initialBrands);
   const [crawlRuns, setCrawlRuns] = useState<CrawlRun[]>(initialCrawlRuns);
 
   const addShop = useCallback<DataStoreValue["addShop"]>((input) => {
