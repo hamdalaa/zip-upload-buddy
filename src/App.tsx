@@ -28,6 +28,7 @@ const RubaiePage = lazy(() =>
 const IraqCities = lazy(() => import("./pages/IraqCities.tsx"));
 const CityPage = lazy(() => import("./pages/CityPage.tsx"));
 const CityShopView = lazy(() => import("./pages/CityShopView.tsx"));
+const About = lazy(() => import("./pages/About.tsx"));
 
 const queryClient = new QueryClient();
 
@@ -60,6 +61,7 @@ const App = () => (
                 <Route path="/brands" element={<Brands />} />
                 <Route path="/brand/:slug" element={<Brand />} />
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/about" element={<About />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

@@ -268,6 +268,16 @@ export function TopNav() {
             </button>
 
             <Link
+              to="/about"
+              className="hidden h-9 items-center gap-1.5 rounded-full border border-violet/30 bg-gradient-to-r from-violet/15 to-rose/15 px-3 text-xs font-bold text-violet shadow-soft transition-all hover:-translate-y-0.5 hover:border-violet hover:shadow-soft-md md:inline-flex"
+              aria-label="المطوّر والرعاية"
+            >
+              <Heart className="h-3.5 w-3.5 fill-current" />
+              <span className="hidden lg:inline">المطوّر · رعاية</span>
+              <span className="lg:hidden">رعاية</span>
+            </Link>
+
+            <Link
               to="/dashboard"
               className="hidden h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-surface hover:text-foreground md:flex"
               aria-label="لوحة الإدارة"
