@@ -214,9 +214,19 @@ const Results = () => {
               </p>
 
               <div className="mt-5 flex flex-wrap gap-2">
-                <SummaryPill label="نتائج مرئية" value={results.length.toLocaleString("ar")} />
-                <SummaryPill label="مقارنات" value={groups.length.toLocaleString("ar")} />
-                <SummaryPill label="براندات" value={allBrands.length.toLocaleString("ar")} />
+                {loading ? (
+                  <>
+                    <Skeleton className="h-9 w-28 rounded-full" />
+                    <Skeleton className="h-9 w-28 rounded-full" />
+                    <Skeleton className="h-9 w-28 rounded-full" />
+                  </>
+                ) : (
+                  <>
+                    <SummaryPill label="نتائج مرئية" value={results.length.toLocaleString("ar")} />
+                    <SummaryPill label="مقارنات" value={groups.length.toLocaleString("ar")} />
+                    <SummaryPill label="براندات" value={allBrands.length.toLocaleString("ar")} />
+                  </>
+                )}
               </div>
             </div>
 
