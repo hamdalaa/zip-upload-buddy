@@ -135,7 +135,7 @@ const Brand = () => {
                 {isVerified && (
                   <span className="inline-flex items-center gap-1 rounded-full bg-success/15 text-success px-2.5 py-0.5 text-xs font-bold ring-1 ring-success/30">
                     <ShieldCheck className="h-3 w-3" />
-                    وكيل رسمي
+                    بائع معتمد
                   </span>
                 )}
               </div>
