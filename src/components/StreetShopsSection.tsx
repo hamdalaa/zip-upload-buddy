@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, MapPin } from "lucide-react";
 import { ShopCard } from "./ShopCard";
+import { ShopCarousel } from "./ShopCarousel";
 import { ShopCardSkeletonGrid } from "./ShopCardSkeleton";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFakeLoading } from "@/hooks/useFakeLoading";
@@ -169,17 +170,28 @@ export function StreetShopsSection({
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {(limit == null ? visibleShops : visibleShops.slice(0, limit)).map((shop, index) => (
-                <div
-                  key={shop.id}
-                  className="animate-fade-in-up"
-                  style={{ animationDelay: `${index * 50}ms`, animationFillMode: "backwards" }}
-                >
-                  <ShopCard shop={shop} />
-                </div>
-              ))}
-            </div>
+            {(() => {
+              const list = limit == null ? visibleShops : visibleShops.slice(0, limit);
+              return (
+                <>
+                  {/* Mobile + tablet: premium snap carousel */}
+                  <ShopCarousel shops={list} hideAbove="lg" />
+
+                  {/* Desktop: grid */}
+                  <div className="hidden lg:grid lg:grid-cols-3 lg:gap-4">
+                    {list.map((shop, index) => (
+                      <div
+                        key={shop.id}
+                        className="animate-fade-in-up"
+                        style={{ animationDelay: `${index * 50}ms`, animationFillMode: "backwards" }}
+                      >
+                        <ShopCard shop={shop} />
+                      </div>
+                    ))}
+                  </div>
+                </>
+              );
+            })()}
 
             {limit != null && visibleShops.length > limit && (
               <div className="mt-7 flex justify-center">
