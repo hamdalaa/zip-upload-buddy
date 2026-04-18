@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ALL_CATEGORIES, type Category } from "@/lib/types";
-import { CATEGORY_IMAGES } from "@/lib/mockData";
+import { CATEGORY_REAL_IMAGES } from "@/lib/categoryImages";
 
 const LABELS: Record<Category, string> = {
   Computing: "حاسبات",
