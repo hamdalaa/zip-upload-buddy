@@ -47,7 +47,7 @@ export default function About() {
               من <span className="text-gradient">صنع</span> ولِمن؟
             </h1>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-muted-foreground md:text-base">
-              منصّة عراقية لجمع محلات التقنية بكل المحافظات بمكان واحد، مفتوحة للجميع، ومدعومة من رعاة يؤمنون بالسوق المحلّي.
+              منصّة عراقية تجمع محلّات التقنية من كل المحافظات بمكان واحد — تكدر تقارن الأسعار، تشوف تقييمات المحلّات، وتوصل لأقرب محل ثقة بدون لفّ ودوران.
             </p>
           </div>
         </div>
