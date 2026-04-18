@@ -1,85 +1,92 @@
 
 
-# تطوير: ألوان نفسية + تجربة Premium Tech + إصلاح Responsive
+# تطوير Creative UI/UX — Vercel/Stripe Vibe
 
 ## الفهم
-المستخدم يطلب ٣ تحسينات على التصميم الحالي ("Atlas Editorial" الورقي):
-1. **ألوان نفسية تفتح النفس** — ألوان مدروسة علمياً تشجع على التصفح والاستمرار.
-2. **تجربة Premium Tech** — يحس المستخدم إنه يستخدم منتج تقني فاخر (Apple/Linear/Vercel level)، مو موقع ورقي تحريري.
-3. **إصلاح مشاكل الـ Responsive** — يبدو إن في مشاكل على شاشات معينة (المستخدم حالياً على 390px موبايل).
+المستخدم اختار:
+- **طابع**: عصري وحيوي (Vercel/Stripe) — ألوان أجرأ، gradients واضحة، scroll animations، hover effects ملحوظة.
+- **نطاق**: Hero + الصفحة الرئيسية + البطاقات + Micro-interactions + ألوان accent إضافية.
+- **UX**: Command Palette (⌘K) + Quick Filters في Hero + Compare drawer أحلى + Skeleton/Empty states أحلى.
 
-التضارب: التصميم الحالي ورقي دافئ (Atlas Editorial). طلب "Premium Tech" يعني تحول جذري لاتجاه مختلف تماماً.
-
-## الاتجاه الجديد المقترح — "Tayeh Lumen"
-نظام تصميم بريميوم تك بألوان نفسية مدروسة:
-
-### علم نفس الألوان (Color Psychology)
-- **الأزرق الهادئ المخضّر** (`#0EA5A4` - Teal/Cyan) كلون أساسي: يخفض ضربات القلب، يزيد التركيز والثقة، يشجع على الاستكشاف. (مستخدم في Stripe, Linear)
-- **خلفية بيضاء ناعمة** (`#FAFBFC`) بدل الورق الدافئ: نظافة بصرية، يقلل الإجهاد، Premium feel.
-- **رمادي بارد مع لمسة أزرق** للنصوص الثانوية: يخفف التوتر البصري.
-- **أكسنت ذهبي/برتقالي دافئ** (`#F59E0B`) للـ CTAs: يحفز الفعل بدون عدوانية.
-- **أخضر ناعم** للنجاح/التوثيق: يعطي إحساس بالأمان والثقة.
-- تباين عالي WCAG AAA للنصوص.
-
-### لغة Premium Tech
-- زوايا ناعمة (rounded-xl 12-16px) بدل الحادة.
-- ظلال طبقية ناعمة جداً (Apple-style soft shadows).
-- خطوط: **Geist Sans** أو **Inter** للإنجليزية، **IBM Plex Sans Arabic** للعربية بأوزان دقيقة (450-550).
-- Micro-interactions: hover states ناعمة، transitions على cubic-bezier(0.4, 0, 0.2, 1).
-- Glass morphism خفيف على الـ sticky elements.
-- Gradients دقيقة جداً (subtle) بدل الألوان المسطحة.
-- مساحات تنفس واسعة (generous whitespace).
+الموقع حالياً (Tayeh Lumen): teal primary + amber accent + خلفية بيضاء ناعمة. مرتب وresponsive لكن "هادئ جداً" — يفتقد للحيوية البصرية.
 
 ## ما سيتغير
 
-### ١. نظام الألوان (`src/index.css`)
-إعادة كتابة CSS variables بالكامل:
-- خلفية بيضاء/رمادية فاتحة جداً
-- Primary: Teal (`hsl(178 75% 35%)`)
-- Accent: Amber دافئ
-- Surfaces متعددة الطبقات (surface, surface-2, surface-elevated)
-- ظلال متدرجة (sm, md, lg, xl, 2xl) بنمط Apple
-- إزالة paper grain، استبداله بـ subtle dot pattern أو نظافة كاملة
-- خطوط جديدة: Inter + IBM Plex Sans Arabic + JetBrains Mono للأرقام
+### ١. نظام ألوان موسّع (`src/index.css` + `tailwind.config.ts`)
+نظام multi-accent مدروس لتمييز الأقسام:
+```
+--accent-violet: 262 83% 58%;   /* للـ brands/premium */
+--accent-rose:   340 82% 60%;   /* للـ deals/تخفيضات */
+--accent-emerald: 158 64% 45%;  /* للـ verified/trust */
+--accent-amber:  38 92% 50%;    /* للـ CTAs (موجود) */
+--accent-cyan:   190 90% 50%;   /* للـ tech/categories */
+```
+لكل لون `-soft` variant + gradient pair. يستخدم بحكمة (لون لكل نوع محتوى).
 
-### ٢. مكونات أساسية محدّثة
-- `TopNav.tsx` — Glass effect على scroll، شعار أنظف، hover states ناعمة.
-- `HeroBanner.tsx` — Gradient mesh background خفيف، عناوين بـ tracking-tight، CTA بـ glow ناعم.
-- `HeroSearch.tsx` — Border ناعم، focus ring بـ teal، rounded-2xl.
-- `ShopCard.tsx` / `BrandCard.tsx` / `CityShopCard.tsx` — rounded-2xl، ظلال طبقية، hover lift ناعم.
-- `MetricsStrip.tsx` — أرقام بـ JetBrains Mono، gradient text خفيف.
-- `Badges.tsx` — pills ناعمة بـ semi-transparent backgrounds.
-- `SiteFooter.tsx` — خلفية داكنة ناعمة (slate-950) مع نص فاتح.
-- `HowItWorks.tsx` — أيقونات داخل دوائر gradient ناعمة.
+### ٢. Animations & Motion جديدة
+- `aurora` — gradient متحرك بطيء للخلفيات
+- `shimmer-text` — لمعة على العناوين الرئيسية
+- `tilt-3d` — hover tilt على البطاقات
+- `bounce-arrow` — للأسهم في الـ CTAs
+- `count-up` — للأرقام في الإحصائيات (hook + animation)
+- `reveal-up` — scroll-triggered fade up
 
-### ٣. إصلاح Responsive
-- مراجعة كل المكونات على breakpoints: 320, 375, 390, 768, 1024, 1280, 1440.
-- إصلاح الـ container paddings (الحالي قد يضيق على شاشات صغيرة).
-- إصلاح الـ Hero على الموبايل (العنوان قد يكون كبير جداً).
-- جعل grid columns أكثر مرونة (1 col موبايل، 2 tablet، 3-4 desktop).
-- إصلاح horizontal overflow إن وجد.
-- الـ TopNav: drawer/sheet على الموبايل بدل الروابط المضغوطة.
-- `Index.tsx`, `StreetPage.tsx`, `CityPage.tsx`, `Brands.tsx` — مراجعة spacing.
+### ٣. Hero محسّن (`HeroBanner.tsx`)
+- خلفية aurora متحركة (gradient mesh + blob shapes)
+- العنوان بـ gradient متعدد الألوان (teal → violet → amber)
+- **Quick Filter pills** فوق البحث: "مفتوح الآن" · "بـ ٥ نجوم" · "يوصّل" · "وكيل رسمي"
+- إحصائيات بـ count-up animation
+- شريط trust signals صغير
 
-### ٤. تحديثات Tailwind (`tailwind.config.ts`)
-- إضافة fontFamily الجديدة (sans: Inter, arabic: Plex Arabic, mono: JetBrains Mono).
-- إضافة keyframes/animations جديدة (subtle-pulse, gradient-flow, fade-up-soft).
-- إضافة easing functions (ease-premium).
+### ٤. ShopCard / BrandCard / ProductCard
+- **3D tilt subtle** عند الـ hover (CSS-only)
+- **Gradient ribbon** للزاوية ("⭐ مميز" / "🔥 رائج" / "✓ موثق")
+- **Color-coded badges** حسب الفئة (computing=cyan, phones=violet, gaming=rose)
+- **Image zoom + overlay shimmer**
+- Map pin بـ pulse للـ "موقع محدد"
 
-### ٥. التطبيق على كل الصفحات
-- `Index.tsx` — تطبيق نظام الألوان الجديد، فحص spacing.
-- `StreetPage.tsx`, `Brands.tsx`, `Brand.tsx`, `Results.tsx`, `IraqCities.tsx`, `CityPage.tsx`, `CityShopView.tsx`, `ShopView.tsx` — تطبيق الـ tokens الجديدة.
-- `Dashboard.tsx` — يبقى وظيفياً مع تحديث بصري خفيف.
+### ٥. Command Palette جديد (`src/components/CommandPalette.tsx`)
+- يفتح بـ `⌘K` / `Ctrl+K` من أي صفحة
+- يستخدم `cmdk` (موجود في shadcn `Command`)
+- مجموعات: محلات · براندات · محافظات · شوارع · صفحات سريعة
+- recent searches في localStorage
+
+### ٦. Compare Drawer محسّن (`CompareBar.tsx`)
+- drawer سفلي مع backdrop blur + slide-in-up
+- Empty state مع illustration بسيطة
+- لما يصير ٢+ محلات: زر "قارن الآن" بـ pulse
+
+### ٧. Skeletons + Empty States
+- shimmer effect متقن
+- SVG illustrations بسيطة (CSS-only) + microcopy لطيف + CTA واضح
+
+### ٨. Micro-interactions
+- Buttons: ripple خفيف
+- Links: underline RTL-aware
+- Tabs: indicator متحرك
+- أرقام: count-up عند ظهور الـ viewport
+- أيقونات: rotate/translate عند الـ hover
+
+### ٩. Section Dividers ديناميكية
+- gradient lines (transparent → primary → transparent)
+- accent dots صغيرة
+- SVG wave divider بين الأقسام الكبيرة
+
+### ١٠. CategoryCircles & MetricsStrip
+- gradient ring عند hover + label bounce
+- MetricsStrip بـ count-up + gradient mesh background
 
 ## خارج النطاق
-- لا تغيير في منطق البيانات أو search/ranking.
-- لا إضافة features جديدة.
-- لا تغيير في الـ routing.
+- لا تغيير في data/routing/business logic
+- لا تغيير في صفحات الأدمن
+- صفحات داخلية (CityPage, ShopView, Brand) تستفيد تلقائياً من المكونات المشتركة بدون تعديل مباشر
 
 ## مراحل التنفيذ
-1. **نظام الألوان والخطوط** (`index.css` + `tailwind.config.ts`).
-2. **المكونات الأساسية** (TopNav, Hero, Search, Cards, Footer).
-3. **مراجعة Responsive** على كل breakpoints مع إصلاحات spacing/layout.
-4. **تطبيق على بقية الصفحات**.
-5. **QA نهائي** على 375px و 1280px.
+1. نظام الألوان والـ animations (index.css + tailwind.config.ts)
+2. Hero + Quick Filters + count-up
+3. البطاقات الثلاث بـ tilt + ribbons + color-coded badges
+4. Command Palette
+5. Compare Drawer + Skeletons + Empty States
+6. Micro-interactions عامة + Dividers
+7. QA على mobile (390px) + desktop (1280px)
 
