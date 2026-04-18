@@ -7,6 +7,7 @@ import { HowItWorks } from "@/components/HowItWorks";
 import { SiteFooter } from "@/components/SiteFooter";
 import { MetricsStrip } from "@/components/MetricsStrip";
 import { ShopCard } from "@/components/ShopCard";
+import { ShopCarousel } from "@/components/ShopCarousel";
 import { ShopCardSkeletonGrid } from "@/components/ShopCardSkeleton";
 import { BrandCard } from "@/components/BrandCard";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -141,17 +142,23 @@ const Index = () => {
             {loading ? (
               <ShopCardSkeletonGrid count={6} />
             ) : (
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-                {featured.map((shop, index) => (
-                  <div
-                    key={shop.id}
-                    className="animate-fade-in-up"
-                    style={{ animationDelay: `${index * 60}ms`, animationFillMode: "backwards" }}
-                  >
-                    <ShopCard shop={shop} />
-                  </div>
-                ))}
-              </div>
+              <>
+                {/* Mobile + tablet: premium carousel */}
+                <ShopCarousel shops={featured} hideAbove="lg" />
+
+                {/* Desktop: grid */}
+                <div className="hidden lg:grid lg:grid-cols-3 lg:gap-6">
+                  {featured.map((shop, index) => (
+                    <div
+                      key={shop.id}
+                      className="animate-fade-in-up"
+                      style={{ animationDelay: `${index * 60}ms`, animationFillMode: "backwards" }}
+                    >
+                      <ShopCard shop={shop} />
+                    </div>
+                  ))}
+                </div>
+              </>
             )}
           </div>
         </section>
