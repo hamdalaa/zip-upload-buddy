@@ -202,7 +202,7 @@ export default function Brands() {
                     <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
                       <div className="flex items-end justify-between gap-3">
                         <div className="min-w-0 flex-1">
-                          <div className="flex h-20 sm:h-24 w-full max-w-[14rem] items-center justify-start">
+                          <div className="flex h-28 sm:h-36 w-full max-w-[18rem] items-center justify-start">
                             {logo ? (
                               <img
                                 src={logo}
