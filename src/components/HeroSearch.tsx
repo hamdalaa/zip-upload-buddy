@@ -50,29 +50,33 @@ export function HeroSearch({
 
       {/* Filters row (mobile: stacked; desktop: side by side) */}
       <div className="flex flex-col gap-px bg-border md:flex-row">
-        <Select value={area} onValueChange={(value) => setArea(value as Area | "all")}>
-          <SelectTrigger className="h-12 sm:h-14 rounded-none border-0 bg-card text-sm text-foreground shadow-none focus:ring-0 hover:bg-surface transition-colors md:w-[160px]">
-            <SelectValue placeholder="المنطقة" />
-          </SelectTrigger>
-          <SelectContent className="rounded-xl">
-            <SelectItem value="all">كل المناطق</SelectItem>
-            {ALL_AREAS.map((entry) => (
-              <SelectItem key={entry} value={entry}>{entry}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="bg-card md:w-[170px] md:shrink-0">
+          <Select value={area} onValueChange={(value) => setArea(value as Area | "all")}>
+            <SelectTrigger className="h-12 sm:h-14 w-full rounded-none border-0 bg-card text-sm text-foreground shadow-none focus:ring-0 hover:bg-surface transition-colors">
+              <SelectValue placeholder="المنطقة" />
+            </SelectTrigger>
+            <SelectContent className="rounded-xl">
+              <SelectItem value="all">كل المناطق</SelectItem>
+              {ALL_AREAS.map((entry) => (
+                <SelectItem key={entry} value={entry}>{entry}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-        <Select value={category} onValueChange={(value) => setCategory(value as Category | "all")}>
-          <SelectTrigger className="h-12 sm:h-14 rounded-none border-0 bg-card text-sm text-foreground shadow-none focus:ring-0 hover:bg-surface transition-colors md:w-[160px]">
-            <SelectValue placeholder="الفئة" />
-          </SelectTrigger>
-          <SelectContent className="rounded-xl">
-            <SelectItem value="all">كل الفئات</SelectItem>
-            {ALL_CATEGORIES.map((entry) => (
-              <SelectItem key={entry} value={entry}>{entry}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="bg-card md:w-[170px] md:shrink-0">
+          <Select value={category} onValueChange={(value) => setCategory(value as Category | "all")}>
+            <SelectTrigger className="h-12 sm:h-14 w-full rounded-none border-0 bg-card text-sm text-foreground shadow-none focus:ring-0 hover:bg-surface transition-colors">
+              <SelectValue placeholder="الفئة" />
+            </SelectTrigger>
+            <SelectContent className="rounded-xl">
+              <SelectItem value="all">كل الفئات</SelectItem>
+              {ALL_CATEGORIES.map((entry) => (
+                <SelectItem key={entry} value={entry}>{entry}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
         <Button
           type="submit"
