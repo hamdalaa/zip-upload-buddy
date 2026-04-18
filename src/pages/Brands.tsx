@@ -209,7 +209,7 @@ export default function Brands() {
                                 alt={`${brand.brandName} logo`}
                                 loading={idx < 4 ? "eager" : "lazy"}
                                 decoding="async"
-                                className="max-h-full max-w-full object-contain object-left drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)] transition-transform duration-500 group-hover:scale-[1.06]"
+                                className={`max-h-full max-w-full object-contain object-left drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)] transition-transform duration-500 group-hover:scale-[1.06] ${brand.slug === "apple" ? "brightness-0 invert" : ""}`}
                               />
                             ) : (
                               <span className="font-display text-3xl sm:text-4xl font-extrabold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
