@@ -316,12 +316,13 @@
 
   /* ---- Interactions ----------------------------------------- */
   .hover-lift {
+    transform: translate3d(0, 0, 0);
     transition:
-      transform 0.4s var(--ease-premium),
-      box-shadow 0.4s var(--ease-premium);
+      transform 0.25s var(--ease-premium),
+      box-shadow 0.25s var(--ease-premium);
   }
   .hover-lift:hover {
-    transform: translateY(-3px);
+    transform: translate3d(0, -3px, 0);
     box-shadow: var(--shadow-lg);
   }
 
@@ -365,27 +366,30 @@
   }
 
   .smooth-img {
-    transition: transform 0.7s var(--ease-premium), filter 0.7s var(--ease-premium);
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+    transition: transform 0.5s var(--ease-premium);
   }
   .group:hover .smooth-img {
-    transform: scale(1.05);
+    transform: scale3d(1.04, 1.04, 1);
   }
 
   .icon-nudge-x {
-    transition: transform 0.3s var(--ease-premium);
+    transition: transform 0.25s var(--ease-premium);
   }
   .group:hover .icon-nudge-x {
-    transform: translateX(-4px);
+    transform: translate3d(-4px, 0, 0);
   }
 
   .card-elevate {
+    transform: translate3d(0, 0, 0);
     transition:
-      transform 0.4s var(--ease-premium),
-      box-shadow 0.4s var(--ease-premium),
-      border-color 0.3s var(--ease-premium);
+      transform 0.25s var(--ease-premium),
+      box-shadow 0.25s var(--ease-premium),
+      border-color 0.25s var(--ease-premium);
   }
   .card-elevate:hover {
-    transform: translateY(-3px);
+    transform: translate3d(0, -3px, 0);
     box-shadow: var(--shadow-lg);
     border-color: hsl(var(--primary) / 0.3);
   }
