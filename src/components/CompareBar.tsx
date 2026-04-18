@@ -32,15 +32,18 @@ export function CompareBar() {
 
   return (
     <>
-      {/* Sticky bottom bar */}
-      <div className="fixed bottom-0 inset-x-0 z-40 border-t border-border bg-card shadow-[0_-8px_24px_-12px_hsl(220_30%_20%/0.15)]">
+      {/* Sticky bottom bar — drawer-slide animation + glass */}
+      <div className="drawer-slide fixed bottom-0 inset-x-0 z-40 border-t border-border/80 bg-card/95 backdrop-blur-xl shadow-[0_-12px_40px_-12px_hsl(220_30%_20%/0.18)]">
         <div className="container flex items-center gap-3 py-2.5">
           <div className="inline-flex items-center gap-2 text-sm font-bold">
-            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-primary">
+            <span className="relative flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-primary to-violet text-primary-foreground shadow-soft-md">
               <Scale className="h-4 w-4" />
+              {items.length >= 2 && (
+                <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-rose ring-2 ring-card animate-pulse" />
+              )}
             </span>
             <span className="hidden sm:inline">سلة المقارنة</span>
-            <span className="rounded-full bg-primary px-2 py-0.5 text-[11px] text-primary-foreground">
+            <span className="rounded-full bg-gradient-primary px-2 py-0.5 text-[11px] text-primary-foreground shadow-soft">
               {items.length}/4
             </span>
           </div>
@@ -52,13 +55,13 @@ export function CompareBar() {
               return (
                 <div
                   key={p.id}
-                  className="relative flex shrink-0 items-center gap-2 rounded-md border border-border bg-background pl-2 pr-1 py-1"
+                  className="relative flex shrink-0 items-center gap-2 rounded-md border border-border bg-background pl-2 pr-1 py-1 transition-all hover:border-primary/40 hover:shadow-soft"
                 >
                   <img src={img} alt="" loading="lazy" decoding="async" className="h-9 w-9 rounded object-cover" />
                   <span className="max-w-[120px] truncate text-xs">{p.name}</span>
                   <button
                     onClick={() => toggleCompare(p.id)}
-                    className="flex h-6 w-6 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-destructive"
+                    className="flex h-6 w-6 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-destructive transition-colors"
                     aria-label="إزالة"
                   >
                     <X className="h-3.5 w-3.5" />
@@ -83,7 +86,7 @@ export function CompareBar() {
               size="sm"
               onClick={() => setOpen(true)}
               disabled={items.length < 2}
-              className="h-8 gap-1 bg-primary text-primary-foreground hover:bg-primary/90"
+              className={`btn-ripple h-8 gap-1 bg-gradient-primary text-primary-foreground hover:opacity-95 shadow-glow ${items.length >= 2 ? "animate-pulse-glow" : ""}`}
             >
               <Eye className="h-3.5 w-3.5" />
               قارن الآن

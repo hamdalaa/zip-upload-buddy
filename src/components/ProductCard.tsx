@@ -139,23 +139,24 @@ export function ProductCard({
   return (
     <article
       className={cn(
-        "group relative overflow-hidden rounded-[1.55rem] border border-border/75 bg-card/94 shadow-soft-lg transition-all duration-300 sm:rounded-[1.7rem]",
+        "group tilt-3d relative overflow-hidden rounded-[1.55rem] border border-border/75 bg-card/94 shadow-soft-lg transition-all duration-300 sm:rounded-[1.7rem]",
         inCompare && "ring-1 ring-primary/60",
       )}
     >
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent" />
+
+      {bestPrice && (
+        <span className="ribbon ribbon-emerald">
+          <Award className="h-3 w-3" />
+          أفضل سعر
+        </span>
+      )}
 
       <Link to={`/shop-view/${product.shopId}`} className="relative block aspect-[1/1.02] overflow-hidden bg-surface-2 sm:aspect-[1/1.06]">
         <img src={img} alt={product.name} loading="lazy" decoding="async" width={640} height={640} className="smooth-img h-full w-full object-cover" />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_18%,rgba(6,17,28,0.08)_46%,rgba(6,17,28,0.72)_100%)]" />
 
         <div className="absolute right-3 top-3 z-10 flex flex-col gap-2">
-          {bestPrice && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-success px-2.5 py-1 text-[10px] font-bold text-white">
-              <Award className="h-3 w-3" />
-              أفضل سعر
-            </span>
-          )}
           {stale && <StaleBadge />}
         </div>
 
