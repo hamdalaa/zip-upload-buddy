@@ -20,23 +20,25 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section className="border-y border-foreground py-8">
+    <section className="atlas-panel p-6 md:p-8">
       <div className="text-right">
         <span className="atlas-kicker">كيف يعمل تايه</span>
-        <h2 className="font-display mt-4 text-3xl font-bold leading-none text-foreground">ثلاث خطوات واضحة</h2>
+        <h2 className="font-display mt-3 text-2xl font-semibold leading-tight text-foreground">ثلاث خطوات واضحة</h2>
       </div>
 
-      <div className="mt-8 grid grid-cols-1 gap-px bg-border md:grid-cols-3">
+      <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
         {steps.map((s, i) => (
-          <article key={s.title} className="bg-background p-5 text-right">
+          <article key={s.title} className="rounded-xl border border-border bg-surface p-4 text-right transition-all hover:border-primary/30 hover:bg-primary-soft/40">
             <div className="flex items-center justify-between">
-              <s.icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
-              <div className="font-numeric text-2xl font-bold leading-none text-muted-foreground/40">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                <s.icon className="h-4 w-4" strokeWidth={2} />
+              </div>
+              <div className="font-numeric text-xl font-semibold leading-none text-muted-foreground/40">
                 0{i + 1}
               </div>
             </div>
-            <h3 className="mt-5 font-display text-xl font-bold text-foreground">{s.title}</h3>
-            <p className="mt-2 text-sm leading-7 text-muted-foreground">{s.desc}</p>
+            <h3 className="mt-4 font-display text-base font-semibold text-foreground">{s.title}</h3>
+            <p className="mt-1.5 text-xs leading-6 text-muted-foreground">{s.desc}</p>
           </article>
         ))}
       </div>

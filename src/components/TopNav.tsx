@@ -50,20 +50,6 @@ function loadSelectedCity(): { slug: string; cityAr: string } {
   return DEFAULT_CITY;
 }
 
-const CAT_LABELS: Record<Category, string> = {
-  Computing: "حاسبات",
-  "PC Parts": "قطع PC",
-  Networking: "شبكات",
-  Gaming: "ألعاب",
-  Cameras: "كاميرات",
-  Printers: "طابعات",
-  Phones: "هواتف",
-  Chargers: "شواحن",
-  Accessories: "إكسسوارات",
-  Tablets: "تابلت",
-  "Smart Devices": "أجهزة ذكية",
-};
-
 const primaryLinks = [
   { to: "/sinaa", label: "الشوارع" },
   { to: "/iraq", label: "المحافظات" },
@@ -75,15 +61,15 @@ export function TopNav() {
   const nav = useNavigate();
   const loc = useLocation();
   const [q, setQ] = useState("");
-  const [cat, setCat] = useState<Category | "all">("all");
+  const [, setCat] = useState<Category | "all">("all");
   const [mobileOpen, setMobileOpen] = useState(false);
   const [favOpen, setFavOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [selectedCity, setSelectedCity] = useState(() => loadSelectedCity());
   const { favorites, openTour } = useUserPrefs();
   const { products } = useDataStore();
 
   const favItems = products.filter((product) => favorites.has(product.id));
-  const today = new Intl.DateTimeFormat("ar-IQ", { day: "2-digit", month: "long", year: "numeric" }).format(new Date());
 
   function pickCity(slug: string, cityAr: string, navigateTo?: string) {
     const next = { slug, cityAr };
@@ -91,6 +77,13 @@ export function TopNav() {
     try { localStorage.setItem(CITY_STORAGE_KEY, JSON.stringify(next)); } catch { /* */ }
     if (navigateTo) nav(navigateTo);
   }
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     const match = loc.pathname.match(/^\/city\/([^/]+)/);
@@ -119,47 +112,46 @@ export function TopNav() {
     event.preventDefault();
     const params = new URLSearchParams();
     if (q.trim()) params.set("q", q.trim());
-    if (cat !== "all") params.set("category", cat);
     nav(`/results?${params.toString()}`);
     setMobileOpen(false);
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/92 backdrop-blur-md">
-      {/* Editorial date strip */}
-      <div className="hidden border-b border-border/60 md:block">
-        <div className="container flex items-center justify-between gap-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-          <span>تايه · أطلس الإلكترونيات العراقي</span>
-          <span className="font-numeric tracking-[0.18em]">{today}</span>
-        </div>
-      </div>
-
+    <header
+      className={cn(
+        "sticky top-0 z-40 transition-all duration-300",
+        scrolled
+          ? "glass-panel border-b border-border/60 shadow-soft-md"
+          : "border-b border-transparent bg-background",
+      )}
+    >
       <div className="container py-3 md:py-4">
-        <div className="flex items-center gap-4 md:gap-6">
+        <div className="flex items-center gap-3 md:gap-6">
           {/* Wordmark */}
-          <Link to="/" className="group flex shrink-0 items-baseline gap-3">
+          <Link to="/" className="group flex shrink-0 items-center gap-2.5">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-primary shadow-glow">
+              <span className="font-display text-lg font-bold leading-none text-primary-foreground">ت</span>
+            </div>
             <div className="text-right">
-              <div className="font-display text-3xl font-bold leading-none text-foreground">تايه</div>
-              <div className="mt-1 hidden text-[9px] font-bold uppercase tracking-[0.32em] text-muted-foreground sm:block">
-                Tayeh — Atlas
+              <div className="font-display text-xl font-semibold leading-none text-foreground">تايه</div>
+              <div className="mt-0.5 hidden text-[9px] font-semibold uppercase tracking-[0.22em] text-muted-foreground sm:block">
+                Tayeh
               </div>
             </div>
           </Link>
 
-          <div className="hidden h-8 w-px bg-border lg:block" />
-
-          {/* Primary nav — minimal, editorial */}
-          <nav className="hidden items-center gap-6 lg:flex">
+          {/* Primary nav — premium minimal */}
+          <nav className="hidden items-center gap-1 lg:flex ms-4">
             {primaryLinks.map((link) => (
               <NavLink
                 key={link.to}
                 to={link.to}
                 className={({ isActive }) =>
                   cn(
-                    "relative py-1 text-sm font-semibold transition-colors",
+                    "relative rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200",
                     isActive
-                      ? "text-foreground after:absolute after:inset-x-0 after:-bottom-0.5 after:h-0.5 after:bg-primary"
-                      : "text-foreground/65 hover:text-foreground",
+                      ? "bg-primary-soft text-primary"
+                      : "text-muted-foreground hover:bg-surface hover:text-foreground",
                   )
                 }
               >
@@ -168,15 +160,15 @@ export function TopNav() {
             ))}
           </nav>
 
-          <div className="ms-auto flex items-center gap-2">
+          <div className="ms-auto flex items-center gap-1 sm:gap-2">
             {/* City */}
             <DropdownMenu>
-              <DropdownMenuTrigger className="hidden items-center gap-2 border-b border-transparent py-1 text-sm font-semibold text-foreground transition-colors hover:border-foreground md:flex">
+              <DropdownMenuTrigger className="hidden items-center gap-1.5 rounded-lg border border-border bg-surface px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:border-primary/40 hover:bg-primary-soft md:flex">
                 <MapPin className="h-3.5 w-3.5 text-primary" />
                 <span>{selectedCity.cityAr}</span>
                 <ChevronDown className="h-3 w-3 text-muted-foreground" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="max-h-[70vh] w-72 overflow-y-auto">
+              <DropdownMenuContent align="end" className="max-h-[70vh] w-72 overflow-y-auto rounded-xl">
                 <DropdownMenuLabel>المحافظات</DropdownMenuLabel>
                 {CITIES.slice().sort((a, b) => b.count - a.count).map((city) => {
                   const active = city.slug === selectedCity.slug;
@@ -184,7 +176,7 @@ export function TopNav() {
                     <DropdownMenuItem
                       key={city.slug}
                       onClick={() => pickCity(city.slug, city.cityAr, `/city/${city.slug}`)}
-                      className="flex cursor-pointer items-center justify-between"
+                      className="flex cursor-pointer items-center justify-between rounded-lg"
                     >
                       <span className="flex items-center gap-2">
                         {active ? <Check className="h-4 w-4 text-primary" /> : <MapPin className="h-4 w-4 text-muted-foreground" />}
@@ -195,7 +187,7 @@ export function TopNav() {
                   );
                 })}
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => nav("/iraq")} className="cursor-pointer font-semibold text-primary">
+                <DropdownMenuItem onClick={() => nav("/iraq")} className="cursor-pointer rounded-lg font-semibold text-primary">
                   كل محلات العراق
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -203,7 +195,7 @@ export function TopNav() {
 
             <button
               onClick={openTour}
-              className="hidden h-9 w-9 items-center justify-center rounded-full text-foreground/65 transition-colors hover:text-foreground md:flex"
+              className="hidden h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-surface hover:text-foreground md:flex"
               aria-label="دليل الاستخدام"
             >
               <HelpCircle className="h-4 w-4" />
@@ -211,12 +203,12 @@ export function TopNav() {
 
             <button
               onClick={() => setFavOpen(true)}
-              className="relative flex h-9 w-9 items-center justify-center rounded-full text-foreground/65 transition-colors hover:text-foreground"
+              className="relative flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-surface hover:text-foreground"
               aria-label="المفضلة"
             >
               <Heart className={cn("h-4 w-4", favItems.length > 0 && "fill-primary text-primary")} />
               {favItems.length > 0 && (
-                <span className="absolute -end-0.5 -top-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-primary px-1 font-numeric text-[9px] font-bold text-primary-foreground">
+                <span className="absolute -end-0.5 -top-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-accent px-1 font-numeric text-[9px] font-bold text-accent-foreground">
                   {favItems.length}
                 </span>
               )}
@@ -224,7 +216,7 @@ export function TopNav() {
 
             <Link
               to="/dashboard"
-              className="hidden h-9 w-9 items-center justify-center rounded-full text-foreground/65 transition-colors hover:text-foreground md:flex"
+              className="hidden h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-surface hover:text-foreground md:flex"
               aria-label="لوحة الإدارة"
             >
               <LayoutDashboard className="h-4 w-4" />
@@ -232,7 +224,7 @@ export function TopNav() {
 
             <button
               onClick={() => setMobileOpen((v) => !v)}
-              className="flex h-9 w-9 items-center justify-center rounded-full text-foreground transition-colors hover:bg-muted lg:hidden"
+              className="flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:bg-surface lg:hidden"
               aria-label="القائمة"
             >
               {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
@@ -242,8 +234,8 @@ export function TopNav() {
 
         {/* Mobile sheet */}
         {mobileOpen && (
-          <div className="mt-4 grid gap-4 border-t border-border pt-4 lg:hidden">
-            <form onSubmit={submit} className="flex items-center gap-2 border border-border bg-card px-3 py-2">
+          <div className="mt-4 grid gap-4 border-t border-border pt-4 lg:hidden animate-fade-in">
+            <form onSubmit={submit} className="flex items-center gap-2 rounded-xl border border-border bg-surface px-3 py-2 focus-within:border-primary focus-within:bg-card transition-colors">
               <Search className="h-4 w-4 text-muted-foreground" />
               <input
                 value={q}
@@ -258,13 +250,13 @@ export function TopNav() {
               )}
             </form>
 
-            <div className="grid grid-cols-2 gap-px bg-border">
+            <div className="grid grid-cols-2 gap-2">
               {primaryLinks.map((link) => (
                 <Link
                   key={link.to}
                   to={link.to}
                   onClick={() => setMobileOpen(false)}
-                  className="bg-background px-4 py-3 text-sm font-semibold text-foreground"
+                  className="rounded-xl border border-border bg-surface px-4 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-primary-soft hover:border-primary/40 hover:text-primary"
                 >
                   {link.label}
                 </Link>
@@ -306,7 +298,7 @@ export function TopNav() {
           </SheetHeader>
 
           {favItems.length === 0 ? (
-            <div className="mt-12 border border-dashed border-border bg-card px-6 py-12 text-center">
+            <div className="mt-12 rounded-2xl border border-dashed border-border bg-surface px-6 py-12 text-center">
               <Heart className="mx-auto h-12 w-12 text-muted-foreground/35" />
               <p className="mt-4 text-sm leading-7 text-muted-foreground">
                 ما عندك عناصر محفوظة بعد. احفظ أي منتج من النتائج حتى يظهر هنا.
@@ -315,13 +307,12 @@ export function TopNav() {
           ) : (
             <ul className="mt-6 space-y-3">
               {favItems.map((p) => (
-                <li key={p.id} className="flex items-start gap-3 border border-border bg-card p-3 text-right">
+                <li key={p.id} className="flex items-start gap-3 rounded-xl border border-border bg-card p-3 text-right shadow-soft">
                   <div className="flex-1">
                     <div className="text-sm font-semibold text-foreground">{p.name}</div>
                     <div className="mt-1 text-xs text-muted-foreground">{p.shopName}</div>
                   </div>
                   <button
-                    onClick={() => { /* keep */ }}
                     aria-label="إزالة"
                     className="text-muted-foreground hover:text-destructive"
                   >

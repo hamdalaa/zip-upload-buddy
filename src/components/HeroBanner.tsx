@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowLeft, MapPin, Search } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { HeroSearch } from "@/components/HeroSearch";
 import { useDataStore } from "@/lib/dataStore";
 import { SUGGESTED_QUERIES } from "@/lib/search";
@@ -16,44 +16,45 @@ export function HeroBanner() {
   ];
 
   return (
-    <section className="relative isolate border-b border-border bg-background">
-      {/* Top editorial rule */}
-      <div className="container">
-        <div className="editorial-rule-bold mt-0" />
-      </div>
+    <section className="relative isolate overflow-hidden hero-bg">
+      {/* Subtle grid */}
+      <div className="absolute inset-0 -z-10 bg-grid opacity-50" />
 
-      <div className="container relative pt-8 pb-12 md:pt-14 md:pb-20">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-16">
-          {/* Editorial headline */}
+      <div className="container relative pt-12 pb-16 sm:pt-16 sm:pb-20 md:pt-24 md:pb-28">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-16">
+          {/* Headline */}
           <div className="text-right">
-            <div className="atlas-kicker">دليل الإلكترونيات · العراق</div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary-soft px-3 py-1.5 text-[11px] font-semibold text-primary">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary animate-pulse-glow" />
+              دليل الإلكترونيات · العراق
+            </div>
 
-            <h1 className="font-display mt-6 text-[clamp(3rem,9vw,7.5rem)] font-bold leading-[0.86] text-foreground">
+            <h1 className="font-display mt-6 text-[clamp(2.5rem,8vw,6rem)] font-semibold leading-[0.95] text-foreground tracking-tight">
               أطلس
-              <span className="text-primary"> سوق </span>
+              <span className="text-gradient"> سوق </span>
               الإلكترونيات
               <br />
-              <span className="text-foreground/40">العراقي.</span>
+              <span className="text-foreground/45">العراقي.</span>
             </h1>
 
-            <p className="mt-8 max-w-[58ch] text-base leading-8 text-muted-foreground md:text-lg md:leading-9">
-              مرجع تحريري واحد لمحلات وشوارع ومحافظات العراق. تعرف على المحل الصحيح،
+            <p className="mt-6 max-w-[58ch] text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
+              مرجع واحد لمحلات وشوارع ومحافظات العراق. تعرف على المحل الصحيح،
               ثقته، وأقرب طريق له — قبل ما تتحرك من البيت.
             </p>
 
             {/* Search */}
-            <div className="mt-10">
+            <div className="mt-8 sm:mt-10">
               <HeroSearch />
             </div>
 
             {/* Quick queries */}
-            <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs text-muted-foreground">
-              <span className="font-semibold uppercase tracking-[0.18em] text-foreground/55">الأكثر بحثاً</span>
+            <div className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-2 text-xs text-muted-foreground">
+              <span className="font-semibold uppercase tracking-[0.16em] text-foreground/55">الأكثر بحثاً</span>
               {SUGGESTED_QUERIES.slice(0, 5).map((query) => (
                 <Link
                   key={query}
                   to={`/results?q=${encodeURIComponent(query)}`}
-                  className="link-underline font-semibold text-foreground/75 hover:text-foreground"
+                  className="rounded-full border border-border bg-card px-3 py-1 font-medium text-foreground/75 hover:border-primary/40 hover:bg-primary-soft hover:text-primary transition-colors"
                 >
                   {query}
                 </Link>
@@ -62,10 +63,12 @@ export function HeroBanner() {
           </div>
 
           {/* Sidebar — index card */}
-          <aside className="hidden self-start border border-border bg-card p-6 text-right lg:block">
-            <div className="atlas-kicker">الفهرس</div>
+          <aside className="hidden self-start atlas-panel p-2 text-right lg:block">
+            <div className="px-4 pt-3 pb-2">
+              <div className="atlas-kicker">الفهرس</div>
+            </div>
 
-            <div className="mt-6 space-y-0">
+            <div className="space-y-1">
               {[
                 { to: "/sinaa", title: "شارع الصناعة", note: "حاسبات · قطع · شبكات", num: "01" },
                 { to: "/rubaie", title: "شارع الربيعي", note: "هواتف · شواحن · إكسسوارات", num: "02" },
@@ -75,14 +78,14 @@ export function HeroBanner() {
                 <Link
                   key={entry.to}
                   to={entry.to}
-                  className="group flex items-start justify-between gap-3 border-b border-border py-4 last:border-b-0 transition-colors hover:bg-surface"
+                  className="group flex items-start justify-between gap-3 rounded-xl px-3 py-3 transition-colors hover:bg-primary-soft"
                 >
-                  <span className="font-numeric text-xs font-semibold text-muted-foreground">{entry.num}</span>
+                  <span className="font-numeric text-[10px] font-semibold text-muted-foreground mt-1">{entry.num}</span>
                   <div className="flex-1 text-right">
-                    <div className="font-display text-lg font-bold leading-none text-foreground group-hover:text-primary">
+                    <div className="font-display text-base font-semibold leading-tight text-foreground group-hover:text-primary">
                       {entry.title}
                     </div>
-                    <div className="mt-1.5 text-xs leading-5 text-muted-foreground">{entry.note}</div>
+                    <div className="mt-1 text-xs leading-5 text-muted-foreground">{entry.note}</div>
                   </div>
                   <ArrowLeft className="icon-nudge-x mt-1 h-3.5 w-3.5 shrink-0 text-muted-foreground group-hover:text-primary" />
                 </Link>
@@ -92,34 +95,34 @@ export function HeroBanner() {
         </div>
 
         {/* Mobile entries */}
-        <div className="mt-10 grid gap-px bg-border lg:hidden">
+        <div className="mt-8 grid grid-cols-1 gap-2 sm:grid-cols-3 lg:hidden">
           {[
-            { to: "/sinaa", title: "شارع الصناعة", note: "حاسبات · قطع · شبكات" },
+            { to: "/sinaa", title: "شارع الصناعة", note: "حاسبات · شبكات" },
             { to: "/rubaie", title: "شارع الربيعي", note: "هواتف · شواحن" },
             { to: "/iraq", title: "كل المحافظات", note: "10 محافظات" },
           ].map((entry) => (
             <Link
               key={entry.to}
               to={entry.to}
-              className="flex items-center justify-between gap-3 bg-background px-4 py-4 text-right"
+              className="group flex items-center justify-between gap-3 rounded-xl border border-border bg-card px-4 py-3 text-right shadow-soft transition-all hover:border-primary/40 hover:shadow-soft-md"
             >
-              <ArrowLeft className="h-3.5 w-3.5 text-muted-foreground" />
+              <ArrowLeft className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
               <div>
-                <div className="font-display text-lg font-bold leading-none text-foreground">{entry.title}</div>
+                <div className="font-display text-base font-semibold leading-none text-foreground group-hover:text-primary transition-colors">{entry.title}</div>
                 <div className="mt-1 text-[11px] text-muted-foreground">{entry.note}</div>
               </div>
             </Link>
           ))}
         </div>
 
-        {/* Stats — large editorial numerals */}
-        <div className="mt-12 grid grid-cols-3 gap-px border-y border-foreground bg-border md:mt-16">
+        {/* Stats — premium numerals */}
+        <div className="mt-12 grid grid-cols-3 gap-2 sm:gap-4 md:mt-16">
           {stats.map((stat) => (
-            <div key={stat.label} className="bg-background px-4 py-6 text-right md:px-6 md:py-8">
-              <div className="font-numeric text-4xl font-bold leading-none text-foreground md:text-5xl lg:text-6xl">
+            <div key={stat.label} className="atlas-card px-4 py-5 text-right sm:px-6 sm:py-6 md:px-8 md:py-8">
+              <div className="font-numeric text-3xl font-semibold leading-none text-gradient sm:text-4xl md:text-5xl lg:text-6xl">
                 {stat.value.toLocaleString("ar")}
               </div>
-              <div className="mt-3 text-[10px] font-bold uppercase tracking-[0.22em] text-muted-foreground">
+              <div className="mt-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground sm:text-[11px]">
                 {stat.label}
               </div>
             </div>

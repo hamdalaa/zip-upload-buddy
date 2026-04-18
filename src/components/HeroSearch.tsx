@@ -17,7 +17,6 @@ export function HeroSearch({
   initialQ = "",
   initialArea = "all",
   initialCategory = "all",
-  variant = "hero",
 }: Props) {
   const nav = useNavigate();
   const [q, setQ] = useState(initialQ);
@@ -36,10 +35,10 @@ export function HeroSearch({
   return (
     <form
       onSubmit={submit}
-      className="border-y-2 border-foreground bg-background"
+      className="rounded-2xl border border-border bg-card shadow-soft-xl overflow-hidden"
     >
-      <div className="grid gap-px bg-border md:grid-cols-[minmax(0,1fr)_180px_180px_auto]">
-        <div className="relative bg-background">
+      <div className="grid grid-cols-1 gap-px bg-border md:grid-cols-[minmax(0,1fr)_160px_160px_auto]">
+        <div className="relative bg-card">
           <Search className="pointer-events-none absolute end-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             value={q}
@@ -50,10 +49,10 @@ export function HeroSearch({
         </div>
 
         <Select value={area} onValueChange={(value) => setArea(value as Area | "all")}>
-          <SelectTrigger className="h-14 rounded-none border-0 bg-background text-foreground shadow-none focus:ring-0">
+          <SelectTrigger className="h-14 rounded-none border-0 bg-card text-foreground shadow-none focus:ring-0 hover:bg-surface transition-colors">
             <SelectValue placeholder="المنطقة" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="rounded-xl">
             <SelectItem value="all">كل المناطق</SelectItem>
             {ALL_AREAS.map((entry) => (
               <SelectItem key={entry} value={entry}>{entry}</SelectItem>
@@ -62,10 +61,10 @@ export function HeroSearch({
         </Select>
 
         <Select value={category} onValueChange={(value) => setCategory(value as Category | "all")}>
-          <SelectTrigger className="h-14 rounded-none border-0 bg-background text-foreground shadow-none focus:ring-0">
+          <SelectTrigger className="h-14 rounded-none border-0 bg-card text-foreground shadow-none focus:ring-0 hover:bg-surface transition-colors">
             <SelectValue placeholder="الفئة" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="rounded-xl">
             <SelectItem value="all">كل الفئات</SelectItem>
             {ALL_CATEGORIES.map((entry) => (
               <SelectItem key={entry} value={entry}>{entry}</SelectItem>
@@ -75,7 +74,7 @@ export function HeroSearch({
 
         <Button
           type="submit"
-          className="h-14 rounded-none bg-foreground px-8 text-sm font-bold uppercase tracking-[0.16em] text-background hover:bg-primary"
+          className="h-14 rounded-none bg-gradient-primary px-6 md:px-8 text-sm font-semibold text-primary-foreground hover:opacity-95 transition-opacity shadow-glow"
         >
           ابحث
           <ArrowLeft className="ms-2 h-4 w-4" />
