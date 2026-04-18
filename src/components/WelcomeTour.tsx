@@ -1,5 +1,17 @@
 import { useEffect, useState } from "react";
-import { Search, Scale, MapPin, Sparkles, ArrowLeft, ArrowRight, Instagram, Code2 } from "lucide-react";
+import {
+  Search,
+  Scale,
+  MapPin,
+  Sparkles,
+  ArrowLeft,
+  ArrowRight,
+  Instagram,
+  Code2,
+  Store,
+  Tag,
+  ShieldCheck,
+} from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -14,24 +26,32 @@ import { useUserPrefs } from "@/lib/userPrefs";
 const steps = [
   {
     icon: Search,
-    title: "ابحث بسهولة",
-    body: "اكتب اسم المنتج (مثلاً: RTX 4060 أو iPhone 15) وراح نعرض لك كل المحلات اللي عندها.",
+    title: "ابحث وقارن بسرعة",
+    body:
+      "اكتب اسم المنتج (مثل RTX 4060 أو iPhone 15) أو اختر فئة، وراح تشوف نتائج من عشرات المحلات بصفحة واحدة. اضغط «قارن» لحد 4 منتجات وشوفهم جنب بعض بالسعر والمواصفات.",
+    highlights: ["بحث فوري", "مقارنة لحد 4 منتجات", "فلترة بالسعر والتقييم"],
   },
   {
-    icon: Scale,
-    title: "قارن بين المحلات",
-    body: "اضغط على زر «قارن» على أي منتج، واختر 2-4 منتجات، وراح نعرضهم جنب بعض بالأسعار والتفاصيل.",
+    icon: Store,
+    title: "كل محلات بغداد بمكان واحد",
+    body:
+      "دليل لشارع الصناعة والربيعي وباقي شوارع الإلكترونيات: موقع المحل على Google Maps، رقم تلفون، واتساب، تقييمات حقيقية، وحتى صفحات إنستغرام — كله بضغطة وحدة.",
+    highlights: ["خرائط Google", "واتساب مباشر", "تقييمات موثقة"],
   },
   {
     icon: MapPin,
-    title: "روح المحل مباشرة",
-    body: "كل محل يجي معاه رابط Google Maps + رقم تلفون + واتساب. ما تحتاج تدور بالشارع.",
+    title: "تغطية لكل العراق",
+    body:
+      "مو بس بغداد — أربيل، البصرة، الموصل، النجف، كربلاء، السليمانية، كركوك، بعقوبة، والناصرية. افتح الأطلس وشوف أهم محلات كل محافظة.",
+    highlights: ["10 محافظات", "وكلاء رسميون", "تحديث مستمر"],
   },
   {
     icon: Code2,
-    title: "صفحة المطور",
-    body: "تايه من تطوير فردي — لأي تعاون، اقتراح، أو استفسار، تواصل معي مباشرة عبر إنستغرام وراح أرد بأقرب وقت.",
+    title: "من المطور — مرحبا 👋",
+    body:
+      "تايه مشروع شخصي بنيته لأن دوامة البحث عن سعر أو محل بالعراق تعبتني. لو عندك ملاحظة، اقتراح، محل ناقص، أو فرصة تعاون — راسلني مباشرة بإنستغرام وراح أرد بأقرب وقت.",
     instagram: "https://instagram.com/",
+    highlights: ["تطوير فردي", "تحديثات أسبوعية", "اقتراحاتك تفرق"],
   },
 ];
 
@@ -40,7 +60,6 @@ export function WelcomeTour() {
   const [open, setOpen] = useState(!onboarded);
   const [step, setStep] = useState(0);
 
-  // Re-open when "?" button is pressed (tourTrigger increments).
   useEffect(() => {
     if (tourTrigger > 0) {
       setStep(0);
@@ -53,7 +72,8 @@ export function WelcomeTour() {
     setOnboarded(true);
   };
 
-  const Icon = steps[step].icon;
+  const current = steps[step];
+  const Icon = current.icon;
   const isLast = step === steps.length - 1;
 
   return (
@@ -65,7 +85,7 @@ export function WelcomeTour() {
           </div>
           <DialogTitle className="text-center text-xl">أهلاً بك في تايه</DialogTitle>
           <DialogDescription className="text-center">
-            دليل إلكترونيات بغداد — جولة سريعة بثلاث خطوات
+            دليل إلكترونيات العراق — جولة سريعة بأربع خطوات
           </DialogDescription>
         </DialogHeader>
 
@@ -73,17 +93,31 @@ export function WelcomeTour() {
           <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
             <Icon className="h-6 w-6" />
           </div>
-          <h3 className="text-lg font-bold">{steps[step].title}</h3>
-          <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{steps[step].body}</p>
-          {isLast && (steps[step] as any).instagram && (
+          <h3 className="text-lg font-bold">{current.title}</h3>
+          <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{current.body}</p>
+
+          {current.highlights && (
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-1.5">
+              {current.highlights.map((h) => (
+                <span
+                  key={h}
+                  className="rounded-full border border-border bg-background px-2.5 py-1 text-[11px] font-medium text-foreground/80"
+                >
+                  {h}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {isLast && (current as any).instagram && (
             <a
-              href={(steps[step] as any).instagram}
+              href={(current as any).instagram}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-4 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 px-4 py-2 text-sm font-bold text-white shadow-md hover:opacity-90 transition-opacity"
             >
               <Instagram className="h-4 w-4" />
-              تواصل عبر إنستغرام
+              تواصل مع المطور
             </a>
           )}
         </div>
