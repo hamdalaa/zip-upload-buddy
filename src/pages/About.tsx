@@ -109,15 +109,18 @@ export default function About() {
               صير <span className="bg-gradient-to-r from-violet to-rose bg-clip-text text-transparent">راعي رسمي</span> للمنصّة
             </h2>
             <p className="mt-3 text-sm leading-7 text-muted-foreground">
-              المنصّة تخدم آلاف المستخدمين شهرياً يدوّرون على محلات الأجهزة بكل العراق. الرعاية تعطيك ظهور دائم بأماكن مميّزة وتدعم استمرار التطوير.
+              منصّتنا تخدم آلاف المستخدمين شهرياً بكل محافظات العراق. كون شريكنا، ووصّل علامتك التجارية لجمهور حقيقي يدوّر على منتجاتك.
             </p>
 
-            <ul className="mt-5 space-y-2.5">
+            <h3 className="mt-6 text-xs font-bold uppercase tracking-[0.14em] text-violet/90">
+              شنو تكسب كراعي؟
+            </h3>
+            <ul className="mt-3 space-y-2.5">
               {[
-                "شعار راعي ثابت بصفحة الرئيسية والـTopNav",
-                "بطاقة \"موصى به من راعي\" على نتائج البحث",
-                "إحصائيات شهرية بظهور علامتك التجارية",
-                "أولوية بقوائم الوكلاء والمحلات الموثّقة",
+                "ظهور دائم لشعارك بالصفحة الرئيسية وشريط التنقّل",
+                "بطاقة \"موصى به من راعي\" تتصدّر نتائج البحث",
+                "أولوية بقوائم الوكلاء الرسميين والمحلّات الموثّقة",
+                "تقرير شهري بإحصائيات الظهور والنقرات",
               ].map((feature) => (
                 <li key={feature} className="flex items-start gap-2.5 text-sm text-foreground/90">
                   <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-violet/15 text-violet">
@@ -136,14 +139,13 @@ export default function About() {
               >
                 <a href="https://instagram.com/hamadalaatech" target="_blank" rel="noreferrer noopener">
                   <Instagram className="h-4 w-4" />
-                  راسلنا للرعاية
+                  تواصل معنا للرعاية
                 </a>
               </Button>
             </div>
 
             <p className="mt-4 text-[11px] text-muted-foreground">
-              <Instagram className="me-1 inline h-3 w-3" />
-              متوفّر تعاون مع المتاجر، الوكلاء الرسميين، والشركات التقنية.
+              مفتوحين للتعاون مع المتاجر، الوكلاء الرسميين، والشركات التقنية.
             </p>
           </div>
         </section>
