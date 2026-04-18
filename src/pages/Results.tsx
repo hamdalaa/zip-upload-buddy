@@ -9,7 +9,7 @@ import { EmptyState } from "@/components/EmptyState";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useDataStore } from "@/lib/dataStore";
 import { groupComparable, searchProducts, SUGGESTED_QUERIES } from "@/lib/search";
 import { getRating } from "@/lib/googleRatings";
@@ -295,14 +295,33 @@ const Results = () => {
                           )}
                         </Button>
                       </SheetTrigger>
-                      <SheetContent side="right" className="w-full max-w-sm overflow-y-auto">
-                        <SheetHeader>
-                          <SheetTitle className="text-right inline-flex items-center gap-1.5">
-                            <SlidersHorizontal className="h-4 w-4 text-primary" />
-                            تصفية النتائج
-                          </SheetTitle>
+                      <SheetContent
+                        side="right"
+                        className="flex w-[92vw] max-w-md flex-col overflow-hidden p-0 sm:w-full"
+                      >
+                        <SheetHeader className="sticky top-0 z-10 border-b border-border/60 bg-background/95 px-5 py-4 backdrop-blur">
+                          <div className="flex items-center justify-between gap-3">
+                            <SheetTitle className="inline-flex items-center gap-2 text-right text-base">
+                              <SlidersHorizontal className="h-4 w-4 text-primary" />
+                              تصفية النتائج
+                              {activeFilterLabels.length > 0 && (
+                                <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-primary px-1.5 text-[10px] font-bold text-primary-foreground">
+                                  {activeFilterLabels.length}
+                                </span>
+                              )}
+                            </SheetTitle>
+                            {hasActiveFilters && (
+                              <button
+                                onClick={clearAll}
+                                className="inline-flex items-center gap-1 text-xs font-semibold text-accent transition-colors hover:text-foreground"
+                              >
+                                <X className="h-3.5 w-3.5" />
+                                مسح الكل
+                              </button>
+                            )}
+                          </div>
                         </SheetHeader>
-                        <div className="mt-4">
+                        <div className="flex-1 overflow-y-auto px-5 py-4">
                           <FiltersPanel
                             area={area}
                             category={category}
@@ -321,8 +340,19 @@ const Results = () => {
                             hasActiveFilters={hasActiveFilters}
                             clearAll={clearAll}
                             embedded
+                            compact
                           />
                         </div>
+                        <SheetClose asChild>
+                          <div className="sticky bottom-0 border-t border-border/60 bg-background/95 px-5 py-3 backdrop-blur">
+                            <Button
+                              size="lg"
+                              className="h-11 w-full rounded-full bg-primary text-primary-foreground shadow-soft-md hover:bg-primary/90"
+                            >
+                              عرض {results.length.toLocaleString("ar")} نتيجة
+                            </Button>
+                          </div>
+                        </SheetClose>
                       </SheetContent>
                     </Sheet>
 
@@ -545,11 +575,23 @@ function NoResultsFallback({
   );
 }
 
-function FilterSection({ title, children }: { title: string; children: React.ReactNode }) {
+function FilterSection({
+  title,
+  children,
+  compact,
+}: {
+  title: string;
+  children: React.ReactNode;
+  compact?: boolean;
+}) {
   return (
     <section className="border-t border-border/60 py-4 first:border-t-0 first:pt-0">
-      <h3 className="mb-3 text-sm font-semibold text-foreground">{title}</h3>
-      <div className="space-y-1.5">{children}</div>
+      <h3 className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground/80">
+        {title}
+      </h3>
+      <div className={cn(compact ? "flex flex-wrap gap-1.5" : "space-y-1.5")}>
+        {children}
+      </div>
     </section>
   );
 }
@@ -558,11 +600,28 @@ function FilterRow({
   active,
   onClick,
   children,
+  compact,
 }: {
   active: boolean;
   onClick: () => void;
   children: React.ReactNode;
+  compact?: boolean;
 }) {
+  if (compact) {
+    return (
+      <button
+        onClick={onClick}
+        className={cn(
+          "rounded-full px-3 py-1.5 text-xs font-semibold transition-all active:scale-95",
+          active
+            ? "bg-primary text-primary-foreground shadow-soft"
+            : "border border-border/70 bg-background text-foreground/75 hover:border-primary/40 hover:text-foreground",
+        )}
+      >
+        {children}
+      </button>
+    );
+  }
   return (
     <button
       onClick={onClick}
@@ -596,6 +655,7 @@ type FiltersPanelProps = {
   hasActiveFilters: boolean;
   clearAll: () => void;
   embedded?: boolean;
+  compact?: boolean;
 };
 
 function FiltersPanel(props: FiltersPanelProps) {
@@ -617,6 +677,7 @@ function FiltersPanel(props: FiltersPanelProps) {
     hasActiveFilters,
     clearAll,
     embedded,
+    compact,
   } = props;
 
   const Wrapper = ({ children }: { children: React.ReactNode }) =>
@@ -628,96 +689,151 @@ function FiltersPanel(props: FiltersPanelProps) {
 
   return (
     <Wrapper>
-      <div className="mb-4 flex items-center justify-between">
-        <div className="inline-flex items-center gap-1.5 text-sm font-semibold">
-          <SlidersHorizontal className="h-4 w-4 text-primary" />
-          التصفية
+      {!compact && (
+        <div className="mb-4 flex items-center justify-between">
+          <div className="inline-flex items-center gap-1.5 text-sm font-semibold">
+            <SlidersHorizontal className="h-4 w-4 text-primary" />
+            التصفية
+          </div>
+          {hasActiveFilters && (
+            <button
+              onClick={clearAll}
+              className="inline-flex items-center gap-1 text-xs font-semibold text-accent transition-colors hover:text-foreground"
+            >
+              <X className="h-3.5 w-3.5" />
+              مسح
+            </button>
+          )}
         </div>
-        {hasActiveFilters && (
-          <button
-            onClick={clearAll}
-            className="inline-flex items-center gap-1 text-xs font-semibold text-accent transition-colors hover:text-foreground"
-          >
-            <X className="h-3.5 w-3.5" />
-            مسح
-          </button>
-        )}
-      </div>
+      )}
 
-      <FilterSection title="المنطقة">
-        <FilterRow active={area === "all"} onClick={() => setFilter("area", "all")}>كل المناطق</FilterRow>
+      <FilterSection title="المنطقة" compact={compact}>
+        <FilterRow compact={compact} active={area === "all"} onClick={() => setFilter("area", "all")}>كل المناطق</FilterRow>
         {ALL_AREAS.map((entry) => (
-          <FilterRow key={entry} active={area === entry} onClick={() => setFilter("area", entry)}>
+          <FilterRow compact={compact} key={entry} active={area === entry} onClick={() => setFilter("area", entry)}>
             {entry}
           </FilterRow>
         ))}
       </FilterSection>
 
-      <FilterSection title="الفئة">
-        <FilterRow active={category === "all"} onClick={() => setFilter("category", "all")}>كل الفئات</FilterRow>
+      <FilterSection title="الفئة" compact={compact}>
+        <FilterRow compact={compact} active={category === "all"} onClick={() => setFilter("category", "all")}>كل الفئات</FilterRow>
         {ALL_CATEGORIES.map((entry) => (
-          <FilterRow key={entry} active={category === entry} onClick={() => setFilter("category", entry)}>
+          <FilterRow compact={compact} key={entry} active={category === entry} onClick={() => setFilter("category", entry)}>
             {entry}
           </FilterRow>
         ))}
       </FilterSection>
 
-      <FilterSection title="السعر">
+      <FilterSection title="السعر" compact={compact}>
         {PRICE_RANGES.map((entry) => (
-          <FilterRow key={entry.id} active={priceRange === entry.id} onClick={() => setPriceRange(entry.id)}>
+          <FilterRow compact={compact} key={entry.id} active={priceRange === entry.id} onClick={() => setPriceRange(entry.id)}>
             {entry.label}
           </FilterRow>
         ))}
       </FilterSection>
 
       {allBrands.length > 0 && (
-        <FilterSection title="البراند">
-          <div className="grid gap-2">
-            {allBrands.map((brand) => (
-              <label
-                key={brand}
-                className="flex items-center gap-2 rounded-2xl border border-border/70 bg-background px-3 py-2 text-sm cursor-pointer transition-colors hover:border-primary/30"
-              >
-                <Checkbox checked={brandFilters.has(brand)} onCheckedChange={() => toggleBrand(brand)} />
-                <span>{brand}</span>
-              </label>
-            ))}
-          </div>
+        <FilterSection title="البراند" compact={compact}>
+          {compact ? (
+            allBrands.map((brand) => {
+              const active = brandFilters.has(brand);
+              return (
+                <button
+                  key={brand}
+                  onClick={() => toggleBrand(brand)}
+                  className={cn(
+                    "rounded-full px-3 py-1.5 text-xs font-semibold transition-all active:scale-95",
+                    active
+                      ? "bg-primary text-primary-foreground shadow-soft"
+                      : "border border-border/70 bg-background text-foreground/75 hover:border-primary/40 hover:text-foreground",
+                  )}
+                >
+                  {brand}
+                </button>
+              );
+            })
+          ) : (
+            <div className="grid gap-2">
+              {allBrands.map((brand) => (
+                <label
+                  key={brand}
+                  className="flex items-center gap-2 rounded-2xl border border-border/70 bg-background px-3 py-2 text-sm cursor-pointer transition-colors hover:border-primary/30"
+                >
+                  <Checkbox checked={brandFilters.has(brand)} onCheckedChange={() => toggleBrand(brand)} />
+                  <span>{brand}</span>
+                </label>
+              ))}
+            </div>
+          )}
         </FilterSection>
       )}
 
-      <FilterSection title="التقييم">
-        <div className="space-y-1.5">
-          {[4.5, 4, 3.5, 0].map((rating) => (
-            <button
-              key={rating}
-              onClick={() => setMinRating(rating)}
-              className={cn(
-                "flex w-full items-center gap-2 rounded-2xl px-3 py-2 text-sm transition-colors",
-                minRating === rating ? "bg-secondary text-secondary-foreground shadow-soft" : "bg-background text-foreground/80 hover:bg-muted",
-              )}
-            >
-              {rating === 0 ? (
-                <span>الكل</span>
-              ) : (
-                <>
-                  <Star className={cn("h-3.5 w-3.5", minRating === rating ? "fill-current" : "fill-warning text-warning")} />
-                  <span>{rating}+ نجوم</span>
-                </>
-              )}
-            </button>
-          ))}
-        </div>
+      <FilterSection title="التقييم" compact={compact}>
+        {compact ? (
+          [4.5, 4, 3.5, 0].map((rating) => {
+            const active = minRating === rating;
+            return (
+              <button
+                key={rating}
+                onClick={() => setMinRating(rating)}
+                className={cn(
+                  "inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-semibold transition-all active:scale-95",
+                  active
+                    ? "bg-primary text-primary-foreground shadow-soft"
+                    : "border border-border/70 bg-background text-foreground/75 hover:border-primary/40",
+                )}
+              >
+                {rating === 0 ? (
+                  "الكل"
+                ) : (
+                  <>
+                    <Star className={cn("h-3 w-3", active ? "fill-current" : "fill-warning text-warning")} />
+                    {rating}+
+                  </>
+                )}
+              </button>
+            );
+          })
+        ) : (
+          <div className="space-y-1.5">
+            {[4.5, 4, 3.5, 0].map((rating) => (
+              <button
+                key={rating}
+                onClick={() => setMinRating(rating)}
+                className={cn(
+                  "flex w-full items-center gap-2 rounded-2xl px-3 py-2 text-sm transition-colors",
+                  minRating === rating ? "bg-secondary text-secondary-foreground shadow-soft" : "bg-background text-foreground/80 hover:bg-muted",
+                )}
+              >
+                {rating === 0 ? (
+                  <span>الكل</span>
+                ) : (
+                  <>
+                    <Star className={cn("h-3.5 w-3.5", minRating === rating ? "fill-current" : "fill-warning text-warning")} />
+                    <span>{rating}+ نجوم</span>
+                  </>
+                )}
+              </button>
+            ))}
+          </div>
+        )}
       </FilterSection>
 
-      <div className="space-y-2 pt-2">
-        <label className="flex items-center gap-2 rounded-2xl border border-border/70 bg-background px-3 py-2 text-sm cursor-pointer transition-colors hover:border-primary/30">
+      <div className={cn("pt-4 border-t border-border/60", compact ? "grid grid-cols-2 gap-2" : "space-y-2")}>
+        <label className={cn(
+          "flex items-center gap-2 rounded-2xl border border-border/70 bg-background px-3 py-2 cursor-pointer transition-colors hover:border-primary/30",
+          compact ? "text-xs font-semibold" : "text-sm",
+        )}>
           <Checkbox checked={verifiedOnly} onCheckedChange={(value) => setVerifiedOnly(!!value)} />
-          محلات موثّقة فقط
+          موثّقة فقط
         </label>
-        <label className="flex items-center gap-2 rounded-2xl border border-border/70 bg-background px-3 py-2 text-sm cursor-pointer transition-colors hover:border-primary/30">
+        <label className={cn(
+          "flex items-center gap-2 rounded-2xl border border-border/70 bg-background px-3 py-2 cursor-pointer transition-colors hover:border-primary/30",
+          compact ? "text-xs font-semibold" : "text-sm",
+        )}>
           <Checkbox checked={withDeals} onCheckedChange={(value) => setWithDeals(!!value)} />
-          عليها تخفيض فقط
+          تخفيضات فقط
         </label>
       </div>
     </Wrapper>
