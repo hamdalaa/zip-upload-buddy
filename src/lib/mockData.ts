@@ -291,7 +291,7 @@ export const initialBrands: BrandDealer[] = [
     slug: "apple",
     brandName: "Apple",
     dealerName: "Apple Authorised Resellers (iCenter, iSTYLE, Jibal Zone, AL-NABAA, Master Store, Point)",
-    website: "https://locate.apple.com/iq/en/sales",
+    website: "https://locate.apple.com/iq/en/sales?pt=all&lat=33.33029556274414&lon=44.39175796508789&address=Baghdad%2C+Iraq",
     contactPhones: ["+9647707282211"],
     cities: ["بغداد", "كربلاء", "بابل"],
     coverage: "شبكة وكلاء Apple المعتمدين بالعراق — 14 فرع رسمي يشمل iCenter وiSTYLE وJibal Zone وAL-NABAA وMaster Store وPoint.",
