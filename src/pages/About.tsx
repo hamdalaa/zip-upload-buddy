@@ -39,7 +39,7 @@ export default function About() {
             <span className="text-foreground">المطوّر والرعاية</span>
           </div>
 
-          <div className="mt-6 max-w-3xl text-right">
+          <div className="mt-6 mx-auto max-w-4xl text-center">
             <div className="inline-flex items-center gap-2 rounded-full border border-violet/30 bg-violet/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-violet">
               <Sparkles className="h-3.5 w-3.5" />
               قصّة المشروع
