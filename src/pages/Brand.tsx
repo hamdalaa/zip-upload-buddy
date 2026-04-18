@@ -75,86 +75,80 @@ const Brand = () => {
         </div>
       </div>
 
-      {/* HERO */}
+      {/* HERO — split layout: image showcase + glass content card */}
       <section className="relative overflow-hidden border-b border-border bg-background">
-        {background ? (
-          <>
-            {/* Sharp background image */}
-            <div
-              className="pointer-events-none absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url(${background})` }}
-              aria-hidden
-            />
-            {/* Subtle darkening for depth */}
-            <div
-              className="pointer-events-none absolute inset-0 bg-black/30"
-              aria-hidden
-            />
-            {/* Directional gradient (RTL: readable side on the right) */}
-            <div
-              className="pointer-events-none absolute inset-0 bg-gradient-to-l from-background via-background/85 to-background/20"
-              aria-hidden
-            />
-            {/* Bottom fade into page */}
-            <div
-              className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent"
-              aria-hidden
-            />
-            {/* Premium glow accent */}
-            <div className="pointer-events-none absolute -top-32 -left-20 h-80 w-80 rounded-full bg-primary/20 blur-3xl" />
-            <div className="pointer-events-none absolute -bottom-24 right-1/3 h-72 w-72 rounded-full bg-accent/15 blur-3xl" />
-          </>
-        ) : (
-          <>
-            <div className="pointer-events-none absolute inset-0 bg-grid opacity-20" />
-            <div className="pointer-events-none absolute -top-24 left-1/2 h-72 w-[42rem] -translate-x-1/2 rounded-full bg-primary/8 blur-3xl" />
-          </>
-        )}
-        <div className="container relative py-8 md:py-10">
-          <div className="flex flex-col items-start gap-5 md:flex-row md:items-center">
-            {/* Logo tile */}
-            <div className="relative shrink-0">
-              <div className={`flex h-24 w-24 items-center justify-center rounded-3xl shadow-lg ring-4 ring-background overflow-hidden md:h-28 md:w-28 ${isApple ? "bg-foreground" : "bg-background"}`}>
-                {logo ? (
-                  <img
-                    src={logo}
-                    alt={`${brand.brandName} logo`}
-                    loading="lazy"
-                    className={`h-full w-full object-contain p-3 ${isApple ? "brightness-0 invert" : ""}`}
-                  />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-gradient-primary font-display text-4xl font-bold text-primary-foreground md:text-5xl">
-                    {initial}
-                  </div>
-                )}
-              </div>
-              {isVerified && (
-                <span className="absolute -bottom-2 -right-2 inline-flex items-center gap-1 rounded-full bg-success px-2 py-0.5 text-[10px] font-bold text-success-foreground shadow ring-2 ring-background">
-                  <ShieldCheck className="h-3 w-3" />
-                  معتمد
-                </span>
-              )}
-            </div>
+        {/* Ambient glows */}
+        <div className="pointer-events-none absolute -top-40 -left-32 h-96 w-96 rounded-full bg-primary/15 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-32 -right-20 h-80 w-80 rounded-full bg-accent/10 blur-3xl" />
 
-            <div className="min-w-0 flex-1">
+        <div className="container relative py-8 md:py-12">
+          <div className="grid items-stretch gap-6 lg:grid-cols-[1.1fr_1fr]">
+            {/* LEFT: Premium image showcase */}
+            {background ? (
+              <div className="group relative order-2 overflow-hidden rounded-[2rem] border border-border/60 shadow-soft-xl lg:order-1 min-h-[280px] md:min-h-[360px]">
+                <div
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                  style={{ backgroundImage: `url(${background})` }}
+                  aria-hidden
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" aria-hidden />
+                <div className="absolute top-4 right-4 z-10">
+                  <div className={`flex h-14 w-14 items-center justify-center rounded-2xl shadow-soft-lg ring-2 ring-white/30 backdrop-blur-md ${isApple ? "bg-black/70" : "bg-background/85"}`}>
+                    {logo ? (
+                      <img
+                        src={logo}
+                        alt={`${brand.brandName} logo`}
+                        loading="lazy"
+                        className={`h-full w-full object-contain p-2 ${isApple ? "brightness-0 invert" : ""}`}
+                      />
+                    ) : (
+                      <span className="font-display text-xl font-bold text-foreground">{initial}</span>
+                    )}
+                  </div>
+                </div>
+                <div className="absolute bottom-4 left-4 z-10 inline-flex items-center gap-2 rounded-full bg-black/55 px-3 py-1.5 text-[11px] font-semibold text-white backdrop-blur-md ring-1 ring-white/20">
+                  <Store className="h-3.5 w-3.5" />
+                  معرض رسمي
+                </div>
+              </div>
+            ) : (
+              <div className="relative order-2 overflow-hidden rounded-[2rem] border border-border/60 bg-gradient-to-br from-primary/15 via-accent/10 to-background shadow-soft-xl lg:order-1 min-h-[280px] md:min-h-[360px]">
+                <div className="absolute inset-0 bg-grid opacity-30" />
+                <div className="flex h-full w-full items-center justify-center">
+                  <div className="flex h-32 w-32 items-center justify-center rounded-3xl bg-background shadow-soft-lg">
+                    {logo ? (
+                      <img src={logo} alt={brand.brandName} className="h-full w-full object-contain p-4" />
+                    ) : (
+                      <span className="font-display text-5xl font-bold">{initial}</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* RIGHT: Glass content card */}
+            <div className="relative order-1 flex flex-col justify-center rounded-[2rem] border border-border/60 bg-card/85 p-6 shadow-soft-xl backdrop-blur-md md:p-7 lg:order-2">
               <div className="flex flex-wrap items-center gap-2">
-                <h1 className="font-display text-3xl font-bold leading-tight md:text-4xl">
+                <h1 className="font-display text-3xl font-bold leading-tight md:text-4xl lg:text-5xl">
                   {brand.brandName}
                 </h1>
                 {isVerified && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-warning/15 text-warning px-2.5 py-0.5 text-xs font-bold">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-success/15 text-success px-2.5 py-0.5 text-xs font-bold ring-1 ring-success/30">
+                    <ShieldCheck className="h-3 w-3" />
                     وكيل رسمي
                   </span>
                 )}
               </div>
-              <div className="mt-1 text-sm text-muted-foreground">
-                الموزع: <span className="font-semibold text-foreground">{brand.dealerName}</span>
+
+              <div className="mt-2 text-sm text-muted-foreground">
+                الموزع المعتمد: <span className="font-semibold text-foreground">{brand.dealerName}</span>
               </div>
-              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-foreground/80">
+
+              <p className="mt-3 text-sm leading-relaxed text-foreground/80">
                 {brand.coverage}
               </p>
 
-              <div className="mt-4 flex flex-wrap gap-2">
+              <div className="mt-5 flex flex-wrap gap-2">
                 {brand.website && (
                   <Button
                     asChild
@@ -176,10 +170,24 @@ const Brand = () => {
                   </Button>
                 ))}
               </div>
+
+              {brand.cities.length > 0 && (
+                <div className="mt-5 flex flex-wrap gap-1.5 border-t border-border/70 pt-4">
+                  {brand.cities.map((c) => (
+                    <span
+                      key={c}
+                      className="inline-flex items-center gap-1 rounded-full border border-border bg-background/70 px-2.5 py-0.5 text-xs"
+                    >
+                      <MapPin className="h-3 w-3 text-primary" />
+                      {c}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Stats */}
+          {/* Stats — full width below */}
           <div className="mt-6 grid grid-cols-2 gap-2.5 md:grid-cols-4">
             <StatTile icon={Building2} value={branches.length} label="فرع رسمي" />
             <StatTile icon={MapPin} value={brand.cities.length} label="مدينة" />
@@ -191,20 +199,6 @@ const Brand = () => {
               accent={isVerified}
             />
           </div>
-
-          {brand.cities.length > 0 && (
-            <div className="mt-4 flex flex-wrap gap-1.5">
-              {brand.cities.map((c) => (
-                <span
-                  key={c}
-                  className="inline-flex items-center gap-1 rounded-full border border-border bg-background/80 px-2.5 py-0.5 text-xs backdrop-blur"
-                >
-                  <MapPin className="h-3 w-3 text-primary" />
-                  {c}
-                </span>
-              ))}
-            </div>
-          )}
         </div>
       </section>
 
