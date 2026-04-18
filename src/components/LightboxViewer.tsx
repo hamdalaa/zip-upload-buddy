@@ -208,47 +208,13 @@ export function LightboxViewer({ images, index, onClose, onIndexChange, title }:
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="h-[100dvh] w-screen max-w-none gap-0 border-0 bg-black p-0 shadow-none [&>button]:hidden sm:rounded-none">
+      <DialogContent className="h-[100dvh] w-screen max-w-none gap-0 border-0 bg-background/40 p-0 shadow-none backdrop-blur-2xl [&>button]:hidden sm:rounded-none">
         <DialogTitle className="sr-only">معرض صور {title}</DialogTitle>
         {current && index !== null && (
-          <div className="relative flex h-full w-full flex-col">
-            {/* Top bar — minimal */}
-            <div className="absolute inset-x-0 top-0 z-20 flex items-center justify-between gap-3 px-4 py-3">
-              <div className="flex min-w-0 items-center gap-2 text-white/85">
-                <span className="font-numeric text-xs tabular-nums text-white/55">
-                  {index + 1} / {total}
-                </span>
-                <span className="hidden h-3 w-px bg-white/15 sm:block" />
-                <span className="hidden max-w-[40vw] truncate text-xs font-medium sm:inline">{title}</span>
-              </div>
-
-              <div className="flex items-center gap-1">
-                <IconButton onClick={zoomOut} disabled={scale <= MIN_SCALE} label="تصغير">
-                  <ZoomOut className="h-[15px] w-[15px]" />
-                </IconButton>
-                <span className="font-numeric min-w-[2.5rem] text-center text-[11px] tabular-nums text-white/60">
-                  {Math.round(scale * 100)}%
-                </span>
-                <IconButton onClick={zoomIn} disabled={scale >= MAX_SCALE} label="تكبير">
-                  <ZoomIn className="h-[15px] w-[15px]" />
-                </IconButton>
-                <span className="mx-1 h-4 w-px bg-white/15" />
-                <IconButton onClick={handleDownload} label="تنزيل">
-                  <Download className="h-[15px] w-[15px]" />
-                </IconButton>
-                <IconButton onClick={handleShare} label="مشاركة">
-                  <Share2 className="h-[15px] w-[15px]" />
-                </IconButton>
-                <span className="mx-1 h-4 w-px bg-white/15" />
-                <IconButton onClick={onClose} label="إغلاق">
-                  <X className="h-4 w-4" />
-                </IconButton>
-              </div>
-            </div>
-
-            {/* Image stage */}
+          <div className="relative flex h-full w-full flex-col text-foreground">
+            {/* Image stage — full bleed */}
             <div
-              className="relative flex min-h-0 flex-1 touch-none select-none items-center justify-center overflow-hidden"
+              className="absolute inset-0 z-0 flex touch-none select-none items-center justify-center overflow-hidden p-2 sm:p-12"
               onWheel={handleWheel}
               onPointerDown={handlePointerDown}
               onPointerMove={handlePointerMove}
@@ -265,7 +231,7 @@ export function LightboxViewer({ images, index, onClose, onIndexChange, title }:
                   e.stopPropagation();
                 }}
                 onDragStart={(e) => e.preventDefault()}
-                className="max-h-full max-w-full object-contain animate-in fade-in duration-200"
+                className="max-h-full max-w-full object-contain shadow-2xl animate-in fade-in duration-300"
                 style={{
                   transform: `translate3d(${translate.x}px, ${translate.y}px, 0) scale(${scale})`,
                   transition: dragRef.current || pinchBaseRef.current ? "none" : "transform 0.2s cubic-bezier(0.22, 1, 0.36, 1)",
@@ -273,33 +239,65 @@ export function LightboxViewer({ images, index, onClose, onIndexChange, title }:
                 referrerPolicy="no-referrer"
                 draggable={false}
               />
-
-              {total > 1 && (
-                <>
-                  <NavButton side="right" onClick={goPrev} label="السابق">
-                    <ChevronRight className="h-5 w-5" />
-                  </NavButton>
-                  <NavButton side="left" onClick={goNext} label="التالي">
-                    <ChevronLeft className="h-5 w-5" />
-                  </NavButton>
-                </>
-              )}
             </div>
 
-            {/* Thumbnail strip — minimal */}
+            {/* Top: counter + close — floating pills */}
+            <header className="pointer-events-none relative z-20 flex items-start justify-between px-4 py-5 sm:px-6 sm:py-6">
+              <div className="pointer-events-auto inline-flex items-center gap-3 rounded-full border border-border/40 bg-background/60 px-4 py-2 backdrop-blur-md">
+                <span className="font-numeric text-xs font-semibold tabular-nums">{index + 1}</span>
+                <span className="h-px w-3 bg-muted-foreground/40" />
+                <span className="font-numeric text-xs tabular-nums text-muted-foreground">{total}</span>
+              </div>
+
+              <button
+                type="button"
+                onClick={onClose}
+                className="pointer-events-auto group inline-flex items-center gap-2.5 rounded-full border border-border/40 bg-background/60 py-1.5 pe-4 ps-1.5 backdrop-blur-md transition-colors hover:bg-background/80"
+                aria-label="إغلاق"
+              >
+                <span className="flex size-7 items-center justify-center rounded-full bg-muted/50 transition-transform duration-300 group-hover:rotate-90">
+                  <X className="h-3.5 w-3.5" />
+                </span>
+                <span className="text-xs font-medium text-muted-foreground group-hover:text-foreground">إغلاق</span>
+              </button>
+            </header>
+
+            {/* Side nav */}
             {total > 1 && (
-              <div className="shrink-0 px-3 pb-4 pt-2">
-                <div className="mx-auto flex max-w-full justify-center gap-1.5 overflow-x-auto">
+              <div className="pointer-events-none absolute inset-y-0 inset-x-0 z-10 flex items-center justify-between px-3 sm:px-6">
+                <button
+                  type="button"
+                  onClick={goPrev}
+                  className="pointer-events-auto inline-flex size-11 items-center justify-center rounded-full border border-border/40 bg-background/60 text-muted-foreground backdrop-blur-md transition-all hover:bg-background/80 hover:text-foreground hover:scale-105"
+                  aria-label="السابق"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={goNext}
+                  className="pointer-events-auto inline-flex size-11 items-center justify-center rounded-full border border-border/40 bg-background/60 text-muted-foreground backdrop-blur-md transition-all hover:bg-background/80 hover:text-foreground hover:scale-105"
+                  aria-label="التالي"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+              </div>
+            )}
+
+            {/* Bottom: thumbnails + tools */}
+            <footer className="pointer-events-none relative z-20 mt-auto flex flex-col gap-4 px-3 pb-5 pt-20 sm:px-6 sm:pb-6">
+              {total > 1 && (
+                <div className="pointer-events-auto flex items-center justify-center gap-1.5 overflow-x-auto">
                   {images.map((image, i) => (
                     <button
                       key={`${image}-thumb-${i}`}
                       type="button"
                       onClick={() => onIndexChange(i)}
                       className={cn(
-                        "relative h-10 w-14 shrink-0 overflow-hidden rounded-md transition-all duration-150",
+                        "relative size-10 shrink-0 overflow-hidden rounded-md transition-all duration-300 sm:size-12",
                         i === index
-                          ? "opacity-100 ring-2 ring-white"
-                          : "opacity-40 hover:opacity-80",
+                          ? "opacity-100 ring-1 ring-foreground/40 ring-offset-4 ring-offset-background/60"
+                          : "opacity-30 hover:opacity-90",
                       )}
                       aria-label={`الصورة ${i + 1}`}
                     >
@@ -312,61 +310,56 @@ export function LightboxViewer({ images, index, onClose, onIndexChange, title }:
                     </button>
                   ))}
                 </div>
+              )}
+
+              <div className="pointer-events-auto flex flex-row items-center justify-between gap-3">
+                {/* Zoom */}
+                <div className="inline-flex items-center gap-3 rounded-full border border-border/40 bg-background/60 px-3 py-1.5 backdrop-blur-md">
+                  <button
+                    type="button"
+                    onClick={zoomOut}
+                    disabled={scale <= MIN_SCALE}
+                    aria-label="تصغير"
+                    className="text-muted-foreground transition-colors hover:text-foreground disabled:opacity-30"
+                  >
+                    <ZoomOut className="h-4 w-4" />
+                  </button>
+                  <span className="font-numeric w-10 text-center text-xs tabular-nums">{Math.round(scale * 100)}%</span>
+                  <button
+                    type="button"
+                    onClick={zoomIn}
+                    disabled={scale >= MAX_SCALE}
+                    aria-label="تكبير"
+                    className="text-muted-foreground transition-colors hover:text-foreground disabled:opacity-30"
+                  >
+                    <ZoomIn className="h-4 w-4" />
+                  </button>
+                </div>
+
+                {/* Actions */}
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={handleShare}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-border/40 bg-background/60 px-3.5 py-2 text-xs font-medium text-foreground backdrop-blur-md transition-colors hover:bg-background/80"
+                  >
+                    <Share2 className="h-3.5 w-3.5" />
+                    <span className="hidden sm:inline">مشاركة</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleDownload}
+                    className="inline-flex items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-xs font-semibold text-background transition-colors hover:bg-foreground/90"
+                  >
+                    <Download className="h-3.5 w-3.5" />
+                    تحميل
+                  </button>
+                </div>
               </div>
-            )}
+            </footer>
           </div>
         )}
       </DialogContent>
     </Dialog>
-  );
-}
-
-function IconButton({
-  children,
-  onClick,
-  disabled,
-  label,
-}: {
-  children: React.ReactNode;
-  onClick: () => void;
-  disabled?: boolean;
-  label: string;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={disabled}
-      aria-label={label}
-      className="inline-flex h-8 w-8 items-center justify-center rounded-md text-white/75 transition-colors hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
-    >
-      {children}
-    </button>
-  );
-}
-
-function NavButton({
-  children,
-  onClick,
-  label,
-  side,
-}: {
-  children: React.ReactNode;
-  onClick: () => void;
-  label: string;
-  side: "left" | "right";
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-label={label}
-      className={cn(
-        "absolute top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/8 text-white/80 backdrop-blur-sm transition-all duration-150 hover:bg-white/15 hover:text-white",
-        side === "left" ? "left-3" : "right-3",
-      )}
-    >
-      {children}
-    </button>
   );
 }
