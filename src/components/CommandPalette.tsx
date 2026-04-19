@@ -65,7 +65,7 @@ export function CommandPalette() {
     if (!query.trim()) return;
     pushRecent(query);
     setOpen(false);
-    nav(`/results?q=${encodeURIComponent(query.trim())}`);
+    nav(`/search?q=${encodeURIComponent(query.trim())}`);
     setQuery("");
   }
 
@@ -101,7 +101,7 @@ export function CommandPalette() {
           <>
             <CommandGroup heading="آخر بحثاتك">
               {recent.map((r) => (
-                <CommandItem key={r} value={`recent-${r}`} onSelect={() => go(`/results?q=${encodeURIComponent(r)}`, r)}>
+                <CommandItem key={r} value={`recent-${r}`} onSelect={() => go(`/search?q=${encodeURIComponent(r)}`, r)}>
                   <Clock className="me-2 h-4 w-4 text-muted-foreground" />
                   {r}
                 </CommandItem>

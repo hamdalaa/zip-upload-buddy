@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -15,7 +15,7 @@ import { PullToRefresh } from "@/components/PullToRefresh";
 import Index from "./pages/Index.tsx";
 
 // Lazy-load secondary routes to keep the initial bundle small.
-const Results = lazy(() => import("./pages/Results.tsx"));
+// NOTE: /results was merged into /search — legacy URLs redirect via <ResultsRedirect />.
 const ShopView = lazy(() => import("./pages/ShopView.tsx"));
 const Brand = lazy(() => import("./pages/Brand.tsx"));
 const Brands = lazy(() => import("./pages/Brands.tsx"));
@@ -35,6 +35,13 @@ const UnifiedSearch = lazy(() => import("./pages/UnifiedSearch.tsx"));
 const ProductDetail = lazy(() => import("./pages/ProductDetail.tsx"));
 
 const queryClient = new QueryClient();
+
+// Permanent redirect from the legacy /results route to the unified /search page.
+// Preserves all query params (q, area, category, sort, etc.) so old links keep working.
+const ResultsRedirect = () => {
+  const { search } = useLocation();
+  return <Navigate to={`/search${search}`} replace />;
+};
 
 const RouteFallback = () => (
   <div className="flex min-h-[60vh] items-center justify-center">
@@ -56,7 +63,7 @@ const App = () => (
               <PullToRefresh>
                 <Routes>
                   <Route path="/" element={<Index />} />
-                  <Route path="/results" element={<Results />} />
+                  <Route path="/results" element={<ResultsRedirect />} />
                   <Route path="/search" element={<UnifiedSearch />} />
                   <Route path="/product/:id" element={<ProductDetail />} />
                   <Route path="/sinaa" element={<StreetPages />} />

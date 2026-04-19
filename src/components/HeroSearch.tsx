@@ -30,13 +30,11 @@ export function HeroSearch({
     const params = new URLSearchParams();
     if (q.trim()) params.set("q", q.trim());
 
-    if (mode === "unified") {
-      nav(`/search?${params.toString()}`);
-      return;
-    }
+    // Both modes now route to the unified /search page; "shops" mode passes
+    // area/category as filter hints (the unified page will pick them up).
     if (area !== "all") params.set("area", area);
     if (category !== "all") params.set("category", category);
-    nav(`/results?${params.toString()}`);
+    nav(`/search?${params.toString()}`);
   }
 
   return (
