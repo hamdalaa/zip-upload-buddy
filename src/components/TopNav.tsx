@@ -139,9 +139,6 @@ export function TopNav() {
                   Beta
                 </span>
               </div>
-              <div className="mt-1 hidden text-[8.5px] font-semibold uppercase tracking-[0.24em] text-muted-foreground/70 sm:block">
-                Hayer
-              </div>
             </div>
           </Link>
 
