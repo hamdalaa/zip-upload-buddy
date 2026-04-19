@@ -302,7 +302,7 @@ const Results = () => {
 
       <main className="flex-1">
         <div className="container grid grid-cols-1 gap-6 py-6 lg:grid-cols-[300px_minmax(0,1fr)]">
-          <aside className="hidden lg:block lg:sticky lg:top-[118px] lg:h-fit">
+          <aside className="hidden lg:block lg:sticky lg:top-[118px] lg:max-h-[calc(100vh-138px)] lg:overflow-y-auto lg:overscroll-contain lg:pe-1 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-border [&::-webkit-scrollbar-thumb:hover]:bg-muted-foreground/40 [&::-webkit-scrollbar-track]:bg-transparent">
             <FiltersPanel
               area={area}
               category={category}
