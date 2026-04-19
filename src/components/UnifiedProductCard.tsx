@@ -110,22 +110,7 @@ export function UnifiedProductCard({ product, topOffers }: Props) {
                 {formatIQD(product.lowestPrice ?? 0)}
               </span>
             </div>
-            {product.highestPrice && product.highestPrice > (product.lowestPrice ?? 0) && (
-              <span className="mt-0.5 text-[11px] text-muted-foreground line-through">
-                حتى {formatIQD(product.highestPrice)}
-              </span>
-            )}
           </div>
-          {priceSpread > 0 && (
-            <div className="flex flex-col items-end">
-              <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-                فرق السعر
-              </span>
-              <span className="text-sm font-bold text-accent-emerald">
-                {formatIQD(priceSpread)}
-              </span>
-            </div>
-          )}
         </div>
 
         {/* ===== Top offers preview (compact compare strip) ===== */}
