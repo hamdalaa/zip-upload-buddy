@@ -133,7 +133,6 @@ export function TopNav() {
           {/* Wordmark */}
           <Link to="/" className="group flex shrink-0 items-center gap-2.5 transition-opacity hover:opacity-90">
             <div className="relative flex h-9 w-9 items-center justify-center rounded-md bg-gradient-primary shadow-[0_4px_14px_-4px_hsl(var(--primary)/0.5)]">
-              <span className="font-display text-lg font-bold leading-none text-primary-foreground">ت</span>
               <div className="pointer-events-none absolute inset-0 rounded-md bg-gradient-to-b from-white/20 to-transparent" />
             </div>
             <div className="text-right leading-none">
