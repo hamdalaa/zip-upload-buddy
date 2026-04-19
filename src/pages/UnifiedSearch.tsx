@@ -438,40 +438,6 @@ export default function UnifiedSearch() {
         </div>
       </div>
 
-      {/* STATS STRIP */}
-      {activeTab === "products" && data && (
-        <div className="border-b border-border bg-card/50">
-          <div className="container mx-auto flex flex-wrap items-center gap-x-5 gap-y-1 px-4 py-2.5 text-xs text-muted-foreground sm:text-sm">
-            <span className="flex items-center gap-1.5">
-              <Sparkles className="h-3.5 w-3.5 text-primary" />
-              <strong className="text-foreground">{data.totalProducts}</strong> منتج
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Globe2 className="h-3.5 w-3.5 text-accent-cyan" />
-              <strong className="text-foreground">{data.totalOffers}</strong> عرض من <strong className="text-foreground">{data.storesCovered}</strong> محل
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Clock className="h-3.5 w-3.5" />
-              {data.durationMs}ms
-            </span>
-          </div>
-        </div>
-      )}
-      {activeTab === "shops" && (
-        <div className="border-b border-border bg-card/50">
-          <div className="container mx-auto flex flex-wrap items-center gap-x-5 gap-y-1 px-4 py-2.5 text-xs text-muted-foreground sm:text-sm">
-            <span className="flex items-center gap-1.5">
-              <Store className="h-3.5 w-3.5 text-accent-violet" />
-              <strong className="text-foreground">{shopResult.totalShops}</strong> محل {activeQuery ? "مطابق" : "في الدليل"}
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Clock className="h-3.5 w-3.5" />
-              {shopResult.durationMs}ms
-            </span>
-          </div>
-        </div>
-      )}
-
       {/* BODY — always show results; live-filter as the user types */}
       <main className="container mx-auto px-4 py-6 sm:py-8">
         {activeTab === "products" ? (
