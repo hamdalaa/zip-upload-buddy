@@ -157,10 +157,15 @@ const Index = () => {
               className="absolute inset-0 -z-20 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
               style={{ backgroundImage: `url(${iraqCitiesPano})` }}
             />
-            {/* Readability overlay — dark cinematic, RTL gradient */}
+            {/* Readability overlay — soft RTL gradient (lighter, lets image breathe) */}
             <div
               aria-hidden
-              className="absolute inset-0 -z-10 bg-gradient-to-l from-black/85 via-black/60 to-black/20"
+              className="absolute inset-0 -z-10 bg-gradient-to-l from-black/55 via-black/25 to-transparent"
+            />
+            {/* Subtle bottom fade for text leg */}
+            <div
+              aria-hidden
+              className="absolute inset-x-0 bottom-0 -z-10 h-1/2 bg-gradient-to-t from-black/40 to-transparent"
             />
 
             <div className="grid gap-4 sm:gap-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
