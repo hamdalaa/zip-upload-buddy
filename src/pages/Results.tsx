@@ -146,17 +146,24 @@ const Results = () => {
     return set.size;
   }, [fallbackShops]);
 
-  const activeFilterLabels = useMemo(() => {
-    const labels: string[] = [];
-    if (area !== "all") labels.push(area);
-    if (category !== "all") labels.push(category);
-    if (priceRange !== "all") labels.push(PRICE_RANGES.find((entry) => entry.id === priceRange)?.label ?? priceRange);
-    if (minRating > 0) labels.push(`${minRating}+ نجوم`);
-    if (verifiedOnly) labels.push("موثّق فقط");
-    if (withDeals) labels.push("عليها تخفيض");
-    brandFilters.forEach((brand) => labels.push(brand));
-    return labels;
+  const activeFilterChips = useMemo(() => {
+    const chips: { key: string; label: string; onRemove: () => void }[] = [];
+    if (area !== "all") chips.push({ key: `area:${area}`, label: area, onRemove: () => setFilter("area", "all") });
+    if (category !== "all") chips.push({ key: `cat:${category}`, label: category, onRemove: () => setFilter("category", "all") });
+    if (priceRange !== "all") {
+      const lbl = PRICE_RANGES.find((entry) => entry.id === priceRange)?.label ?? priceRange;
+      chips.push({ key: `price:${priceRange}`, label: lbl, onRemove: () => setPriceRange("all") });
+    }
+    if (minRating > 0) chips.push({ key: `rating:${minRating}`, label: `${minRating}+ نجوم`, onRemove: () => setMinRating(0) });
+    if (verifiedOnly) chips.push({ key: "verified", label: "موثّق فقط", onRemove: () => setVerifiedOnly(false) });
+    if (withDeals) chips.push({ key: "deals", label: "عليها تخفيض", onRemove: () => setWithDeals(false) });
+    brandFilters.forEach((brand) =>
+      chips.push({ key: `brand:${brand}`, label: brand, onRemove: () => toggleBrand(brand) }),
+    );
+    return chips;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [area, category, priceRange, minRating, verifiedOnly, withDeals, brandFilters]);
+  const activeFilterLabels = activeFilterChips;
 
   function setSort(next: Sort) {
     const nextParams = new URLSearchParams(params);
