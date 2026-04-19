@@ -1,22 +1,19 @@
 import { Link } from "react-router-dom";
-import {
-  Store,
-  TrendingDown,
-  Package,
-  ShieldCheck,
-  Star,
-  Award,
-  ArrowLeft,
-  Tag,
-  CircleDot,
-} from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { ArrowLeft, Store, ShieldCheck, Award, TrendingDown } from "lucide-react";
+import { StarRating } from "./StarRating";
 import { formatIQD, type UnifiedProduct } from "@/lib/unifiedSearch";
+
+interface TopOfferPreview {
+  storeName: string;
+  price: number;
+  verified?: boolean;
+  officialDealer?: boolean;
+}
 
 interface Props {
   product: UnifiedProduct;
   /** Optional preview of top offers — shown as compact compare strip */
-  topOffers?: { storeName: string; price: number; verified?: boolean; officialDealer?: boolean }[];
+  topOffers?: TopOfferPreview[];
 }
 
 export function UnifiedProductCard({ product, topOffers }: Props) {
@@ -25,145 +22,100 @@ export function UnifiedProductCard({ product, topOffers }: Props) {
       ? Math.round(((product.highestPrice - product.lowestPrice) / product.highestPrice) * 100)
       : 0;
 
-  const priceSpread =
-    product.highestPrice && product.lowestPrice ? product.highestPrice - product.lowestPrice : 0;
-
-  const inStockRatio =
-    product.offerCount > 0 ? Math.round((product.inStockCount / product.offerCount) * 100) : 0;
+  // Ribbon — same language as ShopCard (verified > top-deal > none)
+  const ribbon = savings > 10
+    ? { className: "ribbon ribbon-amber", icon: TrendingDown, label: `وفّر ${savings}%` }
+    : product.inStockCount >= 3
+      ? { className: "ribbon ribbon-emerald", icon: ShieldCheck, label: "متوفر بكثرة" }
+      : null;
 
   return (
-    <Link
-      to={`/product/${product.id}`}
-      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-soft-xl"
-    >
-      {/* ===== Image area ===== */}
-      <div className="relative aspect-[4/3] overflow-hidden bg-surface">
+    <article className="group atlas-card relative overflow-hidden text-right shadow-soft-md">
+      {ribbon && (
+        <span className={ribbon.className}>
+          <ribbon.icon className="h-3 w-3" />
+          {ribbon.label}
+        </span>
+      )}
+
+      <Link
+        to={`/product/${product.id}`}
+        className="relative block aspect-[4/3] overflow-hidden bg-surface-2"
+        aria-label={`${product.title} — افتح صفحة المنتج`}
+      >
         <img
           src={product.images[0]}
           alt={product.title}
           loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          decoding="async"
+          referrerPolicy="no-referrer"
+          className="smooth-img h-full w-full object-cover"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-foreground/55 via-transparent to-transparent" />
 
-        {/* Top-left: discount badge */}
-        {savings > 5 && (
-          <div className="absolute start-3 top-3 flex items-center gap-1 rounded-full bg-accent-rose px-2.5 py-1 text-[11px] font-bold text-white shadow-soft-md">
-            <TrendingDown className="h-3 w-3" />
-            وفّر حتى {savings}%
+        {/* Bottom-left: store-count chip (mirrors ShopCard area chip) */}
+        <div className="absolute bottom-3 left-3">
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-background/95 px-2.5 py-1 text-[10px] font-semibold text-foreground shadow-soft-md backdrop-blur-sm">
+            <Store className="h-3 w-3 text-primary" />
+            {product.offerCount} محل
           </div>
-        )}
-
-        {/* Top-right: offer count chip */}
-        <div className="absolute end-3 top-3 flex items-center gap-1 rounded-full bg-card/95 px-2 py-1 text-[11px] font-semibold text-foreground shadow-soft-sm backdrop-blur-sm">
-          <Store className="h-3 w-3 text-primary" />
-          {product.offerCount} محل
         </div>
+      </Link>
 
-        {/* Bottom-left: stock pill */}
-        <div className="absolute bottom-3 start-3">
-          {product.inStockCount > 0 ? (
-            <div className="flex items-center gap-1.5 rounded-full bg-card/95 px-2.5 py-1 text-[11px] font-medium text-accent-emerald shadow-soft-sm backdrop-blur-sm">
-              <CircleDot className="h-3 w-3 fill-accent-emerald text-accent-emerald" />
-              متوفر بـ {product.inStockCount} محل
-            </div>
-          ) : (
-            <div className="flex items-center gap-1.5 rounded-full bg-card/95 px-2.5 py-1 text-[11px] font-medium text-destructive shadow-soft-sm backdrop-blur-sm">
-              <CircleDot className="h-3 w-3 fill-destructive text-destructive" />
-              نفد من كل المحلات
-            </div>
+      <div className="space-y-3 p-4 sm:p-5">
+        {/* Brand + category — mirrors ShopCard chip row */}
+        <div className="flex flex-wrap items-center gap-1.5">
+          {product.brand && (
+            <span className="rounded-full bg-primary-soft px-2 py-0.5 text-[10px] font-semibold text-primary">
+              {product.brand}
+            </span>
           )}
-        </div>
-      </div>
-
-      {/* ===== Body ===== */}
-      <div className="flex flex-1 flex-col gap-3 p-4">
-        {/* Brand + category + rating */}
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-1.5">
-            {product.brand && (
-              <Badge
-                variant="outline"
-                className="rounded-full border-border bg-surface px-2 py-0 text-[10px] font-bold uppercase tracking-wide text-foreground"
-              >
-                {product.brand}
-              </Badge>
-            )}
-            {product.category && (
-              <span className="text-[11px] font-medium text-muted-foreground">
-                {product.category}
-              </span>
-            )}
-          </div>
-          {product.rating != null && (
-            <div className="flex items-center gap-1 rounded-full bg-warning/10 px-2 py-0.5 text-[11px] font-semibold text-foreground">
-              <Star className="h-3 w-3 fill-warning text-warning" />
-              {product.rating.toFixed(1)}
-              {product.reviewCount != null && (
-                <span className="text-muted-foreground">({product.reviewCount})</span>
-              )}
-            </div>
+          {product.category && (
+            <span className="rounded-full bg-surface px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+              {product.category}
+            </span>
           )}
         </div>
 
-        {/* Title */}
-        <h3 className="line-clamp-2 min-h-[2.6em] text-[15px] font-bold leading-snug text-foreground transition-colors group-hover:text-primary">
+        <h3 className="font-display text-lg sm:text-xl font-semibold leading-tight text-foreground line-clamp-2 group-hover:text-primary transition-colors">
           {product.title}
         </h3>
 
-        {/* ===== Price block ===== */}
-        <div className="flex items-end justify-between gap-3 rounded-xl bg-surface/60 px-3 py-2.5">
-          <div className="flex flex-col">
-            <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-              يبدأ من
+        {product.rating != null && (
+          <StarRating rating={product.rating} reviews={product.reviewCount ?? 0} size="xs" />
+        )}
+
+        {/* Price — minimal, no extra chrome */}
+        <div className="flex items-baseline gap-2">
+          <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+            يبدأ من
+          </span>
+          <span className="text-xl font-bold text-foreground">
+            {formatIQD(product.lowestPrice ?? 0)}
+          </span>
+          {product.highestPrice && product.highestPrice > (product.lowestPrice ?? 0) && (
+            <span className="text-xs text-muted-foreground line-through">
+              {formatIQD(product.highestPrice)}
             </span>
-            <div className="flex items-baseline gap-1.5">
-              <span className="text-xl font-extrabold leading-none text-foreground">
-                {formatIQD(product.lowestPrice ?? 0)}
-              </span>
-            </div>
-            {product.highestPrice && product.highestPrice > (product.lowestPrice ?? 0) && (
-              <span className="mt-0.5 text-[11px] text-muted-foreground line-through">
-                حتى {formatIQD(product.highestPrice)}
-              </span>
-            )}
-          </div>
-          {priceSpread > 0 && (
-            <div className="flex flex-col items-end">
-              <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-                فرق السعر
-              </span>
-              <span className="text-sm font-bold text-accent-emerald">
-                {formatIQD(priceSpread)}
-              </span>
-            </div>
           )}
         </div>
 
-        {/* ===== Top offers preview (compact compare strip) ===== */}
+        {/* Top offers preview — compact compare strip (only when provided) */}
         {topOffers && topOffers.length > 0 && (
-          <ul className="flex flex-col gap-1.5 rounded-xl border border-border bg-card px-2.5 py-2">
+          <ul className="space-y-1 rounded-xl border border-border/60 bg-surface/60 px-2.5 py-2">
             {topOffers.slice(0, 3).map((o, idx) => (
-              <li
-                key={idx}
-                className="flex items-center justify-between gap-2 text-[12px]"
-              >
-                <div className="flex min-w-0 items-center gap-1.5">
+              <li key={idx} className="flex items-center justify-between gap-2 text-[12px]">
+                <div className="flex min-w-0 items-center gap-1.5 text-foreground">
                   {o.officialDealer ? (
                     <Award className="h-3 w-3 shrink-0 text-primary" />
                   ) : o.verified ? (
-                    <ShieldCheck className="h-3 w-3 shrink-0 text-accent-emerald" />
+                    <ShieldCheck className="h-3 w-3 shrink-0 text-success" />
                   ) : (
                     <Store className="h-3 w-3 shrink-0 text-muted-foreground" />
                   )}
-                  <span className="truncate font-medium text-foreground">{o.storeName}</span>
+                  <span className="truncate font-medium">{o.storeName}</span>
                 </div>
-                <span
-                  className={
-                    idx === 0
-                      ? "shrink-0 font-bold text-accent-emerald"
-                      : "shrink-0 font-semibold text-foreground"
-                  }
-                >
+                <span className={idx === 0 ? "shrink-0 font-bold text-primary" : "shrink-0 font-semibold text-foreground"}>
                   {formatIQD(o.price)}
                 </span>
               </li>
@@ -171,35 +123,36 @@ export function UnifiedProductCard({ product, topOffers }: Props) {
           </ul>
         )}
 
-        {/* ===== Trust meta row ===== */}
-        <div className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
-          {inStockRatio > 0 && (
-            <span className="flex items-center gap-1">
-              <Package className="h-3 w-3 text-accent-emerald" />
-              {inStockRatio}% توفر
+        {/* Meta row — small, calm, like ShopCard */}
+        <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
+          {product.inStockCount > 0 ? (
+            <span className="inline-flex items-center gap-1">
+              <span className="h-1.5 w-1.5 rounded-full bg-success" />
+              متوفر بـ {product.inStockCount} محل
+            </span>
+          ) : (
+            <span className="inline-flex items-center gap-1">
+              <span className="h-1.5 w-1.5 rounded-full bg-destructive" />
+              نفد من كل المحلات
             </span>
           )}
-          <span className="flex items-center gap-1">
-            <Tag className="h-3 w-3 text-primary" />
-            {product.offerCount} عرض
-          </span>
-          <span className="flex items-center gap-1">
-            <ShieldCheck className="h-3 w-3 text-accent-emerald" />
+          <span className="inline-flex items-center gap-1">
+            <ShieldCheck className="h-3 w-3 text-success" />
             تحقّقت من المصدر
           </span>
         </div>
-      </div>
 
-      {/* ===== Bottom CTA strip ===== */}
-      <div className="flex items-center justify-between border-t border-border bg-gradient-to-l from-primary/5 to-transparent px-4 py-2.5">
-        <span className="text-[11px] font-semibold text-muted-foreground">
-          قارن {product.offerCount} عرض جنب بعض
-        </span>
-        <span className="flex items-center gap-1 text-[12px] font-bold text-primary transition-transform group-hover:-translate-x-0.5">
-          عرض التفاصيل
-          <ArrowLeft className="h-3.5 w-3.5" />
-        </span>
+        {/* CTA — same shape as ShopCard */}
+        <div className="pt-1">
+          <Link
+            to={`/product/${product.id}`}
+            className="btn-ripple inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-xl bg-foreground text-sm font-semibold text-background transition-colors hover:bg-primary"
+          >
+            قارن {product.offerCount} عرض
+            <ArrowLeft className="icon-nudge-x h-3.5 w-3.5" />
+          </Link>
+        </div>
       </div>
-    </Link>
+    </article>
   );
 }
