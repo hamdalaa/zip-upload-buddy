@@ -246,8 +246,8 @@ export function LightboxViewer({ images, index, onClose, onIndexChange, title }:
 
             {/* Top: counter + close — clean dark pills with safe-area */}
             <header
-              className="pointer-events-none relative z-20 flex items-start justify-between px-3 py-3 sm:px-6 sm:py-5"
-              style={{ paddingTop: "max(env(safe-area-inset-top), 0.75rem)" }}
+              className="pointer-events-none relative z-20 flex items-start justify-between bg-gradient-to-b from-black/80 to-transparent px-3 pb-6 sm:px-6 sm:pb-8"
+              style={{ paddingTop: "calc(max(env(safe-area-inset-top), 0.5rem) + 0.75rem)" }}
             >
               <div className="pointer-events-auto inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 backdrop-blur-md">
                 <span className="font-numeric text-xs font-semibold tabular-nums">{safeIndex + 1}</span>
