@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Helmet } from "react-helmet-async";
+// Note: native document.title used instead of react-helmet-async (not installed)
 import { useSearchParams, Link } from "react-router-dom";
 import { Search, Sparkles, Globe2, Clock, ArrowLeft, Loader2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -86,12 +86,12 @@ export default function UnifiedSearch() {
     return chips;
   }, [filters]);
 
+  useEffect(() => {
+    document.title = activeQuery ? `${activeQuery} — بحث موحّد | حاير` : "البحث الموحّد | حاير";
+  }, [activeQuery]);
+
   return (
     <div className="min-h-screen bg-background">
-      <Helmet>
-        <title>{activeQuery ? `${activeQuery} — بحث موحّد` : "البحث الموحّد"} | حاير</title>
-        <meta name="description" content="ابحث عن أي منتج إلكتروني مرة واحدة، نجيبلك أفضل الأسعار من كل المحلات الموثّقة في العراق." />
-      </Helmet>
 
       <TopNav />
 
