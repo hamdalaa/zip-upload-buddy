@@ -106,8 +106,11 @@ export interface UnifiedSearchResponse {
  * MOCK IMPLEMENTATION — replace with real fetch when backend is ready
  * ==================================================================== */
 
-const MOCK_STORES = [
-  { id: "miswag", name: "Miswag", city: "بغداد", rating: 4.6, verified: true, official: true },
+// Empty caches — real data will come from backend (POST /api/search etc.)
+const ALL_OFFERS_CACHE: UnifiedOffer[] = [];
+const ALL_PRODUCTS_CACHE: UnifiedProduct[] = [];
+
+const MOCK_STORES_COUNT = 0;
   { id: "icenter", name: "iCenter Iraq", city: "بغداد", rating: 4.8, verified: true, official: true },
   { id: "korektel", name: "Korek Telecom", city: "أربيل", rating: 4.4, verified: true, official: false },
   { id: "elryan", name: "El Ryan Store", city: "بغداد", rating: 4.2, verified: true, official: false },
