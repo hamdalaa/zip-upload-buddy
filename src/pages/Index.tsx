@@ -98,6 +98,18 @@ const Index = () => {
               className="absolute inset-0 -z-10 bg-gradient-to-l from-card/70 via-card/20 to-transparent"
             />
 
+            {/* Top archival meta strip */}
+            <div className="relative mb-10 flex items-center justify-between border-t border-border/60 pt-4 sm:mb-14">
+              <div className="flex gap-1">
+                <span className="size-1 rounded-full bg-foreground/40" />
+                <span className="size-1 rounded-full bg-foreground/40" />
+                <span className="size-1 rounded-full bg-foreground/40" />
+              </div>
+              <span className="text-[10px] font-medium uppercase tracking-[0.22em] text-muted-foreground">
+                العدد المرجعي · ٠٤
+              </span>
+            </div>
+
             {/* Two-column editorial layout */}
             <div className="relative grid grid-cols-1 items-end gap-10 lg:grid-cols-12 lg:gap-12">
               {/* Headline — right side in RTL */}
