@@ -49,7 +49,7 @@ export function HeroSearch({
 
       {/* Filters + CTA row */}
       <div className="mt-1.5 flex w-full flex-col gap-1.5 sm:mt-2 sm:flex-row sm:items-stretch sm:gap-2">
-        <div className="grid w-full flex-1 grid-cols-2 gap-1.5 sm:gap-2">
+        <div className="grid w-full flex-1 grid-cols-2 gap-1.5 sm:gap-2 [&>*]:min-w-0">
           <Select value={area} onValueChange={(value) => setArea(value as Area | "all")}>
             <SelectTrigger className="h-11 w-full min-w-0 gap-1.5 rounded-xl border-border/70 bg-background/60 px-2.5 text-[13px] text-foreground shadow-none transition-colors hover:bg-surface focus:ring-2 focus:ring-primary/30 sm:h-12 sm:rounded-2xl sm:px-3 sm:text-sm [&>span]:flex [&>span]:min-w-0 [&>span]:flex-1 [&>span]:items-center [&>span]:gap-1.5">
               <MapPin className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
