@@ -1,0 +1,21 @@
+[
+  {
+    "id": 101,
+    "name": "Apple Watch Ultra 2",
+    "permalink": "https://www.icenter-iraq.com/product/apple-watch-ultra-2",
+    "sku": "AWU2-49",
+    "is_in_stock": true,
+    "categories": [
+      { "name": "Wearables" },
+      { "name": "Apple Watch" }
+    ],
+    "images": [
+      { "src": "https://www.icenter-iraq.com/watch-ultra-2.jpg" }
+    ],
+    "prices": {
+      "currency_code": "IQD",
+      "price": 879000,
+      "regular_price": 919000
+    }
+  }
+]

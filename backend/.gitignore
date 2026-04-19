@@ -1,0 +1,6 @@
+node_modules
+dist
+output
+.catalog-storage
+.env
+.DS_Store
