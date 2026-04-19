@@ -46,9 +46,9 @@
     --muted: 215 18% 95%;
     --muted-foreground: 215 14% 42%;
 
-    --accent: 14 88% 58%;               /* refined coral CTA */
+    --accent: 178 72% 36%;              /* aligned with teal primary — calm, premium */
     --accent-foreground: 0 0% 100%;
-    --accent-soft: 14 95% 95%;
+    --accent-soft: 178 60% 95%;
 
     /* Multi-accent palette — semantic, used sparingly */
     --accent-violet: 262 83% 58%;       /* premium / brands */
