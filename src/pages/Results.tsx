@@ -23,6 +23,7 @@ import {
   ChevronLeft,
   CircleDollarSign,
   Filter,
+  Flame,
   Grid3x3,
   Home,
   Layers,
