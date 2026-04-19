@@ -295,75 +295,96 @@ const ShopView = () => {
 
             {/* ============ 4.5 GOOGLE REVIEWS ============ */}
             {googleRating && (
-              <section className="rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
-                <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-                  <h2 className="inline-flex items-center gap-2 text-lg font-bold">
-                    <Star className="h-5 w-5 text-warning" /> تقييمات Google
+              <section className="overflow-hidden rounded-3xl border border-border/70 bg-card/82 shadow-soft-lg backdrop-blur-sm">
+                {/* Header */}
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/60 bg-gradient-to-l from-warning/5 to-transparent px-4 py-3.5 md:px-6">
+                  <h2 className="inline-flex items-center gap-2 text-base font-bold sm:text-lg">
+                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-warning/15 text-warning">
+                      <Star className="h-4 w-4 fill-warning" />
+                    </span>
+                    تقييمات Google
                   </h2>
                   {shop.googleMapsUrl && (
                     <a
                       href={shop.googleMapsUrl}
                       target="_blank"
                       rel="noreferrer noopener"
-                      className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
+                      className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-3 py-1.5 text-[11px] font-semibold text-primary transition-colors hover:bg-primary/15"
                     >
-                      شوف التقييمات على Google <ExternalLink className="h-3 w-3" />
+                      شوف الكل <ExternalLink className="h-3 w-3" />
                     </a>
                   )}
                 </div>
 
-                <div className="flex items-center gap-4 rounded-2xl border border-border/60 bg-background/70 p-4">
-                  <div className="text-center">
-                    <div className="font-display text-3xl font-bold text-foreground">
-                      {googleRating.rating.toFixed(1)}
+                <div className="space-y-4 p-4 md:p-6">
+                  {/* Rating summary */}
+                  <div className="flex items-stretch gap-4 rounded-2xl border border-border/60 bg-gradient-to-br from-background to-muted/30 p-4">
+                    <div className="flex flex-col items-center justify-center border-l border-border/60 pl-4 text-center">
+                      <div className="font-display text-4xl font-bold leading-none text-foreground">
+                        {googleRating.rating.toFixed(1)}
+                      </div>
+                      <StarRating rating={googleRating.rating} size="xs" className="mt-1.5" />
+                      <div className="mt-1.5 font-numeric text-[10px] tabular-nums text-muted-foreground">
+                        {googleRating.userRatingCount.toLocaleString("en-US")} تقييم
+                      </div>
                     </div>
-                    <StarRating rating={googleRating.rating} size="xs" className="mt-1" />
-                    <div className="mt-1 text-[11px] text-muted-foreground">
-                      {googleRating.userRatingCount.toLocaleString("en-US")} تقييم
-                    </div>
+                    {googleRating.reviewSummary ? (
+                      <p className="flex-1 self-center text-xs leading-relaxed text-muted-foreground sm:text-sm">
+                        {googleRating.reviewSummary}
+                      </p>
+                    ) : (
+                      <p className="flex-1 self-center text-xs leading-relaxed text-muted-foreground/70">
+                        تقييمات الزبائن من Google Maps
+                      </p>
+                    )}
                   </div>
-                  {googleRating.reviewSummary && (
-                    <p className="flex-1 text-xs leading-relaxed text-muted-foreground">
-                      {googleRating.reviewSummary}
+
+                  {/* Reviews list */}
+                  {topRevs.length > 0 ? (
+                    <ul className="space-y-2.5">
+                      {topRevs.map((r, i) => (
+                        <li
+                          key={i}
+                          className="group rounded-2xl border border-border/60 bg-background p-3.5 transition-colors hover:border-border hover:bg-muted/20"
+                        >
+                          <div className="flex items-start justify-between gap-2">
+                            <div className="flex min-w-0 items-center gap-2.5">
+                              {r.author_photo_url ? (
+                                <img
+                                  src={r.author_photo_url}
+                                  alt=""
+                                  referrerPolicy="no-referrer"
+                                  loading="lazy"
+                                  className="h-8 w-8 shrink-0 rounded-full object-cover ring-1 ring-border"
+                                />
+                              ) : (
+                                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted text-[11px] font-bold text-muted-foreground">
+                                  {r.author_name?.[0] ?? "?"}
+                                </div>
+                              )}
+                              <div className="min-w-0">
+                                <div className="truncate text-xs font-bold text-foreground sm:text-sm">{r.author_name}</div>
+                                {r.relative_publish_time && (
+                                  <div className="text-[10px] text-muted-foreground/70">
+                                    {r.relative_publish_time}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                            <StarRating rating={r.rating} size="xs" />
+                          </div>
+                          <p className="mt-2.5 text-xs leading-relaxed text-muted-foreground line-clamp-4 sm:text-[13px]">
+                            {r.text}
+                          </p>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-xs text-muted-foreground">
+                      ما توجد نصوص مراجعات متاحة، بس التقييم العام موجود أعلاه.
                     </p>
                   )}
                 </div>
-
-                {topRevs.length > 0 ? (
-                  <ul className="mt-4 space-y-3">
-                    {topRevs.map((r, i) => (
-                      <li key={i} className="rounded-2xl border border-border/60 bg-background p-3">
-                        <div className="flex items-center justify-between gap-2">
-                          <div className="flex items-center gap-2 min-w-0">
-                            {r.author_photo_url && (
-                              <img
-                                src={r.author_photo_url}
-                                alt=""
-                                referrerPolicy="no-referrer"
-                                loading="lazy"
-                                className="h-7 w-7 rounded-full object-cover ring-1 ring-border"
-                              />
-                            )}
-                            <span className="truncate text-xs font-bold">{r.author_name}</span>
-                          </div>
-                          <StarRating rating={r.rating} size="xs" />
-                        </div>
-                        <p className="mt-2 text-xs leading-relaxed text-muted-foreground line-clamp-4">
-                          {r.text}
-                        </p>
-                        {r.relative_publish_time && (
-                          <div className="mt-1.5 text-[10px] text-muted-foreground/70">
-                            {r.relative_publish_time}
-                          </div>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="mt-4 text-xs text-muted-foreground">
-                    ما توجد نصوص مراجعات متاحة، بس التقييم العام موجود أعلاه.
-                  </p>
-                )}
               </section>
             )}
 
