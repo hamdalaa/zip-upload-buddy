@@ -36,6 +36,7 @@ import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
 import { UnifiedProductCard } from "@/components/UnifiedProductCard";
 import { UnifiedSearchFilters } from "@/components/UnifiedSearchFilters";
+import { ShopFilters } from "@/components/ShopFilters";
 import { CityShopCard } from "@/components/CityShopCard";
 import type { CityShop } from "@/lib/cityData";
 import type { Shop } from "@/lib/types";
@@ -49,6 +50,7 @@ import {
   searchShops,
   searchUnified,
   type AutocompleteSuggestion,
+  type ShopSearchFilters,
   type ShopSortKey,
   type SortKey,
   type UnifiedSearchFilters as Filters,
@@ -129,6 +131,7 @@ export default function UnifiedSearch() {
   // Local UI state
   const [query, setQuery] = useState(activeQuery);
   const [filters, setFilters] = useState<Filters>({});
+  const [shopFilters, setShopFilters] = useState<ShopSearchFilters>({});
   const [sort, setSort] = useState<SortKey>("relevance");
   const [shopSort, setShopSort] = useState<ShopSortKey>("relevance");
   const [data, setData] = useState<UnifiedSearchResponse | null>(null);
@@ -162,8 +165,8 @@ export default function UnifiedSearch() {
 
   // Local shop search — synchronous, very cheap
   const shopResult = useMemo(
-    () => searchShops(shops, { q: activeQuery, sort: shopSort }),
-    [shops, activeQuery, shopSort],
+    () => searchShops(shops, { ...shopFilters, q: activeQuery, sort: shopSort }),
+    [shops, activeQuery, shopSort, shopFilters],
   );
 
   // Autocomplete suggestions (cap at 8 across products+shops)
