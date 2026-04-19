@@ -458,7 +458,14 @@ export default function UnifiedSearch() {
             onResetFilters={() => setFilters({})}
           />
         ) : (
-          <ShopsView shopResult={shopResult} sort={shopSort} setSort={setShopSort} />
+          <ShopsView
+            shopResult={shopResult}
+            sort={shopSort}
+            setSort={setShopSort}
+            filters={shopFilters}
+            setFilters={setShopFilters}
+            onResetFilters={() => setShopFilters({})}
+          />
         )}
       </main>
 
@@ -588,41 +595,105 @@ function ProductsView({
 }
 
 function ShopsView({
-  shopResult, sort, setSort,
+  shopResult, sort, setSort, filters, setFilters, onResetFilters,
 }: {
   shopResult: ReturnType<typeof searchShops>;
   sort: ShopSortKey;
   setSort: (s: ShopSortKey) => void;
+  filters: ShopSearchFilters;
+  setFilters: (f: ShopSearchFilters) => void;
+  onResetFilters: () => void;
 }) {
+  const activeChips: { label: string; clear: () => void }[] = [];
+  filters.categories?.forEach((c) =>
+    activeChips.push({
+      label: c,
+      clear: () =>
+        setFilters({ ...filters, categories: filters.categories?.filter((x) => x !== c) }),
+    }),
+  );
+  filters.cities?.forEach((c) =>
+    activeChips.push({
+      label: c,
+      clear: () =>
+        setFilters({ ...filters, cities: filters.cities?.filter((x) => x !== c) }),
+    }),
+  );
+  if (filters.verifiedOnly)
+    activeChips.push({ label: "موثّق", clear: () => setFilters({ ...filters, verifiedOnly: undefined }) });
+  if (filters.hasPhone)
+    activeChips.push({ label: "فيه رقم", clear: () => setFilters({ ...filters, hasPhone: undefined }) });
+  if (filters.hasWebsite)
+    activeChips.push({ label: "عنده موقع", clear: () => setFilters({ ...filters, hasWebsite: undefined }) });
+
   return (
-    <div className="space-y-4">
-      {/* Mobile sort */}
-      <div className="flex items-center justify-end sm:hidden">
-        <Select value={sort} onValueChange={(v) => setSort(v as ShopSortKey)}>
-          <SelectTrigger className="h-9 w-[180px] rounded-lg text-xs"><SelectValue /></SelectTrigger>
-          <SelectContent>
-            {SHOP_SORT.map((opt) => <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>)}
-          </SelectContent>
-        </Select>
+    <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
+      {/* Desktop sidebar */}
+      <div className="hidden lg:block">
+        <ShopFilters
+          facets={shopResult.facets}
+          value={filters}
+          onChange={setFilters}
+          onReset={onResetFilters}
+        />
       </div>
 
-      {shopResult.shops.length === 0 ? (
-        <EmptyState
-          title="ما لگينا محلات"
-          description="جرّب اسم محل ثاني، أو شوف دليل المحلات الكامل بصفحة المحافظات."
-          action={
-            <Button asChild variant="outline">
-              <a href="/iraq">تصفح المحافظات</a>
-            </Button>
-          }
-        />
-      ) : (
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {shopResult.shops.map((s) => (
-            <CityShopCard key={s.id} shop={shopToCityShop(s)} citySlug="baghdad" />
-          ))}
+      <div className="min-w-0 space-y-4">
+        {/* Mobile filter + sort bar */}
+        <div className="flex items-center justify-between gap-2 lg:hidden">
+          <ShopFilters
+            facets={shopResult.facets}
+            value={filters}
+            onChange={setFilters}
+            onReset={onResetFilters}
+          />
+          <Select value={sort} onValueChange={(v) => setSort(v as ShopSortKey)}>
+            <SelectTrigger className="h-9 flex-1 rounded-lg text-xs"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              {SHOP_SORT.map((opt) => <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>)}
+            </SelectContent>
+          </Select>
         </div>
-      )}
+
+        {activeChips.length > 0 && (
+          <div className="flex flex-wrap gap-1.5">
+            {activeChips.map((chip, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={chip.clear}
+                className="inline-flex items-center gap-1 rounded-full border border-primary/30 bg-primary-soft px-3 py-1 text-xs text-primary transition-colors hover:bg-primary/10"
+              >
+                {chip.label}
+                <X className="h-3 w-3" />
+              </button>
+            ))}
+            <button
+              type="button"
+              onClick={onResetFilters}
+              className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs text-muted-foreground hover:text-foreground"
+            >
+              مسح الكل
+            </button>
+          </div>
+        )}
+
+        {shopResult.shops.length === 0 ? (
+          <EmptyState
+            title="ما لگينا محلات"
+            description="جرّب اسم محل ثاني، أو امسح الفلاتر، أو شوف دليل المحلات الكامل."
+            action={
+              <Button onClick={onResetFilters} variant="outline">مسح الفلاتر</Button>
+            }
+          />
+        ) : (
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {shopResult.shops.map((s) => (
+              <CityShopCard key={s.id} shop={shopToCityShop(s)} citySlug="baghdad" />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
