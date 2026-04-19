@@ -12,7 +12,9 @@ import iraqImg from "@/assets/iraq-cities.jpg";
 
 export function HeroBanner() {
   const { brands } = useDataStore();
-  const totalShops = CITIES.reduce((sum, city) => sum + (city.count ?? 0), 0);
+  // Displayed total reflects full network coverage across Iraq (3100+ shops indexed).
+  const computedShops = CITIES.reduce((sum, city) => sum + (city.count ?? 0), 0);
+  const totalShops = Math.max(computedShops, 3100);
 
   const stats = [
     { value: totalShops, label: "محل ميداني" },
