@@ -9,7 +9,28 @@
    amber motivates action, generous whitespace = clarity.
    ========================================================= */
 
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;450;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&display=swap");
+
+/* SF Pro (variable) — Latin/Numerals */
+@font-face {
+  font-family: "SF Pro";
+  src: url("/fonts/SF-Pro.ttf") format("truetype-variations"),
+       url("/fonts/SF-Pro.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* SF Arabic (variable) — Arabic script */
+@font-face {
+  font-family: "SF Arabic";
+  src: url("/fonts/SF-Arabic.ttf") format("truetype-variations"),
+       url("/fonts/SF-Arabic.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
+}
 
 @layer base {
   :root {

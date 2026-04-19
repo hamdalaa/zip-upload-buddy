@@ -17,9 +17,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['"IBM Plex Sans Arabic"', '"Inter"', "system-ui", "sans-serif"],
-        display: ['"IBM Plex Sans Arabic"', '"Inter"', "system-ui", "sans-serif"],
-        mono: ['"JetBrains Mono"', '"Inter"', "monospace"],
+        sans: ['"SF Arabic"', '"SF Pro"', "-apple-system", "BlinkMacSystemFont", "system-ui", "sans-serif"],
+        display: ['"SF Arabic"', '"SF Pro"', "-apple-system", "BlinkMacSystemFont", "system-ui", "sans-serif"],
+        mono: ['"JetBrains Mono"', "monospace"],
       },
       colors: {
         border: "hsl(var(--border))",
