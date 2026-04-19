@@ -181,6 +181,43 @@ export default function About() {
                 </div>
               </div>
             </div>
+
+            {/* Current sponsors / placeholder slots */}
+            <div className="rounded-3xl border border-border/60 bg-card/60 p-6 shadow-soft-md backdrop-blur md:p-8">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <h3 className="font-display text-lg font-bold tracking-tight md:text-xl">
+                    رعاتنا الحاليون
+                  </h3>
+                  <p className="mt-1 text-xs text-muted-foreground md:text-sm">
+                    شركاء يساندون استمرار المنصّة — مكانك ممكن يكون التالي.
+                  </p>
+                </div>
+                <span className="hidden rounded-full border border-violet/25 bg-violet/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-violet sm:inline-flex">
+                  متاح
+                </span>
+              </div>
+
+              <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <a
+                    key={i}
+                    href="https://instagram.com/hamadalaatech"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="group/slot relative flex aspect-[3/2] items-center justify-center overflow-hidden rounded-2xl border border-dashed border-border/70 bg-surface/40 transition-all hover:-translate-y-0.5 hover:border-violet/40 hover:bg-violet/5"
+                  >
+                    <div className="flex flex-col items-center gap-1.5 text-center">
+                      <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-violet/10 text-violet transition-transform group-hover/slot:scale-110">
+                        <Sparkles className="h-4 w-4" />
+                      </span>
+                      <span className="text-xs font-bold text-foreground">مكانك هنا</span>
+                      <span className="text-[10px] text-muted-foreground">اضغط للتواصل</span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
           </section>
         </div>
       </main>
