@@ -234,15 +234,53 @@ function delay<T>(value: T, ms = 350): Promise<T> {
   return new Promise((resolve) => setTimeout(() => resolve(value), ms));
 }
 
+// Arabic ↔ English synonyms — expanded into the haystack so users searching
+// in either language find the same products. Keep this small & focused on
+// the most common Iraqi/Arabic spellings of brands & categories.
+const SYNONYMS: Record<string, string[]> = {
+  "ايفون": ["iphone", "apple"],
+  "أيفون": ["iphone", "apple"],
+  "آيفون": ["iphone", "apple"],
+  "سامسونغ": ["samsung", "galaxy"],
+  "سامسونج": ["samsung", "galaxy"],
+  "ماك": ["mac", "macbook", "apple"],
+  "ماكبوك": ["macbook", "apple"],
+  "بلايستيشن": ["playstation", "ps5", "sony"],
+  "بليستيشن": ["playstation", "ps5", "sony"],
+  "بلاي": ["playstation", "sony"],
+  "سوني": ["sony"],
+  "انكر": ["anker"],
+  "أنكر": ["anker"],
+  "شاحن": ["charger", "chargers", "anker"],
+  "هاتف": ["phone", "phones"],
+  "موبايل": ["phone", "phones"],
+  "لابتوب": ["laptop", "computing", "macbook"],
+  "حاسبة": ["computing", "laptop"],
+  "سماعة": ["headphones", "accessories", "sony"],
+  "سماعات": ["headphones", "accessories"],
+};
+
+function expandQuery(q: string): string[] {
+  const tokens = q.split(/\s+/).filter(Boolean);
+  const out = new Set<string>([q]);
+  for (const t of tokens) {
+    out.add(t);
+    if (SYNONYMS[t]) for (const s of SYNONYMS[t]) out.add(s);
+  }
+  return [...out];
+}
+
 export async function searchUnified(req: UnifiedSearchRequest): Promise<UnifiedSearchResponse> {
   const start = performance.now();
   const q = (req.q ?? "").trim().toLowerCase();
   let products = [...ALL_PRODUCTS_CACHE];
 
   if (q) {
-    products = products.filter((p) =>
-      [p.title, p.brand, p.category, p.description].filter(Boolean).join(" ").toLowerCase().includes(q),
-    );
+    const terms = expandQuery(q);
+    products = products.filter((p) => {
+      const hay = [p.title, p.brand, p.category, p.description].filter(Boolean).join(" ").toLowerCase();
+      return terms.some((t) => hay.includes(t));
+    });
   }
   if (req.brands?.length) products = products.filter((p) => p.brand && req.brands!.includes(p.brand));
   if (req.categories?.length) products = products.filter((p) => p.category && req.categories!.includes(p.category));
@@ -385,13 +423,14 @@ export function searchShops(
   let shops = [...allShops];
 
   if (q) {
-    shops = shops.filter((s) =>
-      [s.name, s.area, s.category, s.address, ...(s.categories ?? [])]
+    const terms = expandQuery(q);
+    shops = shops.filter((s) => {
+      const hay = [s.name, s.area, s.category, s.address, ...(s.categories ?? [])]
         .filter(Boolean)
         .join(" ")
-        .toLowerCase()
-        .includes(q),
-    );
+        .toLowerCase();
+      return terms.some((t) => hay.includes(t));
+    });
   }
   if (req.cities?.length) shops = shops.filter((s) => req.cities!.includes(s.area));
   if (req.categories?.length) {
@@ -452,13 +491,15 @@ export function buildAutocomplete(
 ): AutocompleteSuggestion[] {
   const query = q.trim().toLowerCase();
   if (!query) return [];
+  const terms = expandQuery(query);
   const out: AutocompleteSuggestion[] = [];
+  const matches = (hay: string) => terms.some((t) => hay.includes(t));
 
   // Products from mock cache
   for (const p of ALL_PRODUCTS_CACHE) {
     if (out.length >= limit) break;
     const hay = [p.title, p.brand, p.category].filter(Boolean).join(" ").toLowerCase();
-    if (hay.includes(query)) {
+    if (matches(hay)) {
       out.push({
         type: "product",
         id: p.id,
@@ -473,7 +514,7 @@ export function buildAutocomplete(
   for (const s of shops) {
     if (out.length >= limit) break;
     const hay = [s.name, s.area, s.category].filter(Boolean).join(" ").toLowerCase();
-    if (hay.includes(query)) {
+    if (matches(hay)) {
       out.push({
         type: "shop",
         id: s.id,
