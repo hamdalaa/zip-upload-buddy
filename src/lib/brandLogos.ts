@@ -40,8 +40,8 @@ const THESVG_SLUG_MAP: Record<string, string> = {
   samsung: "samsung",
   asus: "asus",
   honor: "honor",
-  ugreen: "ugreen",
   // anker: intentionally omitted — using local SVG (official brand-blue wordmark)
+  // ugreen: intentionally omitted — using local SVG (theSVG CDN doesn't host it)
 };
 
 export function getTheSvgUrl(slug: string, variant: TheSvgVariant = "default"): string | undefined {
