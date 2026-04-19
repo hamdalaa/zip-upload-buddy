@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft, Sparkles } from "lucide-react";
 import { HeroSearch } from "@/components/HeroSearch";
-import { QuickFilterPills } from "@/components/QuickFilterPills";
 import { CountUp } from "@/components/CountUp";
 import { useDataStore } from "@/lib/dataStore";
 import { SUGGESTED_QUERIES } from "@/lib/search";
@@ -61,10 +60,8 @@ export function HeroBanner() {
               <HeroSearch />
             </div>
 
-            {/* Quick Filter pills */}
-            <div className="relative z-10 mt-3 sm:mt-4">
-              <QuickFilterPills />
-            </div>
+
+
 
             {/* Quick queries */}
 
