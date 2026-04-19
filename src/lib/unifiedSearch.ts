@@ -303,7 +303,8 @@ export async function searchUnified(req: UnifiedSearchRequest): Promise<UnifiedS
     });
   }
 
-  // Sort
+  // Sort — default (relevance / no query) ranks by rating × offer count so the
+  // most-loved & widely-available items surface first.
   switch (req.sort) {
     case "price_asc": products.sort((a, b) => (a.lowestPrice ?? 0) - (b.lowestPrice ?? 0)); break;
     case "price_desc": products.sort((a, b) => (b.lowestPrice ?? 0) - (a.lowestPrice ?? 0)); break;
@@ -311,7 +312,13 @@ export async function searchUnified(req: UnifiedSearchRequest): Promise<UnifiedS
     case "offers_desc": products.sort((a, b) => b.offerCount - a.offerCount); break;
     case "freshness_desc":
     case "relevance":
-    default: break;
+    default:
+      products.sort((a, b) => {
+        const sa = (a.rating ?? 0) * 10 + a.offerCount;
+        const sb = (b.rating ?? 0) * 10 + b.offerCount;
+        return sb - sa;
+      });
+      break;
   }
 
   // Facets
@@ -381,6 +388,7 @@ export function formatIQD(value: number): string {
  * ==================================================================== */
 
 import type { Shop } from "@/lib/types";
+import { getShopRatingValue, getShopReviewCount } from "@/lib/shopRanking";
 
 export interface ShopSearchFilters {
   q?: string;
@@ -443,12 +451,30 @@ export function searchShops(
   if (req.hasWebsite) shops = shops.filter((s) => !!s.website);
   if (req.hasPhone) shops = shops.filter((s) => !!s.phone || !!s.whatsapp);
 
+  // Default ranking: شارع الصناعة first (primary hub), then by rating × reviews.
+  // Explicit sort options override this.
+  const defaultSort = (a: Shop, b: Shop) => {
+    const sinaaA = a.area === "شارع الصناعة" ? 1 : 0;
+    const sinaaB = b.area === "شارع الصناعة" ? 1 : 0;
+    if (sinaaA !== sinaaB) return sinaaB - sinaaA;
+    const ra = getShopRatingValue(a) * Math.log10(getShopReviewCount(a) + 10);
+    const rb = getShopRatingValue(b) * Math.log10(getShopReviewCount(b) + 10);
+    if (rb !== ra) return rb - ra;
+    return Number(b.verified) - Number(a.verified);
+  };
+
   switch (req.sort) {
     case "name_asc": shops.sort((a, b) => a.name.localeCompare(b.name, "ar")); break;
-    case "verified_first": shops.sort((a, b) => Number(b.verified) - Number(a.verified)); break;
+    case "verified_first":
+      shops.sort((a, b) => Number(b.verified) - Number(a.verified) || defaultSort(a, b));
+      break;
     case "rating_desc":
+      shops.sort((a, b) => getShopRatingValue(b) - getShopRatingValue(a) || getShopReviewCount(b) - getShopReviewCount(a));
+      break;
     case "relevance":
-    default: break; // Caller can post-sort by rating using getRating() helper.
+    default:
+      shops.sort(defaultSort);
+      break;
   }
 
   // Build facets
