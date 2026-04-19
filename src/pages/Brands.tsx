@@ -203,17 +203,17 @@ export default function Brands() {
                       <div className="flex items-end justify-between gap-3">
                         <div className="flex min-w-0 flex-1 items-center gap-3">
                           {/* Compact logo chip */}
-                          <div className="flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white/95 p-2 shadow-[0_6px_20px_-6px_rgba(0,0,0,0.6)] ring-1 ring-white/20 backdrop-blur-sm transition-transform duration-500 group-hover:scale-105">
+                          <div className="flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-black p-2 shadow-[0_6px_20px_-6px_rgba(0,0,0,0.6)] ring-1 ring-white/15 backdrop-blur-sm transition-transform duration-500 group-hover:scale-105">
                             {logo ? (
                               <img
                                 src={logo}
                                 alt={`${brand.brandName} logo`}
                                 loading={idx < 4 ? "eager" : "lazy"}
                                 decoding="async"
-                                className="h-full w-full object-contain"
+                                className="h-full w-full object-contain brightness-0 invert"
                               />
                             ) : (
-                              <span className="font-display text-lg font-bold text-foreground">
+                              <span className="font-display text-lg font-bold text-white">
                                 {brand.brandName.slice(0, 1)}
                               </span>
                             )}
