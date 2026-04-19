@@ -23,6 +23,7 @@ import {
   ChevronLeft,
   CircleDollarSign,
   Filter,
+  Flame,
   Grid3x3,
   Home,
   Layers,
@@ -665,12 +666,17 @@ function FilterSection({
   compact?: boolean;
 }) {
   return (
-    <section className="border-t border-border/60 py-4 first:border-t-0 first:pt-0">
-      <h3 className="mb-3 inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground/80">
-        {Icon && <Icon className="h-3.5 w-3.5 text-primary" />}
-        {title}
+    <section className="border-t border-dashed border-border/55 py-4 first:border-t-0 first:pt-0">
+      <h3 className="mb-3 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground/80">
+        {Icon && (
+          <span className="inline-flex h-6 w-6 items-center justify-center rounded-lg bg-primary/10 text-primary ring-1 ring-inset ring-primary/15">
+            <Icon className="h-3.5 w-3.5" />
+          </span>
+        )}
+        <span>{title}</span>
+        <span className="ml-auto h-px flex-1 bg-gradient-to-l from-border/60 to-transparent" />
       </h3>
-      <div className={cn(compact ? "flex flex-wrap gap-1.5" : "space-y-1.5")}>
+      <div className={cn(compact ? "flex flex-wrap gap-1.5" : "space-y-1")}>
         {children}
       </div>
     </section>
@@ -707,13 +713,19 @@ function FilterRow({
     <button
       onClick={onClick}
       className={cn(
-        "block w-full rounded-2xl px-3 py-2 text-right text-sm transition-colors",
+        "group/row flex w-full items-center gap-2 rounded-xl px-3 py-2 text-right text-[13px] transition-all",
         active
-          ? "bg-secondary text-secondary-foreground shadow-soft"
-          : "bg-background text-foreground/80 hover:bg-muted hover:text-foreground",
+          ? "bg-primary/10 text-primary font-semibold ring-1 ring-inset ring-primary/20"
+          : "text-foreground/75 hover:bg-muted/60 hover:text-foreground",
       )}
     >
-      {children}
+      <span
+        className={cn(
+          "h-1.5 w-1.5 rounded-full transition-all",
+          active ? "bg-primary scale-110" : "bg-border group-hover/row:bg-muted-foreground/40",
+        )}
+      />
+      <span className="flex-1">{children}</span>
     </button>
   );
 }
@@ -877,44 +889,54 @@ function FiltersPanel(props: FiltersPanelProps) {
             );
           })
         ) : (
-          <div className="space-y-1.5">
-            {[4.5, 4, 3.5, 0].map((rating) => (
-              <button
-                key={rating}
-                onClick={() => setMinRating(rating)}
-                className={cn(
-                  "flex w-full items-center gap-2 rounded-2xl px-3 py-2 text-sm transition-colors",
-                  minRating === rating ? "bg-secondary text-secondary-foreground shadow-soft" : "bg-background text-foreground/80 hover:bg-muted",
-                )}
-              >
-                {rating === 0 ? (
-                  <span>الكل</span>
-                ) : (
-                  <>
-                    <Star className={cn("h-3.5 w-3.5", minRating === rating ? "fill-current" : "fill-warning text-warning")} />
-                    <span>{rating}+ نجوم</span>
-                  </>
-                )}
-              </button>
-            ))}
+          <div className="space-y-1">
+            {[4.5, 4, 3.5, 0].map((rating) => {
+              const active = minRating === rating;
+              return (
+                <button
+                  key={rating}
+                  onClick={() => setMinRating(rating)}
+                  className={cn(
+                    "flex w-full items-center gap-2 rounded-xl px-3 py-2 text-[13px] transition-all",
+                    active
+                      ? "bg-primary/10 text-primary font-semibold ring-1 ring-inset ring-primary/20"
+                      : "text-foreground/75 hover:bg-muted/60 hover:text-foreground",
+                  )}
+                >
+                  {rating === 0 ? (
+                    <>
+                      <span className={cn("h-1.5 w-1.5 rounded-full", active ? "bg-primary" : "bg-border")} />
+                      <span>الكل</span>
+                    </>
+                  ) : (
+                    <>
+                      <Star className={cn("h-3.5 w-3.5", active ? "fill-primary text-primary" : "fill-warning text-warning")} />
+                      <span>{rating}+ نجوم</span>
+                    </>
+                  )}
+                </button>
+              );
+            })}
           </div>
         )}
       </FilterSection>
 
-      <div className={cn("pt-4 border-t border-border/60", compact ? "grid grid-cols-2 gap-2" : "space-y-2")}>
+      <div className={cn("pt-4 mt-1 border-t border-dashed border-border/55", compact ? "grid grid-cols-2 gap-2" : "space-y-2")}>
         <label className={cn(
-          "flex items-center gap-2 rounded-2xl border border-border/70 bg-background px-3 py-2 cursor-pointer transition-colors hover:border-primary/30",
+          "flex items-center gap-2 rounded-xl border border-border/60 bg-background/60 px-3 py-2 cursor-pointer transition-all hover:border-primary/40 hover:bg-primary/5 has-[:checked]:border-primary/40 has-[:checked]:bg-primary/8",
           compact ? "text-xs font-semibold" : "text-sm",
         )}>
           <Checkbox checked={verifiedOnly} onCheckedChange={(value) => setVerifiedOnly(!!value)} />
-          موثّقة فقط
+          <ShieldCheck className="h-3.5 w-3.5 text-success" />
+          <span className="flex-1">موثّقة فقط</span>
         </label>
         <label className={cn(
-          "flex items-center gap-2 rounded-2xl border border-border/70 bg-background px-3 py-2 cursor-pointer transition-colors hover:border-primary/30",
+          "flex items-center gap-2 rounded-xl border border-border/60 bg-background/60 px-3 py-2 cursor-pointer transition-all hover:border-primary/40 hover:bg-primary/5 has-[:checked]:border-primary/40 has-[:checked]:bg-primary/8",
           compact ? "text-xs font-semibold" : "text-sm",
         )}>
           <Checkbox checked={withDeals} onCheckedChange={(value) => setWithDeals(!!value)} />
-          تخفيضات فقط
+          <Flame className="h-3.5 w-3.5 text-accent-rose" />
+          <span className="flex-1">تخفيضات فقط</span>
         </label>
       </div>
     </Wrapper>
