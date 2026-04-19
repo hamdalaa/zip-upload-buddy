@@ -12,35 +12,32 @@ interface TopOfferPreview {
 
 interface Props {
   product: UnifiedProduct;
-  /** Optional preview of top offers — shown as compact compare strip */
   topOffers?: TopOfferPreview[];
 }
 
 export function UnifiedProductCard({ product, topOffers }: Props) {
+  const lowest = product.lowestPrice ?? 0;
+  const highest = product.highestPrice ?? 0;
   const savings =
-    product.highestPrice && product.lowestPrice && product.highestPrice > product.lowestPrice
-      ? Math.round(((product.highestPrice - product.lowestPrice) / product.highestPrice) * 100)
+    highest && lowest && highest > lowest
+      ? Math.round(((highest - lowest) / highest) * 100)
       : 0;
 
-  // Ribbon — same language as ShopCard (verified > top-deal > none)
-  const ribbon = savings > 10
-    ? { className: "ribbon ribbon-amber", icon: TrendingDown, label: `وفّر ${savings}%` }
-    : product.inStockCount >= 3
-      ? { className: "ribbon ribbon-emerald", icon: ShieldCheck, label: "متوفر بكثرة" }
-      : null;
+  const inStock = product.inStockCount > 0;
 
   return (
-    <article className="group atlas-card relative overflow-hidden text-right shadow-soft-md">
-      {ribbon && (
-        <span className={ribbon.className}>
-          <ribbon.icon className="h-3 w-3" />
-          {ribbon.label}
+    <article className="group atlas-card relative flex flex-col overflow-hidden text-right shadow-soft-md">
+      {savings >= 8 && (
+        <span className="ribbon ribbon-amber">
+          <TrendingDown className="h-3 w-3" />
+          وفّر {savings}%
         </span>
       )}
 
+      {/* IMAGE — square, calm bg, single floating chip */}
       <Link
         to={`/product/${product.id}`}
-        className="relative block aspect-[4/3] overflow-hidden bg-surface-2"
+        className="relative block aspect-square overflow-hidden bg-surface-2"
         aria-label={`${product.title} — افتح صفحة المنتج`}
       >
         <img
@@ -49,63 +46,57 @@ export function UnifiedProductCard({ product, topOffers }: Props) {
           loading="lazy"
           decoding="async"
           referrerPolicy="no-referrer"
-          className="smooth-img h-full w-full object-cover"
+          className="smooth-img h-full w-full object-contain p-6 transition-transform duration-500 group-hover:scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-foreground/55 via-transparent to-transparent" />
 
-        {/* Bottom-left: store-count chip (mirrors ShopCard area chip) */}
-        <div className="absolute bottom-3 left-3">
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-background/95 px-2.5 py-1 text-[10px] font-semibold text-foreground shadow-soft-md backdrop-blur-sm">
+        <div className="absolute bottom-2.5 right-2.5">
+          <span className="inline-flex items-center gap-1 rounded-full bg-background/95 px-2 py-1 text-[10px] font-semibold text-foreground shadow-soft-sm backdrop-blur-sm">
             <Store className="h-3 w-3 text-primary" />
             {product.offerCount} محل
-          </div>
+          </span>
         </div>
       </Link>
 
-      <div className="space-y-3 p-4 sm:p-5">
-        {/* Brand + category — mirrors ShopCard chip row */}
-        <div className="flex flex-wrap items-center gap-1.5">
-          {product.brand && (
-            <span className="rounded-full bg-primary-soft px-2 py-0.5 text-[10px] font-semibold text-primary">
-              {product.brand}
-            </span>
-          )}
-          {product.category && (
-            <span className="rounded-full bg-surface px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-              {product.category}
-            </span>
-          )}
-        </div>
+      {/* BODY */}
+      <div className="flex flex-1 flex-col gap-2.5 p-4">
+        {/* Brand chip — single, calm, neutral */}
+        {product.brand && (
+          <span className="inline-flex w-fit items-center gap-1 rounded-md bg-surface px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">
+            {product.brand}
+          </span>
+        )}
 
-        <h3 className="font-display text-lg sm:text-xl font-semibold leading-tight text-foreground line-clamp-2 group-hover:text-primary transition-colors">
+        {/* Title */}
+        <h3 className="font-display text-[15px] sm:text-base font-semibold leading-snug text-foreground line-clamp-2 min-h-[2.6em] group-hover:text-primary transition-colors">
           {product.title}
         </h3>
 
+        {/* Rating — small, inline */}
         {product.rating != null && (
-          <StarRating rating={product.rating} reviews={product.reviewCount ?? 0} size="xs" />
+          <div className="text-[11px]">
+            <StarRating rating={product.rating} reviews={product.reviewCount ?? 0} size="xs" />
+          </div>
         )}
 
-        {/* Price — minimal, no extra chrome */}
-        <div className="flex items-baseline gap-2">
-          <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-            يبدأ من
+        {/* PRICE — hero element */}
+        <div className="flex items-baseline gap-2 pt-1">
+          <span className="font-display text-xl font-bold leading-none text-foreground">
+            {formatIQD(lowest)}
           </span>
-          <span className="text-xl font-bold text-foreground">
-            {formatIQD(product.lowestPrice ?? 0)}
-          </span>
-          {product.highestPrice && product.highestPrice > (product.lowestPrice ?? 0) && (
+          {highest > lowest && (
             <span className="text-xs text-muted-foreground line-through">
-              {formatIQD(product.highestPrice)}
+              {formatIQD(highest)}
             </span>
           )}
         </div>
+        <p className="text-[10px] text-muted-foreground">أقل سعر من {product.offerCount} محل</p>
 
-        {/* Top offers preview — compact compare strip (only when provided) */}
+        {/* TOP OFFERS — only when supplied */}
         {topOffers && topOffers.length > 0 && (
-          <ul className="space-y-1 rounded-xl border border-border/60 bg-surface/60 px-2.5 py-2">
+          <ul className="mt-1 space-y-1 rounded-lg bg-surface/60 px-2 py-1.5">
             {topOffers.slice(0, 3).map((o, idx) => (
-              <li key={idx} className="flex items-center justify-between gap-2 text-[12px]">
-                <div className="flex min-w-0 items-center gap-1.5 text-foreground">
+              <li key={idx} className="flex items-center justify-between gap-2 text-[11.5px]">
+                <span className="flex min-w-0 items-center gap-1 text-foreground">
                   {o.officialDealer ? (
                     <Award className="h-3 w-3 shrink-0 text-primary" />
                   ) : o.verified ? (
@@ -113,8 +104,8 @@ export function UnifiedProductCard({ product, topOffers }: Props) {
                   ) : (
                     <Store className="h-3 w-3 shrink-0 text-muted-foreground" />
                   )}
-                  <span className="truncate font-medium">{o.storeName}</span>
-                </div>
+                  <span className="truncate">{o.storeName}</span>
+                </span>
                 <span className={idx === 0 ? "shrink-0 font-bold text-primary" : "shrink-0 font-semibold text-foreground"}>
                   {formatIQD(o.price)}
                 </span>
@@ -123,35 +114,20 @@ export function UnifiedProductCard({ product, topOffers }: Props) {
           </ul>
         )}
 
-        {/* Meta row — small, calm, like ShopCard */}
-        <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
-          {product.inStockCount > 0 ? (
-            <span className="inline-flex items-center gap-1">
-              <span className="h-1.5 w-1.5 rounded-full bg-success" />
-              متوفر بـ {product.inStockCount} محل
-            </span>
-          ) : (
-            <span className="inline-flex items-center gap-1">
-              <span className="h-1.5 w-1.5 rounded-full bg-destructive" />
-              نفد من كل المحلات
-            </span>
-          )}
-          <span className="inline-flex items-center gap-1">
-            <ShieldCheck className="h-3 w-3 text-success" />
-            تحقّقت من المصدر
-          </span>
+        {/* Stock dot */}
+        <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+          <span className={`h-1.5 w-1.5 rounded-full ${inStock ? "bg-success" : "bg-destructive"}`} />
+          {inStock ? `متوفر بـ ${product.inStockCount} محل` : "نفد من كل المحلات"}
         </div>
 
-        {/* CTA — same shape as ShopCard */}
-        <div className="pt-1">
-          <Link
-            to={`/product/${product.id}`}
-            className="btn-ripple inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-xl bg-foreground text-sm font-semibold text-background transition-colors hover:bg-primary"
-          >
-            قارن {product.offerCount} عرض
-            <ArrowLeft className="icon-nudge-x h-3.5 w-3.5" />
-          </Link>
-        </div>
+        {/* CTA */}
+        <Link
+          to={`/product/${product.id}`}
+          className="btn-ripple mt-auto inline-flex h-9 items-center justify-center gap-1.5 rounded-xl bg-foreground text-sm font-semibold text-background transition-colors hover:bg-primary"
+        >
+          قارن الأسعار
+          <ArrowLeft className="icon-nudge-x h-3.5 w-3.5" />
+        </Link>
       </div>
     </article>
   );
