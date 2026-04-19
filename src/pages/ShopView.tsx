@@ -175,41 +175,41 @@ const ShopView = () => {
           </div>
 
           {/* ============ 2. ACTIONS BAR ============ */}
-          <div className="flex flex-wrap items-center gap-2 border-t border-border/60 p-4 md:p-5">
+          <div className="flex flex-wrap items-center gap-1.5 border-t border-border/60 p-3 sm:gap-2 sm:p-4 md:p-5">
             {shop.googleMapsUrl && (
-              <Button asChild className="gap-1.5 rounded-full bg-primary px-5 text-primary-foreground hover:bg-primary/90">
+              <Button asChild size="sm" className="h-9 gap-1.5 rounded-full bg-primary px-3.5 text-xs text-primary-foreground hover:bg-primary/90 sm:h-10 sm:px-5 sm:text-sm">
                 <a href={shop.googleMapsUrl} target="_blank" rel="noreferrer noopener">
-                  <MapPin className="h-4 w-4" /> افتح بخرائط Google
+                  <MapPin className="h-4 w-4" /> خرائط Google
                 </a>
               </Button>
             )}
             {shop.website && (
-              <Button asChild variant="outline" className="gap-1.5 rounded-full">
+              <Button asChild variant="outline" size="sm" className="h-9 gap-1.5 rounded-full px-3 text-xs sm:h-10 sm:px-4 sm:text-sm">
                 <a href={shop.website} target="_blank" rel="noreferrer noopener">
                   <Globe className="h-4 w-4" /> الموقع
                 </a>
               </Button>
             )}
             {shop.phone && (
-              <Button asChild variant="outline" className="gap-1.5 rounded-full">
+              <Button asChild variant="outline" size="sm" className="h-9 gap-1.5 rounded-full px-3 text-xs sm:h-10 sm:px-4 sm:text-sm">
                 <a href={pageData?.callUrl ?? `tel:${shop.phone.replace(/\s/g, "")}`}>
                   <Phone className="h-4 w-4" /> <bdi dir="ltr">{shop.phone}</bdi>
                 </a>
               </Button>
             )}
             {pageData?.whatsappUrl && (
-              <Button asChild variant="outline" className="gap-1.5 rounded-full border-success/40 text-success hover:bg-success/10">
+              <Button asChild variant="outline" size="sm" className="h-9 gap-1.5 rounded-full border-success/40 px-3 text-xs text-success hover:bg-success/10 sm:h-10 sm:px-4 sm:text-sm">
                 <a href={pageData.whatsappUrl} target="_blank" rel="noreferrer noopener">
                   <MessageCircle className="h-4 w-4" /> واتساب
                 </a>
               </Button>
             )}
             {shop.phone && (
-              <Button variant="ghost" size="icon" className="rounded-full" onClick={handleCopyPhone} aria-label="نسخ الرقم">
+              <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full sm:h-10 sm:w-10" onClick={handleCopyPhone} aria-label="نسخ الرقم">
                 <Copy className="h-4 w-4" />
               </Button>
             )}
-            <Button variant="ghost" size="icon" className="rounded-full" onClick={handleShare} aria-label="مشاركة">
+            <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full sm:h-10 sm:w-10" onClick={handleShare} aria-label="مشاركة">
               <Share2 className="h-4 w-4" />
             </Button>
             <Button
