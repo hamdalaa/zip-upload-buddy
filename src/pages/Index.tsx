@@ -173,10 +173,7 @@ const Index = () => {
 
             <div className="grid gap-4 sm:gap-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
               <div>
-                <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/70">
-                  تغطية وطنية
-                </span>
-                <h2 className="font-display mt-3 text-xl font-semibold leading-tight text-white sm:text-4xl md:text-5xl tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]">
+                <h2 className="font-display text-xl font-semibold leading-tight text-white sm:text-4xl md:text-5xl tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]">
                   نفس لغة السوق <br className="hidden sm:inline" /> في كل المحافظات.
                 </h2>
                 <p className="mt-2.5 max-w-3xl text-[13px] leading-6 text-white/80 sm:mt-4 sm:text-base sm:leading-8">
