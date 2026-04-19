@@ -68,32 +68,6 @@ export function HeroSearch({
 
   return (
     <div className="w-full">
-      {/* Mode toggle */}
-      <div className="mx-auto mb-3 inline-flex rounded-full border border-border bg-card/80 p-1 shadow-soft-sm backdrop-blur-xl">
-        <button
-          type="button"
-          onClick={() => setMode("unified")}
-          className={`flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-semibold transition-all sm:text-sm ${
-            mode === "unified"
-              ? "bg-gradient-primary text-primary-foreground shadow-soft-md"
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          <Sparkles className="h-3.5 w-3.5" />
-          بحث موحّد بكل المواقع
-        </button>
-        <button
-          type="button"
-          onClick={() => setMode("shops")}
-          className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-all sm:text-sm ${
-            mode === "shops"
-              ? "bg-foreground text-background shadow-soft-md"
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          محلات وعناوين
-        </button>
-      </div>
 
       <form
         onSubmit={submit}
