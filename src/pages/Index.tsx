@@ -110,12 +110,12 @@ const Index = () => {
                   <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
                   Baghdad · بغداد
                 </div>
-                <h2 className="font-display mt-3 text-xl font-semibold leading-tight text-foreground sm:text-4xl md:text-5xl tracking-tight">
+                <h2 className="font-display mt-3 text-3xl font-semibold leading-tight text-foreground sm:text-4xl md:text-5xl tracking-tight">
                   مسارات{" "}
                   <span className="bg-gradient-to-br from-primary via-primary to-foreground bg-clip-text text-transparent">
                     بغداد
                   </span>
-                  <span className="mt-2 block text-[13px] font-medium leading-6 tracking-normal text-muted-foreground sm:mt-4 sm:text-base sm:leading-8">
+                  <span className="mt-3 block text-base font-medium leading-7 tracking-normal text-muted-foreground sm:mt-4 sm:text-base sm:leading-8">
                     دليلك المرجعي للأسواق التقنية.
                   </span>
                 </h2>
@@ -123,7 +123,7 @@ const Index = () => {
 
               {/* Body — left side in RTL */}
               <div className="lg:col-span-5 lg:col-start-8 flex flex-col gap-6 pb-2 text-right">
-                <p className="text-[15px] leading-[1.9] text-foreground/85 sm:text-lg">
+                <p className="text-base leading-[1.9] text-foreground/85 sm:text-lg">
                   في قلب العاصمة، يبرز شارعا
                   <span className="font-semibold text-primary"> الصناعة والربيعي </span>
                   كشرايين نابضة لسوق الإلكترونيات في بغداد.
