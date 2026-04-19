@@ -68,10 +68,10 @@ export function HeroSearch({
 
       <form
         onSubmit={submit}
-        className="group/search relative w-full rounded-2xl border border-border/70 bg-card/80 p-1.5 shadow-soft-xl backdrop-blur-xl transition-all focus-within:border-primary/50 focus-within:shadow-glow sm:rounded-3xl sm:p-2"
+        className="group/search relative w-full rounded-2xl border border-border bg-card/95 p-1.5 shadow-soft backdrop-blur-xl transition-all focus-within:border-primary/40 focus-within:shadow-soft-lg sm:rounded-3xl sm:p-2"
       >
         {/* Search input row */}
-        <div className="flex w-full items-center gap-2 rounded-xl bg-background/60 px-3 sm:rounded-2xl sm:px-4">
+        <div className="flex w-full items-center gap-2 rounded-xl px-3 sm:rounded-2xl sm:px-4">
           <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
           <input
             ref={inputRef}
@@ -81,7 +81,7 @@ export function HeroSearch({
             onBlur={() => setTimeout(() => setAcOpen(false), 150)}
             onKeyDown={onInputKeyDown}
             placeholder="iPhone 15، PlayStation 5، اسم محل…"
-            className="h-12 min-w-0 flex-1 bg-transparent text-[15px] text-foreground outline-none placeholder:text-muted-foreground/70 sm:text-base"
+            className="h-12 min-w-0 flex-1 bg-transparent text-[15px] text-foreground outline-none placeholder:text-muted-foreground/60 sm:text-base"
             autoComplete="off"
           />
         </div>
