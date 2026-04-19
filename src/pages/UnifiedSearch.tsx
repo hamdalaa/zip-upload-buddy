@@ -519,10 +519,18 @@ function ProductsView({
       )}
 
       <div className="min-w-0">
-        {/* Mobile sort only — filters are desktop-only */}
-        <div className="mb-4 flex items-center justify-end lg:hidden">
+        {/* Mobile filter + sort bar */}
+        <div className="mb-4 flex items-center justify-between gap-2 lg:hidden">
+          {data && (
+            <UnifiedSearchFilters
+              facets={data.facets}
+              value={filters}
+              onChange={setFilters}
+              onReset={onResetFilters}
+            />
+          )}
           <Select value={sort} onValueChange={(v) => setSort(v as SortKey)}>
-            <SelectTrigger className="h-9 w-[180px] rounded-lg text-xs"><SelectValue /></SelectTrigger>
+            <SelectTrigger className="h-9 flex-1 rounded-lg text-xs"><SelectValue /></SelectTrigger>
             <SelectContent>
               {PRODUCT_SORT.map((opt) => <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>)}
             </SelectContent>
