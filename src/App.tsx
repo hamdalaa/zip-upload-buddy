@@ -11,6 +11,7 @@ import { CommandPalette } from "@/components/CommandPalette";
 import { WelcomeTour } from "@/components/WelcomeTour";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { BottomTabBar } from "@/components/BottomTabBar";
+import { PullToRefresh } from "@/components/PullToRefresh";
 import Index from "./pages/Index.tsx";
 
 // Lazy-load secondary routes to keep the initial bundle small.
@@ -50,22 +51,24 @@ const App = () => (
             <ScrollToTop />
             <WelcomeTour />
             <Suspense fallback={<RouteFallback />}>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/results" element={<Results />} />
-                <Route path="/sinaa" element={<StreetPages />} />
-                <Route path="/rubaie" element={<RubaiePage />} />
-                <Route path="/iraq" element={<IraqCities />} />
-                <Route path="/city/:slug" element={<CityPage />} />
-                <Route path="/city/:slug/shop/:shopId" element={<CityShopView />} />
-                <Route path="/shop-view/:shopId" element={<ShopView />} />
-                <Route path="/brands" element={<Brands />} />
-                <Route path="/brand/:slug" element={<Brand />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/about" element={<About />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
+              <PullToRefresh>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/results" element={<Results />} />
+                  <Route path="/sinaa" element={<StreetPages />} />
+                  <Route path="/rubaie" element={<RubaiePage />} />
+                  <Route path="/iraq" element={<IraqCities />} />
+                  <Route path="/city/:slug" element={<CityPage />} />
+                  <Route path="/city/:slug/shop/:shopId" element={<CityShopView />} />
+                  <Route path="/shop-view/:shopId" element={<ShopView />} />
+                  <Route path="/brands" element={<Brands />} />
+                  <Route path="/brand/:slug" element={<Brand />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/about" element={<About />} />
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </PullToRefresh>
             </Suspense>
             <CompareBar />
             <CommandPalette />
