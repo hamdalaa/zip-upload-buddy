@@ -5,7 +5,7 @@ import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useDataStore } from "@/lib/dataStore";
 import { OFFICIAL_DEALER_BRANCHES } from "@/lib/officialDealers";
-import { getBrandLogo } from "@/lib/brandLogos";
+import { getBrandLogo, getTheSvgUrl } from "@/lib/brandLogos";
 import { getBrandBackground } from "@/lib/brandBackgrounds";
 import type { BrandDealer } from "@/lib/types";
 
