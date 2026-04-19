@@ -510,12 +510,14 @@ function ProductsView({
   return (
     <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
       {data && (
-        <UnifiedSearchFilters
-          facets={data.facets}
-          value={filters}
-          onChange={setFilters}
-          onReset={onResetFilters}
-        />
+        <div className="hidden lg:block">
+          <UnifiedSearchFilters
+            facets={data.facets}
+            value={filters}
+            onChange={setFilters}
+            onReset={onResetFilters}
+          />
+        </div>
       )}
 
       <div className="min-w-0">
