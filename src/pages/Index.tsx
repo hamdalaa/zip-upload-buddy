@@ -76,8 +76,8 @@ const Index = () => {
 
         {/* Street features — two large editorial blocks */}
         <section className="container mt-10 sm:mt-20 md:mt-28">
-          {/* Editorial headline — magazine spread style */}
-          <div className="relative isolate overflow-hidden rounded-[28px] border border-border/60 bg-card/40 px-6 py-10 text-right shadow-soft backdrop-blur-sm sm:px-12 sm:py-16 md:px-16 md:py-20">
+          {/* Editorial archival headline — magazine spread inspired */}
+          <div className="relative isolate overflow-hidden rounded-[28px] border border-border/60 bg-card/30 px-6 py-12 shadow-soft backdrop-blur-sm sm:px-12 sm:py-20 md:px-20 md:py-24">
             {/* Map background */}
             <div
               aria-hidden
@@ -86,34 +86,68 @@ const Index = () => {
                 backgroundImage: `url(${baghdadPinsMap})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-                opacity: 0.32,
+                opacity: 0.22,
                 maskImage:
-                  "radial-gradient(ellipse 90% 75% at 70% 50%, black 30%, transparent 88%)",
+                  "radial-gradient(ellipse 95% 80% at 30% 50%, black 25%, transparent 90%)",
                 WebkitMaskImage:
-                  "radial-gradient(ellipse 90% 75% at 70% 50%, black 30%, transparent 88%)",
+                  "radial-gradient(ellipse 95% 80% at 30% 50%, black 25%, transparent 90%)",
               }}
             />
-            {/* Soft tint to blend with brand */}
             <div
               aria-hidden
-              className="absolute inset-0 -z-10 bg-gradient-to-l from-card/80 via-card/40 to-transparent"
+              className="absolute inset-0 -z-10 bg-gradient-to-l from-card/70 via-card/20 to-transparent"
             />
 
-            <div className="relative max-w-3xl">
-              <div className="flex items-center justify-end gap-2.5">
-                <span className="size-1 rounded-full bg-primary" />
-                <span className="text-[10px] font-medium uppercase tracking-[0.22em] text-primary/90">شوارع السوق</span>
+            {/* Top archival meta strip */}
+            <div className="relative mb-10 flex items-center justify-between border-t border-border/60 pt-4 sm:mb-14">
+              <div className="flex gap-1">
+                <span className="size-1 rounded-full bg-foreground/40" />
+                <span className="size-1 rounded-full bg-foreground/40" />
+                <span className="size-1 rounded-full bg-foreground/40" />
               </div>
-              <h2 className="font-display mt-6 text-balance text-[2.25rem] font-light leading-[1.08] tracking-[-0.02em] text-foreground sm:mt-8 sm:text-[3.25rem] md:text-[4rem]">
-                مسارات بغداد
-                <br className="hidden sm:inline" />
-                <span className="font-normal italic text-primary/85">المرجعية</span>
-                <span className="text-foreground">.</span>
-              </h2>
-              <p className="mt-6 max-w-lg text-[13px] leading-[1.75] text-muted-foreground sm:mt-7 sm:text-[14px] ms-auto">
-                شارعا <span className="text-foreground/90">الصناعة</span> و
-                <span className="text-foreground/90"> الربيعي</span> يشكلان قلب سوق الإلكترونيات في بغداد. ابدأ منهما قبل أي قرار شراء.
-              </p>
+              <span className="text-[10px] font-medium uppercase tracking-[0.22em] text-muted-foreground">
+                العدد المرجعي · ٠٤
+              </span>
+            </div>
+
+            {/* Two-column editorial layout */}
+            <div className="relative grid grid-cols-1 items-end gap-10 lg:grid-cols-12 lg:gap-12">
+              {/* Headline — right side in RTL */}
+              <div className="lg:col-span-7">
+                <div className="flex items-center justify-end gap-3">
+                  <span className="h-px w-8 bg-primary" />
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-primary">
+                    شوارع السوق
+                  </span>
+                </div>
+                <h2 className="font-display mt-6 text-balance text-right text-[2.5rem] font-bold leading-[1.05] tracking-tight text-foreground sm:mt-8 sm:text-[4rem] md:text-[5.5rem] lg:text-[6.5rem]">
+                  مسارات
+                  <span className="block lg:pe-12">بغداد</span>
+                  <span className="mt-2 block text-[1.75rem] font-normal italic text-foreground/70 sm:text-[2.5rem] md:text-[3.25rem] lg:text-[4rem] lg:pe-24">
+                    المرجعية.
+                  </span>
+                </h2>
+              </div>
+
+              {/* Body — left side in RTL */}
+              <div className="lg:col-span-5 lg:col-start-8 flex flex-col gap-6 pb-2 text-right">
+                <p className="text-[15px] leading-[1.9] text-foreground/85 sm:text-lg">
+                  في قلب العاصمة، يبرز شارعا
+                  <span className="font-semibold text-primary"> الصناعة والربيعي </span>
+                  كشرايين نابضة لسوق الإلكترونيات في بغداد.
+                </p>
+                <p className="text-[13px] leading-[1.85] text-muted-foreground sm:text-sm">
+                  هنا تتقاطع واجهات المحلات بقصص التطور التقني — من مكوّنات الحاسوب إلى أحدث الهواتف. ابدأ منهما قبل أي قرار شراء.
+                </p>
+                <div className="mt-2 flex items-center justify-between border-t border-border/60 pt-5">
+                  <span className="text-[10px] font-medium uppercase tracking-[0.22em] text-muted-foreground">
+                    قسم التوثيق
+                  </span>
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:bg-foreground hover:text-background">
+                    <ArrowLeft className="h-3.5 w-3.5" />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
