@@ -101,19 +101,17 @@ const Index = () => {
 
             <div className="relative">
               <div className="flex items-center justify-end gap-3">
-                <div className="h-px flex-1 bg-gradient-to-l from-border to-transparent" />
-                <span className="atlas-kicker text-primary">شوارع السوق</span>
                 <span className="size-1.5 rounded-full bg-primary" />
+                <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">شوارع السوق</span>
               </div>
-              <h2 className="font-display mt-4 text-3xl font-semibold leading-[1.05] tracking-tight text-foreground sm:mt-6 sm:text-5xl md:text-6xl lg:text-7xl">
+              <h2 className="font-display mt-5 text-balance text-[2rem] font-medium leading-[1.1] tracking-tight text-foreground sm:mt-6 sm:text-5xl md:text-[3.5rem]">
                 مسارات بغداد
-                <span className="block bg-gradient-to-l from-primary via-primary to-primary/60 bg-clip-text text-transparent">
-                  المرجعية.
-                </span>
+                <span className="text-muted-foreground/80"> المرجعية</span>
+                <span className="text-primary">.</span>
               </h2>
-              <p className="mt-4 max-w-2xl text-sm leading-7 text-muted-foreground sm:mt-6 sm:text-base sm:leading-8 ms-auto">
-                شارعا <span className="font-semibold text-foreground">الصناعة</span> و
-                <span className="font-semibold text-foreground"> الربيعي</span> يشكلان قلب سوق الإلكترونيات في بغداد. ابدأ منهما قبل أي قرار شراء.
+              <p className="mt-5 max-w-xl text-[13px] leading-7 text-muted-foreground sm:mt-6 sm:text-[15px] sm:leading-8 ms-auto">
+                شارعا <span className="text-foreground">الصناعة</span> و
+                <span className="text-foreground"> الربيعي</span> يشكلان قلب سوق الإلكترونيات في بغداد. ابدأ منهما قبل أي قرار شراء.
               </p>
             </div>
           </div>
