@@ -1,9 +1,12 @@
-import { useState, type FormEvent } from "react";
+import { useMemo, useRef, useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, MapPin, Search, Sparkles, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ALL_AREAS, ALL_CATEGORIES, type Area, type Category } from "@/lib/types";
+import { SearchAutocomplete } from "@/components/SearchAutocomplete";
+import { buildAutocomplete, type AutocompleteSuggestion } from "@/lib/unifiedSearch";
+import { useDataStore } from "@/lib/dataStore";
 
 interface Props {
   initialQ?: string;
@@ -20,10 +23,36 @@ export function HeroSearch({
   initialCategory = "all",
 }: Props) {
   const nav = useNavigate();
+  const { shops } = useDataStore();
   const [mode, setMode] = useState<Mode>("unified");
   const [q, setQ] = useState(initialQ);
   const [area, setArea] = useState<Area | "all">(initialArea);
   const [category, setCategory] = useState<Category | "all">(initialCategory);
+
+  // Live autocomplete — fires on every keystroke. Cheap (in-memory).
+  const [acOpen, setAcOpen] = useState(false);
+  const [acIndex, setAcIndex] = useState(-1);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const suggestions: AutocompleteSuggestion[] = useMemo(
+    () => buildAutocomplete(q, shops, 8),
+    [q, shops],
+  );
+
+  function handleAcSelect(s: AutocompleteSuggestion) {
+    setAcOpen(false);
+    nav(s.href);
+  }
+
+  function onInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Escape") { setAcOpen(false); return; }
+    if (!acOpen || !suggestions.length) return;
+    if (e.key === "ArrowDown") { e.preventDefault(); setAcIndex((i) => Math.min(i + 1, suggestions.length - 1)); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); setAcIndex((i) => Math.max(i - 1, -1)); }
+    else if (e.key === "Enter" && acIndex >= 0) {
+      e.preventDefault();
+      handleAcSelect(suggestions[acIndex]);
+    }
+  }
 
   function submit(event: FormEvent) {
     event.preventDefault();
@@ -68,18 +97,35 @@ export function HeroSearch({
 
       <form
         onSubmit={submit}
-        className="group/search w-full rounded-2xl border border-border/70 bg-card/80 p-1.5 shadow-soft-xl backdrop-blur-xl transition-all focus-within:border-primary/50 focus-within:shadow-glow sm:rounded-3xl sm:p-2"
+        className="group/search relative w-full rounded-2xl border border-border/70 bg-card/80 p-1.5 shadow-soft-xl backdrop-blur-xl transition-all focus-within:border-primary/50 focus-within:shadow-glow sm:rounded-3xl sm:p-2"
       >
         {/* Search input row */}
         <div className="flex w-full items-center gap-2 rounded-xl bg-background/60 px-3 sm:rounded-2xl sm:px-4">
           <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
           <input
+            ref={inputRef}
             value={q}
-            onChange={(event) => setQ(event.target.value)}
+            onChange={(event) => { setQ(event.target.value); setAcOpen(true); setAcIndex(-1); }}
+            onFocus={() => setAcOpen(true)}
+            onBlur={() => setTimeout(() => setAcOpen(false), 150)}
+            onKeyDown={onInputKeyDown}
             placeholder={mode === "unified" ? "iPhone 15، PlayStation 5، MacBook…" : "ابحث عن موديل، براند، أو محل…"}
             className="h-12 min-w-0 flex-1 bg-transparent text-[15px] text-foreground outline-none placeholder:text-muted-foreground/70 sm:text-base"
+            autoComplete="off"
           />
         </div>
+
+        {/* Live autocomplete dropdown — products + shops as user types */}
+        {acOpen && (
+          <SearchAutocomplete
+            query={q}
+            suggestions={suggestions}
+            highlightedIndex={acIndex}
+            onHover={setAcIndex}
+            onSelect={handleAcSelect}
+            onSubmitQuery={() => { setAcOpen(false); submit(new Event("submit") as unknown as FormEvent); }}
+          />
+        )}
 
         {/* Filters + CTA row */}
         <div className="mt-1.5 flex w-full flex-col gap-1.5 sm:mt-2 sm:flex-row sm:items-stretch sm:gap-2">
