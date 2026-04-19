@@ -157,7 +157,7 @@ const Index = () => {
             {/* Background image */}
             <div
               aria-hidden
-              className="absolute inset-0 -z-20 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+              className="absolute inset-0 -z-20 bg-cover bg-center"
               style={{ backgroundImage: `url(${iraqCitiesPano})` }}
             />
             {/* Readability overlay — soft RTL gradient (lighter, lets image breathe) */}
