@@ -336,3 +336,154 @@ export async function getProductOffers(productId: string): Promise<UnifiedOffer[
 export function formatIQD(value: number): string {
   return `${value.toLocaleString("ar-IQ")} د.ع`;
 }
+
+/* ====================================================================
+ * SHOP SEARCH — searches across local shops in the data store.
+ * Used by /search when in "shops" tab. Pure UI helper — no backend yet.
+ * ==================================================================== */
+
+import type { Shop } from "@/lib/types";
+
+export interface ShopSearchFilters {
+  q?: string;
+  cities?: string[];          // matches shop.area for now (street-level)
+  categories?: string[];
+  verifiedOnly?: boolean;
+  ratingMin?: number;         // 0..5
+  hasWebsite?: boolean;
+  hasPhone?: boolean;
+}
+
+export type ShopSortKey =
+  | "relevance"
+  | "rating_desc"
+  | "name_asc"
+  | "verified_first";
+
+export interface ShopSearchResult {
+  query: string;
+  totalShops: number;
+  shops: Shop[];
+  facets: {
+    areas: UnifiedSearchFacet[];
+    categories: UnifiedSearchFacet[];
+  };
+  durationMs: number;
+}
+
+/**
+ * Synchronous shop search — operates on an in-memory list passed by the caller.
+ * The /search page passes shops from useDataStore(); the backend will eventually
+ * expose a parallel /api/shops/search endpoint with the same shape.
+ */
+export function searchShops(
+  allShops: Shop[],
+  req: ShopSearchFilters & { sort?: ShopSortKey },
+): ShopSearchResult {
+  const start = performance.now();
+  const q = (req.q ?? "").trim().toLowerCase();
+  let shops = [...allShops];
+
+  if (q) {
+    shops = shops.filter((s) =>
+      [s.name, s.area, s.category, s.address, ...(s.categories ?? [])]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase()
+        .includes(q),
+    );
+  }
+  if (req.cities?.length) shops = shops.filter((s) => req.cities!.includes(s.area));
+  if (req.categories?.length) {
+    shops = shops.filter((s) => {
+      const cats = s.categories?.length ? s.categories : [s.category];
+      return cats.some((c) => req.categories!.includes(c));
+    });
+  }
+  if (req.verifiedOnly) shops = shops.filter((s) => s.verified);
+  if (req.hasWebsite) shops = shops.filter((s) => !!s.website);
+  if (req.hasPhone) shops = shops.filter((s) => !!s.phone || !!s.whatsapp);
+
+  switch (req.sort) {
+    case "name_asc": shops.sort((a, b) => a.name.localeCompare(b.name, "ar")); break;
+    case "verified_first": shops.sort((a, b) => Number(b.verified) - Number(a.verified)); break;
+    case "rating_desc":
+    case "relevance":
+    default: break; // Caller can post-sort by rating using getRating() helper.
+  }
+
+  // Build facets
+  const areaMap = new Map<string, number>();
+  const catMap = new Map<string, number>();
+  for (const s of shops) {
+    areaMap.set(s.area, (areaMap.get(s.area) ?? 0) + 1);
+    const cats = s.categories?.length ? s.categories : [s.category];
+    for (const c of cats) catMap.set(c, (catMap.get(c) ?? 0) + 1);
+  }
+
+  return {
+    query: req.q ?? "",
+    totalShops: shops.length,
+    shops,
+    facets: {
+      areas: [...areaMap.entries()].map(([key, count]) => ({ key, label: key, count })).sort((a, b) => b.count - a.count),
+      categories: [...catMap.entries()].map(([key, count]) => ({ key, label: key, count })).sort((a, b) => b.count - a.count),
+    },
+    durationMs: Math.round(performance.now() - start),
+  };
+}
+
+/**
+ * Lightweight autocomplete — returns up to N suggestions across products + shops.
+ * Used by the live dropdown beneath the search bar. Cheap string matching only.
+ */
+export interface AutocompleteSuggestion {
+  type: "product" | "shop" | "brand" | "query";
+  id: string;
+  label: string;
+  sublabel?: string;
+  href: string;
+}
+
+export function buildAutocomplete(
+  q: string,
+  shops: Shop[],
+  limit = 8,
+): AutocompleteSuggestion[] {
+  const query = q.trim().toLowerCase();
+  if (!query) return [];
+  const out: AutocompleteSuggestion[] = [];
+
+  // Products from mock cache
+  for (const p of ALL_PRODUCTS_CACHE) {
+    if (out.length >= limit) break;
+    const hay = [p.title, p.brand, p.category].filter(Boolean).join(" ").toLowerCase();
+    if (hay.includes(query)) {
+      out.push({
+        type: "product",
+        id: p.id,
+        label: p.title,
+        sublabel: `${p.brand ?? ""} • ${p.offerCount} عرض`,
+        href: `/product/${p.id}`,
+      });
+    }
+  }
+
+  // Shops
+  for (const s of shops) {
+    if (out.length >= limit) break;
+    const hay = [s.name, s.area, s.category].filter(Boolean).join(" ").toLowerCase();
+    if (hay.includes(query)) {
+      out.push({
+        type: "shop",
+        id: s.id,
+        label: s.name,
+        sublabel: s.area,
+        href: `/shop-view/${s.id}`,
+      });
+    }
+  }
+
+  return out.slice(0, limit);
+}
+
