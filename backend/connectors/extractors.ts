@@ -694,12 +694,35 @@ async function mapWithConcurrency<T, R>(
 
 function normalizeAvailability(value: string | undefined, candidate: Record<string, unknown>): CatalogProductDraft["availability"] {
   const normalized = normalizeText(value ?? "");
-  if (normalized.includes("instock") || normalized.includes("in stock") || normalized.includes("متوفر")) return "in_stock";
-  if (normalized.includes("preorder")) return "preorder";
-  if (normalized.includes("outofstock") || normalized.includes("out of stock") || normalized.includes("غير متوفر")) {
+  // Schema.org availability URLs / strings.
+  if (/preorder|pre[-\s]?order|backorder/.test(normalized)) return "preorder";
+  if (
+    normalized.includes("instock") ||
+    normalized.includes("in stock") ||
+    normalized.includes("متوفر") ||
+    normalized.includes("متاح")
+  ) {
+    return "in_stock";
+  }
+  if (
+    normalized.includes("outofstock") ||
+    normalized.includes("out of stock") ||
+    normalized.includes("soldout") ||
+    normalized.includes("sold out") ||
+    normalized.includes("غير متوفر") ||
+    normalized.includes("نفذت")
+  ) {
     return "out_of_stock";
   }
   if (typeof candidate.in_stock === "boolean") return candidate.in_stock ? "in_stock" : "out_of_stock";
+  if (typeof candidate.is_in_stock === "boolean") return candidate.is_in_stock ? "in_stock" : "out_of_stock";
+  if (typeof candidate.available === "boolean") return candidate.available ? "in_stock" : "out_of_stock";
+  // Numeric stock counts: > 0 = in stock, 0 = out, negative = unknown.
+  const stockCount = parseNumberish(candidate.stock ?? candidate.quantity ?? candidate.inventory_quantity);
+  if (typeof stockCount === "number") {
+    if (stockCount > 0) return "in_stock";
+    if (stockCount === 0) return "out_of_stock";
+  }
   return "unknown";
 }
 
