@@ -4,7 +4,7 @@ import apple from "@/assets/brands/apple.png";
 import samsung from "@/assets/brands/samsung.png";
 import asus from "@/assets/brands/asus.png";
 import honor from "@/assets/brands/honor.png";
-import anker from "@/assets/brands/anker.png";
+import anker from "@/assets/brands/anker.svg";
 
 export const BRAND_LOGOS: Record<string, string> = {
   apple,
@@ -32,12 +32,13 @@ export type TheSvgVariant =
   | "wordmarkDark";
 
 // Map our internal slugs → theSVG slugs (most are identical).
+// Brands omitted here will fall back to the local logo.
 const THESVG_SLUG_MAP: Record<string, string> = {
   apple: "apple",
   samsung: "samsung",
   asus: "asus",
   honor: "honor",
-  anker: "anker",
+  // anker: intentionally omitted — using local SVG (official brand-blue wordmark)
 };
 
 export function getTheSvgUrl(slug: string, variant: TheSvgVariant = "default"): string | undefined {
