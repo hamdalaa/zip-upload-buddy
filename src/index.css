@@ -498,28 +498,40 @@
     transform: translate3d(0, -4px, 0);
   }
 
-  /* Gradient ribbon (top-right corner badge) */
+  /* Refined corner badge — glass pill with accent dot */
   .ribbon {
     position: absolute;
     top: 12px;
-    inset-inline-start: -6px;
+    inset-inline-end: 12px;
     z-index: 5;
     display: inline-flex;
     align-items: center;
     gap: 0.3rem;
-    padding: 0.35rem 0.7rem;
-    border-radius: 0 999px 999px 0;
-    font-size: 0.65rem;
+    padding: 0.3rem 0.6rem 0.3rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.66rem;
     font-weight: 700;
-    color: white;
-    box-shadow: 0 4px 12px -2px hsl(var(--foreground) / 0.18);
-    letter-spacing: 0.02em;
+    letter-spacing: 0.01em;
+    color: hsl(var(--foreground));
+    background: hsl(0 0% 100% / 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow:
+      0 1px 0 hsl(0 0% 100% / 0.6) inset,
+      0 6px 18px -6px hsl(var(--foreground) / 0.18),
+      0 0 0 1px hsl(var(--border) / 0.6);
   }
-  .ribbon-violet { background: linear-gradient(135deg, hsl(262 83% 65%), hsl(262 83% 50%)); }
-  .ribbon-rose   { background: linear-gradient(135deg, hsl(340 82% 65%), hsl(340 82% 50%)); }
-  .ribbon-amber  { background: linear-gradient(135deg, hsl(38 92% 60%), hsl(38 92% 45%)); color: hsl(215 28% 12%); }
-  .ribbon-emerald{ background: linear-gradient(135deg, hsl(158 64% 55%), hsl(158 64% 38%)); }
-  .ribbon-primary{ background: var(--gradient-primary); }
+  .ribbon > svg { opacity: 0.95; }
+  .ribbon-violet  { color: hsl(262 70% 38%); }
+  .ribbon-violet  > svg { color: hsl(262 83% 55%); }
+  .ribbon-rose    { color: hsl(340 70% 40%); }
+  .ribbon-rose    > svg { color: hsl(340 82% 55%); }
+  .ribbon-amber   { color: hsl(38 90% 32%); }
+  .ribbon-amber   > svg { color: hsl(38 92% 50%); }
+  .ribbon-emerald { color: hsl(158 64% 28%); }
+  .ribbon-emerald > svg { color: hsl(158 64% 42%); }
+  .ribbon-primary { color: hsl(var(--primary)); }
+  .ribbon-primary > svg { color: hsl(var(--primary)); }
 
   /* Color-coded category chips */
   .chip-cyan    { background: hsl(var(--accent-cyan-soft));    color: hsl(var(--accent-cyan)); }
