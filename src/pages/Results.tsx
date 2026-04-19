@@ -665,12 +665,17 @@ function FilterSection({
   compact?: boolean;
 }) {
   return (
-    <section className="border-t border-border/60 py-4 first:border-t-0 first:pt-0">
-      <h3 className="mb-3 inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground/80">
-        {Icon && <Icon className="h-3.5 w-3.5 text-primary" />}
-        {title}
+    <section className="border-t border-dashed border-border/55 py-4 first:border-t-0 first:pt-0">
+      <h3 className="mb-3 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground/80">
+        {Icon && (
+          <span className="inline-flex h-6 w-6 items-center justify-center rounded-lg bg-primary/10 text-primary ring-1 ring-inset ring-primary/15">
+            <Icon className="h-3.5 w-3.5" />
+          </span>
+        )}
+        <span>{title}</span>
+        <span className="ml-auto h-px flex-1 bg-gradient-to-l from-border/60 to-transparent" />
       </h3>
-      <div className={cn(compact ? "flex flex-wrap gap-1.5" : "space-y-1.5")}>
+      <div className={cn(compact ? "flex flex-wrap gap-1.5" : "space-y-1")}>
         {children}
       </div>
     </section>
