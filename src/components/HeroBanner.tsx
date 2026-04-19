@@ -100,8 +100,6 @@ export function HeroBanner() {
 
           {/* Search */}
           <div className="relative z-30 mx-auto mt-7 max-w-2xl sm:mt-10">
-            {/* Glow halo behind search */}
-            <div className="absolute inset-0 -z-10 blur-3xl opacity-40 bg-gradient-to-r from-primary/40 via-cyan/30 to-violet/40 rounded-full" />
             <HeroSearch />
           </div>
 
