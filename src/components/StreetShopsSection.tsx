@@ -193,13 +193,13 @@ export function StreetShopsSection({
               );
             })()}
 
-            {limit != null && visibleShops.length > limit && (
+            {limit != null && (
               <div className="mt-7 flex justify-center">
                 <Link
                   to={areaToPath(area)}
                   className="group inline-flex items-center gap-2 rounded-full border border-secondary/16 bg-secondary px-5 py-3 text-sm font-bold text-secondary-foreground transition-transform duration-300 hover:-translate-y-0.5"
                 >
-                  عرض الكل ({visibleShops.length})
+                  عرض كل المحلات ({visibleShops.length.toLocaleString("ar")})
                   <ArrowLeft className="icon-nudge-x h-4 w-4" />
                 </Link>
               </div>
