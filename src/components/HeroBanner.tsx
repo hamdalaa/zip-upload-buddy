@@ -37,7 +37,7 @@ export function HeroBanner() {
       <div className="container relative pt-6 pb-10 sm:pt-14 sm:pb-20 md:pt-24 md:pb-28">
         <div className="grid min-w-0 gap-8 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-16">
           {/* Headline */}
-          <div className="text-right">
+          <div className="min-w-0 text-right">
             <div className="inline-flex max-w-full items-center gap-1.5 rounded-full border border-primary/20 bg-primary-soft/80 backdrop-blur px-2.5 py-1 text-[10px] font-semibold text-primary shadow-soft sm:gap-2 sm:px-3 sm:py-1.5 sm:text-[11px]">
               <Sparkles className="h-3 w-3 shrink-0 animate-pulse" />
               <span className="truncate">أكبر دليل إلكترونيات بالعراق · مُحدَّث يومياً</span>
