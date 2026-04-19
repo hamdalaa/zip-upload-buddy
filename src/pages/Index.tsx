@@ -203,42 +203,49 @@ const Index = () => {
           <ProductRail title="إضافات حديثة" seeAllTo="/results" products={newArrivals} />
         </section>
 
-        {/* Featured shops */}
-        <section className="container mt-10 sm:mt-20 md:mt-28">
-          <SectionHeader
-            kicker="محلات مختارة"
-            title="محلات تستحق أن تبدأ منها"
-            seeAll="/results"
-            description="قراءة أسرع للمحلات الأوثق والأكثر حضوراً داخل السوق."
-          />
+        {/* Featured shops — soft cyan/emerald band */}
+        <section className="relative mt-10 overflow-hidden border-y border-cyan/15 bg-gradient-to-tr from-cyan/6 via-background to-emerald/5 sm:mt-20 md:mt-28">
+          <div aria-hidden className="pointer-events-none absolute -top-20 -right-16 h-72 w-72 rounded-full bg-cyan/10 blur-3xl" />
+          <div aria-hidden className="pointer-events-none absolute -bottom-24 -left-12 h-72 w-72 rounded-full bg-emerald/10 blur-3xl" />
+          <div className="container py-10 sm:py-16 md:py-20">
+            <SectionHeader
+              kicker="محلات مختارة"
+              title="محلات تستحق أن تبدأ منها"
+              seeAll="/results"
+              description="قراءة أسرع للمحلات الأوثق والأكثر حضوراً داخل السوق."
+            />
 
-          <div className="mt-5 sm:mt-10">
-            {loading ? (
-              <ShopCardSkeletonGrid count={6} />
-            ) : (
-              <>
-                {/* Mobile + tablet: premium carousel */}
-                <ShopCarousel shops={featured} hideAbove="lg" />
+            <div className="mt-5 sm:mt-10">
+              {loading ? (
+                <ShopCardSkeletonGrid count={6} />
+              ) : (
+                <>
+                  {/* Mobile + tablet: premium carousel */}
+                  <ShopCarousel shops={featured} hideAbove="lg" />
 
-                {/* Desktop: grid */}
-                <div className="hidden lg:grid lg:grid-cols-3 lg:gap-6">
-                  {featured.map((shop, index) => (
-                    <div
-                      key={shop.id}
-                      className="animate-fade-in-up"
-                      style={{ animationDelay: `${index * 60}ms`, animationFillMode: "backwards" }}
-                    >
-                      <ShopCard shop={shop} />
-                    </div>
-                  ))}
-                </div>
-              </>
-            )}
+                  {/* Desktop: grid */}
+                  <div className="hidden lg:grid lg:grid-cols-3 lg:gap-6">
+                    {featured.map((shop, index) => (
+                      <div
+                        key={shop.id}
+                        className="animate-fade-in-up"
+                        style={{ animationDelay: `${index * 60}ms`, animationFillMode: "backwards" }}
+                      >
+                        <ShopCard shop={shop} />
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </section>
 
-        {/* Brands + How it works + Metrics */}
-        <section className="container mt-10 grid gap-8 sm:mt-20 sm:gap-12 md:mt-28 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:items-start">
+        {/* Brands + How it works + Metrics — soft cyan/emerald band */}
+        <section className="relative mt-10 overflow-hidden border-y border-cyan/15 bg-gradient-to-bl from-emerald/6 via-background to-cyan/5 sm:mt-20 md:mt-28">
+          <div aria-hidden className="pointer-events-none absolute -top-20 -left-16 h-72 w-72 rounded-full bg-emerald/10 blur-3xl" />
+          <div aria-hidden className="pointer-events-none absolute -bottom-24 -right-12 h-72 w-72 rounded-full bg-cyan/10 blur-3xl" />
+          <div className="container relative py-10 grid gap-8 sm:py-16 sm:gap-12 md:py-20 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:items-start">
           <div>
             <SectionHeader
               kicker="الوكلاء الرسميون"
