@@ -143,7 +143,7 @@ const Index = () => {
         <section className="container mt-10 sm:mt-20 md:mt-24">
           <Link
             to="/iraq"
-            className="group relative isolate block overflow-hidden rounded-[28px] border border-border/60 p-5 text-right shadow-soft transition-all hover:shadow-elegant sm:p-8 md:p-12"
+            className="group relative isolate block overflow-hidden rounded-[28px] border border-white/10 p-5 text-right shadow-soft transition-all hover:shadow-elegant sm:p-8 md:p-12"
           >
             {/* Background image */}
             <div
@@ -151,29 +151,31 @@ const Index = () => {
               className="absolute inset-0 -z-20 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
               style={{ backgroundImage: `url(${iraqCitiesPano})` }}
             />
-            {/* Readability overlay — RTL: darker on right where text sits */}
+            {/* Readability overlay — dark cinematic, RTL gradient */}
             <div
               aria-hidden
-              className="absolute inset-0 -z-10 bg-gradient-to-l from-background/95 via-background/75 to-background/30"
+              className="absolute inset-0 -z-10 bg-gradient-to-l from-black/85 via-black/60 to-black/20"
             />
 
             <div className="grid gap-4 sm:gap-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
               <div>
-                <span className="atlas-kicker">تغطية وطنية</span>
-                <h2 className="font-display mt-3 text-xl font-semibold leading-tight text-foreground sm:text-4xl md:text-5xl tracking-tight">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/70">
+                  تغطية وطنية
+                </span>
+                <h2 className="font-display mt-3 text-xl font-semibold leading-tight text-white sm:text-4xl md:text-5xl tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]">
                   نفس لغة السوق <br className="hidden sm:inline" /> في كل المحافظات.
                 </h2>
-                <p className="mt-2.5 max-w-3xl text-[13px] leading-6 text-muted-foreground sm:mt-4 sm:text-base sm:leading-8">
+                <p className="mt-2.5 max-w-3xl text-[13px] leading-6 text-white/80 sm:mt-4 sm:text-base sm:leading-8">
                   بغداد، أربيل، البصرة، الموصل، النجف، كربلاء، السليمانية، كركوك، بعقوبة،
                   والناصرية ضمن مسار واحد يختصر الوصول من الفكرة إلى المحل.
                 </p>
               </div>
 
-              <div className="flex items-center gap-3 border-t border-border/60 pt-4 sm:gap-4 md:border-0 md:pt-0">
-                <span className="font-display text-sm font-bold text-foreground group-hover:text-primary sm:text-xl">
+              <div className="flex items-center gap-3 border-t border-white/20 pt-4 sm:gap-4 md:border-0 md:pt-0">
+                <span className="font-display text-sm font-bold text-white transition-colors group-hover:text-primary sm:text-xl">
                   افتح الأطلس
                 </span>
-                <ArrowLeft className="icon-nudge-x h-4 w-4 text-foreground group-hover:text-primary sm:h-5 sm:w-5" />
+                <ArrowLeft className="icon-nudge-x h-4 w-4 text-white transition-colors group-hover:text-primary sm:h-5 sm:w-5" />
               </div>
             </div>
           </Link>
