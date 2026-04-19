@@ -610,11 +610,25 @@ function inferAvailabilityFromTextOrHtml(
   html: string,
 ): CatalogProductDraft["availability"] {
   const normalizedText = normalizeText(availabilityText);
-  if (/instock|in stock|available|متوفر/.test(normalizedText) || /\binstock\b/i.test(html)) return "in_stock";
-  if (/outofstock|out of stock|sold out|unavailable|not available|غير متوفر/.test(normalizedText) || /\boutofstock\b/i.test(html)) {
+  // Preorder takes precedence — prevents "in stock" buttons on preorder pages.
+  if (/preorder|pre[-\s]?order|pre[-\s]?sale|coming soon|طلب مسبق|قريبا/i.test(normalizedText)) {
+    return "preorder";
+  }
+  if (/preorder|pre-order|backorder/i.test(html)) return "preorder";
+  if (
+    /outofstock|out of stock|sold out|unavailable|not available|غير متوفر|نفذت الكمية|نفد المخزون/i.test(normalizedText) ||
+    /\boutofstock\b/i.test(html) ||
+    /class="[^"]*out[-_]of[-_]stock/i.test(html)
+  ) {
     return "out_of_stock";
   }
-  if (/preorder|pre-order/.test(normalizedText)) return "preorder";
+  if (
+    /instock|in stock|available|متوفر|متاح/i.test(normalizedText) ||
+    /\binstock\b/i.test(html) ||
+    /add to cart|add[-_]to[-_]cart|اضف الى السلة|اضافة الى السلة/i.test(html)
+  ) {
+    return "in_stock";
+  }
   return "unknown";
 }
 
