@@ -449,14 +449,9 @@ export default function UnifiedSearch() {
         </div>
       )}
 
-      {/* BODY */}
+      {/* BODY — always show results; live-filter as the user types */}
       <main className="container mx-auto px-4 py-6 sm:py-8">
-        {!activeQuery ? (
-          <EmptyState
-            title="ابدأ بحثك الآن"
-            description="اكتب اسم منتج، براند، أو حتى اسم محل — راح نلگيله أحسن النتائج بثوانٍ."
-          />
-        ) : activeTab === "products" ? (
+        {activeTab === "products" ? (
           <ProductsView
             data={data}
             loading={loading}
