@@ -8,6 +8,7 @@ import { CITIES } from "@/lib/cityData";
 import sinaaImg from "@/assets/street-sinaa.jpg";
 import rubaieImg from "@/assets/street-rubaie.jpg";
 import iraqImg from "@/assets/iraq-cities.jpg";
+import baghdadMap from "@/assets/hero-baghdad-map.jpg";
 
 export function HeroBanner() {
   const { brands } = useDataStore();
@@ -46,23 +47,28 @@ export function HeroBanner() {
 
   return (
     <section className="relative isolate overflow-hidden bg-background">
-      {/* Soft cream base with on-brand aurora */}
-      <div className="absolute inset-0 -z-30 bg-gradient-to-b from-primary-soft/50 via-background to-background" />
+      {/* Soft cream base */}
+      <div className="absolute inset-0 -z-30 bg-gradient-to-b from-primary-soft/40 via-background to-background" />
 
-      {/* Aurora blobs — on-brand teal/violet/cyan */}
-      <div className="pointer-events-none absolute -top-32 -right-32 -z-20 h-[520px] w-[520px] rounded-full bg-primary/25 blur-[120px]" />
-      <div className="pointer-events-none absolute top-1/3 -left-40 -z-20 h-[480px] w-[480px] rounded-full bg-violet/20 blur-[120px]" />
-      <div className="pointer-events-none absolute -bottom-32 right-1/4 -z-20 h-[420px] w-[420px] rounded-full bg-cyan/20 blur-[120px]" />
-
-      {/* Subtle dot grid texture */}
+      {/* Baghdad street map — atlas vibe */}
       <div
-        className="absolute inset-0 -z-10 opacity-[0.4] pointer-events-none"
+        aria-hidden
+        className="absolute inset-0 -z-25 opacity-[0.35] mix-blend-multiply pointer-events-none"
         style={{
-          backgroundImage:
-            "radial-gradient(circle at 1px 1px, hsl(var(--foreground) / 0.06) 1px, transparent 0)",
-          backgroundSize: "24px 24px",
+          backgroundImage: `url(${baghdadMap})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          maskImage:
+            "radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 85%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 85%)",
         }}
       />
+
+      {/* Aurora blobs — on-brand teal/violet/cyan */}
+      <div className="pointer-events-none absolute -top-32 -right-32 -z-20 h-[520px] w-[520px] rounded-full bg-primary/20 blur-[120px]" />
+      <div className="pointer-events-none absolute top-1/3 -left-40 -z-20 h-[480px] w-[480px] rounded-full bg-violet/15 blur-[120px]" />
+      <div className="pointer-events-none absolute -bottom-32 right-1/4 -z-20 h-[420px] w-[420px] rounded-full bg-cyan/15 blur-[120px]" />
 
       {/* Top hairline */}
       <div className="absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
