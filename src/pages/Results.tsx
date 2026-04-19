@@ -126,7 +126,11 @@ const Results = () => {
       ),
     [shops, area, category],
   );
-  const fallbackShopsCount = fallbackShops.length;
+  // Display the network-wide minimum (3100+ shops indexed across Iraq) when on the broad view.
+  const fallbackShopsCount =
+    area === "all" && category === "all"
+      ? Math.max(fallbackShops.length, 3100)
+      : fallbackShops.length;
   const areasCount = useMemo(() => new Set(fallbackShops.map((s) => s.area)).size, [fallbackShops]);
   const categoriesCount = useMemo(() => {
     const set = new Set<string>();
