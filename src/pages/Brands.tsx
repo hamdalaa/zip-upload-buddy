@@ -198,29 +198,38 @@ export default function Brands() {
                       </div>
                     )}
 
-                    {/* Bottom block — logo replaces the text */}
+                    {/* Bottom block — clean lockup: logo chip + name + tagline */}
                     <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
                       <div className="flex items-end justify-between gap-3">
-                        <div className="min-w-0 flex-1">
-                          <div className="flex h-28 sm:h-36 w-full max-w-[18rem] items-center justify-start">
+                        <div className="flex min-w-0 flex-1 items-center gap-3">
+                          {/* Compact logo chip */}
+                          <div className="flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white/95 p-2 shadow-[0_6px_20px_-6px_rgba(0,0,0,0.6)] ring-1 ring-white/20 backdrop-blur-sm transition-transform duration-500 group-hover:scale-105">
                             {logo ? (
                               <img
                                 src={logo}
                                 alt={`${brand.brandName} logo`}
                                 loading={idx < 4 ? "eager" : "lazy"}
                                 decoding="async"
-                                className={`max-h-full max-w-full object-contain object-left drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)] transition-transform duration-500 group-hover:scale-[1.06] ${brand.slug === "apple" ? "brightness-0 invert" : ""}`}
+                                className="h-full w-full object-contain"
                               />
                             ) : (
-                              <span className="font-display text-3xl sm:text-4xl font-extrabold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
-                                {brand.brandName}
+                              <span className="font-display text-lg font-bold text-foreground">
+                                {brand.brandName.slice(0, 1)}
                               </span>
                             )}
                           </div>
-                          <p className="mt-2 line-clamp-1 text-xs sm:text-sm font-semibold text-white/90 leading-relaxed">
-                            {tagline}
-                          </p>
+
+                          {/* Name + tagline */}
+                          <div className="min-w-0 flex-1">
+                            <h3 className="truncate font-display text-lg sm:text-xl font-bold leading-tight text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
+                              {brand.brandName}
+                            </h3>
+                            <p className="mt-0.5 line-clamp-1 text-[11px] sm:text-xs font-medium text-white/85">
+                              {tagline}
+                            </p>
+                          </div>
                         </div>
+
                         <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[0_8px_20px_-4px_hsl(var(--primary)/0.6)] ring-2 ring-white/25 transition-all duration-500 group-hover:scale-110 group-hover:-translate-x-1.5 group-hover:ring-white/40">
                           <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
                         </div>
