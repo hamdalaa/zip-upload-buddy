@@ -210,7 +210,7 @@ export default function Brands() {
                                 alt={`${brand.brandName} logo`}
                                 loading={idx < 4 ? "eager" : "lazy"}
                                 decoding="async"
-                                className="h-full w-full object-contain brightness-0 invert"
+                                className={`h-full w-full object-contain ${brand.slug === "anker" ? "" : "brightness-0 invert"}`}
                               />
                             ) : (
                               <span className="font-display text-lg font-bold text-white">
