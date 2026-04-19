@@ -8,7 +8,7 @@ import { CITIES } from "@/lib/cityData";
 import sinaaImg from "@/assets/street-sinaa.jpg";
 import rubaieImg from "@/assets/street-rubaie.jpg";
 import iraqImg from "@/assets/iraq-cities.jpg";
-import heroBg from "@/assets/hero-mall-graded.jpg";
+import heroBg from "@/assets/hero-mall-cinema.jpg";
 
 export function HeroBanner() {
   const { brands } = useDataStore();
