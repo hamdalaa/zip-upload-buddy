@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft, MapPin } from "lucide-react";
+import baghdadPinsMap from "@/assets/baghdad-pins-map.png";
 import { TopNav } from "@/components/TopNav";
 import { HeroBanner } from "@/components/HeroBanner";
 import { CategoryCircles } from "@/components/CategoryCircles";
