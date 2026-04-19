@@ -12,7 +12,7 @@ export function MetricsStrip() {
 
   const items = [
     {
-      value: activeShops.length,
+      value: Math.max(activeShops.length, 3100),
       label: "محل بالدليل",
       sub: "شارع الصناعة + الربيعي",
       icon: Store,
