@@ -147,7 +147,7 @@ export function UnifiedProductCard({ product, topOffers }: Props) {
         )}
 
         {/* ===== Trust meta row ===== */}
-        <div className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
+        <div className="mt-auto flex flex-wrap items-center gap-x-2 gap-y-1 text-[10px] text-muted-foreground sm:gap-x-3 sm:text-[11px]">
           {inStockRatio > 0 && (
             <span className="flex items-center gap-1">
               <Package className="h-3 w-3 text-accent-emerald" />
@@ -158,7 +158,7 @@ export function UnifiedProductCard({ product, topOffers }: Props) {
             <Tag className="h-3 w-3 text-primary" />
             {product.offerCount} عرض
           </span>
-          <span className="flex items-center gap-1">
+          <span className="hidden items-center gap-1 sm:flex">
             <ShieldCheck className="h-3 w-3 text-accent-emerald" />
             تحقّقت من المصدر
           </span>
@@ -166,13 +166,16 @@ export function UnifiedProductCard({ product, topOffers }: Props) {
       </div>
 
       {/* ===== Bottom CTA strip ===== */}
-      <div className="flex items-center justify-between border-t border-border bg-gradient-to-l from-primary/5 to-transparent px-4 py-2.5">
-        <span className="text-[11px] font-semibold text-muted-foreground">
+      <div className="flex items-center justify-between border-t border-border bg-gradient-to-l from-primary/5 to-transparent px-2.5 py-2 sm:px-4 sm:py-2.5">
+        <span className="hidden text-[11px] font-semibold text-muted-foreground sm:inline">
           قارن {product.offerCount} عرض جنب بعض
         </span>
-        <span className="flex items-center gap-1 text-[12px] font-bold text-primary transition-transform group-hover:-translate-x-0.5">
+        <span className="text-[11px] font-semibold text-muted-foreground sm:hidden">
+          قارن {product.offerCount} عرض
+        </span>
+        <span className="flex items-center gap-1 text-[11px] font-bold text-primary transition-transform group-hover:-translate-x-0.5 sm:text-[12px]">
           عرض التفاصيل
-          <ArrowLeft className="h-3.5 w-3.5" />
+          <ArrowLeft className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
         </span>
       </div>
     </Link>
