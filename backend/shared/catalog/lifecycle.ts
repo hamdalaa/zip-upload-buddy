@@ -122,9 +122,9 @@ export function classifyBlockerEvidence(
     client_error: "network_failure",
   };
 
+  const mappedFromCategory = hints?.category ? categoryToBlocker[hints.category] : undefined;
   const blockerType: DomainBlockerEvidence["blockerType"] =
-    (hints?.category && categoryToBlocker[hints.category]) ??
-    inferBlockerFromReason(normalizedReason, httpStatus);
+    mappedFromCategory ?? inferBlockerFromReason(normalizedReason, httpStatus);
 
   return {
     id: createId("blk"),
