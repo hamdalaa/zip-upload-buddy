@@ -486,14 +486,32 @@ const Results = () => {
                 </div>
               </div>
 
-              {activeFilterLabels.length > 0 && (
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {activeFilterLabels.map((label) => (
-                    <span key={label} className="atlas-chip text-foreground/82">
-                      <Tag className="h-3.5 w-3.5 text-primary" />
-                      {label}
-                    </span>
+              {activeFilterChips.length > 0 && (
+                <div className="mt-4 flex flex-wrap items-center gap-1.5">
+                  <span className="me-1 inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground/80">
+                    <Filter className="h-3 w-3" />
+                    فلاتر نشطة
+                  </span>
+                  {activeFilterChips.map((chip) => (
+                    <button
+                      key={chip.key}
+                      type="button"
+                      onClick={chip.onRemove}
+                      className="group inline-flex items-center gap-1.5 rounded-full border border-border/70 bg-background px-2.5 py-1 text-[11px] font-semibold text-foreground/85 transition-all hover:border-destructive/40 hover:bg-destructive/5 hover:text-destructive"
+                      aria-label={`إزالة ${chip.label}`}
+                    >
+                      <span>{chip.label}</span>
+                      <X className="h-3 w-3 opacity-60 transition-opacity group-hover:opacity-100" />
+                    </button>
                   ))}
+                  <button
+                    type="button"
+                    onClick={clearAll}
+                    className="ms-1 inline-flex items-center gap-1 rounded-full bg-foreground/90 px-3 py-1 text-[11px] font-bold text-background transition-colors hover:bg-foreground"
+                  >
+                    <X className="h-3 w-3" />
+                    مسح الكل
+                  </button>
                 </div>
               )}
             </div>
