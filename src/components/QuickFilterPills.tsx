@@ -17,7 +17,7 @@ export function QuickFilterPills() {
   }
 
   return (
-    <div className="relative -mx-3 px-3 sm:mx-0 sm:px-0">
+    <div className="relative w-full min-w-0">
       {/* Edge fade — hints there's more to scroll on mobile */}
       <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-6 bg-gradient-to-l from-background to-transparent sm:hidden" />
       <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-6 bg-gradient-to-r from-background to-transparent sm:hidden" />
