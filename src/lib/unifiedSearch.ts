@@ -423,13 +423,14 @@ export function searchShops(
   let shops = [...allShops];
 
   if (q) {
-    shops = shops.filter((s) =>
-      [s.name, s.area, s.category, s.address, ...(s.categories ?? [])]
+    const terms = expandQuery(q);
+    shops = shops.filter((s) => {
+      const hay = [s.name, s.area, s.category, s.address, ...(s.categories ?? [])]
         .filter(Boolean)
         .join(" ")
-        .toLowerCase()
-        .includes(q),
-    );
+        .toLowerCase();
+      return terms.some((t) => hay.includes(t));
+    });
   }
   if (req.cities?.length) shops = shops.filter((s) => req.cities!.includes(s.area));
   if (req.categories?.length) {
