@@ -380,12 +380,15 @@ export default function UnifiedSearch() {
 
                 <div className="flex flex-wrap items-center justify-center gap-2">
                   <span className="text-xs text-muted-foreground">شائع:</span>
-                  {POPULAR_QUERIES.map((q) => (
+                  {POPULAR_QUERIES.map((q, i) => (
                     <button
                       key={q}
                       type="button"
                       onClick={() => commitSearch(q)}
-                      className="rounded-full border border-border bg-card px-3 py-1 text-xs text-foreground transition-colors hover:border-primary/40 hover:text-primary"
+                      className={cn(
+                        "rounded-full border border-border bg-card px-3 py-1 text-xs text-foreground transition-colors hover:border-primary/40 hover:text-primary",
+                        i >= 3 && "hidden sm:inline-flex",
+                      )}
                     >
                       {q}
                     </button>
