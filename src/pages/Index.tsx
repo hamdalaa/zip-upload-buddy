@@ -186,10 +186,10 @@ const Index = () => {
               </div>
 
               <div className="flex items-center gap-3 border-t border-white/20 pt-4 sm:gap-4 md:border-0 md:pt-0">
-                <span className="font-display text-sm font-bold text-white transition-colors group-hover:text-primary sm:text-xl">
+                <span className="font-display text-sm font-bold text-white sm:text-xl">
                   افتح الأطلس
                 </span>
-                <ArrowLeft className="icon-nudge-x h-4 w-4 text-white transition-colors group-hover:text-primary sm:h-5 sm:w-5" />
+                <ArrowLeft className="icon-nudge-x h-4 w-4 text-white sm:h-5 sm:w-5" />
               </div>
             </div>
           </Link>
