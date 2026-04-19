@@ -8,7 +8,7 @@ import { CITIES } from "@/lib/cityData";
 import sinaaImg from "@/assets/street-sinaa.jpg";
 import rubaieImg from "@/assets/street-rubaie.jpg";
 import iraqImg from "@/assets/iraq-cities.jpg";
-import heroBg from "@/assets/hero-mall-graded.jpg";
+import heroBg from "@/assets/hero-mall-cinema.jpg";
 
 export function HeroBanner() {
   const { brands } = useDataStore();
@@ -40,25 +40,31 @@ export function HeroBanner() {
   ];
 
   return (
-    <section className="relative isolate overflow-hidden bg-[#0a0e14]">
+    <section className="relative isolate overflow-hidden bg-[#070a10]">
       {/* Cinematic background image */}
       <div className="absolute inset-0 -z-30">
         <img
           src={heroBg}
           alt="سوق الإلكترونيات في بغداد"
-          className="h-full w-full object-cover object-center scale-105"
+          className="h-full w-full object-cover object-center scale-[1.04]"
           loading="eager"
         />
       </div>
 
-      {/* Layered gradients for cinematic depth */}
-      <div className="absolute inset-0 -z-20 bg-gradient-to-b from-[#0a0e14]/70 via-[#0a0e14]/55 to-[#0a0e14]/95" />
-      <div className="absolute inset-0 -z-20 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_rgba(10,14,20,0.65)_70%,_rgba(10,14,20,0.95)_100%)]" />
-      <div className="absolute inset-0 -z-20 bg-gradient-to-tr from-primary/15 via-transparent to-violet/10" />
+      {/* Layered cinematic gradients — preserve image atmosphere */}
+      <div className="absolute inset-0 -z-20 bg-gradient-to-b from-[#070a10]/55 via-transparent to-[#070a10]/90" />
+      <div className="absolute inset-0 -z-20 bg-[radial-gradient(ellipse_60%_70%_at_50%_45%,_transparent_0%,_rgba(7,10,16,0.55)_75%,_rgba(7,10,16,0.95)_100%)]" />
+      <div className="absolute inset-0 -z-20 bg-gradient-to-tr from-cyan/[0.08] via-transparent to-amber-500/[0.06] mix-blend-overlay" />
+      <div className="absolute inset-y-0 left-0 -z-20 w-1/4 bg-gradient-to-r from-[#070a10]/70 to-transparent" />
+      <div className="absolute inset-y-0 right-0 -z-20 w-1/4 bg-gradient-to-l from-[#070a10]/70 to-transparent" />
+
+      {/* Soft color blooms */}
+      <div className="absolute -top-32 left-1/4 -z-10 h-[480px] w-[480px] rounded-full bg-primary/15 blur-[140px] pointer-events-none" />
+      <div className="absolute -bottom-32 right-1/4 -z-10 h-[420px] w-[420px] rounded-full bg-violet/15 blur-[140px] pointer-events-none" />
 
       {/* Film grain texture */}
       <div
-        className="absolute inset-0 -z-10 opacity-[0.18] mix-blend-overlay pointer-events-none"
+        className="absolute inset-0 -z-10 opacity-[0.14] mix-blend-overlay pointer-events-none"
         style={{
           backgroundImage:
             "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
@@ -66,7 +72,7 @@ export function HeroBanner() {
       />
 
       {/* Top hairline accent */}
-      <div className="absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+      <div className="absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
       <div className="container relative pt-10 pb-14 sm:pt-20 sm:pb-24 md:pt-28 md:pb-32">
         <div className="mx-auto max-w-4xl text-center">
