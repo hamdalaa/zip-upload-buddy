@@ -35,31 +35,7 @@ export function SearchAutocomplete({
 
   return (
     <div className="absolute inset-x-0 top-full z-[60] mt-2 overflow-hidden rounded-2xl border border-border bg-background shadow-soft-xl">
-      {/* Quick-search row — always first */}
-      <button
-        type="button"
-        onMouseEnter={() => onHover(-1)}
-        onClick={onSubmitQuery}
-        className={cn(
-          "flex w-full items-center justify-between gap-2 border-b border-border px-4 py-3 text-start transition-colors",
-          highlightedIndex === -1 ? "bg-primary/10" : "hover:bg-surface",
-        )}
-      >
-        <div className="flex items-center gap-3">
-          <div className="grid h-8 w-8 place-items-center rounded-lg bg-primary/10 text-primary">
-            <Search className="h-4 w-4" />
-          </div>
-          <div>
-            <div className="text-sm font-semibold text-foreground">
-              ابحث عن "<span className="text-primary">{query}</span>" في كل المنتجات
-            </div>
-            <div className="text-[11px] text-muted-foreground">اضغط Enter للبحث</div>
-          </div>
-        </div>
-        <ArrowUpRight className="h-4 w-4 text-muted-foreground" />
-      </button>
-
-      {/* Suggestions list */}
+      {/* Suggestions list — first */}
       {suggestions.length > 0 ? (
         <ul className="max-h-[320px] overflow-y-auto py-1">
           {suggestions.map((s, idx) => {
@@ -108,6 +84,30 @@ export function SearchAutocomplete({
           لا توجد اقتراحات سريعة — اضغط Enter للبحث الكامل.
         </div>
       )}
+
+      {/* Quick-search row — always at the END of suggestions */}
+      <button
+        type="button"
+        onMouseEnter={() => onHover(-1)}
+        onClick={onSubmitQuery}
+        className={cn(
+          "flex w-full items-center justify-between gap-2 border-t border-border px-4 py-3 text-start transition-colors",
+          highlightedIndex === -1 ? "bg-primary/10" : "hover:bg-surface",
+        )}
+      >
+        <div className="flex items-center gap-3">
+          <div className="grid h-8 w-8 place-items-center rounded-lg bg-primary/10 text-primary">
+            <Search className="h-4 w-4" />
+          </div>
+          <div>
+            <div className="text-sm font-semibold text-foreground">
+              ابحث عن "<span className="text-primary">{query}</span>" في كل المنتجات
+            </div>
+            <div className="text-[11px] text-muted-foreground">اضغط Enter للبحث</div>
+          </div>
+        </div>
+        <ArrowUpRight className="h-4 w-4 text-muted-foreground" />
+      </button>
     </div>
   );
 }
