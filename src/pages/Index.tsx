@@ -75,13 +75,26 @@ const Index = () => {
 
         {/* Street features — two large editorial blocks */}
         <section className="container mt-10 sm:mt-20 md:mt-28">
-          <SectionHeader
-            kicker="شوارع السوق"
-            title="مسارات بغداد المرجعية"
-            description="شارعا الصناعة والربيعي يشكلان قلب سوق الإلكترونيات. ابدأ منهما."
-          />
+          {/* Editorial headline — magazine spread style */}
+          <div className="text-right">
+            <div className="flex items-center justify-end gap-3">
+              <div className="h-px flex-1 bg-gradient-to-l from-border to-transparent" />
+              <span className="atlas-kicker text-primary">شوارع السوق</span>
+              <span className="size-1.5 rounded-full bg-primary" />
+            </div>
+            <h2 className="font-display mt-4 text-3xl font-semibold leading-[1.05] tracking-tight text-foreground sm:mt-6 sm:text-5xl md:text-6xl lg:text-7xl">
+              مسارات بغداد
+              <span className="block bg-gradient-to-l from-primary via-cyan to-violet bg-clip-text text-transparent">
+                المرجعية.
+              </span>
+            </h2>
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-muted-foreground sm:mt-6 sm:text-base sm:leading-8 ms-auto">
+              شارعا <span className="font-semibold text-foreground">الصناعة</span> و
+              <span className="font-semibold text-foreground"> الربيعي</span> يشكلان قلب سوق الإلكترونيات في بغداد. ابدأ منهما قبل أي قرار شراء.
+            </p>
+          </div>
 
-          <div className="mt-5 grid gap-5 sm:mt-10 sm:gap-8">
+          <div className="mt-7 grid gap-5 sm:mt-12 sm:gap-8">
             <StreetShopsSection
               area="شارع الصناعة"
               title="شارع الصناعة"
