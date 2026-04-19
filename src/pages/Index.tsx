@@ -98,17 +98,6 @@ const Index = () => {
               className="absolute inset-0 -z-10 bg-gradient-to-l from-card/70 via-card/20 to-transparent"
             />
 
-            {/* Top archival meta strip */}
-            <div className="relative mb-10 flex items-center justify-between border-t border-border/60 pt-4 sm:mb-14">
-              <div className="flex gap-1">
-                <span className="size-1 rounded-full bg-foreground/40" />
-                <span className="size-1 rounded-full bg-foreground/40" />
-                <span className="size-1 rounded-full bg-foreground/40" />
-              </div>
-              <span className="text-[10px] font-medium uppercase tracking-[0.22em] text-muted-foreground">
-                العدد المرجعي · ٠٤
-              </span>
-            </div>
 
             {/* Two-column editorial layout */}
             <div className="relative grid grid-cols-1 items-end gap-10 lg:grid-cols-12 lg:gap-12">
@@ -139,14 +128,6 @@ const Index = () => {
                 <p className="text-[13px] leading-[1.85] text-muted-foreground sm:text-sm">
                   هنا تتقاطع واجهات المحلات بقصص التطور التقني — من مكوّنات الحاسوب إلى أحدث الهواتف. ابدأ منهما قبل أي قرار شراء.
                 </p>
-                <div className="mt-2 flex items-center justify-between border-t border-border/60 pt-5">
-                  <span className="text-[10px] font-medium uppercase tracking-[0.22em] text-muted-foreground">
-                    قسم التوثيق
-                  </span>
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:bg-foreground hover:text-background">
-                    <ArrowLeft className="h-3.5 w-3.5" />
-                  </div>
-                </div>
               </div>
             </div>
           </div>
