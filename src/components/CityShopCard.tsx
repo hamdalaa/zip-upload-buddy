@@ -47,6 +47,38 @@ function getHighlight(shop: CityShop): string | null {
   return text.slice(0, 107).trimEnd() + "…";
 }
 
+// Detect a Google Plus Code (e.g. "94HP+XWF, Mosul, Nineveh Governorate, Iraq").
+// These are not human-friendly so we hide them.
+function isPlusCodeAddress(address?: string): boolean {
+  if (!address) return false;
+  return /^[23456789CFGHJMPQRVWX]{4,}\+[23456789CFGHJMPQRVWX]{2,}/i.test(address.trim());
+}
+
+// Produce a short, human-friendly location line: prefer area + city,
+// fall back to a cleaned address with the Plus Code stripped.
+function getLocationLine(shop: CityShop): string | null {
+  if (shop.area && shop.city && shop.area !== shop.city) return `${shop.area} — ${shop.city}`;
+  if (shop.area) return shop.area;
+  if (shop.address && !isPlusCodeAddress(shop.address)) return shop.address;
+  // Try to drop a leading Plus Code from a mixed address.
+  if (shop.address) {
+    const cleaned = shop.address.replace(/^[23456789CFGHJMPQRVWX]{4,}\+[23456789CFGHJMPQRVWX]{2,}\s*,?\s*/i, "").trim();
+    if (cleaned) return cleaned;
+  }
+  return shop.city ?? null;
+}
+
+// Format an Iraqi phone number for readability: "+964 770 123 4567".
+function formatPhone(raw?: string): string | null {
+  if (!raw) return null;
+  const digits = raw.replace(/[^\d+]/g, "");
+  if (!digits) return null;
+  // Group as +XXX XXX XXX XXXX style.
+  const m = digits.match(/^(\+?\d{1,4})(\d{3})(\d{3})(\d{2,4})$/);
+  if (m) return `${m[1]} ${m[2]} ${m[3]} ${m[4]}`;
+  return digits;
+}
+
 export function CityShopCard({ shop, citySlug }: Props) {
   const [imgFailed, setImgFailed] = useState(false);
   const fallback = CATEGORY_IMAGES[(shop.category || shop.suggested_category || "Computing") as keyof typeof CATEGORY_IMAGES];
@@ -68,6 +100,8 @@ export function CityShopCard({ shop, citySlug }: Props) {
   const todayHours = getTodayHours(shop.workingHours);
   const highlight = getHighlight(shop);
   const openNow = shop.openNow ?? shop.quickSignals?.open_now ?? null;
+  const locationLine = getLocationLine(shop);
+  const phoneFormatted = formatPhone(shop.phone);
 
   // Compact contact icons row
   const contacts: { icon: typeof Phone; label: string; href?: string }[] = [];
@@ -151,10 +185,10 @@ export function CityShopCard({ shop, citySlug }: Props) {
 
         {/* Useful info rows — only render rows we actually have data for */}
         <ul className="space-y-1.5 text-[12px] leading-5 text-muted-foreground">
-          {shop.address && (
+          {locationLine && (
             <li className="flex items-start gap-1.5">
               <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-foreground/60" />
-              <span className="line-clamp-1 text-foreground/85">{shop.address}</span>
+              <span className="line-clamp-1 text-foreground/85">{locationLine}</span>
             </li>
           )}
           {todayHours && (
@@ -166,9 +200,24 @@ export function CityShopCard({ shop, citySlug }: Props) {
               </span>
             </li>
           )}
+          {phoneFormatted && (
+            <li className="flex items-start gap-1.5">
+              <Phone className="mt-0.5 h-3.5 w-3.5 shrink-0 text-foreground/60" />
+              <span dir="ltr" className="font-numeric text-foreground/85">{phoneFormatted}</span>
+            </li>
+          )}
+          {reviews > 0 && (
+            <li className="flex items-start gap-1.5">
+              <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-foreground/60" />
+              <span className="text-foreground/85">
+                <span className="font-numeric font-semibold text-foreground">{reviews.toLocaleString("ar-IQ")}</span>
+                <span className="ms-1">تقييم على Google</span>
+              </span>
+            </li>
+          )}
           {highlight && (
             <li className="line-clamp-2 text-foreground/75 italic">
-              “{highlight}”
+              "{highlight}"
             </li>
           )}
         </ul>
