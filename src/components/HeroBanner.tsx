@@ -155,7 +155,6 @@ export function HeroBanner() {
               <div className="absolute inset-0 -z-10 bg-gradient-to-tr from-foreground/70 via-transparent to-transparent" />
 
               <div className="relative flex w-full items-end justify-between gap-3 p-3.5 text-right text-white">
-                <ArrowLeft className="h-4 w-4 shrink-0 opacity-80 transition-transform group-hover:-translate-x-1" />
                 <div className="min-w-0">
                   <div className="font-display text-base font-semibold leading-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.55)]">
                     {entry.title}
@@ -164,6 +163,7 @@ export function HeroBanner() {
                     {entry.note}
                   </div>
                 </div>
+                <ArrowLeft className="h-4 w-4 shrink-0 opacity-80 transition-transform group-hover:-translate-x-1" />
               </div>
             </Link>
           ))}
