@@ -146,17 +146,24 @@ const Results = () => {
     return set.size;
   }, [fallbackShops]);
 
-  const activeFilterLabels = useMemo(() => {
-    const labels: string[] = [];
-    if (area !== "all") labels.push(area);
-    if (category !== "all") labels.push(category);
-    if (priceRange !== "all") labels.push(PRICE_RANGES.find((entry) => entry.id === priceRange)?.label ?? priceRange);
-    if (minRating > 0) labels.push(`${minRating}+ نجوم`);
-    if (verifiedOnly) labels.push("موثّق فقط");
-    if (withDeals) labels.push("عليها تخفيض");
-    brandFilters.forEach((brand) => labels.push(brand));
-    return labels;
+  const activeFilterChips = useMemo(() => {
+    const chips: { key: string; label: string; onRemove: () => void }[] = [];
+    if (area !== "all") chips.push({ key: `area:${area}`, label: area, onRemove: () => setFilter("area", "all") });
+    if (category !== "all") chips.push({ key: `cat:${category}`, label: category, onRemove: () => setFilter("category", "all") });
+    if (priceRange !== "all") {
+      const lbl = PRICE_RANGES.find((entry) => entry.id === priceRange)?.label ?? priceRange;
+      chips.push({ key: `price:${priceRange}`, label: lbl, onRemove: () => setPriceRange("all") });
+    }
+    if (minRating > 0) chips.push({ key: `rating:${minRating}`, label: `${minRating}+ نجوم`, onRemove: () => setMinRating(0) });
+    if (verifiedOnly) chips.push({ key: "verified", label: "موثّق فقط", onRemove: () => setVerifiedOnly(false) });
+    if (withDeals) chips.push({ key: "deals", label: "عليها تخفيض", onRemove: () => setWithDeals(false) });
+    brandFilters.forEach((brand) =>
+      chips.push({ key: `brand:${brand}`, label: brand, onRemove: () => toggleBrand(brand) }),
+    );
+    return chips;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [area, category, priceRange, minRating, verifiedOnly, withDeals, brandFilters]);
+  const activeFilterLabels = activeFilterChips;
 
   function setSort(next: Sort) {
     const nextParams = new URLSearchParams(params);
@@ -287,15 +294,6 @@ const Results = () => {
                   </Link>
                 ))}
               </div>
-              {hasActiveFilters && (
-                <button
-                  onClick={clearAll}
-                  className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-accent transition-colors hover:text-foreground"
-                >
-                  <X className="h-3.5 w-3.5" />
-                  مسح جميع الفلاتر
-                </button>
-              )}
             </div>
           </div>
         </div>
@@ -479,14 +477,32 @@ const Results = () => {
                 </div>
               </div>
 
-              {activeFilterLabels.length > 0 && (
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {activeFilterLabels.map((label) => (
-                    <span key={label} className="atlas-chip text-foreground/82">
-                      <Tag className="h-3.5 w-3.5 text-primary" />
-                      {label}
-                    </span>
+              {activeFilterChips.length > 0 && (
+                <div className="mt-4 flex flex-wrap items-center gap-1.5">
+                  <span className="me-1 inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground/80">
+                    <Filter className="h-3 w-3" />
+                    فلاتر نشطة
+                  </span>
+                  {activeFilterChips.map((chip) => (
+                    <button
+                      key={chip.key}
+                      type="button"
+                      onClick={chip.onRemove}
+                      className="group inline-flex items-center gap-1.5 rounded-full border border-border/70 bg-background px-2.5 py-1 text-[11px] font-semibold text-foreground/85 transition-all hover:border-destructive/40 hover:bg-destructive/5 hover:text-destructive"
+                      aria-label={`إزالة ${chip.label}`}
+                    >
+                      <span>{chip.label}</span>
+                      <X className="h-3 w-3 opacity-60 transition-opacity group-hover:opacity-100" />
+                    </button>
                   ))}
+                  <button
+                    type="button"
+                    onClick={clearAll}
+                    className="ms-1 inline-flex items-center gap-1 rounded-full bg-foreground/90 px-3 py-1 text-[11px] font-bold text-background transition-colors hover:bg-foreground"
+                  >
+                    <X className="h-3 w-3" />
+                    مسح الكل
+                  </button>
                 </div>
               )}
             </div>
