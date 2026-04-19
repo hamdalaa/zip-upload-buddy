@@ -21,7 +21,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
-import { DummyDataBanner } from "@/components/DummyDataBanner";
+
 import { cn } from "@/lib/utils";
 import {
   formatIQD,
@@ -87,7 +87,7 @@ export default function ProductDetail() {
   return (
     <div className="min-h-screen bg-background">
       <TopNav />
-      <DummyDataBanner />
+
 
       {/* Breadcrumb */}
       <div className="border-b border-border bg-card/30">

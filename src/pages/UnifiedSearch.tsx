@@ -41,7 +41,7 @@ import type { CityShop } from "@/lib/cityData";
 import type { Shop } from "@/lib/types";
 import { SearchAutocomplete } from "@/components/SearchAutocomplete";
 import { EmptyState } from "@/components/EmptyState";
-import { DummyDataBanner } from "@/components/DummyDataBanner";
+
 import { useDataStore } from "@/lib/dataStore";
 import { cn } from "@/lib/utils";
 import {
@@ -271,7 +271,7 @@ export default function UnifiedSearch() {
   return (
     <div className="min-h-screen bg-background">
       <TopNav />
-      <DummyDataBanner />
+
 
       {/* HERO + SEARCH BAR */}
       <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-primary/5 via-background to-background">
