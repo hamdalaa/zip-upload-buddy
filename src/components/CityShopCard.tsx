@@ -185,10 +185,10 @@ export function CityShopCard({ shop, citySlug }: Props) {
 
         {/* Useful info rows — only render rows we actually have data for */}
         <ul className="space-y-1.5 text-[12px] leading-5 text-muted-foreground">
-          {shop.address && (
+          {locationLine && (
             <li className="flex items-start gap-1.5">
               <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-foreground/60" />
-              <span className="line-clamp-1 text-foreground/85">{shop.address}</span>
+              <span className="line-clamp-1 text-foreground/85">{locationLine}</span>
             </li>
           )}
           {todayHours && (
@@ -200,9 +200,24 @@ export function CityShopCard({ shop, citySlug }: Props) {
               </span>
             </li>
           )}
+          {phoneFormatted && (
+            <li className="flex items-start gap-1.5">
+              <Phone className="mt-0.5 h-3.5 w-3.5 shrink-0 text-foreground/60" />
+              <span dir="ltr" className="font-numeric text-foreground/85">{phoneFormatted}</span>
+            </li>
+          )}
+          {reviews > 0 && (
+            <li className="flex items-start gap-1.5">
+              <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-foreground/60" />
+              <span className="text-foreground/85">
+                <span className="font-numeric font-semibold text-foreground">{reviews.toLocaleString("ar-IQ")}</span>
+                <span className="ms-1">تقييم على Google</span>
+              </span>
+            </li>
+          )}
           {highlight && (
             <li className="line-clamp-2 text-foreground/75 italic">
-              “{highlight}”
+              "{highlight}"
             </li>
           )}
         </ul>
