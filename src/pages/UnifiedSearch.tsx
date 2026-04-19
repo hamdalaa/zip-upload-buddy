@@ -394,26 +394,24 @@ export default function UnifiedSearch() {
             />
           </div>
 
-          {activeQuery && (
-            <div className="hidden items-center gap-2 text-xs text-muted-foreground sm:flex">
-              <span>ترتيب:</span>
-              {activeTab === "products" ? (
-                <Select value={sort} onValueChange={(v) => setSort(v as SortKey)}>
-                  <SelectTrigger className="h-8 w-[180px] rounded-lg text-xs"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    {PRODUCT_SORT.map((opt) => <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-              ) : (
-                <Select value={shopSort} onValueChange={(v) => setShopSort(v as ShopSortKey)}>
-                  <SelectTrigger className="h-8 w-[180px] rounded-lg text-xs"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    {SHOP_SORT.map((opt) => <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-              )}
-            </div>
-          )}
+          <div className="hidden items-center gap-2 text-xs text-muted-foreground sm:flex">
+            <span>ترتيب:</span>
+            {activeTab === "products" ? (
+              <Select value={sort} onValueChange={(v) => setSort(v as SortKey)}>
+                <SelectTrigger className="h-8 w-[180px] rounded-lg text-xs"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {PRODUCT_SORT.map((opt) => <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            ) : (
+              <Select value={shopSort} onValueChange={(v) => setShopSort(v as ShopSortKey)}>
+                <SelectTrigger className="h-8 w-[180px] rounded-lg text-xs"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {SHOP_SORT.map((opt) => <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            )}
+          </div>
         </div>
       </div>
 
