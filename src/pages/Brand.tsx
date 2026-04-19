@@ -51,9 +51,9 @@ const Brand = () => {
   const branches = OFFICIAL_DEALER_BRANCHES.filter((b) => b.brandSlug === brand.slug);
   const isVerified = brand.verificationStatus === "verified";
   const logo = getBrandLogo(brand.slug);
+  const cdnLogo = getTheSvgUrl(brand.slug, "default");
   const background = getBrandBackground(brand.slug);
   const initial = brand.brandName.slice(0, 1);
-  const isApple = brand.slug === "apple";
 
   return (
     <div className="min-h-screen flex flex-col bg-[linear-gradient(180deg,hsl(var(--surface))_0%,hsl(var(--background))_14%,hsl(var(--surface))_100%)]">
