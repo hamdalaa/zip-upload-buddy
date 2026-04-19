@@ -99,19 +99,20 @@ const Index = () => {
               className="absolute inset-0 -z-10 bg-gradient-to-l from-card/80 via-card/40 to-transparent"
             />
 
-            <div className="relative">
-              <div className="flex items-center justify-end gap-3">
-                <span className="size-1.5 rounded-full bg-primary" />
-                <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">شوارع السوق</span>
+            <div className="relative max-w-3xl">
+              <div className="flex items-center justify-end gap-2.5">
+                <span className="size-1 rounded-full bg-primary" />
+                <span className="text-[10px] font-medium uppercase tracking-[0.22em] text-primary/90">شوارع السوق</span>
               </div>
-              <h2 className="font-display mt-5 text-balance text-[2rem] font-medium leading-[1.1] tracking-tight text-foreground sm:mt-6 sm:text-5xl md:text-[3.5rem]">
+              <h2 className="font-display mt-6 text-balance text-[2.25rem] font-light leading-[1.08] tracking-[-0.02em] text-foreground sm:mt-8 sm:text-[3.25rem] md:text-[4rem]">
                 مسارات بغداد
-                <span className="text-muted-foreground/80"> المرجعية</span>
-                <span className="text-primary">.</span>
+                <br className="hidden sm:inline" />
+                <span className="font-normal italic text-primary/85">المرجعية</span>
+                <span className="text-foreground">.</span>
               </h2>
-              <p className="mt-5 max-w-xl text-[13px] leading-7 text-muted-foreground sm:mt-6 sm:text-[15px] sm:leading-8 ms-auto">
-                شارعا <span className="text-foreground">الصناعة</span> و
-                <span className="text-foreground"> الربيعي</span> يشكلان قلب سوق الإلكترونيات في بغداد. ابدأ منهما قبل أي قرار شراء.
+              <p className="mt-6 max-w-lg text-[13px] leading-[1.75] text-muted-foreground sm:mt-7 sm:text-[14px] ms-auto">
+                شارعا <span className="text-foreground/90">الصناعة</span> و
+                <span className="text-foreground/90"> الربيعي</span> يشكلان قلب سوق الإلكترونيات في بغداد. ابدأ منهما قبل أي قرار شراء.
               </p>
             </div>
           </div>
