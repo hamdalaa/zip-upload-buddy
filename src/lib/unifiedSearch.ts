@@ -277,9 +277,21 @@ export async function searchUnified(req: UnifiedSearchRequest): Promise<UnifiedS
 
   if (q) {
     const terms = expandQuery(q);
+    const matchTerm = (hay: string) => terms.some((t) => hay.includes(t));
     products = products.filter((p) => {
-      const hay = [p.title, p.brand, p.category, p.description].filter(Boolean).join(" ").toLowerCase();
-      return terms.some((t) => hay.includes(t));
+      // 1) Direct match against the product itself
+      const productHay = [p.title, p.brand, p.category, p.description]
+        .filter(Boolean).join(" ").toLowerCase();
+      if (matchTerm(productHay)) return true;
+
+      // 2) Indirect match — query targets a STORE/CITY that carries this product.
+      //    e.g. searching "Miswag" or "بغداد" surfaces every product offered there.
+      const offers = ALL_OFFERS_CACHE.filter((o) => o.productId === p.id);
+      return offers.some((o) => {
+        const offerHay = [o.storeName, o.storeId, o.storeCity]
+          .filter(Boolean).join(" ").toLowerCase();
+        return matchTerm(offerHay);
+      });
     });
   }
   if (req.brands?.length) products = products.filter((p) => p.brand && req.brands!.includes(p.brand));
