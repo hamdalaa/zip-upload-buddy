@@ -101,8 +101,10 @@ const Brand = () => {
               <div className="relative order-2 overflow-hidden rounded-[2rem] border border-border/60 bg-gradient-to-br from-primary/15 via-accent/10 to-background shadow-soft-xl lg:order-1 min-h-[280px] md:min-h-[360px]">
                 <div className="absolute inset-0 bg-grid opacity-30" />
                 <div className="flex h-full w-full items-center justify-center">
-                  <div className="flex h-32 w-32 items-center justify-center rounded-3xl bg-background shadow-soft-lg">
-                    {logo ? (
+                  <div className="flex h-32 w-32 items-center justify-center overflow-hidden rounded-3xl bg-background shadow-soft-lg">
+                    {cdnLogo ? (
+                      <img src={cdnLogo} alt={brand.brandName} className="h-full w-full object-contain p-5" />
+                    ) : logo ? (
                       <img src={logo} alt={brand.brandName} className="h-full w-full object-contain p-4" />
                     ) : (
                       <span className="font-display text-5xl font-bold">{initial}</span>
