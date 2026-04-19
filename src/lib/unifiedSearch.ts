@@ -491,13 +491,15 @@ export function buildAutocomplete(
 ): AutocompleteSuggestion[] {
   const query = q.trim().toLowerCase();
   if (!query) return [];
+  const terms = expandQuery(query);
   const out: AutocompleteSuggestion[] = [];
+  const matches = (hay: string) => terms.some((t) => hay.includes(t));
 
   // Products from mock cache
   for (const p of ALL_PRODUCTS_CACHE) {
     if (out.length >= limit) break;
     const hay = [p.title, p.brand, p.category].filter(Boolean).join(" ").toLowerCase();
-    if (hay.includes(query)) {
+    if (matches(hay)) {
       out.push({
         type: "product",
         id: p.id,
@@ -512,7 +514,7 @@ export function buildAutocomplete(
   for (const s of shops) {
     if (out.length >= limit) break;
     const hay = [s.name, s.area, s.category].filter(Boolean).join(" ").toLowerCase();
-    if (hay.includes(query)) {
+    if (matches(hay)) {
       out.push({
         type: "shop",
         id: s.id,
