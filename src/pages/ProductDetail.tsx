@@ -87,6 +87,7 @@ export default function ProductDetail() {
   return (
     <div className="min-h-screen bg-background">
       <TopNav />
+      <DummyDataBanner />
 
       {/* Breadcrumb */}
       <div className="border-b border-border bg-card/30">
