@@ -214,7 +214,7 @@ export function UnifiedSearchFilters(props: Props) {
       {/* Mobile sheet trigger */}
       <Sheet>
         <SheetTrigger asChild>
-          <Button variant="outline" size="sm" className="lg:hidden">
+          <Button variant="outline" size="sm" className="hidden">
             <Filter className="me-2 h-4 w-4" />
             {triggerLabel}
             {activeCount > 0 && (
