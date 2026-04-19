@@ -169,7 +169,7 @@
   }
 
   html {
-    font-family: "IBM Plex Sans Arabic", "Inter", system-ui, -apple-system, sans-serif;
+    font-family: "SF Arabic", "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -197,7 +197,7 @@
   }
 
   h1, h2, h3, h4 {
-    font-family: "IBM Plex Sans Arabic", "Inter", system-ui, sans-serif;
+    font-family: "SF Arabic", "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     font-weight: 600;
     letter-spacing: -0.025em;
   }
@@ -212,7 +212,7 @@
   }
 
   .font-display {
-    font-family: "IBM Plex Sans Arabic", "Inter", system-ui, sans-serif;
+    font-family: "SF Arabic", "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     font-weight: 600;
     letter-spacing: -0.035em;
   }
