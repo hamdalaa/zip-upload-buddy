@@ -104,11 +104,17 @@ const Index = () => {
             <div className="relative grid grid-cols-1 items-end gap-10 lg:grid-cols-12 lg:gap-12">
               {/* Headline — right side in RTL */}
               <div className="lg:col-span-7">
-                <h2 className="font-display mt-6 text-balance text-right text-[2.5rem] font-bold leading-[1.05] tracking-tight text-foreground sm:mt-8 sm:text-[4rem] md:text-[5.5rem] lg:text-[6.5rem]">
-                  مسارات
-                  <span className="block lg:pe-12">بغداد</span>
-                  <span className="mt-2 block text-[1.75rem] font-normal italic text-foreground/70 sm:text-[2.5rem] md:text-[3.25rem] lg:text-[4rem] lg:pe-24">
-                    المرجعية.
+                <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/8 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-primary backdrop-blur-sm">
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                  Baghdad · بغداد
+                </div>
+                <h2 className="font-display text-balance text-right text-[2.5rem] font-bold leading-[1.02] tracking-[-0.035em] text-foreground sm:text-[3.75rem] md:text-[5rem] lg:text-[6rem]">
+                  مسارات{" "}
+                  <span className="bg-gradient-to-br from-primary via-primary to-foreground bg-clip-text text-transparent">
+                    بغداد
+                  </span>
+                  <span className="mt-3 block text-[1.25rem] font-medium leading-snug tracking-normal text-muted-foreground sm:text-[1.5rem] md:text-[1.75rem] lg:text-[2rem]">
+                    دليلك المرجعي للأسواق التقنية.
                   </span>
                 </h2>
               </div>
