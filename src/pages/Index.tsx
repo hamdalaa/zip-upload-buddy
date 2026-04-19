@@ -163,11 +163,6 @@ const Index = () => {
 
         {/* Product rails */}
         <section className="container mt-10 space-y-5 sm:mt-20 sm:space-y-10 md:mt-28">
-          <SectionHeader
-            kicker="رفوف جاهزة"
-            title="مسارات تصفح بدل البداية من الصفر"
-            description="رفوف تجمع أكثر نوايا التصفح تكراراً: التخفيضات، الأكثر تقييماً، وما دخل أخيراً."
-          />
 
           <ProductRail title="أفضل التخفيضات" seeAllTo="/results" products={deals} />
           <ProductRail title="الأكثر تقييماً" seeAllTo="/results" products={trending} />
