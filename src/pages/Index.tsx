@@ -77,22 +77,45 @@ const Index = () => {
         {/* Street features — two large editorial blocks */}
         <section className="container mt-10 sm:mt-20 md:mt-28">
           {/* Editorial headline — magazine spread style */}
-          <div className="text-right">
-            <div className="flex items-center justify-end gap-3">
-              <div className="h-px flex-1 bg-gradient-to-l from-border to-transparent" />
-              <span className="atlas-kicker text-primary">شوارع السوق</span>
-              <span className="size-1.5 rounded-full bg-primary" />
+          <div className="relative isolate overflow-hidden rounded-[28px] border border-border/60 bg-card/40 px-6 py-10 text-right shadow-soft backdrop-blur-sm sm:px-12 sm:py-16 md:px-16 md:py-20">
+            {/* Map background */}
+            <div
+              aria-hidden
+              className="absolute inset-0 -z-10"
+              style={{
+                backgroundImage: `url(${baghdadPinsMap})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                opacity: 0.32,
+                maskImage:
+                  "radial-gradient(ellipse 90% 75% at 70% 50%, black 30%, transparent 88%)",
+                WebkitMaskImage:
+                  "radial-gradient(ellipse 90% 75% at 70% 50%, black 30%, transparent 88%)",
+              }}
+            />
+            {/* Soft tint to blend with brand */}
+            <div
+              aria-hidden
+              className="absolute inset-0 -z-10 bg-gradient-to-l from-card/80 via-card/40 to-transparent"
+            />
+
+            <div className="relative">
+              <div className="flex items-center justify-end gap-3">
+                <div className="h-px flex-1 bg-gradient-to-l from-border to-transparent" />
+                <span className="atlas-kicker text-primary">شوارع السوق</span>
+                <span className="size-1.5 rounded-full bg-primary" />
+              </div>
+              <h2 className="font-display mt-4 text-3xl font-semibold leading-[1.05] tracking-tight text-foreground sm:mt-6 sm:text-5xl md:text-6xl lg:text-7xl">
+                مسارات بغداد
+                <span className="block bg-gradient-to-l from-primary via-primary to-primary/60 bg-clip-text text-transparent">
+                  المرجعية.
+                </span>
+              </h2>
+              <p className="mt-4 max-w-2xl text-sm leading-7 text-muted-foreground sm:mt-6 sm:text-base sm:leading-8 ms-auto">
+                شارعا <span className="font-semibold text-foreground">الصناعة</span> و
+                <span className="font-semibold text-foreground"> الربيعي</span> يشكلان قلب سوق الإلكترونيات في بغداد. ابدأ منهما قبل أي قرار شراء.
+              </p>
             </div>
-            <h2 className="font-display mt-4 text-3xl font-semibold leading-[1.05] tracking-tight text-foreground sm:mt-6 sm:text-5xl md:text-6xl lg:text-7xl">
-              مسارات بغداد
-              <span className="block bg-gradient-to-l from-primary via-primary to-primary/60 bg-clip-text text-transparent">
-                المرجعية.
-              </span>
-            </h2>
-            <p className="mt-4 max-w-2xl text-sm leading-7 text-muted-foreground sm:mt-6 sm:text-base sm:leading-8 ms-auto">
-              شارعا <span className="font-semibold text-foreground">الصناعة</span> و
-              <span className="font-semibold text-foreground"> الربيعي</span> يشكلان قلب سوق الإلكترونيات في بغداد. ابدأ منهما قبل أي قرار شراء.
-            </p>
           </div>
 
           <div className="mt-7 grid gap-5 sm:mt-12 sm:gap-8">
