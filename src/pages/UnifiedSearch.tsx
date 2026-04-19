@@ -383,42 +383,40 @@ export default function UnifiedSearch() {
               onClick={() => setTab("products")}
               icon={<Package className="h-4 w-4" />}
               label="منتجات"
-              count={activeQuery ? productCount : null}
+              count={productCount}
             />
             <TabButton
               active={activeTab === "shops"}
               onClick={() => setTab("shops")}
               icon={<Store className="h-4 w-4" />}
               label="محلات"
-              count={activeQuery ? shopCount : null}
+              count={shopCount}
             />
           </div>
 
-          {activeQuery && (
-            <div className="hidden items-center gap-2 text-xs text-muted-foreground sm:flex">
-              <span>ترتيب:</span>
-              {activeTab === "products" ? (
-                <Select value={sort} onValueChange={(v) => setSort(v as SortKey)}>
-                  <SelectTrigger className="h-8 w-[180px] rounded-lg text-xs"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    {PRODUCT_SORT.map((opt) => <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-              ) : (
-                <Select value={shopSort} onValueChange={(v) => setShopSort(v as ShopSortKey)}>
-                  <SelectTrigger className="h-8 w-[180px] rounded-lg text-xs"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    {SHOP_SORT.map((opt) => <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-              )}
-            </div>
-          )}
+          <div className="hidden items-center gap-2 text-xs text-muted-foreground sm:flex">
+            <span>ترتيب:</span>
+            {activeTab === "products" ? (
+              <Select value={sort} onValueChange={(v) => setSort(v as SortKey)}>
+                <SelectTrigger className="h-8 w-[180px] rounded-lg text-xs"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {PRODUCT_SORT.map((opt) => <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            ) : (
+              <Select value={shopSort} onValueChange={(v) => setShopSort(v as ShopSortKey)}>
+                <SelectTrigger className="h-8 w-[180px] rounded-lg text-xs"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {SHOP_SORT.map((opt) => <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* STATS STRIP (products tab only) */}
-      {activeTab === "products" && data && activeQuery && (
+      {/* STATS STRIP */}
+      {activeTab === "products" && data && (
         <div className="border-b border-border bg-card/50">
           <div className="container mx-auto flex flex-wrap items-center gap-x-5 gap-y-1 px-4 py-2.5 text-xs text-muted-foreground sm:text-sm">
             <span className="flex items-center gap-1.5">
@@ -436,12 +434,12 @@ export default function UnifiedSearch() {
           </div>
         </div>
       )}
-      {activeTab === "shops" && activeQuery && (
+      {activeTab === "shops" && (
         <div className="border-b border-border bg-card/50">
           <div className="container mx-auto flex flex-wrap items-center gap-x-5 gap-y-1 px-4 py-2.5 text-xs text-muted-foreground sm:text-sm">
             <span className="flex items-center gap-1.5">
               <Store className="h-3.5 w-3.5 text-accent-violet" />
-              <strong className="text-foreground">{shopResult.totalShops}</strong> محل مطابق
+              <strong className="text-foreground">{shopResult.totalShops}</strong> محل {activeQuery ? "مطابق" : "في الدليل"}
             </span>
             <span className="flex items-center gap-1.5">
               <Clock className="h-3.5 w-3.5" />
@@ -451,14 +449,9 @@ export default function UnifiedSearch() {
         </div>
       )}
 
-      {/* BODY */}
+      {/* BODY — always show results; live-filter as the user types */}
       <main className="container mx-auto px-4 py-6 sm:py-8">
-        {!activeQuery ? (
-          <EmptyState
-            title="ابدأ بحثك الآن"
-            description="اكتب اسم منتج، براند، أو حتى اسم محل — راح نلگيله أحسن النتائج بثوانٍ."
-          />
-        ) : activeTab === "products" ? (
+        {activeTab === "products" ? (
           <ProductsView
             data={data}
             loading={loading}
