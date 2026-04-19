@@ -108,25 +108,25 @@ export function HeroBanner() {
           </div>
         </div>
 
-        {/* Value propositions — glass cards on dark */}
-        <div className="mx-auto mt-12 grid max-w-5xl gap-3 sm:mt-16 sm:grid-cols-3 sm:gap-4">
+        {/* Value propositions — compact on mobile, rich on desktop */}
+        <div className="mx-auto mt-8 grid max-w-5xl grid-cols-3 gap-2 sm:mt-16 sm:gap-4">
           {valueProps.map((vp, i) => (
             <div
               key={vp.title}
-              className="group relative flex items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-right backdrop-blur-md transition-all hover:bg-white/[0.07] hover:border-white/20 sm:p-5"
+              className="group relative flex flex-col items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] p-2.5 text-center backdrop-blur-md transition-all hover:bg-white/[0.07] hover:border-white/20 sm:flex-row sm:items-start sm:gap-3 sm:rounded-2xl sm:p-5 sm:text-right"
               style={{ animationDelay: `${i * 80}ms` }}
             >
               {/* Subtle inner glow */}
-              <div className="absolute inset-0 -z-10 rounded-2xl bg-gradient-to-br from-white/[0.04] to-transparent opacity-60" />
+              <div className="absolute inset-0 -z-10 rounded-xl bg-gradient-to-br from-white/[0.04] to-transparent opacity-60 sm:rounded-2xl" />
 
-              <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary/25 to-primary/5 text-primary-glow ring-1 ring-white/15 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
-                <vp.icon className="h-5 w-5" />
+              <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary/25 to-primary/5 text-primary-glow ring-1 ring-white/15 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] sm:size-11 sm:rounded-xl">
+                <vp.icon className="h-4 w-4 sm:h-5 sm:w-5" />
               </div>
               <div className="min-w-0">
-                <div className="font-display text-sm font-semibold text-white sm:text-base">
+                <div className="font-display text-[11px] font-semibold leading-tight text-white sm:text-base sm:leading-normal">
                   {vp.title}
                 </div>
-                <p className="mt-1 text-[12px] leading-6 text-white/65 sm:text-[13px]">
+                <p className="mt-1 hidden text-[12px] leading-6 text-white/65 sm:block sm:text-[13px]">
                   {vp.desc}
                 </p>
               </div>
