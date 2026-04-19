@@ -12,6 +12,8 @@ import { ShopCard } from "@/components/ShopCard";
 import { ShopCarousel } from "@/components/ShopCarousel";
 import { ShopCardSkeletonGrid } from "@/components/ShopCardSkeleton";
 import { BrandCard } from "@/components/BrandCard";
+import { BrandShowcaseCard } from "@/components/BrandShowcaseCard";
+import { BrandCarousel } from "@/components/BrandCarousel";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ProductRail } from "@/components/ProductRail";
 import { StreetShopsSection } from "@/components/StreetShopsSection";
@@ -234,22 +236,28 @@ const Index = () => {
             <div className="mt-6 sm:mt-8">
               {loading ? (
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  {Array.from({ length: 6 }).map((_, index) => (
-                    <Skeleton key={index} className="h-[180px]" />
+                  {Array.from({ length: 4 }).map((_, index) => (
+                    <Skeleton key={index} className="aspect-[4/3] sm:aspect-[5/4] rounded-2xl" />
                   ))}
                 </div>
               ) : (
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  {brands.slice(0, 6).map((brand, index) => (
-                    <div
-                      key={brand.slug}
-                      className="animate-fade-in-up"
-                      style={{ animationDelay: `${index * 50}ms`, animationFillMode: "backwards" }}
-                    >
-                      <BrandCard brand={brand} />
-                    </div>
-                  ))}
-                </div>
+                <>
+                  {/* Mobile + tablet: premium carousel (same DNA as /brands) */}
+                  <BrandCarousel brands={brands.slice(0, 6)} hideAbove="lg" />
+
+                  {/* Desktop: 2-col grid */}
+                  <div className="hidden lg:grid lg:grid-cols-2 lg:gap-5">
+                    {brands.slice(0, 6).map((brand, index) => (
+                      <div
+                        key={brand.slug}
+                        className="animate-fade-in-up"
+                        style={{ animationDelay: `${index * 50}ms`, animationFillMode: "backwards" }}
+                      >
+                        <BrandShowcaseCard brand={brand} index={index} />
+                      </div>
+                    ))}
+                  </div>
+                </>
               )}
             </div>
           </div>
