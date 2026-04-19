@@ -276,7 +276,7 @@ export function TopNav() {
 
             <button
               onClick={() => setMobileOpen((v) => !v)}
-              className="flex h-8 w-8 items-center justify-center rounded-full text-foreground transition-all hover:bg-surface lg:hidden"
+              className="hidden h-8 w-8 items-center justify-center rounded-full text-foreground transition-all hover:bg-surface md:flex lg:hidden"
               aria-label="القائمة"
             >
               {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
