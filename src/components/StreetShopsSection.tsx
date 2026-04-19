@@ -126,8 +126,12 @@ export function StreetShopsSection({
         </div>
 
         {!hideHeaderCta && (
-          <Link to={areaToPath(area)} className="link-underline shrink-0 text-sm font-semibold text-accent">
+          <Link
+            to={areaToPath(area)}
+            className="group inline-flex shrink-0 items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-4 py-2 text-sm font-bold text-primary transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground hover:shadow-md"
+          >
             كل محلات الشارع
+            <ArrowLeft className="icon-nudge-x h-4 w-4" />
           </Link>
         )}
       </div>
