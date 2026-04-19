@@ -57,10 +57,10 @@ const Index = () => {
 
       <main className="pb-12 sm:pb-20">
         {/* Categories — soft dashboard-like band */}
-        <section className="group relative mt-8 overflow-hidden border-y border-cyan/25 bg-gradient-to-br from-cyan/14 via-background to-emerald/12 sm:mt-16 md:mt-24">
-          {/* Soft glow accents — cyan + emerald */}
-          <div aria-hidden className="pointer-events-none absolute -top-20 -right-16 h-72 w-72 rounded-full bg-cyan/25 blur-3xl" />
-          <div aria-hidden className="pointer-events-none absolute -bottom-24 -left-12 h-72 w-72 rounded-full bg-emerald/22 blur-3xl" />
+        <section className="group relative mt-8 overflow-hidden border-y border-border/60 bg-background sm:mt-16 md:mt-24">
+          {/* Soft side accents — cyan right, emerald left */}
+          <div aria-hidden className="pointer-events-none absolute -top-16 -right-24 h-56 w-56 rounded-full bg-cyan/10 blur-3xl sm:h-80 sm:w-80 sm:bg-cyan/14" />
+          <div aria-hidden className="pointer-events-none absolute -bottom-20 -left-24 h-56 w-56 rounded-full bg-emerald/10 blur-3xl sm:h-80 sm:w-80 sm:bg-emerald/12" />
 
           <div className="container py-10 sm:py-16 md:py-20">
             <SectionHeader
