@@ -383,14 +383,14 @@ export default function UnifiedSearch() {
               onClick={() => setTab("products")}
               icon={<Package className="h-4 w-4" />}
               label="منتجات"
-              count={activeQuery ? productCount : null}
+              count={productCount}
             />
             <TabButton
               active={activeTab === "shops"}
               onClick={() => setTab("shops")}
               icon={<Store className="h-4 w-4" />}
               label="محلات"
-              count={activeQuery ? shopCount : null}
+              count={shopCount}
             />
           </div>
 
