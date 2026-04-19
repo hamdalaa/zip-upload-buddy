@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, ExternalLink, MapPin, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowLeft, ExternalLink, MapPin, Phone, ShieldCheck, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { VerifiedBadge } from "./Badges";
 import { StarRating } from "./StarRating";
@@ -23,6 +23,16 @@ const CAT_LABELS: Partial<Record<Category, string>> = {
   Tablets: "تابلت",
   "Smart Devices": "أجهزة ذكية",
 };
+
+// Format an Iraqi phone number for readability: "+964 770 123 4567".
+function formatPhone(raw?: string): string | null {
+  if (!raw) return null;
+  const digits = raw.replace(/[^\d+]/g, "");
+  if (!digits) return null;
+  const m = digits.match(/^(\+?\d{1,4})(\d{3})(\d{3})(\d{2,4})$/);
+  if (m) return `${m[1]} ${m[2]} ${m[3]} ${m[4]}`;
+  return digits;
+}
 
 export function ShopCard({ shop }: { shop: Shop }) {
   const categories = shop.categories && shop.categories.length > 0 ? shop.categories : [shop.category];
@@ -83,6 +93,22 @@ export function ShopCard({ shop }: { shop: Shop }) {
         {rating && (
           <StarRating rating={rating.rating} reviews={rating.userRatingCount} size="xs" />
         )}
+
+        {/* Useful info rows — location + phone (synced with CityShopCard) */}
+        <ul className="space-y-1.5 text-[12px] leading-5 text-muted-foreground">
+          {shop.area && (
+            <li className="flex items-start gap-1.5">
+              <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-foreground/60" />
+              <span className="line-clamp-1 text-foreground/85">{shop.area}</span>
+            </li>
+          )}
+          {formatPhone(shop.phone) && (
+            <li className="flex items-start gap-1.5">
+              <Phone className="mt-0.5 h-3.5 w-3.5 shrink-0 text-foreground/60" />
+              <span dir="ltr" className="font-numeric text-foreground/85">{formatPhone(shop.phone)}</span>
+            </li>
+          )}
+        </ul>
 
         <div className="flex flex-wrap gap-1.5">
           {categories.slice(0, 3).map((category) => (
