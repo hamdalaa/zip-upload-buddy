@@ -50,25 +50,25 @@ export function HeroBanner() {
       {/* Soft cream base */}
       <div className="absolute inset-0 -z-30 bg-gradient-to-b from-primary-soft/40 via-background to-background" />
 
-      {/* Baghdad street map — atlas vibe */}
+      {/* Baghdad street map — atlas vibe (very subtle) */}
       <div
         aria-hidden
-        className="absolute inset-0 -z-25 opacity-[0.35] mix-blend-multiply pointer-events-none"
+        className="absolute inset-0 -z-25 opacity-[0.18] mix-blend-multiply pointer-events-none"
         style={{
           backgroundImage: `url(${baghdadMap})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           maskImage:
-            "radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 85%)",
+            "radial-gradient(ellipse 75% 65% at 50% 45%, black 25%, transparent 80%)",
           WebkitMaskImage:
-            "radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 85%)",
+            "radial-gradient(ellipse 75% 65% at 50% 45%, black 25%, transparent 80%)",
         }}
       />
 
-      {/* Aurora blobs — on-brand teal/violet/cyan */}
-      <div className="pointer-events-none absolute -top-32 -right-32 -z-20 h-[520px] w-[520px] rounded-full bg-primary/20 blur-[120px]" />
-      <div className="pointer-events-none absolute top-1/3 -left-40 -z-20 h-[480px] w-[480px] rounded-full bg-violet/15 blur-[120px]" />
-      <div className="pointer-events-none absolute -bottom-32 right-1/4 -z-20 h-[420px] w-[420px] rounded-full bg-cyan/15 blur-[120px]" />
+      {/* Aurora blobs — unified primary tones only */}
+      <div className="pointer-events-none absolute -top-32 -right-32 -z-20 h-[520px] w-[520px] rounded-full bg-primary/15 blur-[120px]" />
+      <div className="pointer-events-none absolute top-1/3 -left-40 -z-20 h-[480px] w-[480px] rounded-full bg-primary/10 blur-[120px]" />
+      <div className="pointer-events-none absolute -bottom-32 right-1/4 -z-20 h-[420px] w-[420px] rounded-full bg-primary-soft/40 blur-[120px]" />
 
       {/* Top hairline */}
       <div className="absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
@@ -87,7 +87,7 @@ export function HeroBanner() {
           <h1 className="font-display mt-6 text-[clamp(2.25rem,6.4vw,5.5rem)] font-semibold leading-[1.02] tracking-tight text-foreground sm:mt-8">
             كل محلات الإلكترونيات
             <br className="hidden sm:inline" />
-            <span className="bg-gradient-to-l from-primary to-primary/70 bg-clip-text text-transparent"> بمكان واحد </span>
+            <span className="text-primary"> بمكان واحد </span>
           </h1>
 
           {/* Service explanation */}
