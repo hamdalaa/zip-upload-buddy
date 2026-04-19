@@ -11,6 +11,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { UnifiedProductCard } from "@/components/UnifiedProductCard";
 import { UnifiedSearchFilters } from "@/components/UnifiedSearchFilters";
 import { EmptyState } from "@/components/EmptyState";
+import { DummyDataBanner } from "@/components/DummyDataBanner";
 import {
   searchUnified,
   type SortKey,
@@ -94,6 +95,7 @@ export default function UnifiedSearch() {
     <div className="min-h-screen bg-background">
 
       <TopNav />
+      <DummyDataBanner />
 
       {/* Search hero */}
       <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-primary/5 via-background to-background">
