@@ -52,16 +52,24 @@ const Index = () => {
       <HeroBanner />
 
       <main className="pb-12 sm:pb-20">
-        {/* Categories — editorial inline strip */}
-        <section className="container mt-8 sm:mt-16 md:mt-24">
-          <SectionHeader
-            kicker="الفئات"
-            title="ابدأ من القسم الأقرب لحاجتك"
-            seeAll="/results"
-            description="بدل البحث العشوائي، اختر الفئة أولاً ثم خلِّ التصفية تكمل المشوار."
-          />
-          <div className="mt-5 sm:mt-8">
-            <CategoryCircles />
+        {/* Categories — editorial inline strip on tinted band */}
+        <section className="relative mt-8 sm:mt-16 md:mt-24">
+          {/* Distinct soft tinted background */}
+          <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-b from-primary-soft/40 via-violet-soft/25 to-cyan-soft/30" />
+          <div aria-hidden className="absolute inset-0 -z-10 opacity-60 bg-[radial-gradient(circle_at_15%_20%,_hsl(var(--primary)/0.08),_transparent_55%),radial-gradient(circle_at_85%_80%,_hsl(var(--violet)/0.10),_transparent_55%)]" />
+          <div aria-hidden className="absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+          <div aria-hidden className="absolute inset-x-0 bottom-0 -z-10 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+
+          <div className="container py-10 sm:py-16 md:py-20">
+            <SectionHeader
+              kicker="الفئات"
+              title="ابدأ من القسم الأقرب لحاجتك"
+              seeAll="/results"
+              description="بدل البحث العشوائي، اختر الفئة أولاً ثم خلِّ التصفية تكمل المشوار."
+            />
+            <div className="mt-5 sm:mt-8">
+              <CategoryCircles />
+            </div>
           </div>
         </section>
 
