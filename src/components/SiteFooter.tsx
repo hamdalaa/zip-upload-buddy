@@ -51,15 +51,15 @@ export function SiteFooter() {
                 <span className="font-display text-2xl font-bold leading-none text-primary-foreground">ت</span>
               </div>
               <div>
-                <div className="font-display text-3xl font-semibold leading-none text-secondary-foreground md:text-4xl">تايه</div>
+                <div className="font-display text-3xl font-semibold leading-none text-secondary-foreground md:text-4xl">حاير</div>
                 <div className="mt-1.5 text-[10px] font-semibold uppercase tracking-[0.28em] text-secondary-foreground/55">
-                  Tayeh — Iraqi Electronics Atlas
+                  Hayer — Iraqi Electronics Atlas
                 </div>
               </div>
             </Link>
 
             <p className="mt-6 max-w-[48rem] text-sm leading-7 text-secondary-foreground/70">
-              تايه مو متجر، بل طبقة توجيه أوضح فوق سوق الإلكترونيات العراقي: محلات،
+              حاير مو متجر، بل طبقة توجيه أوضح فوق سوق الإلكترونيات العراقي: محلات،
               منتجات، محافظات، ووكلاء رسميون ضمن تجربة واحدة تركّز على القرار السريع
               والثقة قبل الخروج من البيت.
             </p>
@@ -108,7 +108,7 @@ export function SiteFooter() {
           <p className="text-xs leading-6 text-secondary-foreground/55">
             البيانات مبنية على آخر فهرسة متاحة وليست تحديثاً لحظياً.
           </p>
-          <p className="font-numeric text-xs text-secondary-foreground/55">© {new Date().getFullYear()} Tayeh</p>
+          <p className="font-numeric text-xs text-secondary-foreground/55">© {new Date().getFullYear()} Hayer</p>
         </div>
       </div>
     </footer>

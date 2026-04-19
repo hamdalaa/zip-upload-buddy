@@ -320,7 +320,7 @@ const Brand = () => {
         <section className="rounded-[1.75rem] border border-border/70 bg-card/85 p-5 shadow-soft-lg backdrop-blur-sm md:p-6">
           <h2 className="mb-4 flex items-center gap-2 text-xl font-bold border-b border-border pb-3">
             <Package className="h-5 w-5 text-primary" />
-            منتجات {brand.brandName} على تايه
+            منتجات {brand.brandName} على حاير
             {related.length > 0 && (
               <span className="rounded-full bg-primary/10 text-primary px-2 py-0.5 text-xs font-bold">
                 {related.length}
@@ -350,7 +350,7 @@ const Brand = () => {
                 براندات أخرى
               </h2>
               <p className="mt-1 text-xs text-muted-foreground">
-                اكتشف المزيد من الوكلاء الرسميين على تايه
+                اكتشف المزيد من الوكلاء الرسميين على حاير
               </p>
             </div>
             <Link

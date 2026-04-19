@@ -25,7 +25,7 @@ export function DealsStrip() {
             عروض نشطة
           </div>
           <h2 className="font-display mt-3 text-2xl font-bold tracking-tight md:text-3xl">أبرز التخفيضات</h2>
-          <p className="mt-1.5 text-sm text-muted-foreground leading-relaxed">أعلى نسب الخصم بفهرس تايه — مبنية على آخر فهرسة.</p>
+          <p className="mt-1.5 text-sm text-muted-foreground leading-relaxed">أعلى نسب الخصم بفهرس حاير — مبنية على آخر فهرسة.</p>
         </div>
       </div>
       <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">

@@ -46,13 +46,13 @@ export default function About() {
               قصّة المشروع
             </div>
             <h1 className="font-display mt-4 text-3xl font-bold tracking-tight md:text-5xl">
-              ليش <span className="text-gradient">تايه</span>؟
+              ليش <span className="text-gradient">حاير</span>؟
             </h1>
             <p className="mt-3 mx-auto max-w-2xl text-sm leading-7 text-muted-foreground md:text-base">
               تشتري موبايل أو لابتوب بالعراق؟ تفتح كروبات، تسأل صديق، تلف على عشر محلات — وبالآخر ما تدري <span className="font-semibold text-foreground">منو الصدك ومنو يبالغ</span>. كل واحد يحلف إن سعره الأرخص وبضاعته الأصلية.
             </p>
             <p className="mt-3 mx-auto max-w-2xl text-sm leading-7 text-muted-foreground md:text-base">
-              <span className="font-semibold text-foreground">تايه</span> منصّة عراقية تجمع محلّات التقنية من كل المحافظات بمكان واحد — تقارن الأسعار، تشوف تقييمات Google الحقيقية للمحلّ، وتوصل لأقرب نقطة بيع موثوقة بنقرة وحدة. بدون إعلانات مدفوعة، بدون تحيّز، بس معلومة صريحة.
+              <span className="font-semibold text-foreground">حاير</span> منصّة عراقية تجمع محلّات التقنية من كل المحافظات بمكان واحد — تقارن الأسعار، تشوف تقييمات Google الحقيقية للمحلّ، وتوصل لأقرب نقطة بيع موثوقة بنقرة وحدة. بدون إعلانات مدفوعة، بدون تحيّز، بس معلومة صريحة.
             </p>
 
             <div className="mt-5 grid gap-2 sm:grid-cols-3">

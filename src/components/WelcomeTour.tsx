@@ -50,7 +50,7 @@ const steps = [
     icon: Code2,
     title: "كلمة من المطور",
     body:
-      "تايه منصة بنيتها بجهد فردي لتسهيل سوق الإلكترونيات بالعراق وتوحيد المحلات والأسعار بمكان واحد موثوق.\n\nلأصحاب المحلات: نوفر باقات رعاية وشراكات إعلانية تشمل تثبيت متجرك بالصدارة، إبراز منتجاتك، وحملات ترويجية مخصصة. للتعاون أو الاستفسار، تواصل معي مباشرة عبر إنستغرام.",
+      "حاير منصة بنيتها بجهد فردي لتسهيل سوق الإلكترونيات بالعراق وتوحيد المحلات والأسعار بمكان واحد موثوق.\n\nلأصحاب المحلات: نوفر باقات رعاية وشراكات إعلانية تشمل تثبيت متجرك بالصدارة، إبراز منتجاتك، وحملات ترويجية مخصصة. للتعاون أو الاستفسار، تواصل معي مباشرة عبر إنستغرام.",
     instagram: "https://instagram.com/",
     highlights: ["شراكات رسمية", "باقات رعاية", "تثبيت بالصدارة", "دعم مستمر"],
   },
@@ -84,7 +84,7 @@ export function WelcomeTour() {
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-primary text-primary-foreground shadow-glow">
             <Sparkles className="h-7 w-7" />
           </div>
-          <DialogTitle className="text-center text-xl">أهلاً بك في تايه</DialogTitle>
+          <DialogTitle className="text-center text-xl">أهلاً بك في حاير</DialogTitle>
           <DialogDescription className="text-center">
             دليل إلكترونيات العراق — جولة سريعة بأربع خطوات
           </DialogDescription>

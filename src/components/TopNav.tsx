@@ -137,9 +137,9 @@ export function TopNav() {
               <div className="pointer-events-none absolute inset-0 rounded-[10px] bg-gradient-to-b from-white/20 to-transparent" />
             </div>
             <div className="text-right leading-none">
-              <div className="font-display text-[19px] font-semibold tracking-tight text-foreground">تايه</div>
+              <div className="font-display text-[19px] font-semibold tracking-tight text-foreground">حاير</div>
               <div className="mt-1 hidden text-[8.5px] font-semibold uppercase tracking-[0.24em] text-muted-foreground/70 sm:block">
-                Tayeh
+                Hayer
               </div>
             </div>
           </Link>
@@ -299,7 +299,7 @@ export function TopNav() {
                 <div className="pointer-events-none absolute inset-0 rounded-[12px] bg-gradient-to-b from-white/20 to-transparent" />
               </div>
               <div className="text-right leading-tight">
-                <SheetTitle className="font-display text-lg font-semibold tracking-tight">تايه</SheetTitle>
+                <SheetTitle className="font-display text-lg font-semibold tracking-tight">حاير</SheetTitle>
                 <SheetDescription className="text-[11px] text-muted-foreground">
                   دليل التقنية بالعراق
                 </SheetDescription>

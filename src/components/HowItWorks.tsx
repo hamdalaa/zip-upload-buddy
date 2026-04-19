@@ -22,7 +22,7 @@ export function HowItWorks() {
   return (
     <section className="atlas-panel p-6 md:p-8">
       <div className="text-right">
-        <span className="atlas-kicker">كيف يعمل تايه</span>
+        <span className="atlas-kicker">كيف يعمل حاير</span>
         <h2 className="font-display mt-3 text-2xl font-semibold leading-tight text-foreground">ثلاث خطوات واضحة</h2>
       </div>
 
