@@ -47,7 +47,7 @@ export function UnifiedProductCard({ product }: Props) {
           )}
           {product.rating != null && (
             <div className="flex items-center gap-0.5 text-[11px] text-muted-foreground">
-              <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
+              <Star className="h-3 w-3 fill-warning text-warning" />
               <span className="font-semibold text-foreground">{product.rating.toFixed(1)}</span>
               <span>({product.reviewCount})</span>
             </div>
