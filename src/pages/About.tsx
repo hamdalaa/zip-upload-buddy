@@ -58,7 +58,7 @@ export default function About() {
             <div className="mt-5 grid gap-2 sm:grid-cols-3">
               {[
                 { label: "محافظات مغطّاة", value: "10+" },
-                { label: "محلات موثّقة", value: "+3200" },
+                { label: "محلات موثّقة", value: "+3100" },
                 { label: "بحث مجاني للأبد", value: "100%" },
               ].map((stat) => (
                 <div
