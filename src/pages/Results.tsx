@@ -327,12 +327,16 @@ const Results = () => {
               <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                 <div className="min-w-0">
                   <div className="text-sm font-semibold text-foreground">
-                    <span className="font-display text-3xl">{results.length.toLocaleString("ar")}</span>
-                    <span className="ms-2 text-muted-foreground">نتيجة بعد التصفية</span>
+                    <span className="font-display text-3xl">
+                      {(results.length > 0 ? results.length : fallbackShopsCount).toLocaleString("ar")}
+                    </span>
+                    <span className="ms-2 text-muted-foreground">
+                      {results.length > 0 ? "نتيجة بعد التصفية" : "محل متاح للتصفّح"}
+                    </span>
                   </div>
                   <p className="mt-1 text-xs leading-6 text-muted-foreground">
                     {results.length === 0
-                      ? "ماكو نتائج حالياً. بدّل الفلاتر أو امسحها حتى ترجع النتائج."
+                      ? "ما حصّلنا منتجاً مفهرساً مطابقاً، بس هذي المحلات قريبة من طلبك وتكدر تتواصل معها مباشرة."
                       : groups.length > 0
                       ? "نتائج المقارنة تظهر أولاً عندما نقدر نجمع نفس المنتج من أكثر من محل."
                       : "رتّب العرض وبدّل طريقة القراءة بين الشبكة والقائمة حسب نوع التصفح."}
