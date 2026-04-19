@@ -89,46 +89,56 @@ export function HeroBanner() {
             </div>
           </div>
 
-          {/* Sidebar — index card */}
-          <aside className="hidden self-start atlas-panel p-2 text-right lg:block backdrop-blur-sm bg-card/85">
-            <div className="px-4 pt-3 pb-2">
-              <div className="atlas-kicker">الفهرس</div>
+          {/* Sidebar — premium ceramic index card */}
+          <aside className="hidden self-start rounded-2xl bg-card p-4 text-right shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08),0_0_0_1px_rgba(0,0,0,0.04)] lg:block">
+            <div className="mb-4 flex items-center justify-between px-1">
+              <h2 className="font-display text-base font-semibold tracking-tight text-foreground">دليل الوصول السريع</h2>
+              <div className="flex items-center gap-1.5">
+                <div className="size-1.5 animate-pulse rounded-full bg-emerald" />
+                <span className="text-[11px] font-medium text-muted-foreground/70">حي</span>
+              </div>
             </div>
 
-            <div className="space-y-1">
+            <div className="flex flex-col gap-1">
               {[
-                { to: "/sinaa", title: "شارع الصناعة", note: "حاسبات · قطع · شبكات", num: "01", color: "chip-cyan", img: sinaaImg },
-                { to: "/rubaie", title: "شارع الربيعي", note: "هواتف · شواحن · إكسسوارات", num: "02", color: "chip-rose", img: rubaieImg },
-                { to: "/iraq", title: "كل المحافظات", note: "بغداد · أربيل · البصرة + 7", num: "03", color: "chip-violet", img: iraqImg },
-                { to: "/brands", title: "الوكلاء الرسميون", note: `${brands.length} وكيل معتمد`, num: "04", color: "chip-emerald", img: null },
+                { to: "/sinaa", title: "شارع الصناعة", note: "حاسبات · قطع · شبكات", num: "01", hover: "group-hover:text-cyan", ring: "group-hover:ring-cyan/30", img: sinaaImg },
+                { to: "/rubaie", title: "شارع الربيعي", note: "هواتف · شواحن · إكسسوارات", num: "02", hover: "group-hover:text-rose", ring: "group-hover:ring-rose/30", img: rubaieImg },
+                { to: "/iraq", title: "كل المحافظات", note: "بغداد · أربيل · البصرة + 7", num: "03", hover: "group-hover:text-violet", ring: "group-hover:ring-violet/30", img: iraqImg },
+                { to: "/brands", title: "الوكلاء الرسميون", note: `${brands.length} وكيل معتمد`, num: "04", hover: "group-hover:text-emerald", ring: "group-hover:ring-emerald/30", img: null },
               ].map((entry) => (
                 <Link
                   key={entry.to}
                   to={entry.to}
-                  className="group flex items-center justify-between gap-3 rounded-xl px-2.5 py-2.5 transition-colors hover:bg-primary-soft"
+                  className="group relative flex items-center gap-3 rounded-xl p-2 transition-all duration-300 hover:bg-muted/60"
                 >
-                  <span className={`${entry.color} font-numeric inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-[10px] font-bold`}>{entry.num}</span>
-                  <div className="flex flex-1 items-center gap-3 text-right">
-                    <div className="min-w-0 flex-1">
-                      <div className="font-display text-base font-semibold leading-tight text-foreground group-hover:text-primary truncate">
-                        {entry.title}
-                      </div>
-                      <div className="mt-0.5 text-xs leading-5 text-muted-foreground truncate">{entry.note}</div>
-                    </div>
+                  <div className="relative size-12 shrink-0 overflow-hidden rounded-lg bg-muted shadow-[inset_0_1px_4px_rgba(0,0,0,0.05)] ring-1 ring-inset ring-black/[0.04]">
                     {entry.img ? (
                       <img
                         src={entry.img}
                         alt=""
                         loading="lazy"
-                        width={48}
-                        height={48}
-                        className="h-11 w-11 shrink-0 rounded-lg object-cover ring-1 ring-border transition-transform group-hover:scale-105"
+                        width={96}
+                        height={96}
+                        className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                       />
                     ) : (
-                      <div className="h-11 w-11 shrink-0 rounded-lg bg-gradient-to-br from-emerald-soft to-card ring-1 ring-border" />
+                      <div className="h-full w-full bg-gradient-to-br from-emerald-soft to-card" />
                     )}
                   </div>
-                  <ArrowLeft className="icon-nudge-x h-3.5 w-3.5 shrink-0 text-muted-foreground group-hover:text-primary" />
+
+                  <div className="min-w-0 flex-1">
+                    <h3 className={`truncate font-display text-[13px] font-semibold text-foreground transition-colors duration-300 ${entry.hover}`}>
+                      {entry.title}
+                    </h3>
+                    <p className="mt-0.5 truncate text-[11px] text-muted-foreground">{entry.note}</p>
+                  </div>
+
+                  <div className="flex shrink-0 items-center gap-1.5">
+                    <span className={`flex size-8 items-center justify-center rounded-full bg-background font-numeric text-[11px] font-semibold text-muted-foreground shadow-soft ring-1 ring-border transition-all duration-300 ${entry.ring} ${entry.hover}`}>
+                      {entry.num}
+                    </span>
+                    <ArrowLeft className={`h-3.5 w-3.5 text-muted-foreground/60 transition-all duration-300 group-hover:-translate-x-0.5 ${entry.hover}`} />
+                  </div>
                 </Link>
               ))}
             </div>
