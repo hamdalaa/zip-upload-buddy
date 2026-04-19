@@ -100,6 +100,8 @@ export function CityShopCard({ shop, citySlug }: Props) {
   const todayHours = getTodayHours(shop.workingHours);
   const highlight = getHighlight(shop);
   const openNow = shop.openNow ?? shop.quickSignals?.open_now ?? null;
+  const locationLine = getLocationLine(shop);
+  const phoneFormatted = formatPhone(shop.phone);
 
   // Compact contact icons row
   const contacts: { icon: typeof Phone; label: string; href?: string }[] = [];
