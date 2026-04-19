@@ -31,6 +31,8 @@ const IraqCities = lazy(() => import("./pages/IraqCities.tsx"));
 const CityPage = lazy(() => import("./pages/CityPage.tsx"));
 const CityShopView = lazy(() => import("./pages/CityShopView.tsx"));
 const About = lazy(() => import("./pages/About.tsx"));
+const UnifiedSearch = lazy(() => import("./pages/UnifiedSearch.tsx"));
+const ProductDetail = lazy(() => import("./pages/ProductDetail.tsx"));
 
 const queryClient = new QueryClient();
 
@@ -55,6 +57,8 @@ const App = () => (
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/results" element={<Results />} />
+                  <Route path="/search" element={<UnifiedSearch />} />
+                  <Route path="/product/:id" element={<ProductDetail />} />
                   <Route path="/sinaa" element={<StreetPages />} />
                   <Route path="/rubaie" element={<RubaiePage />} />
                   <Route path="/iraq" element={<IraqCities />} />
