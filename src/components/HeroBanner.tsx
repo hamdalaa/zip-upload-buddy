@@ -84,17 +84,18 @@ export function HeroBanner() {
           </div>
 
           {/* Headline */}
-          <h1 className="font-display mt-6 text-[clamp(2.25rem,6.4vw,5.5rem)] font-semibold leading-[1.02] tracking-tight text-foreground sm:mt-8">
+          <h1 className="font-display mt-6 text-[clamp(2.25rem,6.4vw,5.5rem)] font-medium leading-[1.05] tracking-tight text-foreground sm:mt-8">
             كل محلات الإلكترونيات
             <br className="hidden sm:inline" />
-            <span className="bg-gradient-to-l from-primary via-primary to-primary/60 bg-clip-text text-transparent"> بمكان واحد </span>
+            <span className="text-muted-foreground/90"> بمكان واحد</span>
+            <span className="text-primary">.</span>
           </h1>
 
           {/* Service explanation */}
-          <p className="mx-auto mt-5 max-w-[62ch] text-sm leading-7 text-muted-foreground sm:mt-7 sm:text-lg sm:leading-8">
+          <p className="mx-auto mt-5 max-w-[62ch] text-[13px] leading-7 text-muted-foreground sm:mt-7 sm:text-base sm:leading-8">
             دور على أي منتج إلكتروني — موبايل، لابتوب، شاشة، إكسسوار — وشوف
-            <span className="font-semibold text-foreground"> أسعاره عند كل المحلات</span>،
-            مع <span className="font-semibold text-foreground">العنوان والتقييمات وتلفون المحل</span>،
+            <span className="text-foreground"> أسعاره عند كل المحلات</span>،
+            مع <span className="text-foreground">العنوان والتقييمات وتلفون المحل</span>،
             من شارع الصناعة لحد البصرة وأربيل.
           </p>
 
