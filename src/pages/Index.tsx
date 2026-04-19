@@ -55,12 +55,10 @@ const Index = () => {
 
       <main className="pb-12 sm:pb-20">
         {/* Categories — soft dashboard-like band */}
-        <section className="relative mt-8 sm:mt-16 md:mt-24">
-          {/* Soft muted surface, very subtle */}
-          <div aria-hidden className="absolute inset-0 -z-10 bg-muted/40" />
-          <div aria-hidden className="absolute inset-0 -z-10 opacity-50 bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,_hsl(var(--primary)/0.06),_transparent_70%)]" />
-          <div aria-hidden className="absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-border/60 to-transparent" />
-          <div aria-hidden className="absolute inset-x-0 bottom-0 -z-10 h-px bg-gradient-to-r from-transparent via-border/60 to-transparent" />
+        <section className="group relative mt-8 overflow-hidden border-y border-violet/25 bg-gradient-to-br from-violet/12 via-card/90 to-rose/10 sm:mt-16 md:mt-24">
+          {/* Glow accents — same DNA as sponsorship card */}
+          <div aria-hidden className="pointer-events-none absolute -top-20 -right-16 h-72 w-72 rounded-full bg-violet/25 blur-3xl" />
+          <div aria-hidden className="pointer-events-none absolute -bottom-24 -left-12 h-72 w-72 rounded-full bg-rose/20 blur-3xl" />
 
           <div className="container py-10 sm:py-16 md:py-20">
             <SectionHeader
