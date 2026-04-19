@@ -87,7 +87,7 @@ export function HeroBanner() {
           <h1 className="font-display mt-6 text-[clamp(2.25rem,6.4vw,5.5rem)] font-semibold leading-[1.02] tracking-tight text-foreground sm:mt-8">
             كل محلات الإلكترونيات
             <br className="hidden sm:inline" />
-            <span className="bg-gradient-to-l from-primary to-primary/70 bg-clip-text text-transparent"> بمكان واحد </span>
+            <span className="text-primary"> بمكان واحد </span>
           </h1>
 
           {/* Service explanation */}
