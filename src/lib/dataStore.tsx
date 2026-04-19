@@ -1,22 +1,7 @@
-import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
+import { useCallback, useContext, useMemo, useState, type ReactNode } from "react";
 import type { Area, BrandDealer, Category, CrawlRun, ProductIndex, Shop, ShopSource } from "./types";
 import { initialBrands, initialCrawlRuns, initialProducts, initialShopSources, initialShops } from "./mockData";
-
-interface DataStoreValue {
-  shops: Shop[];
-  shopSources: ShopSource[];
-  products: ProductIndex[];
-  brands: BrandDealer[];
-  crawlRuns: CrawlRun[];
-  // Actions
-  addShop: (input: Omit<Shop, "id" | "slug" | "seedKey" | "createdAt" | "updatedAt" | "discoverySource" | "verified" | "verificationStatus"> & { verified?: boolean }) => Shop;
-  toggleVerify: (shopId: string) => void;
-  mergeShops: (primaryId: string, secondaryId: string) => void;
-  runAreaScan: (area: Area) => CrawlRun;
-  recrawlShop: (shopId: string) => CrawlRun;
-}
-
-const DataStoreContext = createContext<DataStoreValue | null>(null);
+import { DataStoreContext, type DataStoreValue } from "./dataStoreContext";
 
 const slugify = (s: string) =>
   s.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "-").replace(/^-|-$/g, "") || `shop-${Date.now()}`;
