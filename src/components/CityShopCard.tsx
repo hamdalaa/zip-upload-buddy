@@ -47,6 +47,38 @@ function getHighlight(shop: CityShop): string | null {
   return text.slice(0, 107).trimEnd() + "…";
 }
 
+// Detect a Google Plus Code (e.g. "94HP+XWF, Mosul, Nineveh Governorate, Iraq").
+// These are not human-friendly so we hide them.
+function isPlusCodeAddress(address?: string): boolean {
+  if (!address) return false;
+  return /^[23456789CFGHJMPQRVWX]{4,}\+[23456789CFGHJMPQRVWX]{2,}/i.test(address.trim());
+}
+
+// Produce a short, human-friendly location line: prefer area + city,
+// fall back to a cleaned address with the Plus Code stripped.
+function getLocationLine(shop: CityShop): string | null {
+  if (shop.area && shop.city && shop.area !== shop.city) return `${shop.area} — ${shop.city}`;
+  if (shop.area) return shop.area;
+  if (shop.address && !isPlusCodeAddress(shop.address)) return shop.address;
+  // Try to drop a leading Plus Code from a mixed address.
+  if (shop.address) {
+    const cleaned = shop.address.replace(/^[23456789CFGHJMPQRVWX]{4,}\+[23456789CFGHJMPQRVWX]{2,}\s*,?\s*/i, "").trim();
+    if (cleaned) return cleaned;
+  }
+  return shop.city ?? null;
+}
+
+// Format an Iraqi phone number for readability: "+964 770 123 4567".
+function formatPhone(raw?: string): string | null {
+  if (!raw) return null;
+  const digits = raw.replace(/[^\d+]/g, "");
+  if (!digits) return null;
+  // Group as +XXX XXX XXX XXXX style.
+  const m = digits.match(/^(\+?\d{1,4})(\d{3})(\d{3})(\d{2,4})$/);
+  if (m) return `${m[1]} ${m[2]} ${m[3]} ${m[4]}`;
+  return digits;
+}
+
 export function CityShopCard({ shop, citySlug }: Props) {
   const [imgFailed, setImgFailed] = useState(false);
   const fallback = CATEGORY_IMAGES[(shop.category || shop.suggested_category || "Computing") as keyof typeof CATEGORY_IMAGES];
