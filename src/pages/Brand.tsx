@@ -343,8 +343,26 @@ const Brand = () => {
 
         {/* OTHER BRANDS */}
         <section className="rounded-[1.75rem] border border-border/70 bg-card/85 p-5 shadow-soft-lg backdrop-blur-sm md:p-6">
-          <h2 className="mb-4 text-xl font-bold border-b border-border pb-3">براندات أخرى</h2>
-          <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4">
+          <header className="mb-5 flex items-end justify-between gap-3 border-b border-border pb-3">
+            <div>
+              <h2 className="flex items-center gap-2 text-xl font-bold">
+                <Store className="h-5 w-5 text-primary" />
+                براندات أخرى
+              </h2>
+              <p className="mt-1 text-xs text-muted-foreground">
+                اكتشف المزيد من الوكلاء الرسميين على تايه
+              </p>
+            </div>
+            <Link
+              to="/brands"
+              className="hidden shrink-0 items-center gap-1 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary sm:inline-flex"
+            >
+              عرض الكل
+              <ChevronLeft className="h-3.5 w-3.5" />
+            </Link>
+          </header>
+
+          <div className="grid grid-cols-2 gap-2.5 md:grid-cols-3 lg:grid-cols-4">
             {brands
               .filter((b) => b.slug !== brand.slug)
               .map((b) => {
@@ -352,37 +370,57 @@ const Brand = () => {
                   (x) => x.brandSlug === b.slug,
                 ).length;
                 const bLogo = getBrandLogo(b.slug);
+                const bCdn = getTheSvgUrl(b.slug, "default");
+                const bVerified = b.verificationStatus === "verified";
                 return (
                   <Link
                     key={b.slug}
                     to={`/brand/${b.slug}`}
-                    className="group flex items-center gap-3 rounded-2xl border border-border/70 bg-background/85 p-3 transition-all hover:border-primary/35 hover:shadow-soft-lg"
+                    className="group relative flex items-center gap-3 overflow-hidden rounded-2xl border border-border/70 bg-background/85 p-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:bg-background hover:shadow-soft-lg"
                   >
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-background overflow-hidden border border-border">
-                      {bLogo ? (
+                    {/* hover gradient wash */}
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/0 via-primary/0 to-primary/[0.06] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+                    {/* Logo tile */}
+                    <div className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border bg-background shadow-soft-sm transition-transform duration-300 group-hover:scale-105">
+                      {bCdn || bLogo ? (
                         <img
-                          src={bLogo}
+                          src={bCdn ?? bLogo}
                           alt={b.brandName}
                           loading="lazy"
-                          className="h-full w-full object-contain p-1"
+                          className="h-full w-full object-contain p-1.5"
                         />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center bg-gradient-primary font-display text-lg font-bold text-primary-foreground">
                           {b.brandName.slice(0, 1)}
                         </div>
                       )}
+                      {bVerified && (
+                        <span className="absolute -bottom-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-success text-success-foreground ring-2 ring-background">
+                          <ShieldCheck className="h-2.5 w-2.5" />
+                        </span>
+                      )}
                     </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-1 text-sm font-semibold truncate">
+
+                    {/* Text */}
+                    <div className="relative min-w-0 flex-1">
+                      <div className="truncate text-sm font-bold leading-tight transition-colors group-hover:text-primary">
                         {b.brandName}
-                        {b.verificationStatus === "verified" && (
-                          <ShieldCheck className="h-3 w-3 text-success shrink-0" />
+                      </div>
+                      <div className="mt-0.5 flex items-center gap-1 text-[11px] text-muted-foreground">
+                        {bBranches > 0 ? (
+                          <>
+                            <Building2 className="h-3 w-3 text-primary/70" />
+                            <span className="truncate">{bBranches} فرع رسمي</span>
+                          </>
+                        ) : (
+                          <span className="truncate">{b.dealerName}</span>
                         )}
                       </div>
-                      <div className="text-[11px] text-muted-foreground truncate">
-                        {bBranches > 0 ? `${bBranches} فرع رسمي` : b.dealerName}
-                      </div>
                     </div>
+
+                    {/* Chevron */}
+                    <ChevronLeft className="relative h-4 w-4 shrink-0 text-muted-foreground/40 transition-all duration-300 group-hover:-translate-x-0.5 group-hover:text-primary" />
                   </Link>
                 );
               })}
