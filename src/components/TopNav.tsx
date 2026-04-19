@@ -56,7 +56,7 @@ function loadSelectedCity(): { slug: string; cityAr: string } {
 const primaryLinks = [
   { to: "/sinaa", label: "الشوارع", icon: Store },
   { to: "/iraq", label: "المحافظات", icon: Building2 },
-  { to: "/brands", label: "الوكلاء", icon: Heart },
+  { to: "/brands", label: "البراندات", icon: Heart },
   { to: "/results", label: "البحث", icon: Search },
 ];
 
