@@ -28,7 +28,7 @@ export function BottomTabBar() {
       <div aria-hidden className="h-[72px] lg:hidden" style={{ paddingBottom: "env(safe-area-inset-bottom)" }} />
 
       <nav
-        className="fixed inset-x-0 bottom-0 z-50 lg:hidden"
+        className="fixed inset-x-0 bottom-0 z-40 lg:hidden"
         aria-label="التنقل السريع"
         style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       >
