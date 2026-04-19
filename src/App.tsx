@@ -27,6 +27,9 @@ const StreetPages = lazy(() =>
 const RubaiePage = lazy(() =>
   import("./pages/StreetPage.tsx").then((m) => ({ default: m.RubaiePage })),
 );
+const StreetsIndex = lazy(() =>
+  import("./pages/StreetPage.tsx").then((m) => ({ default: m.StreetsIndexPage })),
+);
 const IraqCities = lazy(() => import("./pages/IraqCities.tsx"));
 const CityPage = lazy(() => import("./pages/CityPage.tsx"));
 const CityShopView = lazy(() => import("./pages/CityShopView.tsx"));
@@ -66,6 +69,7 @@ const App = () => (
                   <Route path="/results" element={<ResultsRedirect />} />
                   <Route path="/search" element={<UnifiedSearch />} />
                   <Route path="/product/:id" element={<ProductDetail />} />
+                  <Route path="/streets" element={<StreetsIndex />} />
                   <Route path="/sinaa" element={<StreetPages />} />
                   <Route path="/rubaie" element={<RubaiePage />} />
                   <Route path="/iraq" element={<IraqCities />} />
