@@ -888,44 +888,54 @@ function FiltersPanel(props: FiltersPanelProps) {
             );
           })
         ) : (
-          <div className="space-y-1.5">
-            {[4.5, 4, 3.5, 0].map((rating) => (
-              <button
-                key={rating}
-                onClick={() => setMinRating(rating)}
-                className={cn(
-                  "flex w-full items-center gap-2 rounded-2xl px-3 py-2 text-sm transition-colors",
-                  minRating === rating ? "bg-secondary text-secondary-foreground shadow-soft" : "bg-background text-foreground/80 hover:bg-muted",
-                )}
-              >
-                {rating === 0 ? (
-                  <span>الكل</span>
-                ) : (
-                  <>
-                    <Star className={cn("h-3.5 w-3.5", minRating === rating ? "fill-current" : "fill-warning text-warning")} />
-                    <span>{rating}+ نجوم</span>
-                  </>
-                )}
-              </button>
-            ))}
+          <div className="space-y-1">
+            {[4.5, 4, 3.5, 0].map((rating) => {
+              const active = minRating === rating;
+              return (
+                <button
+                  key={rating}
+                  onClick={() => setMinRating(rating)}
+                  className={cn(
+                    "flex w-full items-center gap-2 rounded-xl px-3 py-2 text-[13px] transition-all",
+                    active
+                      ? "bg-primary/10 text-primary font-semibold ring-1 ring-inset ring-primary/20"
+                      : "text-foreground/75 hover:bg-muted/60 hover:text-foreground",
+                  )}
+                >
+                  {rating === 0 ? (
+                    <>
+                      <span className={cn("h-1.5 w-1.5 rounded-full", active ? "bg-primary" : "bg-border")} />
+                      <span>الكل</span>
+                    </>
+                  ) : (
+                    <>
+                      <Star className={cn("h-3.5 w-3.5", active ? "fill-primary text-primary" : "fill-warning text-warning")} />
+                      <span>{rating}+ نجوم</span>
+                    </>
+                  )}
+                </button>
+              );
+            })}
           </div>
         )}
       </FilterSection>
 
-      <div className={cn("pt-4 border-t border-border/60", compact ? "grid grid-cols-2 gap-2" : "space-y-2")}>
+      <div className={cn("pt-4 mt-1 border-t border-dashed border-border/55", compact ? "grid grid-cols-2 gap-2" : "space-y-2")}>
         <label className={cn(
-          "flex items-center gap-2 rounded-2xl border border-border/70 bg-background px-3 py-2 cursor-pointer transition-colors hover:border-primary/30",
+          "flex items-center gap-2 rounded-xl border border-border/60 bg-background/60 px-3 py-2 cursor-pointer transition-all hover:border-primary/40 hover:bg-primary/5 has-[:checked]:border-primary/40 has-[:checked]:bg-primary/8",
           compact ? "text-xs font-semibold" : "text-sm",
         )}>
           <Checkbox checked={verifiedOnly} onCheckedChange={(value) => setVerifiedOnly(!!value)} />
-          موثّقة فقط
+          <ShieldCheck className="h-3.5 w-3.5 text-success" />
+          <span className="flex-1">موثّقة فقط</span>
         </label>
         <label className={cn(
-          "flex items-center gap-2 rounded-2xl border border-border/70 bg-background px-3 py-2 cursor-pointer transition-colors hover:border-primary/30",
+          "flex items-center gap-2 rounded-xl border border-border/60 bg-background/60 px-3 py-2 cursor-pointer transition-all hover:border-primary/40 hover:bg-primary/5 has-[:checked]:border-primary/40 has-[:checked]:bg-primary/8",
           compact ? "text-xs font-semibold" : "text-sm",
         )}>
           <Checkbox checked={withDeals} onCheckedChange={(value) => setWithDeals(!!value)} />
-          تخفيضات فقط
+          <Flame className="h-3.5 w-3.5 text-accent-rose" />
+          <span className="flex-1">تخفيضات فقط</span>
         </label>
       </div>
     </Wrapper>
