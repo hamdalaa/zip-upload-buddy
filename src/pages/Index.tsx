@@ -173,17 +173,17 @@ const Index = () => {
 
             <div className="grid gap-4 sm:gap-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
               <div>
-                <h2 className="font-display text-xl font-semibold leading-tight text-white sm:text-4xl md:text-5xl tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]">
+                <h2 className="font-display text-2xl font-semibold leading-tight text-white sm:text-4xl md:text-5xl tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]">
                   نفس لغة السوق <br className="hidden sm:inline" /> في كل المحافظات.
                 </h2>
-                <p className="mt-2.5 max-w-3xl text-[13px] leading-6 text-white/80 sm:mt-4 sm:text-base sm:leading-8">
+                <p className="mt-3 max-w-3xl text-sm leading-7 text-white/85 sm:mt-4 sm:text-base sm:leading-8">
                   بغداد، أربيل، البصرة، الموصل، النجف، كربلاء، السليمانية، كركوك، بعقوبة،
                   والناصرية ضمن مسار واحد يختصر الوصول من الفكرة إلى المحل.
                 </p>
               </div>
 
               <div className="flex items-center gap-3 border-t border-white/20 pt-4 sm:gap-4 md:border-0 md:pt-0">
-                <span className="font-display text-sm font-bold text-white sm:text-xl">
+                <span className="font-display text-base font-bold text-white sm:text-xl">
                   افتح الأطلس
                 </span>
                 <ArrowLeft className="icon-nudge-x h-4 w-4 text-white sm:h-5 sm:w-5" />
