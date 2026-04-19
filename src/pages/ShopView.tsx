@@ -687,7 +687,7 @@ function Lightbox({
       {/* Prev (RTL: arrow on the right means "previous") - hidden on mobile (use swipe) */}
       {total > 1 && (
         <button
-          className="hidden md:flex absolute right-2 md:right-6 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white hover:bg-white/20 transition-colors active:scale-95"
+          className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-2.5 md:p-3 text-white backdrop-blur-md hover:bg-white/20 transition-colors active:scale-95"
           onClick={(e) => { e.stopPropagation(); go(-1); }}
           aria-label="السابق"
         >
