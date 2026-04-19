@@ -241,12 +241,11 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Brands + How it works + Metrics — soft cyan/emerald band */}
+        {/* Brands — standalone soft band */}
         <section className="relative mt-10 overflow-hidden border-y border-cyan/15 bg-gradient-to-bl from-emerald/6 via-background to-cyan/5 sm:mt-20 md:mt-28">
           <div aria-hidden className="pointer-events-none absolute -top-20 -left-16 h-72 w-72 rounded-full bg-emerald/10 blur-3xl" />
           <div aria-hidden className="pointer-events-none absolute -bottom-24 -right-12 h-72 w-72 rounded-full bg-cyan/10 blur-3xl" />
-          <div className="container relative py-10 grid gap-8 sm:py-16 sm:gap-12 md:py-20 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:items-start">
-          <div>
+          <div className="container relative py-10 sm:py-16 md:py-20">
             <SectionHeader
               kicker="الوكلاء الرسميون"
               title="براندات بصورة أوضح"
@@ -256,8 +255,8 @@ const Index = () => {
 
             <div className="mt-6 sm:mt-8">
               {loading ? (
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  {Array.from({ length: 4 }).map((_, index) => (
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {Array.from({ length: 6 }).map((_, index) => (
                     <Skeleton key={index} className="aspect-[4/3] sm:aspect-[5/4] rounded-2xl" />
                   ))}
                 </div>
@@ -266,8 +265,8 @@ const Index = () => {
                   {/* Mobile + tablet: premium carousel (same DNA as /brands) */}
                   <BrandCarousel brands={brands.slice(0, 6)} hideAbove="lg" />
 
-                  {/* Desktop: 2-col grid */}
-                  <div className="hidden lg:grid lg:grid-cols-2 lg:gap-5">
+                  {/* Desktop: 3-col grid */}
+                  <div className="hidden lg:grid lg:grid-cols-3 lg:gap-5">
                     {brands.slice(0, 6).map((brand, index) => (
                       <div
                         key={brand.slug}
@@ -282,17 +281,17 @@ const Index = () => {
               )}
             </div>
           </div>
+        </section>
 
-          <div className="space-y-8 sm:space-y-10 lg:sticky lg:top-24">
-            <HowItWorks />
-            <div>
-              <span className="atlas-kicker">المؤشرات</span>
-              <h3 className="font-display mt-4 text-xl font-bold text-foreground sm:text-2xl">آخر قراءة للأطلس</h3>
-              <div className="mt-5 sm:mt-6">
-                <MetricsStrip />
-              </div>
+        {/* How it works + Metrics — standalone */}
+        <section className="container mt-10 grid gap-8 sm:mt-20 sm:gap-12 md:mt-28 lg:grid-cols-2 lg:items-start">
+          <HowItWorks />
+          <div>
+            <span className="atlas-kicker">المؤشرات</span>
+            <h3 className="font-display mt-4 text-xl font-bold text-foreground sm:text-2xl">آخر قراءة للأطلس</h3>
+            <div className="mt-5 sm:mt-6">
+              <MetricsStrip />
             </div>
-          </div>
           </div>
         </section>
       </main>
