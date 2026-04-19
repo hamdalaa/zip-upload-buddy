@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ComponentType } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
+import { MobileShopCTA } from "@/components/MobileShopCTA";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ProductCard } from "@/components/ProductCard";
@@ -542,6 +543,16 @@ const ShopView = () => {
       )}
 
       <SiteFooter />
+
+      {/* Mobile sticky CTA — call / WhatsApp / map / favorite */}
+      <MobileShopCTA
+        phone={shop.phone}
+        callUrl={pageData?.callUrl}
+        mapsUrl={shop.googleMapsUrl}
+        whatsappUrl={pageData?.whatsappUrl}
+        isFavorite={isFav}
+        onToggleFavorite={() => toggleFavorite(shop.id)}
+      />
     </div>
   );
 };
