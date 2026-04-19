@@ -152,7 +152,7 @@ const Index = () => {
         <section className="container mt-10 sm:mt-20 md:mt-24">
           <Link
             to="/iraq"
-            className="group relative isolate block overflow-hidden rounded-3xl border border-white/10 p-5 text-right shadow-soft transition-all hover:shadow-elegant sm:p-8 md:p-12"
+            className="group relative isolate block overflow-hidden rounded-2xl border border-white/10 p-5 text-right shadow-soft transition-all hover:shadow-elegant sm:rounded-3xl sm:p-8 md:p-12"
           >
             {/* Background image */}
             <div
