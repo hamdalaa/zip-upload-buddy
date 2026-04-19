@@ -101,22 +101,30 @@ export function classifyBlockerEvidence(
   store: StoreRecord,
   reason: string,
   observedUrl?: string,
+  hints?: { httpStatus?: number; category?: string },
 ): DomainBlockerEvidence {
   const normalizedReason = reason.toLowerCase();
-  const httpStatusMatch = normalizedReason.match(/:\s*(\d{3})/);
-  const httpStatus = httpStatusMatch ? Number(httpStatusMatch[1]) : undefined;
-  const blockerType =
-    /password/i.test(reason)
-      ? "password_wall"
-      : /login|please log in/i.test(reason)
-        ? "login_wall"
-        : /403|challenge|cloudflare/i.test(reason)
-          ? "challenge"
-          : /429|rate/i.test(reason)
-            ? "rate_limited"
-            : /404|500|503|timeout|fetch failed/i.test(reason)
-              ? "dead_site"
-              : "network_failure";
+  const explicitStatus = hints?.httpStatus;
+  const httpStatusMatch = normalizedReason.match(/(?:http\s*|status[\s:]+|:\s*)(\d{3})/i);
+  const httpStatus = explicitStatus ?? (httpStatusMatch ? Number(httpStatusMatch[1]) : undefined);
+
+  // Prefer the structured category produced by CatalogHttpError when available.
+  const categoryToBlocker: Record<string, DomainBlockerEvidence["blockerType"]> = {
+    password_wall: "password_wall",
+    login_wall: "login_wall",
+    challenge: "challenge",
+    rate_limited: "rate_limited",
+    not_found: "dead_site",
+    dns_failure: "dead_site",
+    timeout: "network_failure",
+    network_failure: "network_failure",
+    server_error: "network_failure",
+    client_error: "network_failure",
+  };
+
+  const blockerType: DomainBlockerEvidence["blockerType"] =
+    (hints?.category && categoryToBlocker[hints.category]) ??
+    inferBlockerFromReason(normalizedReason, httpStatus);
 
   return {
     id: createId("blk"),
@@ -126,9 +134,42 @@ export function classifyBlockerEvidence(
     httpStatus,
     observedUrl,
     observedAt: nowIso(),
-    retryAfterHours: blockerType === "rate_limited" ? 12 : blockerType === "challenge" ? 24 : 72,
-    details: {},
+    retryAfterHours:
+      blockerType === "rate_limited"
+        ? 6
+        : blockerType === "challenge" || blockerType === "login_wall" || blockerType === "password_wall"
+          ? 24
+          : blockerType === "dead_site"
+            ? 168 // weekly retry on dead sites
+            : 12,
+    details: hints?.category ? { category: hints.category } : {},
   };
+}
+
+function inferBlockerFromReason(
+  normalizedReason: string,
+  httpStatus?: number,
+): DomainBlockerEvidence["blockerType"] {
+  if (httpStatus === 401 || /please log in|login required/i.test(normalizedReason)) return "login_wall";
+  if (httpStatus === 402 || /password/i.test(normalizedReason)) return "password_wall";
+  if (httpStatus === 403 || /challenge|cloudflare|captcha|just a moment|bot detection/i.test(normalizedReason)) {
+    return "challenge";
+  }
+  if (httpStatus === 429 || /rate[\s-]*limit/i.test(normalizedReason)) return "rate_limited";
+  if (
+    httpStatus === 404 ||
+    httpStatus === 410 ||
+    /dns|enotfound|getaddrinfo|domain (not|no longer)/i.test(normalizedReason)
+  ) {
+    return "dead_site";
+  }
+  if (
+    (httpStatus !== undefined && httpStatus >= 500) ||
+    /timeout|fetch failed|aborted|econnreset|econnrefused/i.test(normalizedReason)
+  ) {
+    return "network_failure";
+  }
+  return "network_failure";
 }
 
 function safeRootDomain(url: string): string | undefined {
