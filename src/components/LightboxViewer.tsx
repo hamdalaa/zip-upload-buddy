@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPointerEvent, type WheelEvent as ReactWheelEvent } from "react";
-import { Camera, ChevronLeft, ChevronRight, Download, Share2, X, ZoomIn, ZoomOut } from "lucide-react";
+import { ChevronLeft, ChevronRight, Download, Share2, X, ZoomIn, ZoomOut } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { optimizeImageUrl } from "@/lib/imageUrl";
 import { cn } from "@/lib/utils";
@@ -26,8 +26,10 @@ export function LightboxViewer({ images, index, onClose, onIndexChange, title }:
   const pinchBaseRef = useRef<{ distance: number; scale: number } | null>(null);
 
   const total = images.length;
-  const isOpen = index !== null;
-  const current = index !== null ? images[index] : null;
+  // Clamp index defensively to avoid showing wrong "9/7"-like counters.
+  const safeIndex = index !== null && total > 0 ? Math.min(Math.max(index, 0), total - 1) : null;
+  const isOpen = safeIndex !== null;
+  const current = safeIndex !== null ? images[safeIndex] : null;
 
   const resetTransform = useCallback(() => {
     setScale(1);
@@ -37,17 +39,17 @@ export function LightboxViewer({ images, index, onClose, onIndexChange, title }:
   // Reset on image change / open
   useEffect(() => {
     resetTransform();
-  }, [index, resetTransform]);
+  }, [safeIndex, resetTransform]);
 
   const goNext = useCallback(() => {
-    if (total < 2 || index === null) return;
-    onIndexChange((index + 1) % total);
-  }, [index, onIndexChange, total]);
+    if (total < 2 || safeIndex === null) return;
+    onIndexChange((safeIndex + 1) % total);
+  }, [safeIndex, onIndexChange, total]);
 
   const goPrev = useCallback(() => {
-    if (total < 2 || index === null) return;
-    onIndexChange((index - 1 + total) % total);
-  }, [index, onIndexChange, total]);
+    if (total < 2 || safeIndex === null) return;
+    onIndexChange((safeIndex - 1 + total) % total);
+  }, [safeIndex, onIndexChange, total]);
 
   // Keyboard
   useEffect(() => {
@@ -176,7 +178,7 @@ export function LightboxViewer({ images, index, onClose, onIndexChange, title }:
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `${title.replace(/[^\w\u0600-\u06FF]+/g, "-")}-${(index ?? 0) + 1}.jpg`;
+      a.download = `${title.replace(/[^\w\u0600-\u06FF]+/g, "-")}-${(safeIndex ?? 0) + 1}.jpg`;
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -208,13 +210,13 @@ export function LightboxViewer({ images, index, onClose, onIndexChange, title }:
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="h-[100dvh] w-screen max-w-none gap-0 border-0 bg-background/40 p-0 shadow-none backdrop-blur-2xl [&>button]:hidden sm:rounded-none">
+      <DialogContent className="h-[100dvh] w-screen max-w-none gap-0 border-0 bg-black p-0 shadow-none [&>button]:hidden sm:rounded-none">
         <DialogTitle className="sr-only">معرض صور {title}</DialogTitle>
-        {current && index !== null && (
-          <div className="relative flex h-full w-full flex-col text-foreground">
-            {/* Image stage — full bleed */}
+        {current && safeIndex !== null && (
+          <div className="relative flex h-full w-full flex-col text-white">
+            {/* Image stage — full bleed, generous space, no padding clipping on mobile */}
             <div
-              className="absolute inset-0 z-0 flex touch-none select-none items-center justify-center overflow-hidden p-2 sm:p-12"
+              className="absolute inset-0 z-0 flex touch-none select-none items-center justify-center overflow-hidden"
               onWheel={handleWheel}
               onPointerDown={handlePointerDown}
               onPointerMove={handlePointerMove}
@@ -223,52 +225,53 @@ export function LightboxViewer({ images, index, onClose, onIndexChange, title }:
               style={{ cursor: scale > 1 ? (dragRef.current ? "grabbing" : "grab") : "zoom-in" }}
             >
               <img
-                key={index}
+                key={safeIndex}
                 src={optimizeImageUrl(current, { width: 1600, height: 1200 }) ?? current}
-                alt={`${title} - صورة ${index + 1}`}
+                alt={`${title} - صورة ${safeIndex + 1}`}
                 onClick={(e) => {
                   if (!dragRef.current) toggleZoom();
                   e.stopPropagation();
                 }}
                 onDragStart={(e) => e.preventDefault()}
-                className="max-h-full max-w-full object-contain shadow-2xl animate-in fade-in duration-300"
+                className="h-full w-full object-contain animate-in fade-in duration-300"
                 style={{
                   transform: `translate3d(${translate.x}px, ${translate.y}px, 0) scale(${scale})`,
                   transition: dragRef.current || pinchBaseRef.current ? "none" : "transform 0.2s cubic-bezier(0.22, 1, 0.36, 1)",
+                  padding: "max(env(safe-area-inset-top), 4.5rem) 0.5rem max(env(safe-area-inset-bottom), 8.5rem)",
                 }}
                 referrerPolicy="no-referrer"
                 draggable={false}
               />
             </div>
 
-            {/* Top: counter + close — floating pills */}
-            <header className="pointer-events-none relative z-20 flex items-start justify-between px-4 py-5 sm:px-6 sm:py-6">
-              <div className="pointer-events-auto inline-flex items-center gap-3 rounded-full border border-border/40 bg-background/60 px-4 py-2 backdrop-blur-md">
-                <span className="font-numeric text-xs font-semibold tabular-nums">{index + 1}</span>
-                <span className="h-px w-3 bg-muted-foreground/40" />
-                <span className="font-numeric text-xs tabular-nums text-muted-foreground">{total}</span>
+            {/* Top: counter + close — clean dark pills with safe-area */}
+            <header
+              className="pointer-events-none relative z-20 flex items-start justify-between px-3 py-3 sm:px-6 sm:py-5"
+              style={{ paddingTop: "max(env(safe-area-inset-top), 0.75rem)" }}
+            >
+              <div className="pointer-events-auto inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 backdrop-blur-md">
+                <span className="font-numeric text-xs font-semibold tabular-nums">{safeIndex + 1}</span>
+                <span className="text-xs text-white/50">/</span>
+                <span className="font-numeric text-xs tabular-nums text-white/70">{total}</span>
               </div>
 
               <button
                 type="button"
                 onClick={onClose}
-                className="pointer-events-auto group inline-flex items-center gap-2.5 rounded-full border border-border/40 bg-background/60 py-1.5 pe-4 ps-1.5 backdrop-blur-md transition-colors hover:bg-background/80"
+                className="pointer-events-auto inline-flex size-9 items-center justify-center rounded-full bg-white/10 backdrop-blur-md transition-colors hover:bg-white/20"
                 aria-label="إغلاق"
               >
-                <span className="flex size-7 items-center justify-center rounded-full bg-muted/50 transition-transform duration-300 group-hover:rotate-90">
-                  <X className="h-3.5 w-3.5" />
-                </span>
-                <span className="text-xs font-medium text-muted-foreground group-hover:text-foreground">إغلاق</span>
+                <X className="h-4 w-4" />
               </button>
             </header>
 
-            {/* Side nav */}
+            {/* Side nav — desktop only (mobile uses swipe) */}
             {total > 1 && (
-              <div className="pointer-events-none absolute inset-y-0 inset-x-0 z-10 flex items-center justify-between px-3 sm:px-6">
+              <div className="pointer-events-none absolute inset-y-0 inset-x-0 z-10 hidden items-center justify-between px-4 sm:flex sm:px-6">
                 <button
                   type="button"
                   onClick={goPrev}
-                  className="pointer-events-auto inline-flex size-11 items-center justify-center rounded-full border border-border/40 bg-background/60 text-muted-foreground backdrop-blur-md transition-all hover:bg-background/80 hover:text-foreground hover:scale-105"
+                  className="pointer-events-auto inline-flex size-11 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md transition-all hover:bg-white/20 hover:scale-105"
                   aria-label="السابق"
                 >
                   <ChevronRight className="h-5 w-5" />
@@ -276,7 +279,7 @@ export function LightboxViewer({ images, index, onClose, onIndexChange, title }:
                 <button
                   type="button"
                   onClick={goNext}
-                  className="pointer-events-auto inline-flex size-11 items-center justify-center rounded-full border border-border/40 bg-background/60 text-muted-foreground backdrop-blur-md transition-all hover:bg-background/80 hover:text-foreground hover:scale-105"
+                  className="pointer-events-auto inline-flex size-11 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md transition-all hover:bg-white/20 hover:scale-105"
                   aria-label="التالي"
                 >
                   <ChevronLeft className="h-5 w-5" />
@@ -284,25 +287,28 @@ export function LightboxViewer({ images, index, onClose, onIndexChange, title }:
               </div>
             )}
 
-            {/* Bottom: thumbnails + tools */}
-            <footer className="pointer-events-none relative z-20 mt-auto flex flex-col gap-4 px-3 pb-5 pt-20 sm:px-6 sm:pb-6">
+            {/* Bottom: thumbnails + tools, clean dark glass */}
+            <footer
+              className="pointer-events-none relative z-20 mt-auto flex flex-col gap-3 px-3 pt-6 sm:px-6 sm:pt-10"
+              style={{ paddingBottom: "max(env(safe-area-inset-bottom), 0.75rem)" }}
+            >
               {total > 1 && (
-                <div className="pointer-events-auto flex items-center justify-center gap-1.5 overflow-x-auto">
+                <div className="pointer-events-auto -mx-3 flex items-center gap-2 overflow-x-auto px-3 pb-1 scrollbar-hide sm:mx-0 sm:justify-center sm:px-0">
                   {images.map((image, i) => (
                     <button
                       key={`${image}-thumb-${i}`}
                       type="button"
                       onClick={() => onIndexChange(i)}
                       className={cn(
-                        "relative size-10 shrink-0 overflow-hidden rounded-md transition-all duration-300 sm:size-12",
-                        i === index
-                          ? "opacity-100 ring-1 ring-foreground/40 ring-offset-4 ring-offset-background/60"
-                          : "opacity-30 hover:opacity-90",
+                        "relative size-14 shrink-0 overflow-hidden rounded-lg transition-all duration-200 sm:size-12",
+                        i === safeIndex
+                          ? "opacity-100 ring-2 ring-white"
+                          : "opacity-50 hover:opacity-100",
                       )}
                       aria-label={`الصورة ${i + 1}`}
                     >
                       <img
-                        src={optimizeImageUrl(image, { width: 160, height: 120 }) ?? image}
+                        src={optimizeImageUrl(image, { width: 160, height: 160 }) ?? image}
                         alt=""
                         className="h-full w-full object-cover"
                         referrerPolicy="no-referrer"
@@ -312,25 +318,25 @@ export function LightboxViewer({ images, index, onClose, onIndexChange, title }:
                 </div>
               )}
 
-              <div className="pointer-events-auto flex flex-row items-center justify-between gap-3">
+              <div className="pointer-events-auto flex items-center justify-between gap-3">
                 {/* Zoom */}
-                <div className="inline-flex items-center gap-3 rounded-full border border-border/40 bg-background/60 px-3 py-1.5 backdrop-blur-md">
+                <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-2.5 py-1.5 backdrop-blur-md">
                   <button
                     type="button"
                     onClick={zoomOut}
                     disabled={scale <= MIN_SCALE}
                     aria-label="تصغير"
-                    className="text-muted-foreground transition-colors hover:text-foreground disabled:opacity-30"
+                    className="text-white/80 transition-colors hover:text-white disabled:opacity-30"
                   >
                     <ZoomOut className="h-4 w-4" />
                   </button>
-                  <span className="font-numeric w-10 text-center text-xs tabular-nums">{Math.round(scale * 100)}%</span>
+                  <span className="font-numeric w-10 text-center text-[11px] tabular-nums">{Math.round(scale * 100)}%</span>
                   <button
                     type="button"
                     onClick={zoomIn}
                     disabled={scale >= MAX_SCALE}
                     aria-label="تكبير"
-                    className="text-muted-foreground transition-colors hover:text-foreground disabled:opacity-30"
+                    className="text-white/80 transition-colors hover:text-white disabled:opacity-30"
                   >
                     <ZoomIn className="h-4 w-4" />
                   </button>
@@ -341,15 +347,16 @@ export function LightboxViewer({ images, index, onClose, onIndexChange, title }:
                   <button
                     type="button"
                     onClick={handleShare}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-border/40 bg-background/60 px-3.5 py-2 text-xs font-medium text-foreground backdrop-blur-md transition-colors hover:bg-background/80"
+                    className="inline-flex size-9 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md transition-colors hover:bg-white/20 sm:w-auto sm:gap-1.5 sm:px-3.5"
+                    aria-label="مشاركة"
                   >
-                    <Share2 className="h-3.5 w-3.5" />
-                    <span className="hidden sm:inline">مشاركة</span>
+                    <Share2 className="h-4 w-4" />
+                    <span className="hidden text-xs font-medium sm:inline">مشاركة</span>
                   </button>
                   <button
                     type="button"
                     onClick={handleDownload}
-                    className="inline-flex items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-xs font-semibold text-background transition-colors hover:bg-foreground/90"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-xs font-semibold text-black transition-colors hover:bg-white/90"
                   >
                     <Download className="h-3.5 w-3.5" />
                     تحميل
