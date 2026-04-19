@@ -132,12 +132,12 @@ export function HeroBanner() {
                 loading="lazy"
                 width={800}
                 height={512}
-                className="absolute inset-0 -z-10 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
-              <div className={`absolute inset-0 -z-10 bg-gradient-to-t ${entry.accent} via-foreground/40 to-foreground/85`} />
-              <div className="absolute inset-0 -z-10 bg-gradient-to-tr from-foreground/70 via-transparent to-transparent" />
+              <div className={`pointer-events-none absolute inset-0 bg-gradient-to-t ${entry.accent} via-foreground/40 to-foreground/85`} />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-foreground/70 via-transparent to-transparent" />
 
-              <div className="relative flex w-full items-end justify-between gap-3 p-3.5 text-right text-white">
+              <div className="relative z-10 flex w-full items-end justify-between gap-3 p-3.5 text-right text-white">
                 <div className="min-w-0">
                   <div className="font-display text-base font-semibold leading-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)]">
                     {entry.title}
