@@ -33,7 +33,7 @@ export function CompareBar() {
   return (
     <>
       {/* Sticky bottom bar — drawer-slide animation + glass */}
-      <div className="drawer-slide fixed bottom-0 inset-x-0 z-40 border-t border-border/80 bg-card/95 backdrop-blur-xl shadow-[0_-12px_40px_-12px_hsl(220_30%_20%/0.18)]">
+      <div className="drawer-slide fixed inset-x-0 z-40 border-t border-border/80 bg-card/95 backdrop-blur-xl shadow-[0_-12px_40px_-12px_hsl(220_30%_20%/0.18)] bottom-[88px] lg:bottom-0">
         <div className="container flex items-center gap-3 py-2.5">
           <div className="inline-flex items-center gap-2 text-sm font-bold">
             <span className="relative flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-primary to-violet text-primary-foreground shadow-soft-md">
