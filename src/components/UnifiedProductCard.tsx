@@ -34,7 +34,7 @@ export function UnifiedProductCard({ product, topOffers }: Props) {
   return (
     <Link
       to={`/product/${product.id}`}
-      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-soft-xl"
+      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition-[border-color,box-shadow] duration-200 hover:border-primary/40 hover:shadow-soft-xl"
     >
       {/* ===== Image area ===== */}
       <div className="relative aspect-[4/3] overflow-hidden bg-surface">
