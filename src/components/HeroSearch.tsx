@@ -15,8 +15,6 @@ interface Props {
   variant?: "hero" | "compact";
 }
 
-type Mode = "unified" | "shops";
-
 export function HeroSearch({
   initialQ = "",
   initialArea = "all",
@@ -24,7 +22,6 @@ export function HeroSearch({
 }: Props) {
   const nav = useNavigate();
   const { shops } = useDataStore();
-  const [mode, setMode] = useState<Mode>("unified");
   const [q, setQ] = useState(initialQ);
   const [area, setArea] = useState<Area | "all">(initialArea);
   const [category, setCategory] = useState<Category | "all">(initialCategory);
