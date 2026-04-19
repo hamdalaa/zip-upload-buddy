@@ -67,18 +67,7 @@ export function HeroBanner() {
             </div>
 
             {/* Quick queries */}
-            <div className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-2 text-xs text-muted-foreground">
-              <span className="hidden font-semibold uppercase tracking-[0.16em] text-foreground/55 sm:inline">الأكثر بحثاً</span>
-              {SUGGESTED_QUERIES.slice(0, 4).map((query) => (
-                <Link
-                  key={query}
-                  to={`/results?q=${encodeURIComponent(query)}`}
-                  className="rounded-full border border-border bg-card/80 backdrop-blur px-3 py-1 font-medium text-foreground/75 hover:border-primary/40 hover:bg-primary-soft hover:text-primary transition-colors"
-                >
-                  {query}
-                </Link>
-              ))}
-            </div>
+
 
             {/* ⌘K hint (desktop) */}
             <div className="mt-4 hidden items-center gap-2 text-[11px] text-muted-foreground sm:flex">
