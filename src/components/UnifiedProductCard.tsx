@@ -47,29 +47,30 @@ export function UnifiedProductCard({ product, topOffers }: Props) {
 
         {/* Top-left: discount badge */}
         {savings > 5 && (
-          <div className="absolute start-3 top-3 flex items-center gap-1 rounded-full bg-accent-rose px-2.5 py-1 text-[11px] font-bold text-white shadow-soft-md">
-            <TrendingDown className="h-3 w-3" />
-            وفّر حتى {savings}%
+          <div className="absolute start-2 top-2 flex items-center gap-0.5 rounded-full bg-accent-rose px-2 py-0.5 text-[10px] font-bold text-white shadow-soft-md sm:start-3 sm:top-3 sm:gap-1 sm:px-2.5 sm:py-1 sm:text-[11px]">
+            <TrendingDown className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
+            <span>-{savings}%</span>
           </div>
         )}
 
         {/* Top-right: offer count chip */}
-        <div className="absolute end-3 top-3 flex items-center gap-1 rounded-full bg-card/95 px-2 py-1 text-[11px] font-semibold text-foreground shadow-soft-sm backdrop-blur-sm">
-          <Store className="h-3 w-3 text-primary" />
-          {product.offerCount} محل
+        <div className="absolute end-2 top-2 flex items-center gap-0.5 rounded-full bg-card/95 px-1.5 py-0.5 text-[10px] font-semibold text-foreground shadow-soft-sm backdrop-blur-sm sm:end-3 sm:top-3 sm:gap-1 sm:px-2 sm:py-1 sm:text-[11px]">
+          <Store className="h-2.5 w-2.5 text-primary sm:h-3 sm:w-3" />
+          {product.offerCount}
         </div>
 
         {/* Bottom-left: stock pill */}
-        <div className="absolute bottom-3 start-3">
+        <div className="absolute bottom-2 start-2 sm:bottom-3 sm:start-3">
           {product.inStockCount > 0 ? (
-            <div className="flex items-center gap-1.5 rounded-full bg-card/95 px-2.5 py-1 text-[11px] font-medium text-accent-emerald shadow-soft-sm backdrop-blur-sm">
-              <CircleDot className="h-3 w-3 fill-accent-emerald text-accent-emerald" />
-              متوفر بـ {product.inStockCount} محل
+            <div className="flex items-center gap-1 rounded-full bg-card/95 px-1.5 py-0.5 text-[10px] font-medium text-accent-emerald shadow-soft-sm backdrop-blur-sm sm:gap-1.5 sm:px-2.5 sm:py-1 sm:text-[11px]">
+              <CircleDot className="h-2.5 w-2.5 fill-accent-emerald text-accent-emerald sm:h-3 sm:w-3" />
+              <span className="sm:hidden">{product.inStockCount} متوفر</span>
+              <span className="hidden sm:inline">متوفر بـ {product.inStockCount} محل</span>
             </div>
           ) : (
-            <div className="flex items-center gap-1.5 rounded-full bg-card/95 px-2.5 py-1 text-[11px] font-medium text-destructive shadow-soft-sm backdrop-blur-sm">
-              <CircleDot className="h-3 w-3 fill-destructive text-destructive" />
-              نفد من كل المحلات
+            <div className="flex items-center gap-1 rounded-full bg-card/95 px-1.5 py-0.5 text-[10px] font-medium text-destructive shadow-soft-sm backdrop-blur-sm sm:gap-1.5 sm:px-2.5 sm:py-1 sm:text-[11px]">
+              <CircleDot className="h-2.5 w-2.5 fill-destructive text-destructive sm:h-3 sm:w-3" />
+              نفد
             </div>
           )}
         </div>
