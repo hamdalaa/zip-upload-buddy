@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft, Sparkles } from "lucide-react";
 import { HeroSearch } from "@/components/HeroSearch";
-import { QuickFilterPills } from "@/components/QuickFilterPills";
+
 import { CountUp } from "@/components/CountUp";
 import { useDataStore } from "@/lib/dataStore";
 import { SUGGESTED_QUERIES } from "@/lib/search";
