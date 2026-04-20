@@ -154,6 +154,117 @@ export async function searchUnified(req: UnifiedSearchRequest): Promise<UnifiedS
   );
 }
 
+/**
+ * Local fallback for `searchUnified` — used when the backend `/public/search`
+ * endpoint is unreachable (e.g. preview without a running backend). Builds a
+ * `UnifiedSearchResponse` from in-memory `ProductIndex[]` already loaded by
+ * the data store (which itself falls back to mock data).
+ */
+export function searchUnifiedLocal(
+  allProducts: ProductIndex[],
+  req: UnifiedSearchRequest,
+): UnifiedSearchResponse {
+  const start = performance.now();
+  const q = (req.q ?? "").trim().toLowerCase();
+  let items = [...allProducts];
+
+  if (q) {
+    const terms = expandQuery(q);
+    items = items.filter((p) => {
+      const hay = [p.name, p.brand, p.category, p.shopName].filter(Boolean).join(" ").toLowerCase();
+      return terms.some((t) => hay.includes(t));
+    });
+  }
+  if (req.brands?.length) items = items.filter((p) => p.brand && req.brands!.includes(p.brand));
+  if (req.categories?.length) items = items.filter((p) => req.categories!.includes(p.category));
+  if (req.stores?.length) items = items.filter((p) => req.stores!.includes(p.shopId));
+  if (req.cities?.length) items = items.filter((p) => req.cities!.includes(p.area));
+  if (req.priceMin != null) items = items.filter((p) => (p.priceValue ?? 0) >= req.priceMin!);
+  if (req.priceMax != null) items = items.filter((p) => (p.priceValue ?? Infinity) <= req.priceMax!);
+  if (req.inStockOnly) items = items.filter((p) => p.inStock !== false);
+  if (req.onSaleOnly) items = items.filter((p) => !!p.originalPriceValue && !!p.priceValue && p.originalPriceValue > p.priceValue);
+
+  // Group by name+brand → UnifiedProduct (one card per canonical product).
+  const groups = new Map<string, ProductIndex[]>();
+  for (const p of items) {
+    const key = `${(p.brand ?? "").toLowerCase()}::${p.name.toLowerCase()}`;
+    const arr = groups.get(key) ?? [];
+    arr.push(p);
+    groups.set(key, arr);
+  }
+
+  const products: UnifiedProduct[] = [...groups.values()].map((group) => {
+    const prices = group.map((g) => g.priceValue).filter((v): v is number => typeof v === "number");
+    const ratings = group.map((g) => g.rating).filter((v): v is number => typeof v === "number");
+    const reviews = group.reduce((sum, g) => sum + (g.reviewCount ?? 0), 0);
+    const head = group[0];
+    return {
+      id: head.id,
+      title: head.name,
+      brand: head.brand,
+      category: head.category,
+      images: group.map((g) => g.imageUrl).filter((v): v is string => !!v),
+      rating: ratings.length ? ratings.reduce((a, b) => a + b, 0) / ratings.length : undefined,
+      reviewCount: reviews || undefined,
+      lowestPrice: prices.length ? Math.min(...prices) : undefined,
+      highestPrice: prices.length ? Math.max(...prices) : undefined,
+      offerCount: group.length,
+      inStockCount: group.filter((g) => g.inStock !== false).length,
+      bestOfferId: head.id,
+    };
+  });
+
+  // Sorting
+  switch (req.sort) {
+    case "price_asc": products.sort((a, b) => (a.lowestPrice ?? Infinity) - (b.lowestPrice ?? Infinity)); break;
+    case "price_desc": products.sort((a, b) => (b.highestPrice ?? -Infinity) - (a.highestPrice ?? -Infinity)); break;
+    case "rating_desc": products.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0)); break;
+    case "offers_desc": products.sort((a, b) => b.offerCount - a.offerCount); break;
+    case "freshness_desc":
+    case "relevance":
+    default:
+      products.sort((a, b) => b.offerCount - a.offerCount);
+      break;
+  }
+
+  // Facets
+  const brandMap = new Map<string, number>();
+  const catMap = new Map<string, number>();
+  const storeMap = new Map<string, number>();
+  const cityMap = new Map<string, number>();
+  let priceMin = Infinity;
+  let priceMax = 0;
+  for (const p of items) {
+    if (p.brand) brandMap.set(p.brand, (brandMap.get(p.brand) ?? 0) + 1);
+    if (p.category) catMap.set(p.category, (catMap.get(p.category) ?? 0) + 1);
+    if (p.shopName) storeMap.set(p.shopName, (storeMap.get(p.shopName) ?? 0) + 1);
+    if (p.area) cityMap.set(p.area, (cityMap.get(p.area) ?? 0) + 1);
+    if (typeof p.priceValue === "number") {
+      if (p.priceValue < priceMin) priceMin = p.priceValue;
+      if (p.priceValue > priceMax) priceMax = p.priceValue;
+    }
+  }
+  const toFacets = (m: Map<string, number>): UnifiedSearchFacet[] =>
+    [...m.entries()].map(([k, c]) => ({ key: k, label: k, count: c })).sort((a, b) => b.count - a.count);
+
+  return {
+    query: req.q ?? "",
+    totalProducts: products.length,
+    totalOffers: items.length,
+    storesCovered: storeMap.size,
+    storesScanned: storeMap.size,
+    durationMs: Math.round(performance.now() - start),
+    products,
+    facets: {
+      brands: toFacets(brandMap),
+      categories: toFacets(catMap),
+      stores: toFacets(storeMap),
+      cities: toFacets(cityMap),
+      priceRange: { min: priceMin === Infinity ? 0 : priceMin, max: priceMax },
+    },
+  };
+}
+
 export async function getProduct(productId: string): Promise<UnifiedProduct | null> {
   try {
     return await fetchJson<UnifiedProduct>(`/public/products/${encodeURIComponent(productId)}`);
