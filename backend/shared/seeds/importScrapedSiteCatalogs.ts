@@ -315,20 +315,7 @@ function buildOffers(products: CatalogProductDraft[], timestamp: string): OfferD
 }
 
 async function loadLatestScrapedSitePayloads(outputRoot: string): Promise<ScrapedSitePayload[]> {
-  let dirEntries: Array<{ name: string; isDirectory(): boolean }> = [];
-  try {
-    dirEntries = await fs.readdir(outputRoot, { withFileTypes: true });
-  } catch {
-    return [];
-  }
-
-  const payloads: ScrapedSitePayload[] = [];
-  for (const entry of dirEntries) {
-    if (!entry.isDirectory()) continue;
-    const dirPath = path.join(outputRoot, entry.name);
-    const payload = await loadScrapedSitePayload(dirPath);
-    if (payload) payloads.push(payload);
-  }
+  const payloads = await collectScrapedSitePayloads(outputRoot);
 
   const bySite = new Map<string, ScrapedSitePayload>();
   for (const payload of payloads) {
@@ -347,6 +334,38 @@ async function loadLatestScrapedSitePayloads(outputRoot: string): Promise<Scrape
   }
 
   return [...bySite.values()];
+}
+
+async function collectScrapedSitePayloads(rootDir: string): Promise<ScrapedSitePayload[]> {
+  const payloads: ScrapedSitePayload[] = [];
+  const queue = [rootDir];
+  const visited = new Set<string>();
+
+  while (queue.length > 0) {
+    const currentDir = queue.shift();
+    if (!currentDir || visited.has(currentDir)) continue;
+    visited.add(currentDir);
+
+    const payload = await loadScrapedSitePayload(currentDir);
+    if (payload) {
+      payloads.push(payload);
+      continue;
+    }
+
+    let dirEntries: Array<{ name: string; isDirectory(): boolean }> = [];
+    try {
+      dirEntries = await fs.readdir(currentDir, { withFileTypes: true });
+    } catch {
+      continue;
+    }
+
+    for (const entry of dirEntries) {
+      if (!entry.isDirectory()) continue;
+      queue.push(path.join(currentDir, entry.name));
+    }
+  }
+
+  return payloads;
 }
 
 async function loadScrapedSitePayload(dirPath: string): Promise<ScrapedSitePayload | null> {

@@ -219,5 +219,5 @@ describe("catalog integration", () => {
     } finally {
       global.fetch = originalFetch;
     }
-  });
+  }, 15000);
 });

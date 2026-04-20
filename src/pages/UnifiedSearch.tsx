@@ -23,7 +23,6 @@ import {
   Globe2,
   Package,
   Search,
-  ShieldCheck,
   Sparkles,
   Store,
   Trash2,
@@ -48,7 +47,6 @@ import { getPublicProductCount, getPublicStoreCount } from "@/lib/catalogCounts"
 import { cn } from "@/lib/utils";
 import {
   buildAutocomplete,
-  formatIQD,
   searchShops,
   searchUnified,
   type AutocompleteSuggestion,
@@ -96,60 +94,6 @@ function pushRecent(q: string) {
   if (!q.trim()) return;
   const cur = getRecent().filter((x) => x !== q);
   saveRecent([q, ...cur]);
-}
-
-function formatArabicCount(value: number | null | undefined) {
-  if (value == null) return "—";
-  return value.toLocaleString("ar-IQ");
-}
-
-function formatDurationLabel(value: number | null | undefined) {
-  if (value == null) return "—";
-  if (value < 1000) return `${Math.max(1, Math.round(value)).toLocaleString("ar-IQ")} ms`;
-  return `${(Math.round(value / 100) / 10).toLocaleString("ar-IQ")} ث`;
-}
-
-function SearchMetricCard({
-  icon,
-  label,
-  value,
-  note,
-  accent = false,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: string;
-  note: string;
-  accent?: boolean;
-}) {
-  return (
-    <div
-      className={cn(
-        "rounded-[22px] border px-3 py-3 shadow-soft transition-transform duration-200",
-        accent
-          ? "border-primary/20 bg-primary/10 text-primary shadow-glow"
-          : "border-border/70 bg-background/75 text-foreground",
-      )}
-    >
-      <div className="flex items-center justify-between gap-3">
-        <span
-          className={cn(
-            "grid h-9 w-9 place-items-center rounded-2xl",
-            accent ? "bg-primary text-primary-foreground" : "bg-surface text-primary",
-          )}
-        >
-          {icon}
-        </span>
-        <div className="min-w-0 text-right">
-          <div className="text-[11px] font-semibold text-muted-foreground">{label}</div>
-          <div className={cn("mt-1 font-numeric text-lg font-semibold leading-none", accent && "text-primary")}>
-            {value}
-          </div>
-        </div>
-      </div>
-      <div className="mt-2 text-[11px] text-muted-foreground">{note}</div>
-    </div>
-  );
 }
 
 // ---------- Component ----------
@@ -295,18 +239,6 @@ export default function UnifiedSearch() {
     filters.categories?.forEach((c) => chips.push({ label: c, clear: () => setFilters((f) => ({ ...f, categories: f.categories?.filter((x) => x !== c) })) }));
     filters.stores?.forEach((s) => chips.push({ label: s, clear: () => setFilters((f) => ({ ...f, stores: f.stores?.filter((x) => x !== s) })) }));
     filters.cities?.forEach((c) => chips.push({ label: c, clear: () => setFilters((f) => ({ ...f, cities: f.cities?.filter((x) => x !== c) })) }));
-    if (filters.priceMin != null || filters.priceMax != null) {
-      const label =
-        filters.priceMin != null && filters.priceMax != null
-          ? `السعر ${formatIQD(filters.priceMin)} - ${formatIQD(filters.priceMax)}`
-          : filters.priceMin != null
-            ? `السعر من ${formatIQD(filters.priceMin)}`
-            : `السعر إلى ${formatIQD(filters.priceMax ?? 0)}`;
-      chips.push({
-        label,
-        clear: () => setFilters((f) => ({ ...f, priceMin: undefined, priceMax: undefined })),
-      });
-    }
     if (filters.inStockOnly) chips.push({ label: "متوفر", clear: () => setFilters((f) => ({ ...f, inStockOnly: undefined })) });
     if (filters.onSaleOnly) chips.push({ label: "تخفيض", clear: () => setFilters((f) => ({ ...f, onSaleOnly: undefined })) });
     if (filters.verifiedOnly) chips.push({ label: "موثّق", clear: () => setFilters((f) => ({ ...f, verifiedOnly: undefined })) });
@@ -343,70 +275,6 @@ export default function UnifiedSearch() {
   const shopCount = hasShopFilters
     ? shopResult.totalShops
     : getPublicStoreCount(summary.totalStores, publicShopCount);
-  const publicProductCount = getPublicProductCount(summary.totalProducts, products.length);
-  const marketHeadline = activeQuery.trim()
-    ? `لقطة السوق لعبارة “${activeQuery}”`
-    : "شوف السوق كله قبل ما تختار";
-  const marketSummary = activeQuery.trim()
-    ? loading
-      ? "نرتب النتائج ونقارن الأسعار بين المحلات الآن."
-      : `لقينا ${formatArabicCount(data?.totalOffers ?? 0)} عرض من ${formatArabicCount(data?.storesCovered ?? 0)} محل حتى تشوف الأرخص والأوضح بسرعة.`
-    : "اكتب اسم المنتج أو البراند، واحصل على أقل سعر، حالة التوفر، وعدد المحلات في صفحة وحدة.";
-  const marketMetrics = activeQuery.trim()
-    ? [
-        {
-          icon: <Package className="h-4 w-4" />,
-          label: "نتائج مطابقة",
-          value: formatArabicCount(data?.totalProducts ?? 0),
-          note: "منتج بعد الترتيب الحالي",
-          accent: true,
-        },
-        {
-          icon: <Store className="h-4 w-4" />,
-          label: "محلات مغطاة",
-          value: formatArabicCount(data?.storesCovered ?? 0),
-          note: "مقارنة مباشرة بين المحلات",
-        },
-        {
-          icon: <Globe2 className="h-4 w-4" />,
-          label: "حجم العروض",
-          value: formatArabicCount(data?.totalOffers ?? 0),
-          note: "إجمالي العروض المفحوصة",
-        },
-        {
-          icon: <Clock className="h-4 w-4" />,
-          label: "زمن القراءة",
-          value: formatDurationLabel(data?.durationMs ?? 0),
-          note: "سرعة استجابة البحث",
-        },
-      ]
-    : [
-        {
-          icon: <Package className="h-4 w-4" />,
-          label: "منتج مفهرس",
-          value: formatArabicCount(publicProductCount),
-          note: "داخل الفهرس العام",
-          accent: true,
-        },
-        {
-          icon: <Store className="h-4 w-4" />,
-          label: "محل ظاهر",
-          value: formatArabicCount(getPublicStoreCount(summary.totalStores, publicShopCount)),
-          note: "متاجر عراقية قابلة للمقارنة",
-        },
-        {
-          icon: <ShieldCheck className="h-4 w-4" />,
-          label: "محلات مفهرسة",
-          value: formatArabicCount(summary.indexedStores),
-          note: "عندها بيانات منتجات فعلية",
-        },
-        {
-          icon: <Clock className="h-4 w-4" />,
-          label: "اختصار البحث",
-          value: "/",
-          note: "للتركيز السريع على الحقل",
-        },
-      ];
 
   // ---------- Render ----------
   return (
@@ -414,211 +282,136 @@ export default function UnifiedSearch() {
       <TopNav />
 
       {/* HERO + SEARCH BAR */}
-      <section className="relative overflow-hidden border-b border-border/70 bg-background">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_right,hsl(var(--primary)/0.16),transparent_34%),radial-gradient(circle_at_bottom_left,hsl(var(--primary)/0.08),transparent_36%)]" />
-        <div className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(255,255,255,0.72),rgba(250,251,252,0.96))]" />
-        <div className="container mx-auto px-4 py-8 sm:py-10 lg:py-14">
-          <div className="grid gap-6 lg:grid-cols-[minmax(0,1.2fr)_360px] lg:items-end">
-            <div className="max-w-4xl">
-              <Badge className="gap-1 border border-primary/15 bg-primary-soft/90 px-3 py-1 text-primary hover:bg-primary-soft/90">
-                <Sparkles className="h-3 w-3" />
-                صفحة مقارنة المنتجات
-              </Badge>
-              <h1 className="mt-4 max-w-3xl font-display text-3xl leading-[0.96] text-foreground sm:text-5xl">
-                شوف <span className="text-primary">السعر الحقيقي</span> قبل ما تروح على السوق.
-              </h1>
-              <p className="mt-4 max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base">
-                نرتب لك عروض المنتجات العراقية في شاشة وحده حتى تقارن السعر، التوفر، وعدد المحلات بدون لف طويل بين الصفحات.
-              </p>
+      <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-primary/5 via-background to-background">
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.08),transparent_60%)]" />
+        <div className="container mx-auto px-4 py-8 sm:py-10">
+          <div className="mx-auto max-w-3xl text-center">
+            <Badge className="mb-3 gap-1 bg-primary-soft text-primary hover:bg-primary-soft">
+              <Sparkles className="h-3 w-3" />
+              بحث موحّد ذكي
+            </Badge>
+            <h1 className="text-2xl font-extrabold tracking-tight text-foreground sm:text-4xl">
+              ابحث عن <span className="text-primary">منتج</span> أو <span className="text-primary">محل</span> بنقرة وحدة
+            </h1>
+            <p className="mt-2 text-sm text-muted-foreground sm:text-base">
+              نجمع لك العروض من جميع المتاجر العراقية ودليل المحلات في مكان واحد.
+            </p>
 
-              <form
-                onSubmit={(e) => { e.preventDefault(); commitSearch(query); }}
-                className="relative mt-6 max-w-3xl"
-              >
-                <div className="flex flex-col gap-2 rounded-[30px] border border-border/70 bg-card/90 p-2 shadow-soft-2xl backdrop-blur-xl sm:flex-row sm:items-center">
-                  <div className="flex min-w-0 flex-1 items-center gap-3 rounded-[22px] bg-background/75 px-4">
-                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary">
-                      <Search className="h-4 w-4" />
-                    </div>
-                    <input
-                      ref={inputRef}
-                      value={query}
-                      onChange={(e) => { setQuery(e.target.value); setAcOpen(true); setAcIndex(-1); }}
-                      onFocus={() => setAcOpen(true)}
-                      onBlur={() => setTimeout(() => setAcOpen(false), 150)}
-                      onKeyDown={onInputKeyDown}
-                      placeholder="iPhone 15، Galaxy S24، RTX 4060، اسم محل…"
-                      className="h-14 w-full bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground/75"
-                      autoComplete="off"
-                    />
-                    <div className="hidden shrink-0 rounded-full border border-border/70 bg-card px-2.5 py-1 text-[11px] font-semibold text-muted-foreground sm:inline-flex">
-                      /
-                    </div>
-                    {query && (
-                      <button
-                        type="button"
-                        onClick={clearQuery}
-                        aria-label="مسح"
-                        className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-surface hover:text-foreground"
-                      >
-                        <X className="h-4 w-4" />
-                      </button>
-                    )}
-                  </div>
-                  <Button type="submit" className="h-14 rounded-[22px] bg-gradient-primary px-7 text-primary-foreground shadow-glow">
-                    قارن الآن
-                    <ArrowLeft className="ms-2 h-4 w-4" />
-                  </Button>
-                </div>
-
-                {acOpen && (
-                  <SearchAutocomplete
-                    query={query}
-                    suggestions={suggestions}
-                    highlightedIndex={acIndex}
-                    onHover={setAcIndex}
-                    onSelect={handleAcSelect}
-                    onSubmitQuery={() => commitSearch(query)}
+            {/* Search bar with autocomplete */}
+            <form
+              onSubmit={(e) => { e.preventDefault(); commitSearch(query); }}
+              className="relative mx-auto mt-6 max-w-2xl"
+            >
+              <div className="flex items-center gap-2 rounded-2xl border border-border bg-card p-1.5 shadow-soft-xl transition-all focus-within:border-primary/50 focus-within:shadow-glow">
+                <div className="flex flex-1 items-center gap-2 rounded-xl bg-background/60 px-3">
+                  <Search className="h-4 w-4 text-muted-foreground" />
+                  <input
+                    ref={inputRef}
+                    value={query}
+                    onChange={(e) => { setQuery(e.target.value); setAcOpen(true); setAcIndex(-1); }}
+                    onFocus={() => setAcOpen(true)}
+                    onBlur={() => setTimeout(() => setAcOpen(false), 150)}
+                    onKeyDown={onInputKeyDown}
+                    placeholder="iPhone 15، PlayStation، اسم محل…  (اضغط / للتركيز)"
+                    className="h-12 w-full bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground/70"
+                    autoComplete="off"
                   />
-                )}
-              </form>
-
-              <div className="mt-5 flex flex-wrap gap-2">
-                <span className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-card/75 px-3 py-1.5 text-xs text-foreground">
-                  <Package className="h-3.5 w-3.5 text-primary" />
-                  قارن أقل سعر بين المحلات
-                </span>
-                <span className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-card/75 px-3 py-1.5 text-xs text-foreground">
-                  <Store className="h-3.5 w-3.5 text-primary" />
-                  شوف عدد المحلات المتوفرة قبل التواصل
-                </span>
-                <span className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-card/75 px-3 py-1.5 text-xs text-foreground">
-                  <Clock className="h-3.5 w-3.5 text-primary" />
-                  اختصار سريع: اضغط /
-                </span>
+                  {query && (
+                    <button
+                      type="button"
+                      onClick={clearQuery}
+                      aria-label="مسح"
+                      className="rounded-full p-1 text-muted-foreground hover:bg-surface"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  )}
+                </div>
+                <Button type="submit" className="h-12 rounded-xl bg-gradient-primary px-6 text-primary-foreground shadow-glow">
+                  ابحث
+                  <ArrowLeft className="ms-2 h-4 w-4" />
+                </Button>
               </div>
 
-              {!activeQuery && (
-                <div className="mt-6 rounded-[28px] border border-border/70 bg-card/75 p-4 shadow-soft-lg backdrop-blur-sm">
-                  {recent.length > 0 && (
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="flex items-center gap-1 text-xs font-medium text-muted-foreground">
-                        <Clock className="h-3 w-3" />
-                        أبحاثك الأخيرة
-                      </span>
-                      {recent.map((q) => (
-                        <span
-                          key={q}
-                          className="group/chip inline-flex items-center gap-1 rounded-full border border-border/70 bg-background/80 pe-1 ps-3 py-1 text-xs text-foreground transition-colors hover:border-primary/35"
-                        >
-                          <button
-                            type="button"
-                            onClick={() => commitSearch(q)}
-                            className="hover:text-primary"
-                          >
-                            {q}
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => removeRecent(q)}
-                            aria-label={`حذف ${q}`}
-                            className="grid h-4 w-4 place-items-center rounded-full text-muted-foreground opacity-0 transition-opacity hover:bg-surface group-hover/chip:opacity-100"
-                          >
-                            <X className="h-3 w-3" />
-                          </button>
-                        </span>
-                      ))}
-                      <button
-                        type="button"
-                        onClick={clearAllRecent}
-                        className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-[11px] text-muted-foreground hover:text-destructive"
-                      >
-                        <Trash2 className="h-3 w-3" />
-                        مسح الكل
-                      </button>
-                    </div>
-                  )}
-
-                  <div className={cn("flex flex-wrap items-center gap-2", recent.length > 0 && "mt-4 pt-4 border-t border-border/60")}>
-                    <span className="text-xs font-medium text-muted-foreground">عمليات بحث جاهزة:</span>
-                    {POPULAR_QUERIES.map((q, i) => (
-                      <button
-                        key={q}
-                        type="button"
-                        onClick={() => commitSearch(q)}
-                        className={cn(
-                          "rounded-full border border-border/70 bg-background/80 px-3 py-1.5 text-xs text-foreground transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/35 hover:text-primary",
-                          i >= 4 && "hidden md:inline-flex",
-                        )}
-                      >
-                        {q}
-                      </button>
-                    ))}
-                  </div>
-                </div>
+              {acOpen && (
+                <SearchAutocomplete
+                  query={query}
+                  suggestions={suggestions}
+                  highlightedIndex={acIndex}
+                  onHover={setAcIndex}
+                  onSelect={handleAcSelect}
+                  onSubmitQuery={() => commitSearch(query)}
+                />
               )}
-            </div>
+            </form>
 
-            <aside className="relative overflow-hidden rounded-[30px] border border-border/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.92),rgba(246,249,249,0.9))] p-5 shadow-soft-2xl backdrop-blur-xl">
-              <div className="pointer-events-none absolute -right-10 top-0 h-40 w-40 rounded-full bg-primary/12 blur-3xl" />
-              <div className="relative">
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <div className="text-[11px] font-semibold tracking-[0.16em] text-primary">لوحة السوق</div>
-                    <h2 className="mt-2 text-xl font-semibold text-foreground">{marketHeadline}</h2>
+            {/* Recent + Popular */}
+            {!activeQuery && (
+              <div className="mt-5 space-y-3">
+                {recent.length > 0 && (
+                  <div className="flex flex-wrap items-center justify-center gap-2">
+                    <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                      <Clock className="h-3 w-3" /> أبحاث سابقة:
+                    </span>
+                    {recent.map((q) => (
+                      <span
+                        key={q}
+                        className="group/chip inline-flex items-center gap-1 rounded-full border border-border bg-card pe-1 ps-3 py-1 text-xs text-foreground transition-colors hover:border-primary/40"
+                      >
+                        <button
+                          type="button"
+                          onClick={() => commitSearch(q)}
+                          className="hover:text-primary"
+                        >
+                          {q}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => removeRecent(q)}
+                          aria-label={`حذف ${q}`}
+                          className="grid h-4 w-4 place-items-center rounded-full text-muted-foreground opacity-0 transition-opacity hover:bg-surface group-hover/chip:opacity-100"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </span>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={clearAllRecent}
+                      className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-[11px] text-muted-foreground hover:text-destructive"
+                    >
+                      <Trash2 className="h-3 w-3" />
+                      مسح الكل
+                    </button>
                   </div>
-                  <span className="rounded-full border border-primary/15 bg-primary-soft px-2.5 py-1 text-[10px] font-bold text-primary">
-                    مباشر
-                  </span>
-                </div>
-                <p className="mt-3 max-w-sm text-sm leading-7 text-muted-foreground">
-                  {marketSummary}
-                </p>
+                )}
 
-                <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-                  {marketMetrics.map((metric) => (
-                    <SearchMetricCard
-                      key={metric.label}
-                      icon={metric.icon}
-                      label={metric.label}
-                      value={metric.value}
-                      note={metric.note}
-                      accent={metric.accent}
-                    />
+                <div className="flex flex-wrap items-center justify-center gap-2">
+                  <span className="text-xs text-muted-foreground">شائع:</span>
+                  {POPULAR_QUERIES.map((q, i) => (
+                    <button
+                      key={q}
+                      type="button"
+                      onClick={() => commitSearch(q)}
+                      className={cn(
+                        "rounded-full border border-border bg-card px-3 py-1 text-xs text-foreground transition-colors hover:border-primary/40 hover:text-primary",
+                        i >= 3 && "hidden sm:inline-flex",
+                      )}
+                    >
+                      {q}
+                    </button>
                   ))}
                 </div>
-
-                {activeChips.length > 0 && (
-                  <div className="mt-5 rounded-[22px] border border-border/70 bg-background/70 p-3">
-                    <div className="text-[11px] font-semibold text-muted-foreground">الفلاتر النشطة</div>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      {activeChips.slice(0, 4).map((chip) => (
-                        <span
-                          key={chip.label}
-                          className="rounded-full border border-primary/15 bg-primary/10 px-3 py-1 text-[11px] font-medium text-primary"
-                        >
-                          {chip.label}
-                        </span>
-                      ))}
-                      {activeChips.length > 4 && (
-                        <span className="rounded-full border border-border/70 bg-card px-3 py-1 text-[11px] text-muted-foreground">
-                          +{formatArabicCount(activeChips.length - 4)}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                )}
               </div>
-            </aside>
+            )}
           </div>
         </div>
       </section>
 
       {/* TABS BAR */}
-      <div className="sticky top-[56px] z-30 border-b border-border/70 bg-background/88 backdrop-blur-xl">
-        <div className="container mx-auto px-4 py-3">
-          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <div className="flex flex-wrap gap-2">
+      <div className="sticky top-[56px] z-30 border-b border-border bg-background/95 backdrop-blur-md">
+        <div className="container mx-auto flex items-center justify-between gap-4 px-4">
+          <div className="flex">
               <TabButton
                 active={activeTab === "products"}
                 onClick={() => setTab("products")}
@@ -633,26 +426,25 @@ export default function UnifiedSearch() {
                 label="محلات"
                 count={shopCount}
               />
-            </div>
+          </div>
 
-            <div className="hidden items-center gap-2 rounded-full border border-border/70 bg-card/80 px-2 py-1 text-xs text-muted-foreground shadow-soft md:flex">
-              <span className="px-2">ترتيب النتائج</span>
+          <div className="hidden items-center gap-2 text-xs text-muted-foreground sm:flex">
+            <span>ترتيب:</span>
               {activeTab === "products" ? (
                 <Select value={sort} onValueChange={(v) => setSort(v as SortKey)}>
-                  <SelectTrigger className="h-9 w-[210px] rounded-full border-0 bg-background/90 text-xs shadow-none"><SelectValue /></SelectTrigger>
+                <SelectTrigger className="h-8 w-[180px] rounded-lg text-xs"><SelectValue /></SelectTrigger>
                   <SelectContent>
                     {PRODUCT_SORT.map((opt) => <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>)}
                   </SelectContent>
                 </Select>
               ) : (
                 <Select value={shopSort} onValueChange={(v) => setShopSort(v as ShopSortKey)}>
-                  <SelectTrigger className="h-9 w-[210px] rounded-full border-0 bg-background/90 text-xs shadow-none"><SelectValue /></SelectTrigger>
+                <SelectTrigger className="h-8 w-[180px] rounded-lg text-xs"><SelectValue /></SelectTrigger>
                   <SelectContent>
                     {SHOP_SORT.map((opt) => <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>)}
                   </SelectContent>
                 </Select>
               )}
-            </div>
           </div>
         </div>
       </div>
@@ -661,7 +453,6 @@ export default function UnifiedSearch() {
       <main className="container mx-auto px-4 py-6 sm:py-8">
         {activeTab === "products" ? (
           <ProductsView
-            query={activeQuery}
             data={data}
             loading={loading}
             filters={filters}
@@ -700,31 +491,28 @@ function TabButton({
       type="button"
       onClick={onClick}
       className={cn(
-        "relative inline-flex items-center gap-2 rounded-[18px] border px-4 py-2.5 text-sm font-semibold transition-all duration-200",
-        active
-          ? "border-primary/20 bg-card text-foreground shadow-soft-md"
-          : "border-transparent bg-transparent text-muted-foreground hover:border-border/70 hover:bg-card/70 hover:text-foreground",
+        "relative flex items-center gap-2 px-4 py-3 text-sm font-semibold transition-colors",
+        active ? "text-primary" : "text-muted-foreground hover:text-foreground",
       )}
     >
       {icon}
       {label}
       {count != null && (
         <span className={cn(
-          "font-numeric rounded-full px-2 py-0.5 text-[10px] font-bold",
+          "rounded-full px-2 py-0.5 text-[10px] font-bold",
           active ? "bg-primary text-primary-foreground" : "bg-surface text-muted-foreground",
         )}>
           {count}
         </span>
       )}
-      {active && <span className="absolute inset-x-4 -bottom-1 h-0.5 rounded-t-full bg-primary" />}
+      {active && <span className="absolute inset-x-2 bottom-0 h-0.5 rounded-t-full bg-primary" />}
     </button>
   );
 }
 
 function ProductsView({
-  query, data, loading, filters, setFilters, sort, setSort, activeChips, onResetFilters,
+  data, loading, filters, setFilters, sort, setSort, activeChips, onResetFilters,
 }: {
-  query: string;
   data: UnifiedSearchResponse | null;
   loading: boolean;
   filters: Filters;
@@ -734,20 +522,10 @@ function ProductsView({
   activeChips: { label: string; clear: () => void }[];
   onResetFilters: () => void;
 }) {
-  const totalResults = data?.totalProducts ?? 0;
-  const hasQuery = Boolean(query.trim());
-  const summaryCopy = loading
-    ? "نرتب النتائج ونحسب الفروقات بين الأسعار الآن."
-    : data
-      ? hasQuery
-        ? `لقينا ${formatArabicCount(data.totalOffers)} عرض لعبارة “${query}” من ${formatArabicCount(data.storesCovered)} محل.`
-        : `هذه الصفحة تعرض ${formatArabicCount(data.totalOffers)} عرض مرتبة حتى تلتقط الأرخص والأوضح بسرعة.`
-      : "ابدأ بكتابة اسم منتج لعرض السوق المقارن.";
-
   return (
-    <div className="grid gap-6 xl:grid-cols-[320px_minmax(0,1fr)]">
+    <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
       {data && (
-        <div className="hidden xl:block">
+        <div className="hidden lg:block">
           <UnifiedSearchFilters
             facets={data.facets}
             value={filters}
@@ -757,80 +535,19 @@ function ProductsView({
         </div>
       )}
 
-      <div className="min-w-0 space-y-4">
-        <section className="relative overflow-hidden rounded-[28px] border border-border/70 bg-card/80 p-4 shadow-soft-xl backdrop-blur-sm sm:p-5">
-          <div className="pointer-events-none absolute -left-8 top-0 h-28 w-28 rounded-full bg-primary/10 blur-3xl" />
-          <div className="relative flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-2xl">
-              <div className="text-[11px] font-semibold tracking-[0.16em] text-primary">لوحة النتائج</div>
-              <h2 className="mt-2 text-xl font-semibold text-foreground sm:text-2xl">
-                {hasQuery ? `نتائج ${query}` : "كل عروض المنتجات"}
-              </h2>
-              <p className="mt-2 text-sm leading-7 text-muted-foreground">
-                {summaryCopy}
-              </p>
-            </div>
-
-            {!loading && data && (
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                <SearchMetricCard
-                  icon={<Package className="h-4 w-4" />}
-                  label="منتج"
-                  value={formatArabicCount(totalResults)}
-                  note="بعد ترتيب النتائج"
-                  accent
-                />
-                <SearchMetricCard
-                  icon={<Store className="h-4 w-4" />}
-                  label="محل"
-                  value={formatArabicCount(data.storesCovered)}
-                  note="دخل في المقارنة"
-                />
-                <SearchMetricCard
-                  icon={<Globe2 className="h-4 w-4" />}
-                  label="عرض"
-                  value={formatArabicCount(data.totalOffers)}
-                  note="إجمالي العروض"
-                />
-                <SearchMetricCard
-                  icon={<Clock className="h-4 w-4" />}
-                  label="سرعة"
-                  value={formatDurationLabel(data.durationMs)}
-                  note="استجابة البحث"
-                />
-              </div>
-            )}
-          </div>
-
-          {(activeChips.length > 0 || (!loading && data)) && (
-            <div className="relative mt-4 flex flex-wrap items-center gap-2 border-t border-border/60 pt-4 text-xs text-muted-foreground">
-              {!loading && data && (
-                <span className="rounded-full border border-border/70 bg-background/80 px-3 py-1.5">
-                  الترتيب الحالي يقدّم {PRODUCT_SORT.find((option) => option.value === sort)?.label ?? "الأكثر صلة"}
-                </span>
-              )}
-              {activeChips.length > 0 && (
-                <span className="rounded-full border border-primary/15 bg-primary/10 px-3 py-1.5 text-primary">
-                  {formatArabicCount(activeChips.length)} فلتر نشط
-                </span>
-              )}
-            </div>
-          )}
-        </section>
-
+      <div className="min-w-0">
         {/* Mobile filter + sort bar */}
-        <div className="flex items-center justify-between gap-2 xl:hidden">
+        <div className="mb-4 flex items-center justify-between gap-2 lg:hidden">
           {data && (
             <UnifiedSearchFilters
               facets={data.facets}
               value={filters}
               onChange={setFilters}
               onReset={onResetFilters}
-              triggerLabel="تضييق النتائج"
             />
           )}
           <Select value={sort} onValueChange={(v) => setSort(v as SortKey)}>
-            <SelectTrigger className="h-11 flex-1 rounded-full border-border/70 bg-card text-xs shadow-soft"><SelectValue /></SelectTrigger>
+            <SelectTrigger className="h-9 flex-1 rounded-lg text-xs"><SelectValue /></SelectTrigger>
             <SelectContent>
               {PRODUCT_SORT.map((opt) => <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>)}
             </SelectContent>
@@ -838,13 +555,13 @@ function ProductsView({
         </div>
 
         {activeChips.length > 0 && (
-          <div className="flex flex-wrap gap-1.5">
+          <div className="mb-4 flex flex-wrap gap-1.5">
             {activeChips.map((chip, i) => (
               <button
                 key={i}
                 type="button"
                 onClick={chip.clear}
-                className="inline-flex items-center gap-1 rounded-full border border-primary/20 bg-primary/10 px-3 py-1.5 text-xs text-primary transition-all duration-200 hover:-translate-y-0.5 hover:bg-primary/15"
+                className="inline-flex items-center gap-1 rounded-full border border-primary/30 bg-primary-soft px-3 py-1 text-xs text-primary transition-colors hover:bg-primary/10"
               >
                 {chip.label}
                 <X className="h-3 w-3" />
@@ -861,17 +578,9 @@ function ProductsView({
         )}
 
         {loading ? (
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-4 xl:grid-cols-6">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 xl:grid-cols-4">
             {Array.from({ length: 8 }).map((_, i) => (
-              <Skeleton
-                key={i}
-                className={cn(
-                  "w-full rounded-[28px]",
-                  i === 0
-                    ? "col-span-2 aspect-[16/11] md:col-span-4 xl:col-span-3"
-                    : "col-span-1 aspect-[3/4] md:col-span-2 xl:col-span-2",
-                )}
-              />
+              <Skeleton key={i} className="aspect-[3/4] w-full rounded-2xl" />
             ))}
           </div>
         ) : data && data.products.length === 0 ? (
@@ -881,19 +590,8 @@ function ProductsView({
             action={<Button onClick={onResetFilters} variant="outline">مسح الفلاتر</Button>}
           />
         ) : (
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-4 xl:grid-cols-6">
-            {data?.products.map((p, index) => (
-              <div
-                key={p.id}
-                className={cn(
-                  index === 0
-                    ? "col-span-2 md:col-span-4 xl:col-span-3"
-                    : "col-span-1 md:col-span-2 xl:col-span-2",
-                )}
-              >
-                <UnifiedProductCard product={p} />
-              </div>
-            ))}
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 xl:grid-cols-4">
+            {data?.products.map((p) => <UnifiedProductCard key={p.id} product={p} />)}
           </div>
         )}
       </div>

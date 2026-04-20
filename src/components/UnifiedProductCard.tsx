@@ -112,7 +112,6 @@ export function UnifiedProductCard({ product, topOffers }: Props) {
 
       {/* ===== Body ===== */}
       <div className="flex flex-1 flex-col gap-2 p-2.5 sm:gap-3 sm:p-4">
-        {/* Brand on the start, category on the end (rating removed). */}
         <div className="flex items-center justify-between gap-2">
           {product.brand ? (
             <Badge
@@ -129,12 +128,10 @@ export function UnifiedProductCard({ product, topOffers }: Props) {
           )}
         </div>
 
-        {/* Title */}
         <h3 className="line-clamp-2 min-h-[2.6em] text-[13px] font-bold leading-snug text-foreground transition-colors group-hover:text-primary sm:text-[15px]">
           {title}
         </h3>
 
-        {/* ===== Price block ===== */}
         <div className="flex items-end justify-between gap-3 rounded-lg bg-surface/60 px-2 py-2 sm:rounded-xl sm:px-3 sm:py-2.5">
           <div className="flex flex-col">
             <span className="text-[9px] font-medium uppercase tracking-wider text-muted-foreground sm:text-[10px]">
@@ -148,7 +145,6 @@ export function UnifiedProductCard({ product, topOffers }: Props) {
           </div>
         </div>
 
-        {/* ===== Top offers preview (compact compare strip) ===== */}
         {topOffers && topOffers.length > 0 && (
           <ul className="flex flex-col gap-1.5 rounded-xl border border-border bg-card px-2.5 py-2">
             {topOffers.slice(0, 3).map((o, idx) => (
@@ -180,7 +176,6 @@ export function UnifiedProductCard({ product, topOffers }: Props) {
           </ul>
         )}
 
-        {/* ===== Trust meta row ===== */}
         <div className="mt-auto flex flex-wrap items-center gap-x-2 gap-y-1 text-[10px] text-muted-foreground sm:gap-x-3 sm:text-[11px]">
           {inStockRatio > 0 && (
             <span className="flex items-center gap-1">
@@ -199,7 +194,6 @@ export function UnifiedProductCard({ product, topOffers }: Props) {
         </div>
       </div>
 
-      {/* ===== Bottom CTA strip ===== */}
       <div className="flex items-center justify-between border-t border-border bg-gradient-to-l from-primary/5 to-transparent px-2.5 py-2 sm:px-4 sm:py-2.5">
         <span className="hidden text-[11px] font-semibold text-muted-foreground sm:inline">
           قارن {product.offerCount} عرض جنب بعض
