@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Home, MapPin, ShieldCheck, Store } from "lucide-react";
+import { ChevronLeft, Home, MapPin, ShieldCheck, Store } from "lucide-react";
 import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useDataStore } from "@/lib/dataStore";
