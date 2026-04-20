@@ -1,0 +1,61 @@
+{
+  "results": [
+    {
+      "found": 3,
+      "hits": [
+        {
+          "document": {
+            "id": "1750000001",
+            "variation_id": "1750000001",
+            "item_group_id": "1750000000",
+            "alias": "iphone-17-pro-max-256",
+            "title_AR": "ايفون 17 برو ماكس 256 جيجابايت",
+            "title_EN": "iPhone 17 Pro Max 256GB",
+            "description": "هاتف رائد مع شاشة OLED وكاميرا احترافية.",
+            "short_description": "نسخة الشريحة الالكترونية",
+            "brand": "Apple",
+            "vendor": "Miswag Direct",
+            "vendor_alias": "miswag-direct",
+            "url": "https://miswag.com/products/1750000001",
+            "image": "https://cdn.miswag.me/images/thumbs512/iphone-17-pro-max-256.png",
+            "availability": true,
+            "pre_order": false,
+            "price_currency": "IQD",
+            "price_numeric_value": 2100000,
+            "price_original_value": "2300000",
+            "is_on_sale": true,
+            "published": "2026-04-18 09:00:00",
+            "l1_division_ar": "ألكترونيات",
+            "l2_division_ar": "موبايلات و اجهزة يدوية",
+            "l3_division_ar": "موبايلات"
+          }
+        },
+        {
+          "document": {
+            "id": "1750000002",
+            "variation_id": "1750000002",
+            "item_group_id": "1750000000",
+            "alias": "iphone-17-pro-max-512",
+            "title_AR": "ايفون 17 برو ماكس 512 جيجابايت",
+            "title_EN": "iPhone 17 Pro Max 512GB",
+            "brand": "Apple",
+            "vendor": "Miswag Direct",
+            "vendor_alias": "miswag-direct",
+            "url": "https://miswag.com/products/1750000002",
+            "image": "https://cdn.miswag.me/images/thumbs512/iphone-17-pro-max-512.png",
+            "availability": true,
+            "pre_order": false,
+            "price_currency": "IQD",
+            "price_numeric_value": "2450000",
+            "price_original_value": "2450000",
+            "is_on_sale": false,
+            "created_at": "1776500000",
+            "l1_division_ar": "ألكترونيات",
+            "l2_division_ar": "موبايلات و اجهزة يدوية",
+            "l3_division_ar": "موبايلات"
+          }
+        }
+      ]
+    }
+  ]
+}

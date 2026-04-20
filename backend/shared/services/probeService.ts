@@ -1,14 +1,14 @@
 import { connectorRegistry } from "../../connectors/registry.js";
-import { CatalogHttpClient } from "../http/catalogHttpClient.js";
+import type { CatalogHttpClientLike } from "../http/catalogHttpClient.js";
 import { connectorDefaultPriority } from "../catalog/syncPolicy.js";
 import { createId, nowIso } from "../catalog/normalization.js";
 import type { CatalogRepository } from "../repositories/contracts.js";
-import type { ConnectorProfileRecord, StoreRecord, StoreStatus, SyncRunRecord } from "../catalog/types.js";
+import type { ConnectorProfileRecord, ProbeResult, StoreRecord, StoreStatus, SyncRunRecord } from "../catalog/types.js";
 
 export class ProbeService {
   constructor(
     private readonly repository: CatalogRepository,
-    private readonly client: CatalogHttpClient,
+    private readonly client: CatalogHttpClientLike,
   ) {}
 
   async probeStore(storeId: string, actor: string, triggerSource: SyncRunRecord["triggerSource"]): Promise<ConnectorProfileRecord> {
@@ -40,16 +40,20 @@ export class ProbeService {
       const homepageUrl = store.website ?? "about:blank";
       const homepageHtml = store.website ? await client.fetchText(homepageUrl) : "";
 
-      let selected =
-        (await Promise.all(
-          connectorRegistry.map((connector) =>
-            connector.probe({
-              store,
-              homepageUrl,
-              homepageHtml,
-            }),
-          ),
-        )).find((result) => result && result.confidence >= 0.5) ?? null;
+      const strategyHint = buildStrategyHint(store, homepageUrl);
+      let selected = strategyHint;
+      if (!selected) {
+        selected =
+          (await Promise.all(
+            connectorRegistry.map((connector) =>
+              connector.probe({
+                store,
+                homepageUrl,
+                homepageHtml,
+              }),
+            ),
+          )).find((result) => result && result.confidence >= 0.5) ?? null;
+      }
 
       if (!selected) {
         selected = {
@@ -137,4 +141,99 @@ function nextStatus(store: StoreRecord, connectorType: ConnectorProfileRecord["c
   if (connectorType === "social_only" || store.websiteType === "social") return "social_only";
   if (connectorType === "unknown") return "failed";
   return "indexable";
+}
+
+function buildStrategyHint(store: StoreRecord, homepageUrl: string): ProbeResult | null {
+  const strategy = typeof store.metadata?.strategy === "string" ? store.metadata.strategy : undefined;
+  if (!strategy) return null;
+
+  switch (strategy) {
+    case "shopify_api":
+      return {
+        connectorType: "shopify",
+        confidence: 0.99,
+        signals: ["registry_strategy_hint:shopify_api"],
+        capabilities: {
+          supportsStructuredApi: true,
+          supportsHtmlCatalog: true,
+          supportsOffers: true,
+          supportsVariants: true,
+          supportsMarketplaceContext: false,
+          fallbackToBrowser: false,
+        },
+        endpoints: {
+          products: new URL("/products.json?limit=250&page=1", homepageUrl).toString(),
+        },
+      };
+    case "woo_api":
+      return {
+        connectorType: "woocommerce",
+        confidence: 0.99,
+        signals: ["registry_strategy_hint:woo_api"],
+        capabilities: {
+          supportsStructuredApi: true,
+          supportsHtmlCatalog: true,
+          supportsOffers: true,
+          supportsVariants: true,
+          supportsMarketplaceContext: false,
+          fallbackToBrowser: false,
+        },
+        endpoints: {
+          products: new URL("/wp-json/wc/store/v1/products?per_page=100&page=1", homepageUrl).toString(),
+        },
+      };
+    case "jibalzone_custom":
+      return {
+        connectorType: "jibalzone_storefront",
+        confidence: 0.99,
+        signals: ["registry_strategy_hint:jibalzone_custom"],
+        capabilities: {
+          supportsStructuredApi: false,
+          supportsHtmlCatalog: true,
+          supportsOffers: true,
+          supportsVariants: false,
+          supportsMarketplaceContext: false,
+          fallbackToBrowser: false,
+        },
+        endpoints: {
+          products: new URL("/en", homepageUrl).toString(),
+        },
+      };
+    case "masterstore_custom":
+      return {
+        connectorType: "masterstore_next",
+        confidence: 0.99,
+        signals: ["registry_strategy_hint:masterstore_custom"],
+        capabilities: {
+          supportsStructuredApi: true,
+          supportsHtmlCatalog: true,
+          supportsOffers: true,
+          supportsVariants: true,
+          supportsMarketplaceContext: false,
+          fallbackToBrowser: false,
+        },
+        endpoints: {
+          products: new URL("/shop?page=1", homepageUrl).toString(),
+        },
+      };
+    case "threed_iraq_custom":
+      return {
+        connectorType: "threed_iraq",
+        confidence: 0.99,
+        signals: ["registry_strategy_hint:threed_iraq_custom"],
+        capabilities: {
+          supportsStructuredApi: false,
+          supportsHtmlCatalog: true,
+          supportsOffers: true,
+          supportsVariants: false,
+          supportsMarketplaceContext: true,
+          fallbackToBrowser: false,
+        },
+        endpoints: {
+          products: new URL("/products?page=1", homepageUrl).toString(),
+        },
+      };
+    default:
+      return null;
+  }
 }

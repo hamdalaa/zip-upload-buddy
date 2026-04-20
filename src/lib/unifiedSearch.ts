@@ -1,15 +1,12 @@
 /**
- * Unified Search — Types & Mock API
- * ----------------------------------
- * هذا الملف يعرّف الـ contract اللي راح يستخدمه الـ backend (Codex).
- * الـ UI يستهلك `searchUnified()` و `getProductOffers()` فقط.
- * بدّل الـ implementation داخل هذي الدوال بنداء HTTP حقيقي
- * عند جاهزية الـ backend — بدون تغيير أي مكوّن.
- *
- *   POST /api/search          → UnifiedSearchResponse
- *   GET  /api/products/:id    → UnifiedProduct
- *   GET  /api/products/:id/offers → UnifiedOffer[]
+ * Unified Search — frontend contract backed by the public-safe backend adapter.
+ * The UI continues to consume `searchUnified()`, `getProduct()`, and
+ * `getProductOffers()` while the actual data now comes from `/public/*`.
  */
+
+import { ApiError, fetchJson, withQuery } from "@/lib/api";
+import type { ProductIndex, Shop } from "@/lib/types";
+import { getShopRatingValue, getShopReviewCount } from "@/lib/shopRanking";
 
 export type StockState = "in_stock" | "out_of_stock" | "preorder" | "unknown";
 
@@ -102,19 +99,6 @@ export interface UnifiedSearchResponse {
   };
 }
 
-/* ====================================================================
- * MOCK IMPLEMENTATION — replace with real fetch when backend is ready
- * ==================================================================== */
-
-// Empty caches — real data will come from backend (POST /api/search etc.)
-const ALL_OFFERS_CACHE: UnifiedOffer[] = [];
-const ALL_PRODUCTS_CACHE: UnifiedProduct[] = [];
-const MOCK_STORES_COUNT = 0;
-
-function delay<T>(value: T, ms = 350): Promise<T> {
-  return new Promise((resolve) => setTimeout(() => resolve(value), ms));
-}
-
 // Arabic ↔ English synonyms — expanded into the haystack so users searching
 // in either language find the same products. Keep this small & focused on
 // the most common Iraqi/Arabic spellings of brands & categories.
@@ -152,123 +136,40 @@ function expandQuery(q: string): string[] {
 }
 
 export async function searchUnified(req: UnifiedSearchRequest): Promise<UnifiedSearchResponse> {
-  const start = performance.now();
-  const q = (req.q ?? "").trim().toLowerCase();
-  let products = [...ALL_PRODUCTS_CACHE];
-
-  if (q) {
-    const terms = expandQuery(q);
-    const matchTerm = (hay: string) => terms.some((t) => hay.includes(t));
-    products = products.filter((p) => {
-      // 1) Direct match against the product itself
-      const productHay = [p.title, p.brand, p.category, p.description]
-        .filter(Boolean).join(" ").toLowerCase();
-      if (matchTerm(productHay)) return true;
-
-      // 2) Indirect match — query targets a STORE/CITY that carries this product.
-      //    e.g. searching "Miswag" or "بغداد" surfaces every product offered there.
-      const offers = ALL_OFFERS_CACHE.filter((o) => o.productId === p.id);
-      return offers.some((o) => {
-        const offerHay = [o.storeName, o.storeId, o.storeCity]
-          .filter(Boolean).join(" ").toLowerCase();
-        return matchTerm(offerHay);
-      });
-    });
-  }
-  if (req.brands?.length) products = products.filter((p) => p.brand && req.brands!.includes(p.brand));
-  if (req.categories?.length) products = products.filter((p) => p.category && req.categories!.includes(p.category));
-  if (req.priceMin != null) products = products.filter((p) => (p.lowestPrice ?? 0) >= req.priceMin!);
-  if (req.priceMax != null) products = products.filter((p) => (p.lowestPrice ?? 0) <= req.priceMax!);
-  if (req.inStockOnly) products = products.filter((p) => p.inStockCount > 0);
-
-  // Filter by store/city — must check offers
-  if (req.stores?.length || req.cities?.length || req.officialDealerOnly || req.verifiedOnly || req.onSaleOnly) {
-    products = products.filter((p) => {
-      const offers = ALL_OFFERS_CACHE.filter((o) => o.productId === p.id);
-      return offers.some((o) => {
-        if (req.stores?.length && !req.stores.includes(o.storeId)) return false;
-        if (req.cities?.length && !req.cities.includes(o.storeCity ?? "")) return false;
-        if (req.officialDealerOnly && !o.officialDealer) return false;
-        if (req.verifiedOnly && !o.verified) return false;
-        if (req.onSaleOnly && !o.originalPrice) return false;
-        return true;
-      });
-    });
-  }
-
-  // Sort — default (relevance / no query) ranks by rating × offer count so the
-  // most-loved & widely-available items surface first.
-  switch (req.sort) {
-    case "price_asc": products.sort((a, b) => (a.lowestPrice ?? 0) - (b.lowestPrice ?? 0)); break;
-    case "price_desc": products.sort((a, b) => (b.lowestPrice ?? 0) - (a.lowestPrice ?? 0)); break;
-    case "rating_desc": products.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0)); break;
-    case "offers_desc": products.sort((a, b) => b.offerCount - a.offerCount); break;
-    case "freshness_desc":
-    case "relevance":
-    default:
-      products.sort((a, b) => {
-        const sa = (a.rating ?? 0) * 10 + a.offerCount;
-        const sb = (b.rating ?? 0) * 10 + b.offerCount;
-        return sb - sa;
-      });
-      break;
-  }
-
-  // Facets
-  const brandMap = new Map<string, number>();
-  const categoryMap = new Map<string, number>();
-  const storeMap = new Map<string, { name: string; count: number }>();
-  const cityMap = new Map<string, number>();
-  let priceMin = Infinity, priceMax = 0;
-
-  for (const p of products) {
-    if (p.brand) brandMap.set(p.brand, (brandMap.get(p.brand) ?? 0) + 1);
-    if (p.category) categoryMap.set(p.category, (categoryMap.get(p.category) ?? 0) + 1);
-    if (p.lowestPrice != null) priceMin = Math.min(priceMin, p.lowestPrice);
-    if (p.highestPrice != null) priceMax = Math.max(priceMax, p.highestPrice);
-    const offers = ALL_OFFERS_CACHE.filter((o) => o.productId === p.id);
-    for (const o of offers) {
-      const cur = storeMap.get(o.storeId) ?? { name: o.storeName, count: 0 };
-      storeMap.set(o.storeId, { name: o.storeName, count: cur.count + 1 });
-      if (o.storeCity) cityMap.set(o.storeCity, (cityMap.get(o.storeCity) ?? 0) + 1);
-    }
-  }
-
-  const totalOffers = products.reduce((sum, p) => sum + p.offerCount, 0);
-  const storesCovered = storeMap.size;
-
-  const response: UnifiedSearchResponse = {
-    query: req.q ?? "",
-    totalProducts: products.length,
-    totalOffers,
-    storesCovered,
-    storesScanned: MOCK_STORES_COUNT,
-    durationMs: Math.round(performance.now() - start),
-    products,
-    facets: {
-      brands: [...brandMap.entries()].map(([key, count]) => ({ key, label: key, count })).sort((a, b) => b.count - a.count),
-      categories: [...categoryMap.entries()].map(([key, count]) => ({ key, label: key, count })).sort((a, b) => b.count - a.count),
-      stores: [...storeMap.entries()].map(([key, v]) => ({ key, label: v.name, count: v.count })).sort((a, b) => b.count - a.count),
-      cities: [...cityMap.entries()].map(([key, count]) => ({ key, label: key, count })).sort((a, b) => b.count - a.count),
-      priceRange: { min: isFinite(priceMin) ? priceMin : 0, max: priceMax || 5_000_000 },
-    },
-  };
-  return delay(response);
+  return fetchJson<UnifiedSearchResponse>(
+    withQuery("/public/search", {
+      q: req.q,
+      brands: req.brands?.join(","),
+      categories: req.categories?.join(","),
+      stores: req.stores?.join(","),
+      cities: req.cities?.join(","),
+      priceMin: req.priceMin,
+      priceMax: req.priceMax,
+      inStockOnly: req.inStockOnly,
+      onSaleOnly: req.onSaleOnly,
+      verifiedOnly: req.verifiedOnly,
+      officialDealerOnly: req.officialDealerOnly,
+      sort: req.sort,
+    }),
+  );
 }
 
 export async function getProduct(productId: string): Promise<UnifiedProduct | null> {
-  const product = ALL_PRODUCTS_CACHE.find((p) => p.id === productId) ?? null;
-  return delay(product);
+  try {
+    return await fetchJson<UnifiedProduct>(`/public/products/${encodeURIComponent(productId)}`);
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) return null;
+    throw error;
+  }
 }
 
 export async function getProductOffers(productId: string): Promise<UnifiedOffer[]> {
-  const offers = ALL_OFFERS_CACHE.filter((o) => o.productId === productId).sort((a, b) => {
-    // in_stock first, then by price
-    if (a.stock === "in_stock" && b.stock !== "in_stock") return -1;
-    if (b.stock === "in_stock" && a.stock !== "in_stock") return 1;
-    return a.price - b.price;
-  });
-  return delay(offers);
+  try {
+    return await fetchJson<UnifiedOffer[]>(`/public/products/${encodeURIComponent(productId)}/offers`);
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) return [];
+    throw error;
+  }
 }
 
 export function formatIQD(value: number): string {
@@ -276,12 +177,9 @@ export function formatIQD(value: number): string {
 }
 
 /* ====================================================================
- * SHOP SEARCH — searches across local shops in the data store.
- * Used by /search when in "shops" tab. Pure UI helper — no backend yet.
+ * SHOP SEARCH — searches across the real store list already loaded into the
+ * app shell from `/public/bootstrap`.
  * ==================================================================== */
-
-import type { Shop } from "@/lib/types";
-import { getShopRatingValue, getShopReviewCount } from "@/lib/shopRanking";
 
 export interface ShopSearchFilters {
   q?: string;
@@ -406,25 +304,27 @@ export interface AutocompleteSuggestion {
 export function buildAutocomplete(
   q: string,
   shops: Shop[],
-  limit = 8,
+  productsOrLimit: ProductIndex[] | number = [],
+  limitArg = 8,
 ): AutocompleteSuggestion[] {
   const query = q.trim().toLowerCase();
   if (!query) return [];
+  const products = Array.isArray(productsOrLimit) ? productsOrLimit : [];
+  const limit = typeof productsOrLimit === "number" ? productsOrLimit : limitArg;
   const terms = expandQuery(query);
   const out: AutocompleteSuggestion[] = [];
   const matches = (hay: string) => terms.some((t) => hay.includes(t));
 
-  // Products from mock cache
-  for (const p of ALL_PRODUCTS_CACHE) {
+  for (const p of products) {
     if (out.length >= limit) break;
-    const hay = [p.title, p.brand, p.category].filter(Boolean).join(" ").toLowerCase();
+    const hay = [p.name, p.brand, p.category, p.shopName].filter(Boolean).join(" ").toLowerCase();
     if (matches(hay)) {
       out.push({
         type: "product",
         id: p.id,
-        label: p.title,
-        sublabel: `${p.brand ?? ""} • ${p.offerCount} عرض`,
-        href: `/product/${p.id}`,
+        label: p.name,
+        sublabel: [p.brand, p.shopName].filter(Boolean).join(" • "),
+        href: p.canonicalProductId ? `/product/${p.canonicalProductId}` : `/shop-view/${p.shopId}`,
       });
     }
   }
@@ -446,4 +346,3 @@ export function buildAutocomplete(
 
   return out.slice(0, limit);
 }
-

@@ -12,11 +12,16 @@ import { useDataStore } from "@/lib/dataStore";
 import { useUserPrefs } from "@/lib/userPrefs";
 import { relativeArabicTime } from "@/lib/search";
 import { SINAA_SHOP_PAGES } from "@/lib/sinaaShopPages";
+import { getLegacySinaaShopById } from "@/lib/legacyStreetShops";
+import { ApiError } from "@/lib/api";
+import { getStoreDetail, type StoreDetailResponse } from "@/lib/catalogApi";
 import { optimizeImageUrl } from "@/lib/imageUrl";
 import { CATEGORY_IMAGES } from "@/lib/mockData";
+import { OFFICIAL_DEALER_BRANCHES } from "@/lib/officialDealers";
 import { getRating, topReviews } from "@/lib/googleRatings";
 import { StarRating } from "@/components/StarRating";
 import { cn } from "@/lib/utils";
+import type { Shop } from "@/lib/types";
 import {
   ChevronLeft, ChevronRight, ExternalLink, MapPin, Phone, MessageCircle, Home, Store,
   Package, Globe, Camera, Image as ImageIcon, Clock, ShieldCheck, CheckCircle2,
@@ -44,6 +49,8 @@ const ShopView = () => {
   const { shops, products, shopSources } = useDataStore();
   const { favorites, toggleFavorite } = useUserPrefs();
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
+  const [remoteDetail, setRemoteDetail] = useState<StoreDetailResponse | null>(null);
+  const [detailStatus, setDetailStatus] = useState<"idle" | "loading" | "ready" | "not_found">("idle");
 
   const handleBack = () => {
     // If user has history within the app, go back; otherwise go home.
@@ -54,8 +61,58 @@ const ShopView = () => {
     }
   };
 
-  const shop = shops.find((s) => s.id === shopId);
+  const legacyShop = shopId ? getLegacySinaaShopById(shopId) : null;
+  const officialDealerShop = shopId ? mapOfficialDealerBranchToShop(shopId) : null;
+  const localShop = shops.find((s) => s.id === shopId) ?? legacyShop ?? officialDealerShop;
+  const shop = remoteDetail?.store ?? localShop;
   const pageData = shopId ? SINAA_SHOP_PAGES[shopId] : undefined;
+
+  useEffect(() => {
+    let alive = true;
+    setRemoteDetail(null);
+
+    if (!shopId || legacyShop || officialDealerShop) {
+      setDetailStatus("idle");
+      return () => {
+        alive = false;
+      };
+    }
+
+    setDetailStatus("loading");
+    getStoreDetail(shopId)
+      .then((detail) => {
+        if (!alive) return;
+        setRemoteDetail(detail);
+        setDetailStatus("ready");
+      })
+      .catch((error) => {
+        if (!alive) return;
+        setRemoteDetail(null);
+        if (error instanceof ApiError && error.status === 404) {
+          setDetailStatus("not_found");
+          return;
+        }
+        setDetailStatus(localShop ? "idle" : "not_found");
+      });
+
+    return () => {
+      alive = false;
+    };
+  }, [shopId, legacyShop, officialDealerShop, localShop]);
+
+  if (!shop && detailStatus === "loading") {
+    return (
+      <div className="min-h-screen flex flex-col bg-muted/30">
+        <TopNav />
+        <main className="flex-1 container py-12">
+          <div className="rounded-3xl border border-border/70 bg-card/88 p-8 text-center shadow-soft-lg">
+            <p className="text-sm text-muted-foreground">جاري تحميل تفاصيل المحل…</p>
+          </div>
+        </main>
+        <SiteFooter />
+      </div>
+    );
+  }
 
   if (!shop) {
     return (
@@ -73,12 +130,47 @@ const ShopView = () => {
     );
   }
 
-  const shopProducts = products.filter((p) => p.shopId === shop.id);
-  const sources = shopSources.filter((s) => s.shopId === shop.id);
+  const relatedShopIds = shop.website
+    ? shops
+        .filter((candidate) => sameWebsiteHost(candidate.website, shop.website))
+        .map((candidate) => candidate.id)
+    : [];
+  const shopProducts =
+    legacyShop
+      ? []
+      : remoteDetail?.products ?? products.filter((p) => p.shopId === shop.id || relatedShopIds.includes(p.shopId));
+  const sources = legacyShop
+    ? [
+        ...(shop.website
+          ? [{
+              id: `src:${shop.id}:website`,
+              shopId: shop.id,
+              sourceType: "website" as const,
+              sourceUrl: shop.website,
+              status: "ok" as const,
+              lastCrawledAt: shop.updatedAt,
+              pagesVisited: 0,
+            }]
+          : []),
+        ...(shop.googleMapsUrl
+          ? [{
+              id: `src:${shop.id}:maps`,
+              shopId: shop.id,
+              sourceType: "google_maps" as const,
+              sourceUrl: shop.googleMapsUrl,
+              status: "ok" as const,
+              lastCrawledAt: shop.updatedAt,
+              pagesVisited: 1,
+            }]
+          : []),
+      ]
+    : remoteDetail?.sources ?? shopSources.filter((s) => s.shopId === shop.id);
   const heroImg = shop.imageUrl && shop.imageUrl !== "Not found"
     ? shop.imageUrl
     : CATEGORY_IMAGES[shop.category];
-  const gallery = pageData?.gallery?.filter((g) => g && g !== "Not found") ?? [];
+  const gallery = pageData?.gallery?.filter((g) => g && g !== "Not found")
+    ?? shop.gallery?.filter((g) => g && g !== "Not found")
+    ?? [];
   const googleRating = getRating(shop);
   const topRevs = topReviews(googleRating, 4);
   const latestSource = [...sources]
@@ -745,3 +837,43 @@ function Lightbox({
 }
 
 export default ShopView;
+
+function mapOfficialDealerBranchToShop(shopId: string): Shop | null {
+  const branch = OFFICIAL_DEALER_BRANCHES.find((entry) => entry.id === shopId);
+  if (!branch) return null;
+  const timestamp = new Date().toISOString();
+  return {
+    id: branch.id,
+    slug: branch.slug,
+    seedKey: `official-${branch.brandSlug}-${branch.id}`,
+    name: branch.name,
+    area: branch.area,
+    category: branch.category,
+    categories: branch.categories,
+    address: branch.address || undefined,
+    lat: branch.lat ?? undefined,
+    lng: branch.lng ?? undefined,
+    googleMapsUrl: branch.googleMapsUrl ?? undefined,
+    website: branch.website ?? undefined,
+    phone: branch.phone ?? undefined,
+    imageUrl: branch.mainImage ?? undefined,
+    discoverySource: "seed",
+    verified: true,
+    verificationStatus: "verified",
+    notes: `وكيل رسمي معتمد من ${branch.brand}`,
+    createdAt: timestamp,
+    updatedAt: timestamp,
+    featured: true,
+  };
+}
+
+function sameWebsiteHost(left?: string, right?: string): boolean {
+  if (!left || !right) return false;
+  try {
+    const leftHost = new URL(left).hostname.replace(/^www\./i, "").toLowerCase();
+    const rightHost = new URL(right).hostname.replace(/^www\./i, "").toLowerCase();
+    return leftHost === rightHost;
+  } catch {
+    return false;
+  }
+}

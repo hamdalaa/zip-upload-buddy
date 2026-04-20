@@ -1,7 +1,9 @@
 import type { CatalogConnector } from "./base.js";
 import {
+  buildCommonCatalogUrls,
   buildOffersFromProducts,
   crawlCatalogFromListingPages,
+  dedupeProducts,
   extractStructuredPayloads,
   extractProductCandidates,
   extractNextDataPayloads,
@@ -48,21 +50,18 @@ export const genericJsonCatalogConnector: CatalogConnector = {
     const payloadProducts = extractProductCandidates(extractStructuredPayloads(homepageHtml))
       .map((candidate) => toCatalogProductDraft(store.id, "generic_json_catalog", candidate, homepageUrl))
       .filter((product): product is NonNullable<typeof product> => Boolean(product));
+    const startUrls = buildCommonCatalogUrls(homepageUrl);
     const crawled = await crawlCatalogFromListingPages(
       store.id,
       "generic_json_catalog",
       client,
-      [homepageUrl],
+      startUrls,
       {
-        maxListingPages: 40,
-        maxProductPages: 600,
+        maxListingPages: 200,
+        maxProductPages: 5000,
       },
     );
-    const merged = new Map<string, typeof payloadProducts[number]>();
-    for (const product of [...payloadProducts, ...crawled.products]) {
-      merged.set(product.sourceProductId, product);
-    }
-    const products = [...merged.values()];
+    const products = dedupeProducts([...payloadProducts, ...crawled.products]);
 
     return {
       products,

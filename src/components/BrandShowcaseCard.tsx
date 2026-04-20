@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 import { ChevronLeft, ShieldCheck, Store } from "lucide-react";
 import type { BrandDealer } from "@/lib/types";
 import { OFFICIAL_DEALER_BRANCHES } from "@/lib/officialDealers";
-import { getBrandLogo, getTheSvgUrl } from "@/lib/brandLogos";
 import { getBrandBackground } from "@/lib/brandBackgrounds";
+import { useBrandLogo } from "@/hooks/useBrandLogo";
 
 const arabicNumber = new Intl.NumberFormat("ar");
 const formatCount = (value: number) => arabicNumber.format(value);
@@ -23,7 +23,7 @@ export function BrandShowcaseCard({ brand, index = 0 }: Props) {
       (entry) => entry.brandSlug === brand.slug && entry.mainImage && entry.mainImage !== "Not found",
     )?.mainImage ??
     null;
-  const logo = getTheSvgUrl(brand.slug, "default") ?? getBrandLogo(brand.slug);
+  const logo = useBrandLogo(brand.slug, brand.brandName, "default");
   const isVerified = brand.verificationStatus === "verified";
 
   const tagline = (() => {

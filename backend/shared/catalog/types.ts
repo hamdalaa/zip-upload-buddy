@@ -8,6 +8,10 @@ export type StoreStatus =
   | "failed";
 
 export type ConnectorType =
+  | "shopify"
+  | "threed_iraq"
+  | "tlcommerce_api"
+  | "alwafi_api"
   | "masterstore_next"
   | "jibalzone_storefront"
   | "miswag_nuxt"

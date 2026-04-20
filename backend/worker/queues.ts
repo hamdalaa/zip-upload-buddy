@@ -1,8 +1,8 @@
 import { Queue, Worker, type Job, type JobsOptions } from "bullmq";
-import Redis from "ioredis";
+import { Redis } from "ioredis";
 import { catalogConfig } from "../shared/config.js";
 
-type RedisConnection = any;
+type RedisConnection = Redis;
 
 export interface ProbeJobPayload {
   storeId: string;
@@ -81,8 +81,7 @@ export function createWorkers(connection: RedisConnection, handlers: WorkerHandl
 }
 
 export function createRedisConnection(): RedisConnection {
-  const RedisCtor: any = Redis;
-  return new RedisCtor(catalogConfig.redisUrl, {
+  return new Redis(catalogConfig.redisUrl, {
     maxRetriesPerRequest: null,
   });
 }

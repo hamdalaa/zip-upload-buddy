@@ -16,6 +16,7 @@ import type { SearchEngine } from "./search/contracts.js";
 import type { ObjectStorage } from "./storage/objectStorage.js";
 import { createId } from "./catalog/normalization.js";
 import { hashServiceToken } from "./security/tokenHash.js";
+import { importScrapedSiteCatalogs } from "./seeds/importScrapedSiteCatalogs.js";
 
 export interface CatalogContext {
   repository: CatalogRepository;
@@ -54,6 +55,12 @@ export async function createCatalogContext(options?: { useMemory?: boolean }): P
       scopes: token.scopes,
     })),
   );
+
+  await importScrapedSiteCatalogs({
+    repository,
+    searchEngine,
+    repoRoot: catalogConfig.repoRoot,
+  });
 
   return {
     repository,

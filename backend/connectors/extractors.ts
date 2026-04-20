@@ -22,6 +22,38 @@ const PRODUCT_LINK_HINTS = [
   /\/p\//i,
 ];
 
+export interface CrawlCatalogOptions {
+  maxListingPages?: number;
+  maxProductPages?: number;
+  listingConcurrency?: number;
+  detailConcurrency?: number;
+}
+
+const DEFAULT_CRAWL_OPTIONS: Required<CrawlCatalogOptions> = {
+  maxListingPages: 200,
+  maxProductPages: 5000,
+  listingConcurrency: 4,
+  detailConcurrency: 8,
+};
+
+function readPositiveIntEnv(name: string): number | undefined {
+  const raw = process.env[name];
+  if (!raw) return undefined;
+  const value = Number(raw);
+  return Number.isInteger(value) && value > 0 ? value : undefined;
+}
+
+export function resolveCatalogCrawlOptions(options?: CrawlCatalogOptions): Required<CrawlCatalogOptions> {
+  return {
+    maxListingPages: options?.maxListingPages ?? readPositiveIntEnv("CATALOG_MAX_LISTING_PAGES") ?? DEFAULT_CRAWL_OPTIONS.maxListingPages,
+    maxProductPages: options?.maxProductPages ?? readPositiveIntEnv("CATALOG_MAX_PRODUCT_PAGES") ?? DEFAULT_CRAWL_OPTIONS.maxProductPages,
+    listingConcurrency:
+      options?.listingConcurrency ?? readPositiveIntEnv("CATALOG_LISTING_CONCURRENCY") ?? DEFAULT_CRAWL_OPTIONS.listingConcurrency,
+    detailConcurrency:
+      options?.detailConcurrency ?? readPositiveIntEnv("CATALOG_DETAIL_CONCURRENCY") ?? DEFAULT_CRAWL_OPTIONS.detailConcurrency,
+  };
+}
+
 export function extractJsonAssignments(html: string, assignmentNames: string[]): unknown[] {
   const payloads: unknown[] = [];
   for (const assignmentName of assignmentNames) {
@@ -380,13 +412,15 @@ export async function collectProductsFromCandidatePages(
 ): Promise<{ products: CatalogProductDraft[]; fetchedPages: string[] }> {
   const fetchedPages: string[] = [];
   const products: CatalogProductDraft[] = [];
+  const maxCandidatePages = readPositiveIntEnv("CATALOG_MAX_CANDIDATE_PAGES") ?? 80;
+  const maxCandidateProducts = readPositiveIntEnv("CATALOG_MAX_CANDIDATE_PRODUCTS") ?? 500;
 
-  for (const url of dedupeStrings(candidateUrls)) {
+  for (const url of dedupeStrings(candidateUrls).slice(0, maxCandidatePages)) {
     try {
       const html = await client.fetchText(url);
       fetchedPages.push(url);
       products.push(...extractProductsFromHtmlSources(storeId, connectorType, html, url));
-      if (products.length >= 120) break;
+      if (products.length >= maxCandidateProducts) break;
     } catch {
       // Ignore missing or blocked pages and continue probing alternatives.
     }
@@ -403,21 +437,13 @@ export async function crawlCatalogFromListingPages(
   connectorType: ConnectorType,
   client: { fetchText(url: string): Promise<string> },
   startUrls: string[],
-  options?: {
-    maxListingPages?: number;
-    maxProductPages?: number;
-    listingConcurrency?: number;
-    detailConcurrency?: number;
-  },
+  options?: CrawlCatalogOptions,
 ): Promise<{
   products: CatalogProductDraft[];
   listingPages: string[];
   productPages: string[];
 }> {
-  const maxListingPages = options?.maxListingPages ?? 50;
-  const maxProductPages = options?.maxProductPages ?? 1200;
-  const listingConcurrency = options?.listingConcurrency ?? 4;
-  const detailConcurrency = options?.detailConcurrency ?? 10;
+  const { maxListingPages, maxProductPages, listingConcurrency, detailConcurrency } = resolveCatalogCrawlOptions(options);
 
   const queue = [...dedupeStrings(startUrls)];
   const listingPages: string[] = [];
@@ -524,99 +550,49 @@ export function parseGenericProductDetailPage(
   const $ = load(html);
   const title =
     $("h1").first().text().trim() ||
-    $('meta[property="og:title"]').attr("content")?.trim() ||
-    $('meta[name="twitter:title"]').attr("content")?.trim() ||
+    $('meta[property="og:title"]').attr("content") ||
     $("title").first().text().trim();
   if (!title) return null;
 
-  // Canonical URL — most accurate identifier; falls back to og:url then sourceUrl.
-  const canonicalUrl =
-    $('link[rel="canonical"]').attr("href")?.trim() ||
-    $('meta[property="og:url"]').attr("content")?.trim() ||
-    sourceUrl;
-  const resolvedCanonical = toAbsoluteUrl(canonicalUrl, sourceUrl) ?? sourceUrl;
-
-  // Price extraction — try microdata first, then schema.org meta, then visible price.
-  const microPrice = parseNumberish(
-    $('[itemprop="price"]').attr("content") ||
-      $('[itemprop="price"]').first().text().trim() ||
-      $('meta[itemprop="price"]').attr("content") ||
-      $('meta[property="product:price:amount"]').attr("content") ||
-      $('meta[property="og:price:amount"]').attr("content"),
-  );
-  const microOriginalPrice = parseNumberish(
-    $('[itemprop="priceSpecification"] [itemprop="price"]').attr("content") ||
-      $('meta[property="product:original_price:amount"]').attr("content"),
-  );
-
-  const priceRoot = $(
-    ".summary .price, .product .price, p.price, span.price, .jibal-price-box, .product-info-price, .price-box, .price-final_price",
-  ).first();
-  const visibleLive = parseNumberish(
-    priceRoot.find("ins .amount, ins, .jibal-Price-amount.amount, .special-price .price, [data-price-type='finalPrice']").first().text().trim() ||
+  const priceRoot = $(".summary .price, .product .price, p.price, span.price, .jibal-price-box").first();
+  const livePrice = parseNumberish(
+    priceRoot.find("ins .amount, ins, .jibal-Price-amount.amount").first().text().trim() ||
       priceRoot.text().trim(),
   );
-  const visibleOriginal = parseNumberish(
-    priceRoot.find("del .amount, del, .old-price .price, [data-price-type='oldPrice']").first().text().trim(),
-  );
-
-  const livePrice = microPrice ?? visibleLive;
-  const originalPrice = microOriginalPrice ?? visibleOriginal ?? (visibleOriginal == null ? livePrice : undefined);
-
-  const currency =
-    $('meta[itemprop="priceCurrency"]').attr("content")?.trim() ||
-    $('meta[property="product:price:currency"]').attr("content")?.trim() ||
-    $('meta[property="og:price:currency"]').attr("content")?.trim() ||
-    $('[itemprop="priceCurrency"]').attr("content")?.trim() ||
-    "IQD";
+  const originalPrice = parseNumberish(
+    priceRoot.find("del .amount, del").first().text().trim(),
+  ) ?? livePrice;
 
   const availabilityText =
-    $('[itemprop="availability"]').attr("href")?.trim() ||
-    $('[itemprop="availability"]').attr("content")?.trim() ||
-    $('meta[property="product:availability"]').attr("content")?.trim() ||
-    $('meta[property="og:availability"]').attr("content")?.trim() ||
     $(".stock, .availability, .product-stock, .stock-status").first().text().trim() ||
     extractAvailabilityText(html);
   const sku =
-    $('[itemprop="sku"]').attr("content")?.trim() ||
-    $('[itemprop="sku"]').first().text().trim() ||
-    $(".sku .value, .product-sku, .sku").first().text().trim() ||
+    $(".sku").first().text().trim() ||
     cleanHtml((html.match(/SKU[\s\S]{0,150}?<span[^>]*>([\s\S]*?)<\/span>/i) ?? [])[1] ?? "");
-  const brand =
-    $('[itemprop="brand"] [itemprop="name"]').attr("content")?.trim() ||
-    $('[itemprop="brand"] [itemprop="name"]').first().text().trim() ||
-    $('[itemprop="brand"]').attr("content")?.trim() ||
-    $('meta[property="product:brand"]').attr("content")?.trim() ||
-    undefined;
-  const breadcrumbs = $("nav.breadcrumb a, .breadcrumb a, .breadcrumbs a, [itemtype*='BreadcrumbList'] [itemprop='name']")
+  const breadcrumbs = $("nav.breadcrumb a, .breadcrumb a, .breadcrumbs a")
     .map((_, element) => $(element).text().trim())
     .get()
     .filter(Boolean);
   const imageUrl =
-    $('meta[property="og:image"]').attr("content")?.trim() ||
-    $('[itemprop="image"]').attr("content")?.trim() ||
-    $('[itemprop="image"]').attr("src")?.trim() ||
-    $(".wp-post-image, .product-image img, .woocommerce-product-gallery__image img, .product-image-photo, img").first().attr("src") ||
+    $('meta[property="og:image"]').attr("content") ||
+    $(".wp-post-image, .product-image img, .woocommerce-product-gallery__image img, img").first().attr("src") ||
     undefined;
 
-  const availability = availabilityText
-    ? inferAvailabilityFromTextOrHtml(availabilityText, html)
-    : inferAvailabilityFromTextOrHtml("", html);
+  const availability = inferAvailabilityFromTextOrHtml(availabilityText, html);
   const now = nowIso();
-  const inferredBrand = brand ?? breadcrumbs[0];
   return {
     storeId,
-    sourceProductId: compactText(resolvedCanonical),
+    sourceProductId: compactText(sourceUrl),
     normalizedTitle: compactText(title),
     title,
-    brand: inferredBrand,
+    brand: breadcrumbs[0],
     model: undefined,
     sku: sku || undefined,
     categoryPath: breadcrumbs,
-    sourceUrl: resolvedCanonical,
+    sourceUrl,
     imageUrl,
     availability,
-    currency,
+    currency: "IQD",
     livePrice,
     originalPrice,
     onSale:
@@ -629,12 +605,11 @@ export function parseGenericProductDetailPage(
     offerLabel: undefined,
     offerStartsAt: undefined,
     offerEndsAt: undefined,
-    brandTokens: inferredBrand ? [compactText(inferredBrand)] : [],
+    brandTokens: breadcrumbs[0] ? [compactText(breadcrumbs[0])] : [],
     modelTokens: [],
     skuTokens: sku ? [compactText(sku)] : [],
     rawPayload: {
       availabilityText,
-      canonicalUrl: resolvedCanonical,
     },
   };
 }
@@ -661,25 +636,11 @@ function inferAvailabilityFromTextOrHtml(
   html: string,
 ): CatalogProductDraft["availability"] {
   const normalizedText = normalizeText(availabilityText);
-  // Preorder takes precedence — prevents "in stock" buttons on preorder pages.
-  if (/preorder|pre[-\s]?order|pre[-\s]?sale|coming soon|طلب مسبق|قريبا/i.test(normalizedText)) {
-    return "preorder";
-  }
-  if (/preorder|pre-order|backorder/i.test(html)) return "preorder";
-  if (
-    /outofstock|out of stock|sold out|unavailable|not available|غير متوفر|نفذت الكمية|نفد المخزون/i.test(normalizedText) ||
-    /\boutofstock\b/i.test(html) ||
-    /class="[^"]*out[-_]of[-_]stock/i.test(html)
-  ) {
+  if (/instock|in stock|available|متوفر/.test(normalizedText) || /\binstock\b/i.test(html)) return "in_stock";
+  if (/outofstock|out of stock|sold out|unavailable|not available|غير متوفر/.test(normalizedText) || /\boutofstock\b/i.test(html)) {
     return "out_of_stock";
   }
-  if (
-    /instock|in stock|available|متوفر|متاح/i.test(normalizedText) ||
-    /\binstock\b/i.test(html) ||
-    /add to cart|add[-_]to[-_]cart|اضف الى السلة|اضافة الى السلة/i.test(html)
-  ) {
-    return "in_stock";
-  }
+  if (/preorder|pre-order/.test(normalizedText)) return "preorder";
   return "unknown";
 }
 
@@ -745,35 +706,12 @@ async function mapWithConcurrency<T, R>(
 
 function normalizeAvailability(value: string | undefined, candidate: Record<string, unknown>): CatalogProductDraft["availability"] {
   const normalized = normalizeText(value ?? "");
-  // Schema.org availability URLs / strings.
-  if (/preorder|pre[-\s]?order|backorder/.test(normalized)) return "preorder";
-  if (
-    normalized.includes("instock") ||
-    normalized.includes("in stock") ||
-    normalized.includes("متوفر") ||
-    normalized.includes("متاح")
-  ) {
-    return "in_stock";
-  }
-  if (
-    normalized.includes("outofstock") ||
-    normalized.includes("out of stock") ||
-    normalized.includes("soldout") ||
-    normalized.includes("sold out") ||
-    normalized.includes("غير متوفر") ||
-    normalized.includes("نفذت")
-  ) {
+  if (normalized.includes("instock") || normalized.includes("in stock") || normalized.includes("متوفر")) return "in_stock";
+  if (normalized.includes("preorder")) return "preorder";
+  if (normalized.includes("outofstock") || normalized.includes("out of stock") || normalized.includes("غير متوفر")) {
     return "out_of_stock";
   }
   if (typeof candidate.in_stock === "boolean") return candidate.in_stock ? "in_stock" : "out_of_stock";
-  if (typeof candidate.is_in_stock === "boolean") return candidate.is_in_stock ? "in_stock" : "out_of_stock";
-  if (typeof candidate.available === "boolean") return candidate.available ? "in_stock" : "out_of_stock";
-  // Numeric stock counts: > 0 = in stock, 0 = out, negative = unknown.
-  const stockCount = parseNumberish(candidate.stock ?? candidate.quantity ?? candidate.inventory_quantity);
-  if (typeof stockCount === "number") {
-    if (stockCount > 0) return "in_stock";
-    if (stockCount === 0) return "out_of_stock";
-  }
   return "unknown";
 }
 

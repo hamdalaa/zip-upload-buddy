@@ -44,7 +44,11 @@ const envSchema = z.object({
     .string()
     .optional()
     .transform((value) => value === "true"),
-  PROBE_USER_AGENT: z.string().default("IraqCatalogBot/0.1 (+internal)"),
+  PROBE_USER_AGENT: z
+    .string()
+    .default(
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
+    ),
   QUEUE_PREFIX: z.string().default("iraq_catalog"),
 });
 

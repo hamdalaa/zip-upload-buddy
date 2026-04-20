@@ -10,6 +10,7 @@ import { CompareBar } from "@/components/CompareBar";
 import { CommandPalette } from "@/components/CommandPalette";
 import { WelcomeTour } from "@/components/WelcomeTour";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { SmoothScroll } from "@/components/SmoothScroll";
 import { BottomTabBar } from "@/components/BottomTabBar";
 import { PullToRefresh } from "@/components/PullToRefresh";
 import Index from "./pages/Index.tsx";
@@ -60,6 +61,7 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
+            <SmoothScroll />
             <ScrollToTop />
             <WelcomeTour />
             <Suspense fallback={<RouteFallback />}>

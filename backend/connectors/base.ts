@@ -2,7 +2,7 @@ import type { ProbeResult, StoreRecord, SyncResult } from "../shared/catalog/typ
 
 export interface ConnectorHttpClient {
   fetchText(url: string): Promise<string>;
-  fetchJson(url: string): Promise<unknown>;
+  fetchJson(url: string, init?: RequestInit): Promise<unknown>;
 }
 
 export interface ConnectorProbeContext {

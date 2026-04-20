@@ -1,18 +1,18 @@
 import { useDataStore } from "@/lib/dataStore";
+import { getPublicProductCount, getPublicStoreCount } from "@/lib/catalogCounts";
 import { relativeArabicTime } from "@/lib/search";
 import { CountUp } from "@/components/CountUp";
 import { Store, Boxes, RefreshCw } from "lucide-react";
 
 export function MetricsStrip() {
-  const { shops, products, shopSources } = useDataStore();
-  const activeShops = shops.filter((s) => !s.archivedAt);
+  const { shops, products, shopSources, summary } = useDataStore();
   const lastCrawl = shopSources
     .filter((s) => s.lastCrawledAt)
     .sort((a, b) => new Date(b.lastCrawledAt!).getTime() - new Date(a.lastCrawledAt!).getTime())[0];
 
   const items = [
     {
-      value: Math.max(activeShops.length, 3100),
+      value: getPublicStoreCount(summary.totalStores, shops.filter((s) => !s.archivedAt).length),
       label: "محل بالدليل",
       sub: "شارع الصناعة + الربيعي",
       icon: Store,
@@ -20,7 +20,7 @@ export function MetricsStrip() {
       animated: true,
     },
     {
-      value: products.length,
+      value: getPublicProductCount(summary.totalProducts, products.length),
       label: "منتج مفهرس",
       sub: "بحث محلي فوري",
       icon: Boxes,

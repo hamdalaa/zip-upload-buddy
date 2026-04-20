@@ -70,7 +70,7 @@ export const CITIES: CityIndexEntry[] = cityIndex as CityIndexEntry[];
 
 // Vite dynamic-import map for code-splitting one chunk per city.
 // Keys are paths relative to this file.
-const cityLoaders = import.meta.glob("../data/cities/*.json");
+const cityLoaders = import.meta.glob(["../data/cities/*.json", "!../data/cities/index.json"]);
 
 const cache = new Map<string, CityFile>();
 

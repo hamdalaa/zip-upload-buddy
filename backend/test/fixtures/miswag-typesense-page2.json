@@ -1,0 +1,33 @@
+{
+  "results": [
+    {
+      "found": 3,
+      "hits": [
+        {
+          "document": {
+            "id": "1750000003",
+            "variation_id": "1750000003",
+            "alias": "anker-iphone-charger-20w",
+            "title_AR": "شاحن انكر للايفون 20 واط",
+            "title_EN": "Anker iPhone Charger 20W",
+            "short_description": "شاحن سريع للايفون",
+            "facet_brand": "Anker@@https://cdn.miswag.me/images/thumbs512/anker.png",
+            "facet_merchant": "Karada Store@@https://cdn.miswag.me/images/thumbs512/karada-store.png",
+            "url": "https://miswag.com/products/1750000003",
+            "image": "https://cdn.miswag.me/images/thumbs512/anker-charger-20w.png",
+            "availability": "false",
+            "pre_order": false,
+            "price_currency": "IQD",
+            "price_numeric_value": 35000,
+            "price_original_value": 40000,
+            "is_on_sale": true,
+            "created_at": 1776600000,
+            "l1_division_ar": "ألكترونيات",
+            "l2_division_ar": " اجهزة و ملحقات الكترونيه متنوعة",
+            "l3_division_ar": "اجهزة و ملحقات متنوعة"
+          }
+        }
+      ]
+    }
+  ]
+}

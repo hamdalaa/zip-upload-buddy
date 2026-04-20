@@ -7,6 +7,20 @@ export interface DataStoreValue {
   products: ProductIndex[];
   brands: BrandDealer[];
   crawlRuns: CrawlRun[];
+  loading: boolean;
+  error: string | null;
+  summary: {
+    totalStores: number;
+    indexedStores: number;
+    totalProducts: number;
+    lastSyncAt?: string;
+  };
+  home: {
+    deals: ProductIndex[];
+    trending: ProductIndex[];
+    latest: ProductIndex[];
+  };
+  registerProducts: (products: ProductIndex[]) => void;
   addShop: (
     input: Omit<Shop, "id" | "slug" | "seedKey" | "createdAt" | "updatedAt" | "discoverySource" | "verified" | "verificationStatus"> & { verified?: boolean },
   ) => Shop;

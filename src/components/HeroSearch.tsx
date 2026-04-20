@@ -21,7 +21,7 @@ export function HeroSearch({
   initialCategory = "all",
 }: Props) {
   const nav = useNavigate();
-  const { shops } = useDataStore();
+  const { shops, products } = useDataStore();
   const [q, setQ] = useState(initialQ);
   const [area, setArea] = useState<Area | "all">(initialArea);
   const [category, setCategory] = useState<Category | "all">(initialCategory);
@@ -31,8 +31,8 @@ export function HeroSearch({
   const [acIndex, setAcIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const suggestions: AutocompleteSuggestion[] = useMemo(
-    () => buildAutocomplete(q, shops, 8),
-    [q, shops],
+    () => buildAutocomplete(q, shops, products, 8),
+    [q, shops, products],
   );
 
   function handleAcSelect(s: AutocompleteSuggestion) {

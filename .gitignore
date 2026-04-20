@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local agent/editor metadata
+.agents/
+.claude/
+
+# Generated catalog export data
+backend/.catalog-output/

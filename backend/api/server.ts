@@ -6,6 +6,19 @@ import { createRedisConnection, BullCatalogJobQueue, type CatalogJobQueue } from
 import { TokenRateLimiter } from "../shared/security/rateLimiter.js";
 import { createInternalAuth, requireCatalogScopes } from "./auth.js";
 import { CatalogRefreshService } from "../shared/services/catalogRefreshService.js";
+import { importScrapedSiteCatalogs } from "../shared/seeds/importScrapedSiteCatalogs.js";
+import {
+  buildPublicBootstrap,
+  buildPublicCatalogProducts,
+  buildPublicBrandDetail,
+  buildPublicProductDetail,
+  buildPublicProductOffers,
+  buildPublicProductsByIds,
+  buildPublicStoreDetail,
+  buildPublicUnifiedSearch,
+  getPublicCity,
+  listPublicCities,
+} from "./publicCatalog.js";
 
 export async function createCatalogApiServer(
   providedContext?: CatalogContext,
@@ -13,6 +26,11 @@ export async function createCatalogApiServer(
 ) {
   const context = providedContext ?? (await createCatalogContext());
   await context.discoveryService.rescan("bootstrap");
+  await importScrapedSiteCatalogs({
+    repository: context.repository,
+    searchEngine: context.searchEngine,
+    repoRoot: catalogConfig.repoRoot,
+  });
   const queue =
     providedQueue ??
     new BullCatalogJobQueue(createRedisConnection());
@@ -29,6 +47,123 @@ export async function createCatalogApiServer(
   const app = Fastify({ logger: true });
 
   app.get("/healthz", async () => ({ ok: true }));
+  app.get("/public/healthz", async () => ({ ok: true }));
+  app.get("/public/bootstrap", async () => buildPublicBootstrap(context));
+  app.get<{
+    Querystring: {
+      limit?: string;
+      offset?: string;
+    };
+  }>("/public/catalog-products", async (request) =>
+    buildPublicCatalogProducts(context, {
+      limit: request.query.limit ? Number(request.query.limit) : undefined,
+      offset: request.query.offset ? Number(request.query.offset) : undefined,
+    }),
+  );
+  app.get("/public/cities", async () => listPublicCities());
+
+  app.get<{ Params: { slug: string } }>("/public/cities/:slug", async (request, reply) => {
+    const city = await getPublicCity(request.params.slug);
+    if (!city) {
+      reply.code(404).send({ error: "city_not_found" });
+      return;
+    }
+    return city;
+  });
+
+  app.get<{ Params: { id: string } }>("/public/stores/:id", async (request, reply) => {
+    const detail = await buildPublicStoreDetail(context, request.params.id);
+    if (!detail) {
+      reply.code(404).send({ error: "store_not_found" });
+      return;
+    }
+    return detail;
+  });
+
+  app.get<{
+    Querystring: {
+      id?: string | string[];
+    };
+  }>("/public/products/by-ids", async (request) => {
+    const ids = Array.isArray(request.query.id)
+      ? request.query.id
+      : request.query.id
+        ? [request.query.id]
+        : [];
+
+    return {
+      items: await buildPublicProductsByIds(context, ids),
+    };
+  });
+
+  app.get<{ Params: { id: string } }>("/public/products/:id", async (request, reply) => {
+    const product = await buildPublicProductDetail(context, request.params.id);
+    if (!product) {
+      reply.code(404).send({ error: "product_not_found" });
+      return;
+    }
+    return product;
+  });
+
+  app.get<{ Params: { id: string } }>("/public/products/:id/offers", async (request, reply) => {
+    const offers = await buildPublicProductOffers(context, request.params.id);
+    if (offers.length === 0) {
+      const product = await buildPublicProductDetail(context, request.params.id);
+      if (!product) {
+        reply.code(404).send({ error: "product_not_found" });
+        return;
+      }
+    }
+    return offers;
+  });
+
+  app.get<{ Params: { slug: string } }>("/public/brands/:slug", async (request, reply) => {
+    const brand = await buildPublicBrandDetail(context, request.params.slug);
+    if (!brand) {
+      reply.code(404).send({ error: "brand_not_found" });
+      return;
+    }
+    return brand;
+  });
+
+  app.get<{
+    Querystring: {
+      q?: string;
+      brands?: string | string[];
+      categories?: string | string[];
+      stores?: string | string[];
+      cities?: string | string[];
+      priceMin?: string;
+      priceMax?: string;
+      inStockOnly?: string;
+      onSaleOnly?: string;
+      verifiedOnly?: string;
+      officialDealerOnly?: string;
+      sort?: "relevance" | "price_asc" | "price_desc" | "rating_desc" | "freshness_desc" | "offers_desc";
+    };
+  }>("/public/search", async (request) => {
+    const asList = (value?: string | string[]) =>
+      Array.isArray(value)
+        ? value.flatMap((entry) => entry.split(",")).map((entry) => entry.trim()).filter(Boolean)
+        : value
+          ? value.split(",").map((entry) => entry.trim()).filter(Boolean)
+          : undefined;
+
+    return buildPublicUnifiedSearch(context, {
+      q: request.query.q,
+      brands: asList(request.query.brands),
+      categories: asList(request.query.categories),
+      stores: asList(request.query.stores),
+      cities: asList(request.query.cities),
+      priceMin: request.query.priceMin ? Number(request.query.priceMin) : undefined,
+      priceMax: request.query.priceMax ? Number(request.query.priceMax) : undefined,
+      inStockOnly: request.query.inStockOnly === "true",
+      onSaleOnly: request.query.onSaleOnly === "true",
+      verifiedOnly: request.query.verifiedOnly === "true",
+      officialDealerOnly: request.query.officialDealerOnly === "true",
+      sort: request.query.sort,
+    });
+  });
 
   app.addHook("preHandler", async (request, reply) => {
     if (!request.url.startsWith("/internal")) return;

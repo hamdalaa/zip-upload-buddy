@@ -1,5 +1,6 @@
 import type { CatalogConnector } from "./base.js";
 import {
+  buildCommonCatalogUrls,
   buildOffersFromProducts,
   crawlCatalogFromListingPages,
   dedupeProducts,
@@ -42,46 +43,78 @@ export const woocommerceConnector: CatalogConnector = {
 
   async sync({ store, client, profile }) {
     const productsEndpoint = profile.endpoints.products;
-    let payload: unknown = [];
     let apiProducts: CatalogProductDraft[] = [];
+    const apiPageSummaries: Array<{ url: string; count: number }> = [];
     if (productsEndpoint) {
-      try {
-        payload = await client.fetchJson(productsEndpoint);
-        const rawItems = Array.isArray(payload) ? payload : [];
-        apiProducts = rawItems
-          .map((item) => normalizeWooItem(store.id, item, productsEndpoint))
-          .filter((product): product is NonNullable<typeof product> => Boolean(product));
-      } catch {
-        payload = [];
-      }
+      const pages = await fetchWooStoreApiProducts(client, productsEndpoint);
+      apiPageSummaries.push(...pages.map((page) => ({ url: page.url, count: page.items.length })));
+      apiProducts = pages
+        .flatMap((page) => page.items)
+        .map((item) => normalizeWooItem(store.id, item, productsEndpoint))
+        .filter((product): product is NonNullable<typeof product> => Boolean(product));
     }
 
     const homepageUrl = store.website ?? productsEndpoint ?? "";
-    const crawled = await crawlCatalogFromListingPages(
-      store.id,
-      "woocommerce",
-      client,
-      [homepageUrl],
-      {
-        maxListingPages: 40,
-        maxProductPages: 800,
-      },
-    );
+    const crawled =
+      apiProducts.length > 0
+        ? { products: [], listingPages: [], productPages: [] }
+        : await crawlCatalogFromListingPages(
+            store.id,
+            "woocommerce",
+            client,
+            buildCommonCatalogUrls(homepageUrl),
+            {
+              maxListingPages: 200,
+              maxProductPages: 5000,
+            },
+          );
     const products = dedupeProducts([...apiProducts, ...crawled.products]);
 
     return {
       products,
       variants: [],
       offers: buildOffersFromProducts(products),
-      estimatedCatalogSize: products.length,
+      estimatedCatalogSize: Math.max(products.length, apiProducts.length, crawled.productPages.length),
       snapshots: [
-        { label: "products_api", payload },
+        { label: "products_api_pages", payload: apiPageSummaries },
         { label: "listing_pages", payload: crawled.listingPages },
         { label: "detail_pages", payload: crawled.productPages },
       ],
     };
   },
 };
+
+async function fetchWooStoreApiProducts(
+  client: { fetchJson(url: string): Promise<unknown> },
+  firstPageUrl: string,
+): Promise<Array<{ url: string; items: unknown[] }>> {
+  const pages: Array<{ url: string; items: unknown[] }> = [];
+
+  for (let page = 1; page <= 100; page++) {
+    const url = withUrlPage(firstPageUrl, page);
+    let payload: unknown;
+    try {
+      payload = await client.fetchJson(url);
+    } catch {
+      break;
+    }
+
+    const items = Array.isArray(payload) ? payload : [];
+    if (items.length === 0) break;
+    pages.push({ url, items });
+  }
+
+  return pages;
+}
+
+function withUrlPage(url: string, page: number): string {
+  const parsed = new URL(url);
+  parsed.searchParams.set("page", String(page));
+  if (!parsed.searchParams.has("per_page")) {
+    parsed.searchParams.set("per_page", "100");
+  }
+  return parsed.toString();
+}
 
 function normalizeWooItem(storeId: string, item: unknown, fallbackSourceUrl: string) {
   if (!item || typeof item !== "object" || Array.isArray(item)) return null;

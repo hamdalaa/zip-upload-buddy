@@ -1,3 +1,4 @@
+import tailwindcssAnimate from "tailwindcss-animate";
 import type { Config } from "tailwindcss";
 
 export default {
@@ -177,7 +178,10 @@ export default {
         "spin-slow": "spin-slow 20s linear infinite",
         "ping-soft": "ping-soft 1.5s cubic-bezier(0, 0, 0.2, 1) infinite",
       },
+      transitionTimingFunction: {
+        ios: "cubic-bezier(0.32, 0.72, 0, 1)",
+      },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [tailwindcssAnimate],
 } satisfies Config;

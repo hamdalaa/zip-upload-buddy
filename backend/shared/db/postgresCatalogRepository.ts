@@ -21,8 +21,27 @@ import type {
 import type { CatalogRepository, ServiceTokenRecord } from "../repositories/contracts.js";
 import { createId } from "../catalog/normalization.js";
 
+type DbRow = Record<string, unknown>;
+
 function asJson<T>(value: T): string {
   return JSON.stringify(value);
+}
+
+function asOptionalIsoString(value: unknown): string | undefined {
+  if (value == null) return undefined;
+  return value instanceof Date ? value.toISOString() : String(value);
+}
+
+function asRequiredIsoString(value: unknown): string {
+  return asOptionalIsoString(value) ?? new Date().toISOString();
+}
+
+function asStringArray(value: unknown): string[] {
+  return Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
+}
+
+function asUnknownRecord(value: unknown): Record<string, unknown> {
+  return value && typeof value === "object" && !Array.isArray(value) ? { ...(value as Record<string, unknown>) } : {};
 }
 
 export class PostgresCatalogRepository implements CatalogRepository {
@@ -410,57 +429,59 @@ export class PostgresCatalogRepository implements CatalogRepository {
     ]);
 
     return {
-      products: productsResult.rows.map((row: any) => ({
-        storeId: row.store_id,
-        sourceProductId: row.source_product_id,
-        normalizedTitle: row.normalized_title,
-        title: row.title,
-        brand: row.brand ?? undefined,
-        model: row.model ?? undefined,
-        sku: row.sku ?? undefined,
-        sellerName: row.seller_name ?? undefined,
-        sellerId: row.seller_id ?? undefined,
-        categoryPath: row.category_path ?? [],
-        sourceUrl: row.source_url,
-        imageUrl: row.image_url ?? undefined,
-        availability: row.availability,
-        currency: row.currency,
-        livePrice: row.live_price ?? undefined,
-        originalPrice: row.original_price ?? undefined,
-        onSale: row.on_sale,
-        sourceConnector: row.source_connector,
-        freshnessAt: row.freshness_at.toISOString(),
-        lastSeenAt: row.last_seen_at.toISOString(),
-        offerLabel: row.offer_label ?? undefined,
-        offerStartsAt: row.offer_starts_at?.toISOString(),
-        offerEndsAt: row.offer_ends_at?.toISOString(),
-        brandTokens: row.brand_tokens ?? [],
-        modelTokens: row.model_tokens ?? [],
-        skuTokens: row.sku_tokens ?? [],
-        rawPayload: row.raw_payload ?? {},
+      products: productsResult.rows.map((row: DbRow) => ({
+        storeId: String(row.store_id),
+        sourceProductId: String(row.source_product_id),
+        normalizedTitle: String(row.normalized_title),
+        title: String(row.title),
+        brand: row.brand == null ? undefined : String(row.brand),
+        model: row.model == null ? undefined : String(row.model),
+        sku: row.sku == null ? undefined : String(row.sku),
+        sellerName: row.seller_name == null ? undefined : String(row.seller_name),
+        sellerId: row.seller_id == null ? undefined : String(row.seller_id),
+        categoryPath: asStringArray(row.category_path),
+        sourceUrl: String(row.source_url),
+        imageUrl: row.image_url == null ? undefined : String(row.image_url),
+        availability: String(row.availability) as CatalogProductDraft["availability"],
+        currency: String(row.currency),
+        livePrice: typeof row.live_price === "number" ? row.live_price : undefined,
+        originalPrice: typeof row.original_price === "number" ? row.original_price : undefined,
+        onSale: Boolean(row.on_sale),
+        sourceConnector: String(row.source_connector) as CatalogProductDraft["sourceConnector"],
+        freshnessAt: asRequiredIsoString(row.freshness_at),
+        lastSeenAt: asRequiredIsoString(row.last_seen_at),
+        offerLabel: row.offer_label == null ? undefined : String(row.offer_label),
+        offerStartsAt: asOptionalIsoString(row.offer_starts_at),
+        offerEndsAt: asOptionalIsoString(row.offer_ends_at),
+        brandTokens: asStringArray(row.brand_tokens),
+        modelTokens: asStringArray(row.model_tokens),
+        skuTokens: asStringArray(row.sku_tokens),
+        rawPayload: asUnknownRecord(row.raw_payload),
       })),
-      variants: variantsResult.rows.map((row: any) => ({
-        productSourceId: row.product_source_id,
-        sourceVariantId: row.source_variant_id,
-        title: row.title,
-        sku: row.sku ?? undefined,
-        availability: row.availability,
-        livePrice: row.live_price ?? undefined,
-        originalPrice: row.original_price ?? undefined,
-        attributes: row.attributes ?? {},
-        lastSeenAt: row.last_seen_at.toISOString(),
-        rawPayload: row.raw_payload ?? {},
+      variants: variantsResult.rows.map((row: DbRow) => ({
+        productSourceId: String(row.product_source_id),
+        sourceVariantId: String(row.source_variant_id),
+        title: String(row.title),
+        sku: row.sku == null ? undefined : String(row.sku),
+        availability: String(row.availability) as CatalogProductDraft["availability"],
+        livePrice: typeof row.live_price === "number" ? row.live_price : undefined,
+        originalPrice: typeof row.original_price === "number" ? row.original_price : undefined,
+        attributes: Object.fromEntries(
+          Object.entries(asUnknownRecord(row.attributes)).map(([key, value]) => [key, String(value)]),
+        ),
+        lastSeenAt: asRequiredIsoString(row.last_seen_at),
+        rawPayload: asUnknownRecord(row.raw_payload),
       })),
-      offers: offersResult.rows.map((row: any) => ({
-        productSourceId: row.product_source_id,
-        label: row.label ?? undefined,
-        discountAmount: row.discount_amount ?? undefined,
-        discountPercent: row.discount_percent ?? undefined,
-        startsAt: row.starts_at?.toISOString(),
-        endsAt: row.ends_at?.toISOString(),
-        active: row.active,
-        lastSeenAt: row.last_seen_at.toISOString(),
-        metadata: row.metadata ?? {},
+      offers: offersResult.rows.map((row: DbRow) => ({
+        productSourceId: String(row.product_source_id),
+        label: row.label == null ? undefined : String(row.label),
+        discountAmount: typeof row.discount_amount === "number" ? row.discount_amount : undefined,
+        discountPercent: typeof row.discount_percent === "number" ? row.discount_percent : undefined,
+        startsAt: asOptionalIsoString(row.starts_at),
+        endsAt: asOptionalIsoString(row.ends_at),
+        active: Boolean(row.active),
+        lastSeenAt: asRequiredIsoString(row.last_seen_at),
+        metadata: asUnknownRecord(row.metadata),
       })),
     };
   }
@@ -581,20 +602,20 @@ export class PostgresCatalogRepository implements CatalogRepository {
 
   async listAcquisitionProfiles(): Promise<DomainAcquisitionProfile[]> {
     const result = await this.pool.query("SELECT * FROM domain_acquisition_profiles");
-    return result.rows.map((row: any) => ({
-      storeId: row.store_id,
-      rootDomain: row.root_domain,
-      websiteType: row.website_type,
-      connectorType: row.connector_type ?? undefined,
-      strategy: row.strategy,
-      lifecycleState: row.lifecycle_state,
-      publicCatalogDetected: row.public_catalog_detected,
-      requiresSession: row.requires_session,
-      requiresFeed: row.requires_feed,
-      duplicateOfStoreId: row.duplicate_of_store_id ?? undefined,
-      notes: row.notes ?? undefined,
-      lastClassifiedAt: row.last_classified_at.toISOString(),
-      details: row.details ?? {},
+    return result.rows.map((row: DbRow) => ({
+      storeId: String(row.store_id),
+      rootDomain: String(row.root_domain),
+      websiteType: String(row.website_type) as DomainAcquisitionProfile["websiteType"],
+      connectorType: row.connector_type == null ? undefined : String(row.connector_type) as DomainAcquisitionProfile["connectorType"],
+      strategy: String(row.strategy) as DomainAcquisitionProfile["strategy"],
+      lifecycleState: String(row.lifecycle_state) as DomainAcquisitionProfile["lifecycleState"],
+      publicCatalogDetected: Boolean(row.public_catalog_detected),
+      requiresSession: Boolean(row.requires_session),
+      requiresFeed: Boolean(row.requires_feed),
+      duplicateOfStoreId: row.duplicate_of_store_id == null ? undefined : String(row.duplicate_of_store_id),
+      notes: row.notes == null ? undefined : String(row.notes),
+      lastClassifiedAt: asRequiredIsoString(row.last_classified_at),
+      details: asUnknownRecord(row.details),
     }));
   }
 
@@ -624,16 +645,16 @@ export class PostgresCatalogRepository implements CatalogRepository {
       "SELECT * FROM domain_blocker_evidence WHERE store_id = $1 ORDER BY observed_at DESC",
       [storeId],
     );
-    return result.rows.map((row: any) => ({
-      id: row.id,
-      storeId: row.store_id,
-      blockerType: row.blocker_type,
-      reason: row.reason,
-      httpStatus: row.http_status ?? undefined,
-      observedUrl: row.observed_url ?? undefined,
-      observedAt: row.observed_at.toISOString(),
-      retryAfterHours: row.retry_after_hours ?? undefined,
-      details: row.details ?? {},
+    return result.rows.map((row: DbRow) => ({
+      id: String(row.id),
+      storeId: String(row.store_id),
+      blockerType: String(row.blocker_type) as DomainBlockerEvidence["blockerType"],
+      reason: String(row.reason),
+      httpStatus: typeof row.http_status === "number" ? row.http_status : undefined,
+      observedUrl: row.observed_url == null ? undefined : String(row.observed_url),
+      observedAt: asRequiredIsoString(row.observed_at),
+      retryAfterHours: typeof row.retry_after_hours === "number" ? row.retry_after_hours : undefined,
+      details: asUnknownRecord(row.details),
     }));
   }
 
@@ -760,23 +781,23 @@ export class PostgresCatalogRepository implements CatalogRepository {
       `,
     );
 
-    return result.rows.map((row: any) => ({
-      id: `${row.store_id}:${row.source_product_id}`,
-      storeId: row.store_id,
-      storeName: row.store_name,
-      normalizedTitle: row.normalized_title,
-      title: row.title,
-      brand: row.brand ?? undefined,
-      model: row.model ?? undefined,
-      sku: row.sku ?? undefined,
-      livePrice: row.live_price ?? undefined,
-      originalPrice: row.original_price ?? undefined,
-      onSale: row.on_sale,
-      availability: row.availability,
-      freshnessAt: row.freshness_at.toISOString(),
-      sourceUrl: row.source_url,
-      categoryPath: Array.isArray(row.category_path) ? row.category_path.join(" > ") : "",
-      sellerName: row.seller_name ?? undefined,
+    return result.rows.map((row: DbRow) => ({
+      id: `${String(row.store_id)}:${String(row.source_product_id)}`,
+      storeId: String(row.store_id),
+      storeName: String(row.store_name),
+      normalizedTitle: String(row.normalized_title),
+      title: String(row.title),
+      brand: row.brand == null ? undefined : String(row.brand),
+      model: row.model == null ? undefined : String(row.model),
+      sku: row.sku == null ? undefined : String(row.sku),
+      livePrice: typeof row.live_price === "number" ? row.live_price : undefined,
+      originalPrice: typeof row.original_price === "number" ? row.original_price : undefined,
+      onSale: Boolean(row.on_sale),
+      availability: String(row.availability) as SearchDocument["availability"],
+      freshnessAt: asRequiredIsoString(row.freshness_at),
+      sourceUrl: String(row.source_url),
+      categoryPath: asStringArray(row.category_path).join(" > "),
+      sellerName: row.seller_name == null ? undefined : String(row.seller_name),
     }));
   }
 
@@ -829,7 +850,7 @@ export class PostgresCatalogRepository implements CatalogRepository {
     return Boolean(result.rows[0]);
   }
 
-  private mapStoreRow(row: Record<string, any>): StoreRecord {
+  private mapStoreRow(row: DbRow): StoreRecord {
     return {
       id: String(row.id),
       placeId: row.place_id ? String(row.place_id) : undefined,
@@ -852,13 +873,13 @@ export class PostgresCatalogRepository implements CatalogRepository {
       discoverySource: String(row.discovery_source ?? "city_seed") as StoreRecord["discoverySource"],
       sourceFile: row.source_file ? String(row.source_file) : undefined,
       highPriority: Boolean(row.high_priority),
-      metadata: (row.metadata as Record<string, unknown> | undefined) ?? {},
+      metadata: asUnknownRecord(row.metadata),
       status: String(row.status) as StoreRecord["status"],
       blockedReason: row.blocked_reason ? String(row.blocked_reason) : undefined,
-      lastProbeAt: row.last_probe_at instanceof Date ? row.last_probe_at.toISOString() : row.last_probe_at ? String(row.last_probe_at) : undefined,
-      lastSyncAt: row.last_sync_at instanceof Date ? row.last_sync_at.toISOString() : row.last_sync_at ? String(row.last_sync_at) : undefined,
-      createdAt: row.created_at instanceof Date ? row.created_at.toISOString() : String(row.created_at ?? new Date().toISOString()),
-      updatedAt: row.updated_at instanceof Date ? row.updated_at.toISOString() : String(row.updated_at ?? new Date().toISOString()),
+      lastProbeAt: asOptionalIsoString(row.last_probe_at),
+      lastSyncAt: asOptionalIsoString(row.last_sync_at),
+      createdAt: asRequiredIsoString(row.created_at),
+      updatedAt: asRequiredIsoString(row.updated_at),
     };
   }
 }

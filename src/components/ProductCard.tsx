@@ -6,11 +6,12 @@ import { StarRating } from "./StarRating";
 import { PriceBlock } from "./PriceBlock";
 import { StaleBadge } from "./Badges";
 import { isStale, relativeArabicTime, type ScoredProduct } from "@/lib/search";
-import { CATEGORY_IMAGES } from "@/lib/mockData";
 import { optimizeImageUrl } from "@/lib/imageUrl";
 import { useUserPrefs } from "@/lib/userPrefs";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { getFallbackProductImage, isRenderableProductImage } from "@/lib/productVisuals";
+import { decodeHtmlEntities } from "@/lib/textDisplay";
 
 export function ProductCard({
   product,
@@ -24,7 +25,11 @@ export function ProductCard({
   layout?: "grid" | "list";
 }) {
   const stale = isStale(product.crawledAt);
-  const rawImg = product.imageUrl ?? CATEGORY_IMAGES[product.category];
+  const productName = decodeHtmlEntities(product.name);
+  const productBrand = decodeHtmlEntities(product.brand);
+  const shopName = decodeHtmlEntities(product.shopName);
+  const fallbackImg = getFallbackProductImage(product.category);
+  const rawImg = isRenderableProductImage(product.imageUrl) ? product.imageUrl : fallbackImg;
   const img = optimizeImageUrl(rawImg, { width: 640, height: 640 }) ?? rawImg;
   const { isFavorite, toggleFavorite, isInCompare, toggleCompare, compare } = useUserPrefs();
   const fav = isFavorite(product.id);
@@ -58,7 +63,20 @@ export function ProductCard({
         )}
       >
         <Link to={`/shop-view/${product.shopId}`} className="relative block overflow-hidden rounded-2xl bg-surface-2">
-          <img src={img} alt={product.name} loading="lazy" decoding="async" width={640} height={640} className="smooth-img h-full w-full object-cover" />
+          <img
+            src={img}
+            alt={productName}
+            loading="lazy"
+            decoding="async"
+            width={640}
+            height={640}
+            onError={(event) => {
+              if (event.currentTarget.src !== fallbackImg) {
+                event.currentTarget.src = fallbackImg;
+              }
+            }}
+            className="smooth-img h-full w-full object-cover"
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
           {bestPrice && (
             <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-success px-2.5 py-1 text-[10px] font-bold text-white">
@@ -73,7 +91,7 @@ export function ProductCard({
           <div className="flex flex-wrap items-center gap-2">
             {product.brand && (
               <span className="rounded-full bg-secondary/8 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-secondary">
-                {product.brand}
+                {productBrand}
               </span>
             )}
             <span className="text-[11px] font-semibold text-muted-foreground">{product.category}</span>
@@ -86,7 +104,7 @@ export function ProductCard({
           </div>
 
           <h3 className="mt-3 line-clamp-2 font-display text-3xl font-bold leading-[0.92] text-foreground">
-            {product.name}
+            {productName}
           </h3>
 
           {product.rating && <div className="mt-3"><StarRating rating={product.rating} reviews={product.reviewCount} size="xs" /></div>}
@@ -101,7 +119,7 @@ export function ProductCard({
               />
               <div className="inline-flex items-center gap-2 text-xs text-muted-foreground">
                 <Store className="h-3.5 w-3.5 text-accent" />
-                {product.shopName}
+                {shopName}
               </div>
               <div className="text-[11px] text-muted-foreground">آخر فهرسة {relativeArabicTime(product.crawledAt)}</div>
             </div>
@@ -153,7 +171,20 @@ export function ProductCard({
       )}
 
       <Link to={`/shop-view/${product.shopId}`} className="relative block aspect-[1/1.02] overflow-hidden bg-surface-2 sm:aspect-[1/1.06]">
-        <img src={img} alt={product.name} loading="lazy" decoding="async" width={640} height={640} className="smooth-img h-full w-full object-cover" />
+        <img
+            src={img}
+            alt={productName}
+          loading="lazy"
+          decoding="async"
+          width={640}
+          height={640}
+          onError={(event) => {
+            if (event.currentTarget.src !== fallbackImg) {
+              event.currentTarget.src = fallbackImg;
+            }
+          }}
+          className="smooth-img h-full w-full object-cover"
+        />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_18%,rgba(6,17,28,0.08)_46%,rgba(6,17,28,0.72)_100%)]" />
 
         <div className="absolute right-3 top-3 z-10 flex flex-col gap-2">
@@ -169,11 +200,11 @@ export function ProductCard({
             <div className="min-w-0">
               {product.brand && (
                 <div className="mb-2 inline-flex rounded-full bg-white/12 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-white">
-                  {product.brand}
+                  {productBrand}
                 </div>
               )}
               <h3 className="line-clamp-2 font-display text-[1.35rem] font-bold leading-[0.96] drop-shadow-[0_2px_8px_rgba(0,0,0,0.25)] sm:text-2xl sm:leading-[0.92]">
-                {product.name}
+          {productName}
               </h3>
             </div>
             {product.rating && (
@@ -189,7 +220,7 @@ export function ProductCard({
         <div className="flex items-center justify-between gap-3">
           <Link to={`/shop-view/${product.shopId}`} className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground hover:text-foreground">
             <Store className="h-3.5 w-3.5 text-accent" />
-            <span className="truncate">{product.shopName}</span>
+            <span className="truncate">{shopName}</span>
           </Link>
           <span className="text-[11px] font-semibold text-muted-foreground">{product.category}</span>
         </div>

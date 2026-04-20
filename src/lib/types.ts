@@ -38,11 +38,17 @@ export interface Shop {
   verificationStatus: "verified" | "pending" | "unverified";
   notes?: string;
   imageUrl?: string;             // storefront photo (e.g. from Google Places)
+  gallery?: string[];
   createdAt: string;
   updatedAt: string;
   archivedAt?: string;
   duplicateOf?: string;
   featured?: boolean;
+  productCount?: number;
+  offerCount?: number;
+  lastSyncAt?: string;
+  lastProbeAt?: string;
+  sourceStatus?: string;
 }
 
 export interface ShopSource {

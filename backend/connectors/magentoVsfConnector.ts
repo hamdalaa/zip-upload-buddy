@@ -1,5 +1,14 @@
 import type { CatalogConnector } from "./base.js";
-import { buildOffersFromProducts, dedupeProducts, extractNuxtPayloads, extractProductCandidates, parseProductCardsFromHtml, toCatalogProductDraft } from "./extractors.js";
+import {
+  buildCommonCatalogUrls,
+  buildOffersFromProducts,
+  crawlCatalogFromListingPages,
+  dedupeProducts,
+  extractNuxtPayloads,
+  extractProductCandidates,
+  parseProductCardsFromHtml,
+  toCatalogProductDraft,
+} from "./extractors.js";
 
 export const magentoVsfConnector: CatalogConnector = {
   type: "magento_vsf",
@@ -41,14 +50,34 @@ export const magentoVsfConnector: CatalogConnector = {
       .map((candidate) => toCatalogProductDraft(store.id, "magento_vsf", candidate, homepageUrl))
       .filter((product): product is NonNullable<typeof product> => Boolean(product));
     const htmlProducts = parseProductCardsFromHtml(store.id, "magento_vsf", homepageHtml, homepageUrl);
-    const products = dedupeProducts([...payloadProducts, ...htmlProducts]);
+    const seedUrls = [
+      homepageUrl,
+      ...(profile.endpoints.categories ? [profile.endpoints.categories] : []),
+      ...(profile.endpoints.search ? [profile.endpoints.search] : []),
+      ...buildCommonCatalogUrls(homepageUrl),
+    ];
+    const crawled = await crawlCatalogFromListingPages(
+      store.id,
+      "magento_vsf",
+      client,
+      seedUrls,
+      {
+        maxListingPages: 200,
+        maxProductPages: 5000,
+      },
+    );
+    const products = dedupeProducts([...payloadProducts, ...htmlProducts, ...crawled.products]);
 
     return {
       products,
       variants: [],
       offers: buildOffersFromProducts(products),
-      estimatedCatalogSize: products.length,
-      snapshots: [{ label: "homepage", payload: { url: homepageUrl, html: homepageHtml.slice(0, 200000) } }],
+      estimatedCatalogSize: Math.max(products.length, crawled.productPages.length),
+      snapshots: [
+        { label: "homepage", payload: { url: homepageUrl, html: homepageHtml.slice(0, 200000) } },
+        { label: "listing_pages", payload: crawled.listingPages },
+        { label: "detail_pages", payload: crawled.productPages },
+      ],
     };
   },
 };

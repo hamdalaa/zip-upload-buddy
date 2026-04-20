@@ -17,6 +17,7 @@ const fixtureRoutes = {
   "https://www.elryan.com/": "elryan-home.html",
   "https://www.icenter-iraq.com/": "icenter-home.html",
   "https://www.icenter-iraq.com/wp-json/wc/store/v1/products?per_page=100&page=1": "icenter-products.json",
+  "https://www.icenter-iraq.com/wp-json/wc/store/v1/products?per_page=100&page=2": "icenter-products-page2.json",
   "https://korektel.com/": "korektel-home.html",
   "https://korektel.com/sitemap.xml": "sitemap.xml",
   "https://korektel.com/product/macbook-air-m3": "korektel-home.html",
@@ -43,10 +44,10 @@ describe("catalog integration", () => {
     const repository = new MemoryCatalogRepository();
     const searchEngine = new MemorySearchEngine();
     const client = createFixtureHttpClient(fixtureRoutes);
-    const probeService = new ProbeService(repository, client as any);
+    const probeService = new ProbeService(repository, client);
     const syncService = new SyncService(
       repository,
-      client as any,
+      client,
       probeService,
       searchEngine,
       new FakeObjectStorage(),

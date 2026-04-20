@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
   ArrowLeft,
@@ -31,6 +31,11 @@ import {
   type UnifiedProduct,
 } from "@/lib/unifiedSearch";
 
+function isRenderableProductImage(src?: string) {
+  if (!src) return false;
+  return !src.startsWith("data:image/svg+xml");
+}
+
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<UnifiedProduct | null>(null);
@@ -48,6 +53,31 @@ export default function ProductDetail() {
       document.title = p ? `${p.title} | حاير` : "المنتج | حاير";
     });
   }, [id]);
+
+  const fallbackSpecs = useMemo(() => {
+    if (!product) return {};
+    if (product.specs && Object.keys(product.specs).length > 0) return product.specs;
+    return {
+      ...(product.brand ? { "البراند": product.brand } : {}),
+      ...(product.category ? { "الفئة": product.category } : {}),
+      ...(typeof product.lowestPrice === "number" ? { "أقل سعر": formatIQD(product.lowestPrice) } : {}),
+      ...(typeof product.highestPrice === "number" ? { "أعلى سعر": formatIQD(product.highestPrice) } : {}),
+      "عدد العروض": String(product.offerCount),
+      "المتوفر حالياً": String(product.inStockCount),
+    };
+  }, [product]);
+
+  const fallbackDescription = useMemo(() => {
+    if (!product) return "";
+    if (product.description) return product.description;
+    const parts = [
+      product.brand ? `${product.brand}` : undefined,
+      product.title,
+      product.category ? `ضمن فئة ${product.category}` : undefined,
+      product.offerCount > 0 ? `ومتوفر حالياً عبر ${product.offerCount} عرض داخل حاير.` : undefined,
+    ].filter(Boolean);
+    return parts.join(" ");
+  }, [product]);
 
   if (loading) {
     return (
@@ -83,6 +113,9 @@ export default function ProductDetail() {
   const savings = product.highestPrice && product.lowestPrice
     ? Math.round(((product.highestPrice - product.lowestPrice) / product.highestPrice) * 100)
     : 0;
+  const images = product.images.filter((image) => isRenderableProductImage(image));
+  const visibleImages = images.length > 0 ? images : product.images;
+  const safeActiveImage = Math.min(activeImage, Math.max(visibleImages.length - 1, 0));
 
   return (
     <div className="min-h-screen bg-background">
@@ -112,7 +145,7 @@ export default function ProductDetail() {
           <div className="space-y-3">
             <div className="relative aspect-square overflow-hidden rounded-3xl border border-border bg-surface shadow-soft-lg">
               <img
-                src={product.images[activeImage]}
+                src={visibleImages[safeActiveImage]}
                 alt={product.title}
                 className="h-full w-full object-contain p-6"
               />
@@ -131,15 +164,15 @@ export default function ProductDetail() {
                 </button>
               </div>
             </div>
-            {product.images.length > 1 && (
+            {visibleImages.length > 1 && (
               <div className="flex gap-2 overflow-x-auto pb-2">
-                {product.images.map((img, i) => (
+                {visibleImages.map((img, i) => (
                   <button
                     key={i}
                     onClick={() => setActiveImage(i)}
                     className={cn(
                       "h-20 w-20 shrink-0 overflow-hidden rounded-xl border-2 bg-surface transition-all",
-                      activeImage === i ? "border-primary shadow-soft-md" : "border-border hover:border-muted-foreground",
+                      safeActiveImage === i ? "border-primary shadow-soft-md" : "border-border hover:border-muted-foreground",
                     )}
                   >
                     <img src={img} alt="" className="h-full w-full object-cover" />
@@ -345,9 +378,9 @@ export default function ProductDetail() {
             </TabsContent>
 
             <TabsContent value="specs" className="mt-5">
-              {product.specs && Object.keys(product.specs).length > 0 ? (
+              {fallbackSpecs && Object.keys(fallbackSpecs).length > 0 ? (
                 <div className="grid gap-2 rounded-2xl border border-border bg-card p-2 shadow-soft-sm sm:grid-cols-2">
-                  {Object.entries(product.specs).map(([k, v]) => (
+                  {Object.entries(fallbackSpecs).map(([k, v]) => (
                     <div key={k} className="flex items-center justify-between gap-4 rounded-xl px-4 py-3 odd:bg-surface/50">
                       <span className="text-sm text-muted-foreground">{k}</span>
                       <span className="text-sm font-semibold text-foreground">{v}</span>
@@ -364,7 +397,7 @@ export default function ProductDetail() {
             <TabsContent value="description" className="mt-5">
               <div className="rounded-2xl border border-border bg-card p-6 shadow-soft-sm">
                 <p className="text-sm leading-7 text-foreground">
-                  {product.description ?? "لا يوجد وصف متاح لهذا المنتج بعد."}
+                  {fallbackDescription || "لا يوجد وصف متاح لهذا المنتج بعد."}
                 </p>
               </div>
             </TabsContent>

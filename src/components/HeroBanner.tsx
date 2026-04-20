@@ -4,6 +4,7 @@ import { HeroSearch } from "@/components/HeroSearch";
 
 import { CountUp } from "@/components/CountUp";
 import { useDataStore } from "@/lib/dataStore";
+import { getPublicStoreCount } from "@/lib/catalogCounts";
 import { CITIES } from "@/lib/cityData";
 import sinaaImg from "@/assets/street-sinaa.jpg";
 import rubaieImg from "@/assets/street-rubaie.jpg";
@@ -11,9 +12,9 @@ import iraqImg from "@/assets/iraq-cities.jpg";
 import baghdadMap from "@/assets/hero-baghdad-map.jpg";
 
 export function HeroBanner() {
-  const { brands } = useDataStore();
+  const { brands, summary } = useDataStore();
   const computedShops = CITIES.reduce((sum, city) => sum + (city.count ?? 0), 0);
-  const totalShops = Math.max(computedShops, 3100);
+  const totalShops = getPublicStoreCount(summary.totalStores, computedShops);
 
   const stats = [
     { value: totalShops, label: "محل ميداني" },

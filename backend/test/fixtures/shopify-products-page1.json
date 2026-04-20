@@ -1,0 +1,40 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "handle": "test-phone",
+      "title": "Test Phone X",
+      "vendor": "BrandX",
+      "product_type": "Phones",
+      "body_html": "<p>Flagship phone</p>",
+      "tags": "flagship,2026",
+      "images": [
+        { "src": "https://example.com/test-phone.jpg" }
+      ],
+      "variants": [
+        {
+          "id": 11,
+          "product_id": 1,
+          "title": "128GB / Black",
+          "price": "799000",
+          "compare_at_price": "849000",
+          "available": true,
+          "sku": "TPX-128-BLK",
+          "option1": "128GB",
+          "option2": "Black"
+        },
+        {
+          "id": 12,
+          "product_id": 1,
+          "title": "256GB / Blue",
+          "price": "899000",
+          "compare_at_price": "949000",
+          "available": false,
+          "sku": "TPX-256-BLU",
+          "option1": "256GB",
+          "option2": "Blue"
+        }
+      ]
+    }
+  ]
+}

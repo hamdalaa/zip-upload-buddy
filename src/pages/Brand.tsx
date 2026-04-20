@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -5,9 +6,11 @@ import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/EmptyState";
 import { ProductCard } from "@/components/ProductCard";
 import { useDataStore } from "@/lib/dataStore";
+import { getBrandDetail, type BrandDetailResponse } from "@/lib/catalogApi";
 import { OFFICIAL_DEALER_BRANCHES } from "@/lib/officialDealers";
-import { getBrandLogo, getTheSvgUrl } from "@/lib/brandLogos";
 import { getBrandBackground } from "@/lib/brandBackgrounds";
+import { useBrandLogo } from "@/hooks/useBrandLogo";
+import type { BrandDealer } from "@/lib/types";
 import {
   ChevronLeft,
   ExternalLink,
@@ -24,7 +27,29 @@ import {
 const Brand = () => {
   const { slug } = useParams<{ slug: string }>();
   const { brands, products } = useDataStore();
-  const brand = brands.find((b) => b.slug === slug);
+  const fallbackBrand = brands.find((b) => b.slug === slug);
+  const [brandDetail, setBrandDetail] = useState<BrandDetailResponse | null>(null);
+
+  useEffect(() => {
+    if (!slug) return;
+    let active = true;
+    getBrandDetail(slug)
+      .then((payload) => {
+        if (!active) return;
+        setBrandDetail(payload);
+      })
+      .catch(() => {
+        if (!active) return;
+        setBrandDetail(null);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [slug]);
+
+  const brand = fallbackBrand ?? brandDetail?.brand;
+  const logoSrc = useBrandLogo(brand?.slug, brand?.brandName, "default");
 
   if (!brand) {
     return (
@@ -45,15 +70,27 @@ const Brand = () => {
     );
   }
 
-  const related = products.filter(
-    (p) => p.brand?.toLowerCase() === brand.brandName.toLowerCase(),
-  );
+  const related =
+    brandDetail?.products ??
+    products.filter(
+      (p) => p.brand?.toLowerCase() === brand.brandName.toLowerCase(),
+    );
   const branches = OFFICIAL_DEALER_BRANCHES.filter((b) => b.brandSlug === brand.slug);
   const isVerified = brand.verificationStatus === "verified";
-  const logo = getBrandLogo(brand.slug);
-  const cdnLogo = getTheSvgUrl(brand.slug, "default");
   const background = getBrandBackground(brand.slug);
   const initial = brand.brandName.slice(0, 1);
+  const logoClassName = brand.slug === "apple" ? "brightness-0" : "";
+  const storeNames = [...new Set((brandDetail?.stores ?? []).map((store) => store.name).filter(Boolean))];
+  const topCategories = [...new Set(related.map((product) => product.category).filter(Boolean))].slice(0, 4);
+  const pricedProducts = related
+    .map((product) => product.priceValue)
+    .filter((value): value is number => typeof value === "number" && Number.isFinite(value));
+  const insights = {
+    storeNames,
+    topCategories,
+    minPrice: pricedProducts.length > 0 ? Math.min(...pricedProducts) : undefined,
+    maxPrice: pricedProducts.length > 0 ? Math.max(...pricedProducts) : undefined,
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-[linear-gradient(180deg,hsl(var(--surface))_0%,hsl(var(--background))_14%,hsl(var(--surface))_100%)]">
@@ -102,10 +139,8 @@ const Brand = () => {
                 <div className="absolute inset-0 bg-grid opacity-30" />
                 <div className="flex h-full w-full items-center justify-center">
                   <div className="flex h-32 w-32 items-center justify-center overflow-hidden rounded-3xl bg-background shadow-soft-lg">
-                    {cdnLogo ? (
-                      <img src={cdnLogo} alt={brand.brandName} className="h-full w-full object-contain p-5" />
-                    ) : logo ? (
-                      <img src={logo} alt={brand.brandName} className="h-full w-full object-contain p-4" />
+                    {logoSrc ? (
+                      <img src={logoSrc} alt={brand.brandName} className={`h-full w-full object-contain p-5 ${logoClassName}`} />
                     ) : (
                       <span className="font-display text-5xl font-bold">{initial}</span>
                     )}
@@ -121,19 +156,12 @@ const Brand = () => {
                 <div className="flex items-center gap-4">
                   {/* Logo tile */}
                   <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-border bg-background shadow-soft-md md:h-20 md:w-20">
-                    {cdnLogo ? (
+                    {logoSrc ? (
                       <img
-                        src={cdnLogo}
+                        src={logoSrc}
                         alt={`${brand.brandName} logo`}
                         loading="lazy"
-                        className="h-full w-full object-contain p-2.5"
-                      />
-                    ) : logo ? (
-                      <img
-                        src={logo}
-                        alt={`${brand.brandName} logo`}
-                        loading="lazy"
-                        className="h-full w-full object-contain p-2.5"
+                        className={`h-full w-full object-contain p-2.5 ${logoClassName}`}
                       />
                     ) : (
                       <span className="font-display text-2xl font-bold">{initial}</span>
@@ -164,6 +192,39 @@ const Brand = () => {
               <p className="mt-5 text-sm leading-relaxed text-foreground/80 md:text-[15px]">
                 {brand.coverage}
               </p>
+              {(insights.storeNames.length > 0 || insights.topCategories.length > 0 || insights.minPrice != null) && (
+                <div className="mt-3 space-y-1.5 text-xs text-muted-foreground md:text-[13px]">
+                  {insights.storeNames.length > 0 && (
+                    <p>
+                      المصادر الحالية:
+                      {" "}
+                      <span className="font-medium text-foreground">
+                        {insights.storeNames.join("، ")}
+                      </span>
+                    </p>
+                  )}
+                  {insights.topCategories.length > 0 && (
+                    <p>
+                      أبرز الفئات:
+                      {" "}
+                      <span className="font-medium text-foreground">
+                        {insights.topCategories.join("، ")}
+                      </span>
+                    </p>
+                  )}
+                  {insights.minPrice != null && insights.maxPrice != null && (
+                    <p>
+                      نطاق الأسعار الحالي:
+                      {" "}
+                      <span className="font-medium text-foreground">
+                        {insights.minPrice.toLocaleString("en-US")} IQD
+                        {" — "}
+                        {insights.maxPrice.toLocaleString("en-US")} IQD
+                      </span>
+                    </p>
+                  )}
+                </div>
+              )}
 
               {/* Actions */}
               <div className="mt-5 flex flex-wrap gap-2">
@@ -365,65 +426,7 @@ const Brand = () => {
           <div className="grid grid-cols-2 gap-2.5 md:grid-cols-3 lg:grid-cols-4">
             {brands
               .filter((b) => b.slug !== brand.slug)
-              .map((b) => {
-                const bBranches = OFFICIAL_DEALER_BRANCHES.filter(
-                  (x) => x.brandSlug === b.slug,
-                ).length;
-                const bLogo = getBrandLogo(b.slug);
-                const bCdn = getTheSvgUrl(b.slug, "default");
-                const bVerified = b.verificationStatus === "verified";
-                return (
-                  <Link
-                    key={b.slug}
-                    to={`/brand/${b.slug}`}
-                    className="group relative flex items-center gap-3 overflow-hidden rounded-2xl border border-border/70 bg-background/85 p-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:bg-background hover:shadow-soft-lg"
-                  >
-                    {/* hover gradient wash */}
-                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/0 via-primary/0 to-primary/[0.06] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-                    {/* Logo tile */}
-                    <div className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border bg-background shadow-soft-sm transition-transform duration-300 group-hover:scale-105">
-                      {bCdn || bLogo ? (
-                        <img
-                          src={bCdn ?? bLogo}
-                          alt={b.brandName}
-                          loading="lazy"
-                          className="h-full w-full object-contain p-1.5"
-                        />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center bg-gradient-primary font-display text-lg font-bold text-primary-foreground">
-                          {b.brandName.slice(0, 1)}
-                        </div>
-                      )}
-                      {bVerified && (
-                        <span className="absolute -bottom-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-success text-success-foreground ring-2 ring-background">
-                          <ShieldCheck className="h-2.5 w-2.5" />
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Text */}
-                    <div className="relative min-w-0 flex-1">
-                      <div className="truncate text-sm font-bold leading-tight transition-colors group-hover:text-primary">
-                        {b.brandName}
-                      </div>
-                      <div className="mt-0.5 flex items-center gap-1 text-[11px] text-muted-foreground">
-                        {bBranches > 0 ? (
-                          <>
-                            <Building2 className="h-3 w-3 text-primary/70" />
-                            <span className="truncate">{bBranches} فرع رسمي</span>
-                          </>
-                        ) : (
-                          <span className="truncate">{b.dealerName}</span>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Chevron */}
-                    <ChevronLeft className="relative h-4 w-4 shrink-0 text-muted-foreground/40 transition-all duration-300 group-hover:-translate-x-0.5 group-hover:text-primary" />
-                  </Link>
-                );
-              })}
+              .map((b) => <RelatedBrandLink key={b.slug} brand={b} />)}
           </div>
         </section>
       </main>
@@ -432,6 +435,59 @@ const Brand = () => {
     </div>
   );
 };
+
+function RelatedBrandLink({ brand }: { brand: BrandDealer }) {
+  const branchCount = OFFICIAL_DEALER_BRANCHES.filter((entry) => entry.brandSlug === brand.slug).length;
+  const logo = useBrandLogo(brand.slug, brand.brandName, "default");
+  const isVerified = brand.verificationStatus === "verified";
+
+  return (
+    <Link
+      to={`/brand/${brand.slug}`}
+      className="group relative flex items-center gap-3 overflow-hidden rounded-2xl border border-border/70 bg-background/85 p-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:bg-background hover:shadow-soft-lg"
+    >
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/0 via-primary/0 to-primary/[0.06] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+      <div className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border bg-background shadow-soft-sm transition-transform duration-300 group-hover:scale-105">
+        {logo ? (
+          <img
+            src={logo}
+            alt={brand.brandName}
+            loading="lazy"
+            className="h-full w-full object-contain p-1.5"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center bg-gradient-primary font-display text-lg font-bold text-primary-foreground">
+            {brand.brandName.slice(0, 1)}
+          </div>
+        )}
+        {isVerified && (
+          <span className="absolute -bottom-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-success text-success-foreground ring-2 ring-background">
+            <ShieldCheck className="h-2.5 w-2.5" />
+          </span>
+        )}
+      </div>
+
+      <div className="relative min-w-0 flex-1">
+        <div className="truncate text-sm font-bold leading-tight transition-colors group-hover:text-primary">
+          {brand.brandName}
+        </div>
+        <div className="mt-0.5 flex items-center gap-1 text-[11px] text-muted-foreground">
+          {branchCount > 0 ? (
+            <>
+              <Building2 className="h-3 w-3 text-primary/70" />
+              <span className="truncate">{branchCount} فرع رسمي</span>
+            </>
+          ) : (
+            <span className="truncate">{brand.dealerName}</span>
+          )}
+        </div>
+      </div>
+
+      <ChevronLeft className="relative h-4 w-4 shrink-0 text-muted-foreground/40 transition-all duration-300 group-hover:-translate-x-0.5 group-hover:text-primary" />
+    </Link>
+  );
+}
 
 function StatTile({
   icon: Icon,

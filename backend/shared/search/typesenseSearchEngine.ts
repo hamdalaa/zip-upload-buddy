@@ -1,10 +1,12 @@
 import Typesense from "typesense";
+import type { CollectionCreateSchema } from "../../node_modules/typesense/lib/Typesense/Collections.js";
+import type { SearchParams } from "../../node_modules/typesense/lib/Typesense/Types.js";
 import { catalogConfig } from "../config.js";
 import type { SearchDocument } from "../catalog/types.js";
 import type { SearchQueryInput } from "../repositories/contracts.js";
 import type { SearchEngine, SearchResult } from "./contracts.js";
 
-const schema = {
+const schema: CollectionCreateSchema = {
   name: catalogConfig.typesense.collectionName,
   fields: [
     { name: "id", type: "string" },
@@ -24,7 +26,7 @@ const schema = {
     { name: "categoryPath", type: "string", facet: true },
     { name: "sellerName", type: "string", optional: true, facet: true },
   ],
-} as const;
+};
 
 export class TypesenseSearchEngine implements SearchEngine {
   private readonly client = new Typesense.Client({
@@ -40,30 +42,33 @@ export class TypesenseSearchEngine implements SearchEngine {
   });
 
   async ensureReady(): Promise<void> {
+    const collection = this.client.collections<SearchDocument>(catalogConfig.typesense.collectionName);
     try {
-      await this.client.collections(catalogConfig.typesense.collectionName).retrieve();
+      await collection.retrieve();
     } catch {
-      await this.client.collections().create(schema as any);
+      await this.client.collections().create(schema);
     }
   }
 
   async replaceStoreDocuments(storeId: string, documents: SearchDocument[]): Promise<void> {
     await this.ensureReady();
+    const collection = this.client.collections<SearchDocument>(catalogConfig.typesense.collectionName);
     try {
-      await this.client.collections(catalogConfig.typesense.collectionName).documents().delete({
+      await collection.documents().delete({
         filter_by: `storeId:=${storeId}`,
       });
     } catch {
       // Ignore initial delete failures when the store is not indexed yet.
     }
     if (documents.length === 0) return;
-    await this.client.collections(catalogConfig.typesense.collectionName).documents().import(documents, {
+    await collection.documents().import(documents, {
       action: "upsert",
     });
   }
 
   async search(query: SearchQueryInput): Promise<SearchResult> {
     await this.ensureReady();
+    const collection = this.client.collections<SearchDocument>(catalogConfig.typesense.collectionName);
     const filters: string[] = [];
     if (query.storeId) filters.push(`storeId:=${query.storeId}`);
     if (query.onSale != null) filters.push(`onSale:=${query.onSale}`);
@@ -71,7 +76,7 @@ export class TypesenseSearchEngine implements SearchEngine {
     if (query.minPrice != null) filters.push(`livePrice:>=${query.minPrice}`);
     if (query.maxPrice != null) filters.push(`livePrice:<=${query.maxPrice}`);
 
-    const searchParams: any = {
+    const searchParams: SearchParams<SearchDocument> = {
       q: query.q || "*",
       query_by: "normalizedTitle,title,brand,model,sku,storeName,categoryPath",
       sort_by: "onSale:desc,freshnessAt:desc",
@@ -81,7 +86,7 @@ export class TypesenseSearchEngine implements SearchEngine {
       searchParams.filter_by = filters.join(" && ");
     }
 
-    const result = await this.client.collections(catalogConfig.typesense.collectionName).documents().search(searchParams);
+    const result = await collection.documents().search(searchParams);
 
     return {
       total: result.found ?? 0,

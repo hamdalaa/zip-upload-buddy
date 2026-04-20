@@ -19,36 +19,38 @@ import { ProductRail } from "@/components/ProductRail";
 import { StreetShopsSection } from "@/components/StreetShopsSection";
 import { useDataStore } from "@/lib/dataStore";
 import { useFakeLoading } from "@/hooks/useFakeLoading";
-import { compareShopsByPopularity } from "@/lib/shopRanking";
+import { compareCatalogShopsByPriority } from "@/lib/shopRanking";
 
 const Index = () => {
-  const { shops, brands, products } = useDataStore();
+  const { shops, brands, products, home } = useDataStore();
   const loading = useFakeLoading(700);
 
   const featured = [...shops]
     .filter((shop) => !shop.archivedAt)
-    .sort(compareShopsByPopularity)
+    .filter((shop) => (shop.productCount ?? 0) > 0 || Boolean(shop.website) || Boolean(shop.featured))
+    .sort(compareCatalogShopsByPriority)
     .slice(0, 6);
 
-  const trending = [...products]
-    .sort((a, b) => (b.reviewCount ?? 0) - (a.reviewCount ?? 0))
-    .slice(0, 12)
-    .map((product) => ({ ...product, score: 0 }));
+  const trendingSource = home.trending.length > 0
+    ? home.trending
+    : [...products].sort((a, b) => (b.reviewCount ?? 0) - (a.reviewCount ?? 0)).slice(0, 12);
+  const dealsSource = home.deals.length > 0
+    ? home.deals
+    : [...products]
+        .filter((product) => product.originalPriceValue && product.priceValue && product.originalPriceValue > product.priceValue)
+        .sort(
+          (a, b) =>
+            (b.originalPriceValue! - b.priceValue!) / b.originalPriceValue! -
+            (a.originalPriceValue! - a.priceValue!) / a.originalPriceValue!,
+        )
+        .slice(0, 12);
+  const latestSource = home.latest.length > 0
+    ? home.latest
+    : [...products].sort((a, b) => new Date(b.crawledAt).getTime() - new Date(a.crawledAt).getTime()).slice(0, 12);
 
-  const deals = [...products]
-    .filter((product) => product.originalPriceValue && product.priceValue && product.originalPriceValue > product.priceValue)
-    .sort(
-      (a, b) =>
-        (b.originalPriceValue! - b.priceValue!) / b.originalPriceValue! -
-        (a.originalPriceValue! - a.priceValue!) / a.originalPriceValue!,
-    )
-    .slice(0, 12)
-    .map((product) => ({ ...product, score: 0 }));
-
-  const newArrivals = [...products]
-    .sort((a, b) => new Date(b.crawledAt).getTime() - new Date(a.crawledAt).getTime())
-    .slice(0, 12)
-    .map((product) => ({ ...product, score: 0 }));
+  const trending = trendingSource.map((product) => ({ ...product, score: 0 }));
+  const deals = dealsSource.map((product) => ({ ...product, score: 0 }));
+  const newArrivals = latestSource.map((product) => ({ ...product, score: 0 }));
 
   return (
     <div className="min-h-screen atlas-shell">

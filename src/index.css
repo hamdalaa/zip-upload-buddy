@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,9 +10,6 @@
    Color psychology: teal lowers stress + builds trust,
    amber motivates action, generous whitespace = clarity.
    ========================================================= */
-
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&display=swap");
-
 /* SF Pro (variable) — Latin/Numerals */
 @font-face {
   font-family: "SF Pro";
@@ -170,6 +169,7 @@
 
   html {
     font-family: "SF Arabic", "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-size: 120%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -746,4 +746,3 @@
     scroll-behavior: auto !important;
   }
 }
-

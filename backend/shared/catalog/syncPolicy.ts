@@ -15,12 +15,16 @@ export function chooseSyncPriority(hint: SyncPriorityHint): SyncPriorityTier {
 
 export function connectorDefaultPriority(connectorType: ConnectorType): SyncPriorityTier {
   switch (connectorType) {
+    case "shopify":
+    case "threed_iraq":
+    case "tlcommerce_api":
     case "masterstore_next":
     case "jibalzone_storefront":
     case "miswag_nuxt":
     case "magento_vsf":
       return "hourly";
     case "woocommerce":
+    case "alwafi_api":
     case "generic_json_catalog":
       return "six_hour";
     case "generic_sitemap_html":

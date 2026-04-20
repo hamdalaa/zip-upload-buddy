@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import type { CatalogHttpClientLike, CatalogHttpClientSession } from "../../shared/http/catalogHttpClient.js";
 import type { ObjectStorage, StoredObjectMeta } from "../../shared/storage/objectStorage.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -10,8 +11,8 @@ export async function loadFixture(name: string): Promise<string> {
   return fs.readFile(path.join(fixturesDir, name), "utf8");
 }
 
-export function createFixtureHttpClient(routeMap: Record<string, string>) {
-  return {
+export function createFixtureHttpClient(routeMap: Record<string, string>): CatalogHttpClientLike {
+  const client: CatalogHttpClientLike = {
     async fetchText(url: string): Promise<string> {
       const fixture = routeMap[url];
       if (!fixture) throw new Error(`No fixture mapped for ${url}`);
@@ -22,7 +23,11 @@ export function createFixtureHttpClient(routeMap: Record<string, string>) {
       if (!fixture) throw new Error(`No fixture mapped for ${url}`);
       return JSON.parse(await loadFixture(fixture));
     },
+    withSession(_session?: CatalogHttpClientSession) {
+      return client;
+    },
   };
+  return client;
 }
 
 export class FakeObjectStorage implements ObjectStorage {

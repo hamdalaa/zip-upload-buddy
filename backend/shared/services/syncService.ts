@@ -7,13 +7,13 @@ import type { CatalogRepository } from "../repositories/contracts.js";
 import type { ObjectStorage } from "../storage/objectStorage.js";
 import type { SearchEngine } from "../search/contracts.js";
 import type { ConnectorProfileRecord, RawSnapshotRecord, StoreRecord, SyncRunRecord } from "../catalog/types.js";
-import { CatalogHttpClient } from "../http/catalogHttpClient.js";
+import type { CatalogHttpClientLike } from "../http/catalogHttpClient.js";
 import { ProbeService } from "./probeService.js";
 
 export class SyncService {
   constructor(
     private readonly repository: CatalogRepository,
-    private readonly client: CatalogHttpClient,
+    private readonly client: CatalogHttpClientLike,
     private readonly probeService: ProbeService,
     private readonly searchEngine: SearchEngine,
     private readonly objectStorage: ObjectStorage,

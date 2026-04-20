@@ -24,7 +24,15 @@ import { Button } from "@/components/ui/button";
 import { useUserPrefs } from "@/lib/userPrefs";
 import developerAvatar from "@/assets/developer-avatar.jpg";
 
-const steps = [
+type TourStep = {
+  icon: typeof Search;
+  title: string;
+  body: string;
+  highlights: string[];
+  instagram?: string;
+};
+
+const steps: TourStep[] = [
   {
     icon: Search,
     title: "ابحث وقارن بسرعة",
@@ -122,9 +130,9 @@ export function WelcomeTour() {
               </div>
             )}
 
-            {isLast && (current as any).instagram && (
+            {isLast && current.instagram && (
               <a
-                href={(current as any).instagram}
+                href={current.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-4 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 px-4 py-2 text-sm font-bold text-white shadow-md hover:opacity-90 transition-opacity"

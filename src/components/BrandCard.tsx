@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft, ShieldCheck, Sparkles } from "lucide-react";
 import type { BrandDealer } from "@/lib/types";
-import { getBrandLogo, getTheSvgUrl } from "@/lib/brandLogos";
+import { useBrandLogo } from "@/hooks/useBrandLogo";
 
 export function BrandCard({ brand }: { brand: BrandDealer }) {
-  const logo = getTheSvgUrl(brand.slug, "default") ?? getBrandLogo(brand.slug);
+  const logo = useBrandLogo(brand.slug, brand.brandName, "default");
   const isVerified = brand.verificationStatus === "verified";
 
   return (

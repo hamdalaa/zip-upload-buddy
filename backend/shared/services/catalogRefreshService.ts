@@ -5,7 +5,6 @@ import { SyncService } from "./syncService.js";
 import { DiscoveryService } from "./discoveryService.js";
 import { CoverageService } from "./coverageService.js";
 import type { StoreRecord } from "../catalog/types.js";
-import { CatalogHttpError } from "../http/catalogHttpClient.js";
 
 export interface CatalogRefreshOptions {
   actor: string;
@@ -15,6 +14,7 @@ export interface CatalogRefreshOptions {
   limit?: number;
   concurrency?: number;
   storeIds?: string[];
+  progress?: (result: CatalogRefreshItemResult, completed: number, total: number) => void;
 }
 
 export interface CatalogRefreshItemResult {
@@ -76,10 +76,13 @@ export class CatalogRefreshService {
     let probedOnlyStores = 0;
     let failedStores = 0;
     let skippedStores = 0;
+    let completedCount = 0;
 
     await mapWithConcurrency(candidateStores, concurrency, async (store) => {
       const outcome = await this.refreshOneStore(store, options.actor);
       results.push(outcome);
+      completedCount += 1;
+      options.progress?.(outcome, completedCount, candidateStores.length);
     });
 
     for (const result of results) {
@@ -162,21 +165,18 @@ export class CatalogRefreshService {
         offersIndexed: size?.activeOfferCount ?? run.offersUpserted,
       };
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "unknown_refresh_error";
-      const httpStatus = error instanceof CatalogHttpError ? error.status : undefined;
-      const category = error instanceof CatalogHttpError ? error.category : undefined;
-      const observedUrl = error instanceof CatalogHttpError ? error.url : store.website;
-      await this.coverageService.saveFailureCoverage(store, errorMessage, observedUrl, {
-        httpStatus,
-        category,
-      });
+      await this.coverageService.saveFailureCoverage(
+        store,
+        error instanceof Error ? error.message : "unknown_refresh_error",
+        store.website,
+      );
       return {
         storeId: store.id,
         storeName: store.name,
         website: store.website,
         rootDomain,
         status: "failed",
-        reason: errorMessage,
+        reason: error instanceof Error ? error.message : "unknown_refresh_error",
       };
     }
   }

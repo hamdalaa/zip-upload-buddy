@@ -6,6 +6,7 @@
 import { Package, Store, Search, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { AutocompleteSuggestion } from "@/lib/unifiedSearch";
+import { decodeHtmlEntities, inferTextDirection } from "@/lib/textDisplay";
 
 interface Props {
   query: string;
@@ -41,6 +42,10 @@ export function SearchAutocomplete({
           {suggestions.map((s, idx) => {
             const Icon = ICONS[s.type];
             const active = idx === highlightedIndex;
+            const label = decodeHtmlEntities(s.label);
+            const sublabel = decodeHtmlEntities(s.sublabel);
+            const labelDir = inferTextDirection(label);
+            const sublabelDir = inferTextDirection(sublabel);
             return (
               <li key={`${s.type}-${s.id}`}>
                 <button
@@ -65,9 +70,25 @@ export function SearchAutocomplete({
                       <Icon className="h-3.5 w-3.5" />
                     </div>
                     <div className="min-w-0">
-                      <div className="truncate text-sm text-foreground">{s.label}</div>
-                      {s.sublabel && (
-                        <div className="truncate text-[11px] text-muted-foreground">{s.sublabel}</div>
+                      <div
+                        dir={labelDir}
+                        className={cn(
+                          "truncate text-sm text-foreground",
+                          labelDir === "ltr" ? "text-left" : "text-right",
+                        )}
+                      >
+                        {label}
+                      </div>
+                      {sublabel && (
+                        <div
+                          dir={sublabelDir}
+                          className={cn(
+                            "truncate text-[11px] text-muted-foreground",
+                            sublabelDir === "ltr" ? "text-left" : "text-right",
+                          )}
+                        >
+                          {sublabel}
+                        </div>
                       )}
                     </div>
                   </div>

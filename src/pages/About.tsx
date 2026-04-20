@@ -16,6 +16,7 @@ import {
 import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Button } from "@/components/ui/button";
+import { CATALOG_BASELINE_COUNTS } from "@/lib/catalogCounts";
 import developerPortrait from "@/assets/developer-portrait.jpg";
 
 export default function About() {
@@ -62,7 +63,7 @@ export default function About() {
             <div className="grid grid-cols-3 divide-x divide-x-reverse divide-border/60 overflow-hidden rounded-2xl border border-border/60 bg-card/60 backdrop-blur">
               {[
                 { label: "محافظات مغطّاة", value: "10+" },
-                { label: "محلات موثّقة", value: "+3100" },
+                { label: "محلات موثّقة", value: `+${CATALOG_BASELINE_COUNTS.stores}` },
                 { label: "بحث مجاني للأبد", value: "100%" },
               ].map((stat) => (
                 <div key={stat.label} className="px-4 py-4 text-center">

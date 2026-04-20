@@ -12,6 +12,9 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { formatIQD, type UnifiedProduct } from "@/lib/unifiedSearch";
+import { optimizeImageUrl } from "@/lib/imageUrl";
+import { getFallbackProductImage, isRenderableProductImage } from "@/lib/productVisuals";
+import { decodeHtmlEntities } from "@/lib/textDisplay";
 
 interface Props {
   product: UnifiedProduct;
@@ -19,7 +22,18 @@ interface Props {
   topOffers?: { storeName: string; price: number; verified?: boolean; officialDealer?: boolean }[];
 }
 
+const PRODUCT_STAGE_TONES: Record<string, string> = {
+  "Smart Phones": "from-rose-50 via-white to-slate-100",
+  Accessories: "from-amber-50 via-white to-stone-100",
+  "Computer & Laptops": "from-sky-50 via-white to-slate-100",
+  "Camera & Photo": "from-zinc-100 via-white to-slate-100",
+  Audio: "from-neutral-100 via-white to-zinc-100",
+  Gaming: "from-violet-50 via-white to-slate-100",
+};
+
 export function UnifiedProductCard({ product, topOffers }: Props) {
+  const title = decodeHtmlEntities(product.title);
+  const brand = decodeHtmlEntities(product.brand);
   const savings =
     product.highestPrice && product.lowestPrice && product.highestPrice > product.lowestPrice
       ? Math.round(((product.highestPrice - product.lowestPrice) / product.highestPrice) * 100)
@@ -30,6 +44,12 @@ export function UnifiedProductCard({ product, topOffers }: Props) {
 
   const inStockRatio =
     product.offerCount > 0 ? Math.round((product.inStockCount / product.offerCount) * 100) : 0;
+  const fallbackImage = getFallbackProductImage(product.category);
+  const primaryImage =
+    product.images.find((image) => isRenderableProductImage(image)) ??
+    fallbackImage;
+  const displayImage = optimizeImageUrl(primaryImage, { width: 720, height: 576 }) ?? primaryImage;
+  const stageTone = PRODUCT_STAGE_TONES[product.category] ?? "from-slate-50 via-white to-stone-100";
 
   return (
     <Link
@@ -37,13 +57,27 @@ export function UnifiedProductCard({ product, topOffers }: Props) {
       className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition-[border-color,box-shadow] duration-200 hover:border-primary/40 hover:shadow-soft-xl"
     >
       {/* ===== Image area ===== */}
-      <div className="relative aspect-[4/3] overflow-hidden bg-surface">
-        <img
-          src={product.images[0]}
-          alt={product.title}
-          loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-        />
+      <div className="relative aspect-[5/4] overflow-hidden border-b border-border/60 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.96),rgba(245,247,250,0.92)_52%,rgba(232,236,241,0.9)_100%)]">
+        <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-white/90 via-white/35 to-transparent" />
+        <div className="absolute inset-x-[18%] bottom-4 h-6 rounded-full bg-slate-950/10 blur-2xl" />
+        <div className={`absolute inset-x-4 bottom-4 top-7 rounded-[28px] border border-white/80 bg-gradient-to-br ${stageTone} shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_22px_45px_rgba(148,163,184,0.16)]`} />
+
+        <div className="relative z-[1] flex h-full items-center justify-center px-4 pb-4 pt-10 sm:px-5 sm:pb-5 sm:pt-11">
+          <img
+            src={displayImage}
+            alt={title}
+            loading="lazy"
+            decoding="async"
+            width={720}
+            height={576}
+            onError={(event) => {
+              if (event.currentTarget.src !== fallbackImage) {
+                event.currentTarget.src = fallbackImage;
+              }
+            }}
+            className="relative z-[2] max-h-[76%] w-auto max-w-[80%] object-contain object-center mix-blend-multiply drop-shadow-[0_18px_26px_rgba(15,23,42,0.12)] transition-transform duration-500 group-hover:-translate-y-1 group-hover:scale-[1.05] sm:max-h-[79%] sm:max-w-[82%] sm:drop-shadow-[0_24px_36px_rgba(15,23,42,0.14)]"
+          />
+        </div>
 
         {/* Top-left: discount badge */}
         {savings > 5 && (
@@ -85,7 +119,7 @@ export function UnifiedProductCard({ product, topOffers }: Props) {
               variant="outline"
               className="rounded-full border-border bg-surface px-1.5 py-0 text-[9px] font-bold uppercase tracking-wide text-foreground sm:px-2 sm:text-[10px]"
             >
-              {product.brand}
+              {brand}
             </Badge>
           ) : <span />}
           {product.category && (
@@ -97,7 +131,7 @@ export function UnifiedProductCard({ product, topOffers }: Props) {
 
         {/* Title */}
         <h3 className="line-clamp-2 min-h-[2.6em] text-[13px] font-bold leading-snug text-foreground transition-colors group-hover:text-primary sm:text-[15px]">
-          {product.title}
+          {title}
         </h3>
 
         {/* ===== Price block ===== */}

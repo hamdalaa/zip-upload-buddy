@@ -8,6 +8,15 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    fs: {
+      allow: [path.resolve(__dirname, "."), path.resolve(__dirname, "./backend")],
+    },
+    proxy: {
+      "/public": {
+        target: "http://127.0.0.1:4400",
+        changeOrigin: true,
+      },
+    },
     hmr: {
       overlay: false,
     },

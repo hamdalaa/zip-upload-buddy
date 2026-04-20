@@ -8,6 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useFakeLoading } from "@/hooks/useFakeLoading";
 import { useDataStore } from "@/lib/dataStore";
 import { compareShopsByPopularity, getShopReviewCount } from "@/lib/shopRanking";
+import { mergeWithLegacySinaaShops } from "@/lib/legacyStreetShops";
 import type { Area, Category, Shop } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -67,7 +68,10 @@ export function StreetShopsSection({
     return map;
   }, [products, area]);
 
-  const streetShops = useMemo(() => shops.filter((shop) => shop.area === area && !shop.archivedAt), [shops, area]);
+  const streetShops = useMemo(() => {
+    const base = shops.filter((shop) => shop.area === area && !shop.archivedAt);
+    return area === "شارع الصناعة" ? mergeWithLegacySinaaShops(base) : base;
+  }, [shops, area]);
 
   const effectiveCats = useCallback(
     (shop: typeof streetShops[number]): Set<Category> => {

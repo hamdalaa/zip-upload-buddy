@@ -1,0 +1,21 @@
+[
+  {
+    "id": 102,
+    "name": "Apple Pencil Pro",
+    "permalink": "https://www.icenter-iraq.com/product/apple-pencil-pro",
+    "sku": "APP-11",
+    "is_in_stock": true,
+    "categories": [
+      { "name": "Accessories" },
+      { "name": "Apple Pencil" }
+    ],
+    "images": [
+      { "src": "https://www.icenter-iraq.com/apple-pencil-pro.jpg" }
+    ],
+    "prices": {
+      "currency_code": "IQD",
+      "price": 189000,
+      "regular_price": 199000
+    }
+  }
+]
