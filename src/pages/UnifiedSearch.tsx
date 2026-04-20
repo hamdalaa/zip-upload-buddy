@@ -883,16 +883,16 @@ function ProductsView({
         ) : (
           <div className="grid grid-cols-2 gap-3 md:grid-cols-4 xl:grid-cols-6">
             {data?.products.map((p, index) => (
-              <UnifiedProductCard
+              <div
                 key={p.id}
-                product={p}
-                featured={index === 0}
                 className={cn(
                   index === 0
                     ? "col-span-2 md:col-span-4 xl:col-span-3"
                     : "col-span-1 md:col-span-2 xl:col-span-2",
                 )}
-              />
+              >
+                <UnifiedProductCard product={p} />
+              </div>
             ))}
           </div>
         )}
