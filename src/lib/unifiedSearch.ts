@@ -324,7 +324,7 @@ export function buildAutocomplete(
         id: p.id,
         label: p.name,
         sublabel: [p.brand, p.shopName].filter(Boolean).join(" • "),
-        href: p.canonicalProductId ? `/product/${p.canonicalProductId}` : `/shop-view/${p.shopId}`,
+        href: `/shop-view/${p.shopId}`,
       });
     }
   }
