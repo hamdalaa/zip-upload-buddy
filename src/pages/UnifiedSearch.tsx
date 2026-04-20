@@ -49,6 +49,7 @@ import {
   buildAutocomplete,
   searchShops,
   searchUnified,
+  searchUnifiedLocal,
   type AutocompleteSuggestion,
   type ShopSearchFilters,
   type ShopSortKey,
@@ -132,15 +133,19 @@ export default function UnifiedSearch() {
       : "البحث الموحّد | حاير";
   }, [activeQuery]);
 
-  // Fetch products whenever query/filters/sort change
+  // Fetch products whenever query/filters/sort change.
+  // Falls back to a local in-memory search when the backend `/public/search`
+  // endpoint is unavailable (preview mode without a running backend).
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    searchUnified({ ...filters, q: activeQuery, sort }).then((res) => {
-      if (!cancelled) { setData(res); setLoading(false); }
-    });
+    searchUnified({ ...filters, q: activeQuery, sort })
+      .catch(() => searchUnifiedLocal(products, { ...filters, q: activeQuery, sort }))
+      .then((res) => {
+        if (!cancelled) { setData(res); setLoading(false); }
+      });
     return () => { cancelled = true; };
-  }, [activeQuery, filters, sort]);
+  }, [activeQuery, filters, sort, products]);
 
   // Local shop search — synchronous, very cheap
   const shopResult = useMemo(
