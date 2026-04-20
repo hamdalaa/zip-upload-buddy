@@ -49,6 +49,7 @@ import {
   buildAutocomplete,
   searchShops,
   searchUnified,
+  searchUnifiedLocal,
   type AutocompleteSuggestion,
   type ShopSearchFilters,
   type ShopSortKey,
