@@ -1,4 +1,5 @@
 import { createId, extractDomain, extractRootDomain, nowIso } from "../catalog/normalization.js";
+import { getStoreScrapeExclusionMatch, isScrapeExcludedStore } from "../catalog/scrapeExclusions.js";
 import type { CatalogRepository } from "../repositories/contracts.js";
 import { ProbeService } from "./probeService.js";
 import { SyncService } from "./syncService.js";
@@ -130,8 +131,79 @@ export class CatalogRefreshService {
 
   private async refreshOneStore(store: StoreRecord, actor: string): Promise<CatalogRefreshItemResult> {
     const rootDomain = store.website ? safeRootDomain(store.website) : undefined;
+    const exclusion = getStoreScrapeExclusionMatch(store);
+    if (exclusion) {
+      const timestamp = nowIso();
+      await this.repository.updateStore(store.id, {
+        status: "blocked",
+        blockedReason: `scrape_excluded:${exclusion.value}`,
+        updatedAt: timestamp,
+      });
+      await this.repository.addBlockerEvidence({
+        id: createId("blk"),
+        storeId: store.id,
+        blockerType: "non_catalog",
+        reason: `scrape_excluded:${exclusion.value}`,
+        observedUrl: store.website,
+        observedAt: timestamp,
+        details: {
+          exclusionKind: exclusion.kind,
+          exclusionValue: exclusion.value,
+        },
+      });
+      await this.repository.saveAcquisitionProfile({
+        storeId: store.id,
+        rootDomain: rootDomain ?? "unknown",
+        websiteType: store.websiteType ?? "missing",
+        connectorType: undefined,
+        strategy: "manual_review",
+        lifecycleState: "non_catalog",
+        publicCatalogDetected: false,
+        requiresSession: false,
+        requiresFeed: false,
+        notes: `scrape_excluded:${exclusion.value}`,
+        lastClassifiedAt: timestamp,
+        details: {
+          status: "blocked",
+          lastSyncAt: store.lastSyncAt,
+          lastProbeAt: store.lastProbeAt,
+          exclusionKind: exclusion.kind,
+          exclusionValue: exclusion.value,
+        },
+      });
+      await this.repository.createAuditLog({
+        id: createId("audit"),
+        actor,
+        action: "store_scrape_excluded",
+        storeId: store.id,
+        details: {
+          website: store.website,
+          exclusionKind: exclusion.kind,
+          exclusionValue: exclusion.value,
+        },
+        createdAt: timestamp,
+      });
+      return {
+        storeId: store.id,
+        storeName: store.name,
+        website: store.website,
+        rootDomain,
+        status: "skipped",
+        reason: `scrape_excluded:${exclusion.value}`,
+      };
+    }
+
     try {
-      const profile = await this.probeService.probeStore(store.id, actor, "manual");
+      const existingProfile = await this.repository.getConnectorProfile(store.id);
+      const shouldReuseProfile =
+        existingProfile &&
+        existingProfile.connectorType !== "unknown" &&
+        existingProfile.connectorType !== "social_only" &&
+        !(rootDomain === "elryan.com" && existingProfile.connectorType === "magento_vsf");
+      const profile =
+        shouldReuseProfile
+          ? existingProfile
+          : await this.probeService.probeStore(store.id, actor, "manual");
       if (profile.connectorType === "unknown" || profile.connectorType === "social_only") {
         await this.coverageService.saveFailureCoverage(
           store,
@@ -208,6 +280,7 @@ function selectRefreshCandidates(
     if (allowedIds && !allowedIds.has(store.id)) return false;
     if (!store.website) return false;
     if (options.officialOnly && store.websiteType !== "official") return false;
+    if (isScrapeExcludedStore(store)) return false;
     return true;
   });
 

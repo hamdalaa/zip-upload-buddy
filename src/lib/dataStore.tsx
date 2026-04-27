@@ -1,13 +1,35 @@
-import { useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { startTransition, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { Area, BrandDealer, Category, CrawlRun, ProductIndex, Shop, ShopSource } from "./types";
-import { initialBrands, initialCrawlRuns, initialProducts, initialShopSources, initialShops } from "./mockData";
-import { getCatalogBootstrap, getCatalogProducts } from "./catalogApi";
+import { getCatalogProducts } from "./catalogApi";
+import { useCatalogBootstrapLiteQuery } from "./catalogQueries";
 import { DataStoreContext, type DataStoreValue } from "./dataStoreContext";
+import { hasComparableDiscount } from "./prices";
+import { shouldAutoPrefetchCatalog } from "./performance";
 
 const slugify = (s: string) =>
   s.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "-").replace(/^-|-$/g, "") || `shop-${Date.now()}`;
 
-const FULL_CATALOG_PAGE_SIZE = 2000;
+const FULL_CATALOG_PAGE_SIZE = 250;
+const BACKGROUND_PREFETCH_DELAY_MS = 1200;
+const BACKGROUND_PREFETCH_COMMIT_EVERY_PAGES = 2;
+
+function dedupeProducts(products: ProductIndex[]) {
+  const seen = new Set<string>();
+  return products.filter((product) => {
+    if (seen.has(product.id)) return false;
+    seen.add(product.id);
+    return true;
+  });
+}
+
+function dedupeShops(shops: Shop[]) {
+  const seen = new Set<string>();
+  return shops.filter((shop) => {
+    if (seen.has(shop.id)) return false;
+    seen.add(shop.id);
+    return true;
+  });
+}
 
 function deriveShopSources(shops: Shop[]): ShopSource[] {
   return shops.flatMap((shop) => {
@@ -42,7 +64,7 @@ function deriveHome(products: ProductIndex[]) {
 
   const deals = unique(
     [...products]
-      .filter((product) => product.originalPriceValue && product.priceValue && product.originalPriceValue > product.priceValue)
+      .filter((product) => hasComparableDiscount(product.priceValue, product.originalPriceValue))
       .sort(
         (a, b) =>
           (b.originalPriceValue! - b.priceValue!) / b.originalPriceValue! -
@@ -67,98 +89,138 @@ function deriveHome(products: ProductIndex[]) {
 }
 
 export function DataStoreProvider({ children }: { children: ReactNode }) {
-  const [shops, setShops] = useState<Shop[]>(initialShops);
-  const [shopSources, setShopSources] = useState<ShopSource[]>(initialShopSources);
-  const [products, setProducts] = useState<ProductIndex[]>(initialProducts);
-  const [brands, setBrands] = useState<BrandDealer[]>(initialBrands);
-  const [crawlRuns, setCrawlRuns] = useState<CrawlRun[]>(initialCrawlRuns);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const bootstrapQuery = useCatalogBootstrapLiteQuery();
+  const [manualShops, setManualShops] = useState<Shop[]>([]);
+  const [manualShopSources, setManualShopSources] = useState<ShopSource[]>([]);
+  const [registeredProducts, setRegisteredProducts] = useState<ProductIndex[]>([]);
+  const [catalogProducts, setCatalogProducts] = useState<ProductIndex[]>([]);
+  const [crawlRuns, setCrawlRuns] = useState<CrawlRun[]>([]);
+  const [prefetchStatus, setPrefetchStatus] = useState<"idle" | "loading" | "ready">("idle");
+  const prefetchPromiseRef = useRef<Promise<void> | null>(null);
+  const baseShops = useMemo(
+    () => dedupeShops([
+      ...(bootstrapQuery.data?.featuredShops ?? []),
+      ...(bootstrapQuery.data?.topRatedShops ?? []),
+    ]),
+    [bootstrapQuery.data?.featuredShops, bootstrapQuery.data?.topRatedShops],
+  );
+  const baseBrands = bootstrapQuery.data?.brands ?? [];
+  const baseHome = bootstrapQuery.data?.home ?? { deals: [], trending: [], latest: [] };
+  const bootstrapProducts = useMemo(
+    () =>
+      dedupeProducts([
+        ...baseHome.deals,
+        ...baseHome.trending,
+        ...baseHome.latest,
+      ]),
+    [baseHome.deals, baseHome.latest, baseHome.trending],
+  );
+  const shops = useMemo(() => [...manualShops, ...baseShops], [baseShops, manualShops]);
+  const brands = baseBrands as BrandDealer[];
+  const products = useMemo(
+    () => dedupeProducts([...registeredProducts, ...catalogProducts, ...bootstrapProducts]),
+    [bootstrapProducts, catalogProducts, registeredProducts],
+  );
+  const shopSources = useMemo(
+    () => [...manualShopSources, ...deriveShopSources(baseShops)],
+    [baseShops, manualShopSources],
+  );
+  const loading = bootstrapQuery.isLoading && !bootstrapQuery.data;
+  const error = bootstrapQuery.error ? "catalog_bootstrap_unavailable" : null;
   const [summary, setSummary] = useState<DataStoreValue["summary"]>({
-    totalStores: initialShops.length,
-    indexedStores: new Set(initialProducts.map((product) => product.shopId)).size,
-    totalProducts: initialProducts.length,
+    totalStores: 0,
+    indexedStores: 0,
+    totalProducts: 0,
   });
-  const [home, setHome] = useState<DataStoreValue["home"]>(deriveHome(initialProducts));
+  const home = baseHome;
 
   useEffect(() => {
-    let active = true;
-    setLoading(true);
-    setError(null);
-    getCatalogBootstrap()
-      .then(async (payload) => {
-        if (!active) return;
-        setShops(payload.stores as unknown as Shop[]);
-        setShopSources(deriveShopSources(payload.stores as unknown as Shop[]));
-        setBrands(payload.brands as unknown as BrandDealer[]);
-        setSummary(payload.summary);
-        setHome({
-          deals: payload.home.deals as unknown as ProductIndex[],
-          trending: payload.home.trending as unknown as ProductIndex[],
-          latest: payload.home.latest as unknown as ProductIndex[],
-        });
-        const bootstrapProducts = [
-          ...(payload.home.deals as unknown as ProductIndex[]),
-          ...(payload.home.trending as unknown as ProductIndex[]),
-          ...(payload.home.latest as unknown as ProductIndex[]),
-        ].filter((product, index, all) => all.findIndex((entry) => entry.id === product.id) === index);
-        setProducts(bootstrapProducts);
-        setLoading(false);
+    if (!bootstrapQuery.data) return;
+    setSummary(bootstrapQuery.data.summary);
+  }, [bootstrapQuery.data]);
 
-        try {
-          const totalProducts = Math.max(payload.summary.totalProducts, bootstrapProducts.length);
-          if (totalProducts <= bootstrapProducts.length) return;
+  const prefetchProductIndex = useCallback(async () => {
+    if (!bootstrapQuery.data) return;
+    if (prefetchStatus === "ready") return;
+    if (prefetchPromiseRef.current) return prefetchPromiseRef.current;
 
-          const totalPages = Math.max(1, Math.ceil(totalProducts / FULL_CATALOG_PAGE_SIZE));
-          const responses = await Promise.all(
-            Array.from({ length: totalPages }, (_, pageIndex) =>
-              getCatalogProducts(FULL_CATALOG_PAGE_SIZE, pageIndex * FULL_CATALOG_PAGE_SIZE),
-            ),
-          );
-          if (!active) return;
+    const totalProducts = Math.max(bootstrapQuery.data.summary.totalProducts, bootstrapProducts.length);
+    if (totalProducts <= bootstrapProducts.length) {
+      setPrefetchStatus("ready");
+      return;
+    }
 
-          const mergedProducts = responses.flatMap((catalog) => catalog.items as unknown as ProductIndex[]);
-          if (mergedProducts.length === 0) return;
+    setPrefetchStatus("loading");
+    prefetchPromiseRef.current = (async () => {
+      try {
+        const totalPages = Math.max(1, Math.ceil(totalProducts / FULL_CATALOG_PAGE_SIZE));
+        const seen = new Set<string>(bootstrapProducts.map((product) => product.id));
+        const mergedProducts = [...bootstrapProducts];
 
-          const seen = new Set<string>();
-          setProducts(
-            mergedProducts.filter((product) => {
-              if (seen.has(product.id)) return false;
-              seen.add(product.id);
-              return true;
-            }),
-          );
-        } catch {
-          // Keep bootstrap products when the full catalog feed is unavailable.
+        for (let pageIndex = 0; pageIndex < totalPages; pageIndex += 1) {
+          const catalog = await getCatalogProducts(FULL_CATALOG_PAGE_SIZE, pageIndex * FULL_CATALOG_PAGE_SIZE);
+
+          let appended = false;
+          for (const product of catalog.items as ProductIndex[]) {
+            if (seen.has(product.id)) continue;
+            seen.add(product.id);
+            mergedProducts.push(product);
+            appended = true;
+          }
+
+          const isCommitPoint =
+            appended &&
+            ((pageIndex + 1) % BACKGROUND_PREFETCH_COMMIT_EVERY_PAGES === 0 || pageIndex === totalPages - 1);
+
+          if (isCommitPoint) {
+            startTransition(() => {
+              setCatalogProducts(dedupeProducts([...mergedProducts]));
+            });
+          }
+
+          if ((pageIndex + 1) % BACKGROUND_PREFETCH_COMMIT_EVERY_PAGES === 0) {
+            await new Promise((resolve) => window.setTimeout(resolve, 0));
+          }
         }
-      })
-      .catch(() => {
-        if (!active) return;
-        setError("catalog_bootstrap_unavailable");
-        setSummary({
-          totalStores: initialShops.length,
-          indexedStores: new Set(initialProducts.map((product) => product.shopId)).size,
-          totalProducts: initialProducts.length,
-        });
-        setHome(deriveHome(initialProducts));
-        setLoading(false);
-        // Keep local fallback data when the backend bootstrap is unavailable.
-      });
+
+        setPrefetchStatus("ready");
+      } catch {
+        setPrefetchStatus("idle");
+      } finally {
+        prefetchPromiseRef.current = null;
+      }
+    })();
+
+    return prefetchPromiseRef.current;
+  }, [bootstrapProducts, bootstrapQuery.data, prefetchStatus]);
+
+  useEffect(() => {
+    if (!bootstrapQuery.data || prefetchStatus !== "idle") return;
+    if (!shouldAutoPrefetchCatalog(bootstrapQuery.data.summary.totalProducts)) return;
+
+    const schedule = window.requestIdleCallback
+      ? window.requestIdleCallback(() => {
+          window.setTimeout(() => {
+            void prefetchProductIndex();
+          }, BACKGROUND_PREFETCH_DELAY_MS);
+        })
+      : window.setTimeout(() => {
+          void prefetchProductIndex();
+        }, BACKGROUND_PREFETCH_DELAY_MS);
 
     return () => {
-      active = false;
+      if (typeof schedule === "number") {
+        window.clearTimeout(schedule);
+      } else {
+        window.cancelIdleCallback?.(schedule);
+      }
     };
-  }, []);
+  }, [bootstrapQuery.data, prefetchProductIndex, prefetchStatus]);
 
   const registerProducts = useCallback<DataStoreValue["registerProducts"]>((incoming) => {
-    setProducts((prev) => {
+    setRegisteredProducts((prev) => {
       const merged = [...incoming, ...prev];
-      const seen = new Set<string>();
-      return merged.filter((product) => {
-        if (seen.has(product.id)) return false;
-        seen.add(product.id);
-        return true;
-      });
+      return dedupeProducts(merged);
     });
   }, []);
 
@@ -176,9 +238,9 @@ export function DataStoreProvider({ children }: { children: ReactNode }) {
       updatedAt: now,
       ...input,
     };
-    setShops((prev) => [shop, ...prev]);
+    setManualShops((prev) => [shop, ...prev]);
     if (input.website) {
-      setShopSources((prev) => [
+      setManualShopSources((prev) => [
         ...prev,
         { id: `src_${id}`, shopId: id, sourceType: "website", sourceUrl: input.website!, status: "pending", pagesVisited: 0 },
       ]);
@@ -187,7 +249,7 @@ export function DataStoreProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const toggleVerify = useCallback((shopId: string) => {
-    setShops((prev) =>
+    setManualShops((prev) =>
       prev.map((s) =>
         s.id === shopId
           ? { ...s, verified: !s.verified, verificationStatus: !s.verified ? "verified" : "unverified", updatedAt: new Date().toISOString() }
@@ -198,12 +260,12 @@ export function DataStoreProvider({ children }: { children: ReactNode }) {
 
   const mergeShops = useCallback((primaryId: string, secondaryId: string) => {
     if (primaryId === secondaryId) return;
-    setShops((prev) =>
+    setManualShops((prev) =>
       prev.map((s) =>
         s.id === secondaryId ? { ...s, archivedAt: new Date().toISOString(), duplicateOf: primaryId } : s,
       ),
     );
-    setProducts((prev) =>
+    setRegisteredProducts((prev) =>
       prev.map((p) =>
         p.shopId === secondaryId
           ? { ...p, shopId: primaryId, shopName: prev.find((x) => x.shopId === primaryId)?.shopName ?? p.shopName }
@@ -240,17 +302,17 @@ export function DataStoreProvider({ children }: { children: ReactNode }) {
         finishedAt: now,
         status: ok ? "ok" : "failed",
         productsFound: ok ? products.filter((p) => p.shopId === shopId).length : 0,
-        notes: ok ? "Simulated recrawl — last indexed timestamp updated" : "بدون موقع — لا يمكن الفهرسة",
-      };
-      setCrawlRuns((prev) => [run, ...prev]);
-      if (ok) {
-        setShopSources((prev) =>
-          prev.map((src) => (src.shopId === shopId ? { ...src, lastCrawledAt: now, status: "ok" } : src)),
-        );
-        setProducts((prev) => prev.map((p) => (p.shopId === shopId ? { ...p, crawledAt: now } : p)));
-      }
-      return run;
-    },
+      notes: ok ? "Simulated recrawl — last indexed timestamp updated" : "بدون موقع — لا يمكن الفهرسة",
+    };
+    setCrawlRuns((prev) => [run, ...prev]);
+    if (ok) {
+      setManualShopSources((prev) =>
+        prev.map((src) => (src.shopId === shopId ? { ...src, lastCrawledAt: now, status: "ok" } : src)),
+      );
+      setRegisteredProducts((prev) => prev.map((p) => (p.shopId === shopId ? { ...p, crawledAt: now } : p)));
+    }
+    return run;
+  },
     [shops, products],
   );
 
@@ -265,6 +327,7 @@ export function DataStoreProvider({ children }: { children: ReactNode }) {
       error,
       summary,
       home,
+      prefetchProductIndex,
       registerProducts,
       addShop,
       toggleVerify,
@@ -282,6 +345,7 @@ export function DataStoreProvider({ children }: { children: ReactNode }) {
       error,
       summary,
       home,
+      prefetchProductIndex,
       registerProducts,
       addShop,
       toggleVerify,

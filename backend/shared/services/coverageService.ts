@@ -20,8 +20,81 @@ export interface DomainEvidenceView {
   partnerFeed?: PartnerFeedRecord;
 }
 
+export interface CatalogPresenceReconciliationResult {
+  storesChecked: number;
+  promotedToIndexed: number;
+  demotedFromIndexed: number;
+  acquisitionProfilesUpdated: number;
+}
+
 export class CoverageService {
   constructor(private readonly repository: CatalogRepository) {}
+
+  async reconcileCatalogPresence(): Promise<CatalogPresenceReconciliationResult> {
+    const stores = await this.repository.listStores();
+    const sizes = await this.repository.listStoreSizeSummaries();
+    const existingProfiles = await this.repository.listAcquisitionProfiles();
+    const storesById = new Map(stores.map((store) => [store.id, store]));
+    const sizeByStoreId = new Map(sizes.map((summary) => [summary.storeId, summary]));
+    const profileByStoreId = new Map(existingProfiles.map((profile) => [profile.storeId, profile]));
+    const candidateStoreIds = new Set<string>([
+      ...sizes.map((summary) => summary.storeId),
+      ...existingProfiles.map((profile) => profile.storeId),
+      ...stores.filter((store) => store.status === "indexed").map((store) => store.id),
+    ]);
+
+    let promotedToIndexed = 0;
+    let demotedFromIndexed = 0;
+    let acquisitionProfilesUpdated = 0;
+
+    for (const storeId of candidateStoreIds) {
+      const store = storesById.get(storeId);
+      if (!store) continue;
+
+      const size = sizeByStoreId.get(storeId);
+      const indexedProductCount = size?.indexedProductCount ?? 0;
+      const previousStatus = store.status;
+      const nextStatus = resolveCanonicalStoreStatus(store, indexedProductCount);
+
+      if (nextStatus && nextStatus !== store.status) {
+        await this.repository.updateStore(store.id, {
+          status: nextStatus,
+          blockedReason: nextStatus === "indexed" ? undefined : store.blockedReason,
+          lastSyncAt: size?.lastSuccessfulSyncAt ?? store.lastSyncAt,
+          updatedAt: nowIso(),
+        });
+        store.status = nextStatus;
+        if (nextStatus === "indexed") promotedToIndexed += 1;
+        else if (previousStatus === "indexed") demotedFromIndexed += 1;
+      }
+
+      const [connectorProfile, blockerEvidence, sessionWorkflow, partnerFeed] = await Promise.all([
+        this.repository.getConnectorProfile(store.id),
+        this.repository.listBlockerEvidence(store.id),
+        this.repository.getSessionWorkflow(store.id),
+        this.repository.getPartnerFeed(store.id),
+      ]);
+
+      const profile = buildAcquisitionProfile({
+        store,
+        connectorProfile,
+        size,
+        blockerEvidence,
+        sessionWorkflow,
+        partnerFeed,
+        duplicateOfStoreId: profileByStoreId.get(store.id)?.duplicateOfStoreId,
+      });
+      await this.repository.saveAcquisitionProfile(profile);
+      acquisitionProfilesUpdated += 1;
+    }
+
+    return {
+      storesChecked: candidateStoreIds.size,
+      promotedToIndexed,
+      demotedFromIndexed,
+      acquisitionProfilesUpdated,
+    };
+  }
 
   async summarizeCoverage(): Promise<CoverageSummaryRecord> {
     const stores = await this.repository.listStores();
@@ -177,6 +250,17 @@ export class CoverageService {
   async savePartnerFeed(feed: PartnerFeedRecord): Promise<void> {
     await this.repository.upsertPartnerFeed(feed);
   }
+}
+
+function resolveCanonicalStoreStatus(
+  store: StoreRecord,
+  indexedProductCount: number,
+): StoreRecord["status"] | null {
+  if (indexedProductCount > 0) return store.status === "indexed" ? null : "indexed";
+  if (store.status !== "indexed") return null;
+  if (store.websiteType === "social") return "social_only";
+  if (store.website) return "indexable";
+  return "probe_pending";
 }
 
 function buildDuplicateMap(stores: StoreRecord[]): Map<string, string> {

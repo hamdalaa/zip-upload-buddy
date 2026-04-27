@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ArrowUp } from "lucide-react";
 
 const columns = [
@@ -6,9 +6,10 @@ const columns = [
     title: "استكشاف",
     links: [
       { to: "/", label: "الرئيسية" },
-      { to: "/results", label: "كل المنتجات" },
+      { to: "/search", label: "كل المنتجات" },
       { to: "/brands", label: "الوكلاء" },
       { to: "/iraq", label: "المحافظات" },
+      { to: "/answers", label: "إجابات AI" },
     ],
   },
   {
@@ -16,85 +17,75 @@ const columns = [
     links: [
       { to: "/sinaa", label: "شارع الصناعة" },
       { to: "/rubaie", label: "شارع الربيعي" },
-      { to: "/results?category=PC%20Parts", label: "قطع PC" },
-      { to: "/results?category=Networking", label: "الشبكات" },
+      { to: "/search?category=PC%20Parts", label: "قطع PC" },
+      { to: "/search?category=Networking", label: "الشبكات" },
+    ],
+  },
+  {
+    title: "الفئات",
+    links: [
+      { to: "/search?category=Phones", label: "الهواتف" },
+      { to: "/search?category=Chargers", label: "الشواحن" },
+      { to: "/search?category=Gaming", label: "الألعاب" },
+      { to: "/search?category=Cameras", label: "الكاميرات" },
     ],
   },
   {
     title: "المنصة",
     links: [
-      { to: "/dashboard", label: "لوحة الإدارة" },
-      { to: "/results?category=Phones", label: "الهواتف" },
-      { to: "/results?category=Chargers", label: "الشواحن" },
+      { to: "/about", label: "عن حاير" },
       { to: "/brand/apple", label: "Apple" },
+      { to: "/brand/samsung", label: "Samsung" },
     ],
   },
 ];
 
 export function SiteFooter() {
+  const location = useLocation();
+
   return (
-    <footer className="relative mt-20 bg-secondary text-secondary-foreground">
-      <button
-        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        aria-label="رجوع للأعلى"
-        className="press fixed bottom-5 right-3 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-glow transition-transform hover:scale-105 md:bottom-6 md:right-6 md:h-12 md:w-12"
-      >
-        <ArrowUp className="h-5 w-5" />
-      </button>
+    <footer className="relative mt-24 bg-surface-2 text-foreground">
+      <div aria-hidden className="h-px w-full bg-surface-2" />
+      {location.pathname !== "/" && (
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          aria-label="رجوع للأعلى"
+          className="ios-tap fixed bottom-24 right-3 z-40 flex h-10 w-10 items-center justify-center rounded-full bg-card/88 text-muted-foreground shadow-[0_16px_38px_-26px_rgba(23,32,23,0.45)] ring-1 ring-border backdrop-blur-md transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] hover:-translate-y-0.5 hover:text-foreground md:bottom-6 md:right-6 md:h-11 md:w-11"
+        >
+          <ArrowUp className="h-4 w-4" />
+        </button>
+      )}
 
       <div className="container py-14 md:py-20">
-        {/* Masthead block */}
-        <div className="grid gap-10 border-b border-secondary-foreground/10 pb-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:gap-16">
           <div className="text-right">
-            <Link to="/" className="inline-flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-primary shadow-glow">
-                <span className="font-display text-2xl font-bold leading-none text-primary-foreground">ت</span>
+            <Link to="/" className="inline-flex items-center gap-2.5">
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-foreground text-background shadow-[0_16px_34px_-26px_rgba(23,32,23,0.7)]">
+                <span className="font-sans text-lg font-extrabold leading-none">ح</span>
               </div>
-              <div>
-                <div className="font-display text-3xl font-semibold leading-none text-secondary-foreground md:text-4xl">حاير</div>
-                <div className="mt-1.5 text-[10px] font-semibold uppercase tracking-[0.28em] text-secondary-foreground/55">
-                  Hayer — Iraqi Electronics Atlas
-                </div>
-              </div>
+              <div className="font-display text-3xl font-bold leading-none tracking-normal text-foreground">حـايـر</div>
             </Link>
 
-            <p className="mt-6 max-w-[48rem] text-sm leading-7 text-secondary-foreground/70">
-              حاير مو متجر، بل طبقة توجيه أوضح فوق سوق الإلكترونيات العراقي: محلات،
-              منتجات، محافظات، ووكلاء رسميون ضمن تجربة واحدة تركّز على القرار السريع
-              والثقة قبل الخروج من البيت.
+            <p className="mt-5 max-w-sm text-[13px] leading-7 text-muted-foreground">
+              طبقة توجيه أوضح فوق سوق الإلكترونيات العراقي — محلات، منتجات، محافظات، ووكلاء رسميون.
             </p>
-
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Link
-                to="/results"
-                className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary-glow transition-colors shadow-glow"
-              >
-                ابدأ البحث ←
-              </Link>
-              <Link
-                to="/iraq"
-                className="inline-flex items-center gap-2 rounded-full border border-secondary-foreground/20 px-5 py-2.5 text-sm font-medium text-secondary-foreground/80 hover:border-secondary-foreground/40 hover:text-secondary-foreground transition-colors"
-              >
-                المحافظات ←
-              </Link>
-            </div>
           </div>
 
-          {/* Columns */}
-          <div className="grid grid-cols-3 gap-4 sm:gap-8">
+          {/* Columns — clean grid */}
+          <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4">
             {columns.map((column) => (
               <div key={column.title} className="min-w-0 text-right">
-                <div className="truncate text-[10px] font-semibold uppercase tracking-[0.18em] text-secondary-foreground/50 sm:tracking-[0.22em]">
+                <h3 className="text-[11px] font-bold uppercase tracking-[0.18em] text-foreground">
                   {column.title}
-                </div>
-                <ul className="mt-3 space-y-2.5 sm:mt-4 sm:space-y-3">
+                </h3>
+                <ul className="mt-4 space-y-2.5">
                   {column.links.map((link) => (
                     <li key={link.to} className="min-w-0">
                       <Link
                         to={link.to}
-                        className="block truncate text-xs text-secondary-foreground/75 transition-colors hover:text-primary-glow sm:text-sm"
+                        className="inline-block text-[13px] text-muted-foreground transition-colors hover:text-foreground"
                       >
-                        {link.label}
+                        <span className="truncate">{link.label}</span>
                       </Link>
                     </li>
                   ))}
@@ -104,11 +95,13 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-3 pt-6 text-center md:flex-row md:items-center md:justify-between md:text-right">
-          <p className="text-xs leading-6 text-secondary-foreground/55">
+        <div className="relative mt-12 flex flex-col gap-2 border-t border-border pt-6 text-center md:flex-row md:items-center md:justify-between md:text-right">
+          <p className="text-[11px] leading-5 text-muted-foreground">
             البيانات مبنية على آخر فهرسة متاحة وليست تحديثاً لحظياً.
           </p>
-          <p className="font-numeric text-xs text-secondary-foreground/55">© {new Date().getFullYear()} Hayer</p>
+          <p className="font-numeric text-[11px] text-muted-foreground tabular-stable">
+            © {new Date().getFullYear()} Hayer
+          </p>
         </div>
       </div>
     </footer>

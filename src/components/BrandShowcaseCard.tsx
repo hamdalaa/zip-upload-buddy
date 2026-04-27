@@ -38,7 +38,7 @@ export function BrandShowcaseCard({ brand, index = 0 }: Props) {
   return (
     <Link
       to={`/brand/${brand.slug}`}
-      className="group relative block h-full overflow-hidden rounded-2xl border border-border/70 bg-card shadow-[0_2px_10px_-4px_hsl(220_30%_20%/0.08)] transition-all duration-500 hover:-translate-y-1.5 hover:border-primary/50 hover:shadow-[0_20px_40px_-15px_hsl(var(--primary)/0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      className="group relative block h-full overflow-hidden rounded-2xl border border-border/70 bg-card shadow-[0_2px_10px_-4px_hsl(220_30%_20%/0.08)] transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] duration-500 hover:-translate-y-1.5 hover:border-primary/50 hover:shadow-[0_20px_40px_-15px_hsl(var(--primary)/0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       aria-label={`عرض ${brand.brandName} — ${tagline}`}
     >
       <div className="relative aspect-[4/3] sm:aspect-[5/4] overflow-hidden bg-muted">
@@ -110,7 +110,7 @@ export function BrandShowcaseCard({ brand, index = 0 }: Props) {
               </div>
             </div>
 
-            <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[0_8px_20px_-4px_hsl(var(--primary)/0.6)] ring-2 ring-white/25 transition-all duration-500 group-hover:scale-110 group-hover:-translate-x-1.5 group-hover:ring-white/40">
+            <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[0_8px_20px_-4px_hsl(var(--primary)/0.6)] ring-2 ring-white/25 transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] duration-500 group-hover:scale-110 group-hover:-translate-x-1.5 group-hover:ring-white/40">
               <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
             </div>
           </div>

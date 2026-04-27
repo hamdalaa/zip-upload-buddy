@@ -24,15 +24,19 @@ export function StarRating({
           return (
             <Star
               key={i}
-              className={cn(px, filled ? "fill-warning text-warning" : "text-muted-foreground/40")}
-              strokeWidth={1.5}
+              className={cn(px, filled ? "fill-warning text-warning" : "text-muted-foreground/30")}
+              strokeWidth={1.25}
             />
           );
         })}
       </div>
-      <span className={cn(text, "font-display font-semibold text-foreground/90")}>{rating.toFixed(1)}</span>
+      <span className={cn(text, "font-numeric font-semibold tabular-stable text-foreground")}>
+        {rating.toFixed(1)}
+      </span>
       {typeof reviews === "number" && (
-        <span className={cn(text, "text-muted-foreground")}>({reviews.toLocaleString("en-US")})</span>
+        <span className={cn(text, "font-numeric text-muted-foreground tabular-stable")}>
+          ({reviews.toLocaleString("en-US")})
+        </span>
       )}
     </div>
   );

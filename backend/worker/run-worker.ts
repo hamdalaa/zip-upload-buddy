@@ -1,6 +1,8 @@
 import { createCatalogContext } from "../shared/bootstrap.js";
 import { createWorkers, createRedisConnection, BullCatalogJobQueue } from "./queues.js";
 import { scheduleDueWork } from "./scheduler.js";
+import { backfillCanonicalProductIds } from "../shared/services/catalogIdentityBackfillService.js";
+import { writeCatalogQualityReport } from "../shared/services/catalogQualityReportService.js";
 
 const context = await createCatalogContext();
 await context.discoveryService.rescan("bootstrap");
@@ -16,6 +18,29 @@ const workers = createWorkers(connection, {
   },
   discovery: async ({ actor }) => {
     await context.discoveryService.rescan(actor);
+  },
+  maintenance: async ({ actor, task }) => {
+    if (task === "reindex-identities") {
+      const result = backfillCanonicalProductIds();
+      await context.repository.createAuditLog({
+        id: `audit_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`,
+        actor,
+        action: "catalog_identity_reindex_completed",
+        details: { ...result },
+        createdAt: new Date().toISOString(),
+      });
+      console.log(JSON.stringify({ task, actor, result }, null, 2));
+      return;
+    }
+    const report = await writeCatalogQualityReport("catalog-quality");
+    await context.repository.createAuditLog({
+      id: `audit_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`,
+      actor,
+      action: "catalog_quality_audit_completed",
+      details: { ...report },
+      createdAt: new Date().toISOString(),
+    });
+    console.log(JSON.stringify({ task, actor, report }, null, 2));
   },
 });
 

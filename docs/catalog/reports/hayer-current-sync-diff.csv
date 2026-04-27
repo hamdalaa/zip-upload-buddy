@@ -1,0 +1,17 @@
+type,store_id,store_name,website,old_products,new_products,delta
+changed,scraped_pointiraq_com,Pointiraq,https://pointiraq.com/,2845,2878,33
+changed,scraped_shop_aynalfahad_com,Shop Aynalfahad,https://shop.aynalfahad.com/,1527,1534,7
+changed,city_karbala_ChIJhWMUDkJpWRURFW5_YUXLBpI,العالم الرقمي - Digital World,http://store.digital-world.tech/,219,226,7
+changed,city_baghdad_ChIJw-ae_X2BVxURR8SxEAAIqZk,شركة جنة الفرح للحاسبات,http://www.alfarah-store.com/,439,443,4
+changed,scraped_alfawaz_com_iq,Alfawaz,https://alfawaz.com.iq/,1046,1049,3
+changed,city_basra_ChIJd8D6g1aXxD8RchDoXtpwaLs,"7Arts, Web , Design & Printing | شركة الفنون السبعة",https://7arts.me/,3,5,2
+changed,scraped_www_jibalzone_com,Jibalzone,https://www.jibalzone.com/ar,300,301,1
+changed,scraped_alwafi_net,Alwafi,https://alwafi.net/,175,176,1
+changed,city_baghdad_ChIJxcTQWcWDVxURAmIZ6xMqvIo,انور ابل زيونة شارع الربيعي,https://anwar-apple.com/,3219,3218,-1
+changed,manual_alnomoor_com,Alnomoor,https://alnomoor.com/,883,882,-1
+changed,city_najaf_ChIJi3Vn9q7XXhURwivOFKZVF0Y,الحدراوي Alhadrawy,http://alhadrawy.com/,314,313,-1
+changed,city_basra_ChIJGYa8tNGXxD8R3Lv_fIjAVho,الكلية التقنية الهندسية في البصرة,http://www.stu.edu.iq/,89,88,-1
+changed,scraped_www_masterstoreiq_com,Masterstoreiq,https://www.masterstoreiq.com/,886,884,-2
+changed,city_erbil_ChIJCdKF9X8jB0ARvDl11j-w1KQ,سما شارقة,https://www.alshariqa-erbil.com/,200,198,-2
+changed,scraped_globaliraq_iq,Global Iraq,https://globaliraq.iq/,1122,1119,-3
+changed,scraped_store_alnabaa_com,Al Nabaa Store,https://store.alnabaa.com/,2237,2233,-4

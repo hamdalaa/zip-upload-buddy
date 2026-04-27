@@ -12,6 +12,28 @@ dist
 dist-ssr
 *.local
 
+# Runtime secrets and local environment
+.env
+.env.*
+!.env.example
+!backend/.env.example
+
+# Local catalog/database state. Production data lives on the VPS, not in git.
+*.sqlite
+*.sqlite-*
+*.db
+*.db-*
+backend/.catalog-data/
+.catalog-data/
+backend/.catalog-backups/
+backend/.catalog-reports/
+backend/.catalog-output/
+
+# Generated operational outputs
+outputs/
+generated/
+tmp/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -26,6 +48,35 @@ dist-ssr
 # Local agent/editor metadata
 .agents/
 .claude/
+.adal/
+.augment/
+.bob/
+.codebuddy/
+.commandcode/
+.continue/
+.cortex/
+.crush/
+.factory/
+.goose/
+.iflow/
+.junie/
+.kilocode/
+.kiro/
+.kode/
+.mcpjam/
+.mux/
+.neovate/
+.openhands/
+.pi/
+.pochi/
+.qoder/
+.qwen/
+.roo/
+.trae/
+.vibe/
+.windsurf/
+.zencoder/
+skills/
 
 # Generated catalog export data
 backend/.catalog-output/

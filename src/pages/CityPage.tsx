@@ -3,12 +3,15 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { ChevronLeft, Home, MapPin, Search } from "lucide-react";
 import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
+import { Seo } from "@/components/Seo";
 import { CityShopCard } from "@/components/CityShopCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
+import { useCityDetailQuery } from "@/lib/catalogQueries";
 import { compareCityShopsByPopularity } from "@/lib/shopRanking";
 import { cn } from "@/lib/utils";
-import { getCityIndexEntry, loadCity, type CityFile } from "@/lib/cityData";
+import { getCityIndexEntry } from "@/lib/cityData";
+import { breadcrumbJsonLd, itemListJsonLd } from "@/lib/seo";
 
 const PAGE_SIZE = 24;
 
@@ -16,30 +19,17 @@ export default function CityPage() {
   const { slug = "" } = useParams<{ slug: string }>();
   const nav = useNavigate();
   const meta = getCityIndexEntry(slug);
-
-  const [data, setData] = useState<CityFile | null>(null);
-  const [loading, setLoading] = useState(true);
+  const cityQuery = useCityDetailQuery(slug);
+  const data = cityQuery.data ?? null;
+  const loading = cityQuery.isLoading && !data;
   const [activeCat, setActiveCat] = useState<string>("all");
   const [query, setQuery] = useState("");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   useEffect(() => {
-    let alive = true;
-    setLoading(true);
     setVisibleCount(PAGE_SIZE);
     setActiveCat("all");
     setQuery("");
-
-    loadCity(slug).then((nextData) => {
-      if (alive) {
-        setData(nextData);
-        setLoading(false);
-      }
-    });
-
-    return () => {
-      alive = false;
-    };
   }, [slug]);
 
   const categories = useMemo(() => {
@@ -88,9 +78,30 @@ export default function CityPage() {
   }
 
   const visible = filtered.slice(0, visibleCount);
+  const cityPath = `/city/${encodeURIComponent(slug)}`;
 
   return (
     <div className="min-h-screen flex flex-col bg-[linear-gradient(180deg,hsl(var(--surface))_0%,hsl(var(--background))_14%,hsl(var(--surface))_100%)]">
+      <Seo
+        title={`محلات الإلكترونيات في ${meta.cityAr}`}
+        description={`دليل محلات الإلكترونيات في ${meta.cityAr}: ابحث داخل ${meta.count.toLocaleString("en-US")} محل، صف حسب الفئة، وافتح خرائط Google وروابط التواصل من حاير.`}
+        path={cityPath}
+        structuredData={[
+          breadcrumbJsonLd([
+            { name: "الرئيسية", path: "/" },
+            { name: "كل محلات العراق", path: "/iraq" },
+            { name: meta.cityAr, path: cityPath },
+          ]),
+          itemListJsonLd(
+            (data?.stores ?? []).slice(0, 20).map((store) => ({
+              name: store.name,
+              path: `/city/${encodeURIComponent(slug)}/shop/${encodeURIComponent(store.id)}`,
+              image: store.imageUrl,
+              description: [store.category, store.address].filter(Boolean).join(" • "),
+            })),
+          ),
+        ]}
+      />
       <TopNav />
 
       <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-background via-surface to-background">
@@ -123,7 +134,7 @@ export default function CityPage() {
               </p>
             </div>
 
-            <div className="group/panel relative overflow-hidden rounded-3xl border border-border/60 bg-gradient-to-br from-card/95 via-card/85 to-card/70 p-5 shadow-soft-lg backdrop-blur-md transition-all hover:border-primary/30 hover:shadow-soft-xl">
+            <div className="group/panel relative overflow-hidden rounded-3xl border border-border/60 bg-gradient-to-br from-card/95 via-card/85 to-card/70 p-5 shadow-soft-lg backdrop-blur-md transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] hover:border-primary/30 hover:shadow-soft-xl">
               <div className="pointer-events-none absolute -top-16 -right-16 h-40 w-40 rounded-full bg-primary/10 blur-3xl transition-opacity group-hover/panel:opacity-80" />
               <div className="pointer-events-none absolute -bottom-20 -left-10 h-36 w-36 rounded-full bg-accent/10 blur-3xl" />
 
@@ -141,7 +152,7 @@ export default function CityPage() {
                 </span>
                 <button
                   onClick={() => nav("/iraq")}
-                  className="group/btn inline-flex items-center gap-1 rounded-full border border-border/60 bg-background/60 px-3 py-1.5 text-[11px] font-bold text-foreground transition-all hover:border-primary/40 hover:bg-primary/10 hover:text-primary active:scale-95"
+                  className="group/btn inline-flex items-center gap-1 rounded-full border border-border/60 bg-background/60 px-3 py-1.5 text-[11px] font-bold text-foreground transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] hover:border-primary/40 hover:bg-primary/10 hover:text-primary active:scale-[0.96]"
                 >
                   <ChevronLeft className="h-3 w-3 transition-transform group-hover/btn:-translate-x-0.5" />
                   كل المحافظات
@@ -204,7 +215,7 @@ export default function CityPage() {
 
           <div className="mt-6">
             {loading ? (
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
                 {Array.from({ length: 6 }).map((_, index) => (
                   <Skeleton key={index} className="h-[196px] w-full rounded-2xl" />
                 ))}
@@ -229,7 +240,7 @@ export default function CityPage() {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
                   {visible.map((store, index) => (
                     <div
                       key={store.id}
@@ -245,7 +256,7 @@ export default function CityPage() {
                   <div className="mt-6 flex justify-center">
                     <button
                       onClick={() => setVisibleCount((count) => count + PAGE_SIZE)}
-                      className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-5 py-2.5 text-sm font-bold text-primary transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground hover:shadow-soft-md active:scale-95"
+                      className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-5 py-2.5 text-sm font-bold text-primary transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] hover:border-primary hover:bg-primary hover:text-primary-foreground hover:shadow-soft-md active:scale-[0.96]"
                     >
                       شوف المزيد ({filtered.length - visibleCount})
                     </button>
@@ -276,7 +287,7 @@ function Metric({
       ? "from-primary/15 to-primary/0 text-primary"
       : "from-accent/15 to-accent/0 text-accent";
   return (
-    <div className="group/metric relative overflow-hidden rounded-2xl border border-border/60 bg-background/90 p-4 text-center transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-soft">
+    <div className="group/metric relative overflow-hidden rounded-2xl border border-border/60 bg-background/90 p-4 text-center transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-soft">
       <div
         className={cn(
           "pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b opacity-70 transition-opacity group-hover/metric:opacity-100",
@@ -308,7 +319,7 @@ function FilterChip({
     <button
       onClick={onClick}
       className={cn(
-        "inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-all active:scale-95",
+        "inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] active:scale-[0.96]",
         active
           ? "border-primary bg-primary text-primary-foreground shadow-soft"
           : "border-border/80 bg-background text-foreground hover:border-primary/35 hover:bg-muted",

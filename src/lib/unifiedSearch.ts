@@ -7,6 +7,7 @@
 import { ApiError, fetchJson, withQuery } from "@/lib/api";
 import type { ProductIndex, Shop } from "@/lib/types";
 import { getShopRatingValue, getShopReviewCount } from "@/lib/shopRanking";
+import { formatIQDPrice } from "@/lib/prices";
 
 export type StockState = "in_stock" | "out_of_stock" | "preorder" | "unknown";
 
@@ -43,6 +44,7 @@ export interface UnifiedProduct {
   reviewCount?: number;
   lowestPrice?: number;
   highestPrice?: number;
+  priceCurrency?: "IQD" | "USD";
   offerCount: number;
   inStockCount: number;
   bestOfferId?: string;
@@ -99,17 +101,28 @@ export interface UnifiedSearchResponse {
   };
 }
 
+export interface UnifiedProductFullResponse {
+  product: UnifiedProduct;
+  offers: UnifiedOffer[];
+}
+
 // Arabic ↔ English synonyms — expanded into the haystack so users searching
 // in either language find the same products. Keep this small & focused on
 // the most common Iraqi/Arabic spellings of brands & categories.
 const SYNONYMS: Record<string, string[]> = {
+  iphone: ["apple", "ايفون", "آيفون"],
+  samsung: ["سامسونغ", "سامسونج", "galaxy"],
+  mac: ["macbook", "mac mini", "macmini", "imac", "apple", "ماك", "ماكبوك"],
+  macbook: ["mac", "apple", "ماك", "ماكبوك"],
+  imac: ["mac", "apple", "ماك"],
+  apple: ["iphone", "ipad", "macbook", "mac", "ابل", "آبل"],
   "ايفون": ["iphone", "apple"],
   "أيفون": ["iphone", "apple"],
   "آيفون": ["iphone", "apple"],
   "سامسونغ": ["samsung", "galaxy"],
   "سامسونج": ["samsung", "galaxy"],
-  "ماك": ["mac", "macbook", "apple"],
-  "ماكبوك": ["macbook", "apple"],
+  "ماك": ["mac", "macbook", "mac mini", "macmini", "imac", "apple"],
+  "ماكبوك": ["macbook", "mac", "apple"],
   "بلايستيشن": ["playstation", "ps5", "sony"],
   "بليستيشن": ["playstation", "ps5", "sony"],
   "بلاي": ["playstation", "sony"],
@@ -125,14 +138,169 @@ const SYNONYMS: Record<string, string[]> = {
   "سماعات": ["headphones", "accessories"],
 };
 
-function expandQuery(q: string): string[] {
-  const tokens = q.split(/\s+/).filter(Boolean);
-  const out = new Set<string>([q]);
-  for (const t of tokens) {
-    out.add(t);
-    if (SYNONYMS[t]) for (const s of SYNONYMS[t]) out.add(s);
+const PUBLIC_SEARCH_RESPONSE_VERSION = "relevance-v2";
+
+const TOKEN_SPLIT_RE = /[\s\-_/,.()]+/;
+
+interface PreparedSearchQuery {
+  raw: string;
+  normalized: string;
+  compact: string;
+  baseTokens: string[];
+  aliasTokens: string[];
+}
+
+function normalizeArabic(input: string): string {
+  return input
+    .normalize("NFKD")
+    .replace(/[\u064B-\u065F\u0670]/g, "")
+    .replace(/[إأآا]/g, "ا")
+    .replace(/[ىئ]/g, "ي")
+    .replace(/ة/g, "ه")
+    .replace(/ؤ/g, "و")
+    .replace(/ـ/g, "");
+}
+
+function normalizeSearchText(input: string): string {
+  return normalizeArabic(input.toLowerCase()).replace(/\s+/g, " ").trim();
+}
+
+function compactSearchText(input: string): string {
+  return normalizeSearchText(input).replace(/[^\p{L}\p{N}]+/gu, "");
+}
+
+function tokenizeSearchText(input: string): string[] {
+  return normalizeSearchText(input)
+    .split(TOKEN_SPLIT_RE)
+    .map((token) => token.trim())
+    .filter(Boolean);
+}
+
+function isMeaningfulQueryToken(token: string): boolean {
+  if (token.length >= 3) return true;
+  return /\d/.test(token);
+}
+
+function collectAliasTokens(baseTokens: string[]): string[] {
+  const out = new Set<string>();
+  for (const token of baseTokens) {
+    const aliases = SYNONYMS[token];
+    if (!aliases) continue;
+    for (const alias of aliases) {
+      for (const aliasToken of tokenizeSearchText(alias)) {
+        if (isMeaningfulQueryToken(aliasToken)) out.add(aliasToken);
+      }
+    }
   }
-  return [...out];
+  return [...out].filter((token) => !baseTokens.includes(token));
+}
+
+function prepareSearchQuery(query: string): PreparedSearchQuery {
+  const normalized = normalizeSearchText(query);
+  const baseTokens = tokenizeSearchText(query).filter(isMeaningfulQueryToken);
+
+  return {
+    raw: query,
+    normalized,
+    compact: compactSearchText(query),
+    baseTokens,
+    aliasTokens: collectAliasTokens(baseTokens),
+  };
+}
+
+function scoreTokenSet(
+  queryTokens: string[],
+  fieldTokens: string[],
+  weights: { exact: number; prefix: number; contains: number },
+): { score: number; matches: number } {
+  let score = 0;
+  let matches = 0;
+
+  for (const queryToken of queryTokens) {
+    let best = 0;
+    for (const fieldToken of fieldTokens) {
+      if (fieldToken === queryToken) {
+        best = Math.max(best, weights.exact);
+        continue;
+      }
+      if (fieldToken.startsWith(queryToken) || queryToken.startsWith(fieldToken)) {
+        best = Math.max(best, weights.prefix);
+        continue;
+      }
+      if (queryToken.length >= 4 && (fieldToken.includes(queryToken) || queryToken.includes(fieldToken))) {
+        best = Math.max(best, weights.contains);
+      }
+    }
+
+    if (best > 0) {
+      score += best;
+      matches += 1;
+    }
+  }
+
+  return { score, matches };
+}
+
+function scoreFieldMatch(
+  query: PreparedSearchQuery,
+  value: string | undefined,
+  weight = 1,
+): number {
+  if (!query.raw.trim() || !value) return 0;
+
+  const normalizedValue = normalizeSearchText(value);
+  const compactValue = compactSearchText(value);
+  const valueTokens = tokenizeSearchText(value).filter(isMeaningfulQueryToken);
+
+  let score = 0;
+
+  if (query.compact && compactValue === query.compact) score += 40;
+  if (query.normalized && normalizedValue === query.normalized) score += 32;
+  if (query.normalized && normalizedValue.startsWith(query.normalized)) score += 24;
+  if (query.compact && compactValue.startsWith(query.compact)) score += 18;
+  if (query.compact && compactValue.includes(query.compact)) score += query.compact.length <= 3 ? 3 : 7;
+
+  const base = scoreTokenSet(query.baseTokens, valueTokens, {
+    exact: 14,
+    prefix: 8,
+    contains: 4,
+  });
+  const alias = scoreTokenSet(query.aliasTokens, valueTokens, {
+    exact: 4,
+    prefix: 2.5,
+    contains: 1,
+  });
+
+  score += base.score + alias.score;
+  if (query.baseTokens.length > 0) {
+    const coverage = base.matches / query.baseTokens.length;
+    if (coverage === 1) score += 10;
+    else if (coverage >= 0.6) score += 5;
+  }
+
+  return score * weight;
+}
+
+function scoreProductAutocomplete(product: ProductIndex, query: PreparedSearchQuery): number {
+  let score = 0;
+  score += scoreFieldMatch(query, product.name, 5);
+  score += scoreFieldMatch(query, product.brand, 3.5);
+  score += scoreFieldMatch(query, product.sku, 4);
+  score += scoreFieldMatch(query, product.category, 1.2);
+  score += scoreFieldMatch(query, product.shopName, 1);
+  if (product.inStock) score += 0.3;
+  return score;
+}
+
+function scoreShopRelevance(shop: Shop, query: PreparedSearchQuery): number {
+  let score = 0;
+  score += scoreFieldMatch(query, shop.name, 5);
+  score += scoreFieldMatch(query, shop.category, 2);
+  score += scoreFieldMatch(query, shop.categories?.join(" "), 1.8);
+  score += scoreFieldMatch(query, shop.area, 1.2);
+  score += scoreFieldMatch(query, shop.address, 0.7);
+  if (shop.verified) score += 0.2;
+  return score;
 }
 
 export async function searchUnified(req: UnifiedSearchRequest): Promise<UnifiedSearchResponse> {
@@ -150,124 +318,23 @@ export async function searchUnified(req: UnifiedSearchRequest): Promise<UnifiedS
       verifiedOnly: req.verifiedOnly,
       officialDealerOnly: req.officialDealerOnly,
       sort: req.sort,
+      sv: PUBLIC_SEARCH_RESPONSE_VERSION,
     }),
   );
-}
-
-/**
- * Local fallback for `searchUnified` — used when the backend `/public/search`
- * endpoint is unreachable (e.g. preview without a running backend). Builds a
- * `UnifiedSearchResponse` from in-memory `ProductIndex[]` already loaded by
- * the data store (which itself falls back to mock data).
- */
-export function searchUnifiedLocal(
-  allProducts: ProductIndex[],
-  req: UnifiedSearchRequest,
-): UnifiedSearchResponse {
-  const start = performance.now();
-  const q = (req.q ?? "").trim().toLowerCase();
-  let items = [...allProducts];
-
-  if (q) {
-    const terms = expandQuery(q);
-    items = items.filter((p) => {
-      const hay = [p.name, p.brand, p.category, p.shopName].filter(Boolean).join(" ").toLowerCase();
-      return terms.some((t) => hay.includes(t));
-    });
-  }
-  if (req.brands?.length) items = items.filter((p) => p.brand && req.brands!.includes(p.brand));
-  if (req.categories?.length) items = items.filter((p) => req.categories!.includes(p.category));
-  if (req.stores?.length) items = items.filter((p) => req.stores!.includes(p.shopId));
-  if (req.cities?.length) items = items.filter((p) => req.cities!.includes(p.area));
-  if (req.priceMin != null) items = items.filter((p) => (p.priceValue ?? 0) >= req.priceMin!);
-  if (req.priceMax != null) items = items.filter((p) => (p.priceValue ?? Infinity) <= req.priceMax!);
-  if (req.inStockOnly) items = items.filter((p) => p.inStock !== false);
-  if (req.onSaleOnly) items = items.filter((p) => !!p.originalPriceValue && !!p.priceValue && p.originalPriceValue > p.priceValue);
-
-  // Group by name+brand → UnifiedProduct (one card per canonical product).
-  const groups = new Map<string, ProductIndex[]>();
-  for (const p of items) {
-    const key = `${(p.brand ?? "").toLowerCase()}::${p.name.toLowerCase()}`;
-    const arr = groups.get(key) ?? [];
-    arr.push(p);
-    groups.set(key, arr);
-  }
-
-  const products: UnifiedProduct[] = [...groups.values()].map((group) => {
-    const prices = group.map((g) => g.priceValue).filter((v): v is number => typeof v === "number");
-    const ratings = group.map((g) => g.rating).filter((v): v is number => typeof v === "number");
-    const reviews = group.reduce((sum, g) => sum + (g.reviewCount ?? 0), 0);
-    const head = group[0];
-    return {
-      id: head.id,
-      title: head.name,
-      brand: head.brand,
-      category: head.category,
-      images: group.map((g) => g.imageUrl).filter((v): v is string => !!v),
-      rating: ratings.length ? ratings.reduce((a, b) => a + b, 0) / ratings.length : undefined,
-      reviewCount: reviews || undefined,
-      lowestPrice: prices.length ? Math.min(...prices) : undefined,
-      highestPrice: prices.length ? Math.max(...prices) : undefined,
-      offerCount: group.length,
-      inStockCount: group.filter((g) => g.inStock !== false).length,
-      bestOfferId: head.id,
-    };
-  });
-
-  // Sorting
-  switch (req.sort) {
-    case "price_asc": products.sort((a, b) => (a.lowestPrice ?? Infinity) - (b.lowestPrice ?? Infinity)); break;
-    case "price_desc": products.sort((a, b) => (b.highestPrice ?? -Infinity) - (a.highestPrice ?? -Infinity)); break;
-    case "rating_desc": products.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0)); break;
-    case "offers_desc": products.sort((a, b) => b.offerCount - a.offerCount); break;
-    case "freshness_desc":
-    case "relevance":
-    default:
-      products.sort((a, b) => b.offerCount - a.offerCount);
-      break;
-  }
-
-  // Facets
-  const brandMap = new Map<string, number>();
-  const catMap = new Map<string, number>();
-  const storeMap = new Map<string, number>();
-  const cityMap = new Map<string, number>();
-  let priceMin = Infinity;
-  let priceMax = 0;
-  for (const p of items) {
-    if (p.brand) brandMap.set(p.brand, (brandMap.get(p.brand) ?? 0) + 1);
-    if (p.category) catMap.set(p.category, (catMap.get(p.category) ?? 0) + 1);
-    if (p.shopName) storeMap.set(p.shopName, (storeMap.get(p.shopName) ?? 0) + 1);
-    if (p.area) cityMap.set(p.area, (cityMap.get(p.area) ?? 0) + 1);
-    if (typeof p.priceValue === "number") {
-      if (p.priceValue < priceMin) priceMin = p.priceValue;
-      if (p.priceValue > priceMax) priceMax = p.priceValue;
-    }
-  }
-  const toFacets = (m: Map<string, number>): UnifiedSearchFacet[] =>
-    [...m.entries()].map(([k, c]) => ({ key: k, label: k, count: c })).sort((a, b) => b.count - a.count);
-
-  return {
-    query: req.q ?? "",
-    totalProducts: products.length,
-    totalOffers: items.length,
-    storesCovered: storeMap.size,
-    storesScanned: storeMap.size,
-    durationMs: Math.round(performance.now() - start),
-    products,
-    facets: {
-      brands: toFacets(brandMap),
-      categories: toFacets(catMap),
-      stores: toFacets(storeMap),
-      cities: toFacets(cityMap),
-      priceRange: { min: priceMin === Infinity ? 0 : priceMin, max: priceMax },
-    },
-  };
 }
 
 export async function getProduct(productId: string): Promise<UnifiedProduct | null> {
   try {
     return await fetchJson<UnifiedProduct>(`/public/products/${encodeURIComponent(productId)}`);
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) return null;
+    throw error;
+  }
+}
+
+export async function getProductFull(productId: string): Promise<UnifiedProductFullResponse | null> {
+  try {
+    return await fetchJson<UnifiedProductFullResponse>(`/public/products/${encodeURIComponent(productId)}/full`);
   } catch (error) {
     if (error instanceof ApiError && error.status === 404) return null;
     throw error;
@@ -283,8 +350,8 @@ export async function getProductOffers(productId: string): Promise<UnifiedOffer[
   }
 }
 
-export function formatIQD(value: number): string {
-  return `${value.toLocaleString("ar-IQ")} د.ع`;
+export function formatIQD(value?: number | null): string {
+  return formatIQDPrice(value);
 }
 
 /* ====================================================================
@@ -329,18 +396,20 @@ export function searchShops(
   req: ShopSearchFilters & { sort?: ShopSortKey },
 ): ShopSearchResult {
   const start = performance.now();
-  const q = (req.q ?? "").trim().toLowerCase();
+  const q = (req.q ?? "").trim();
+  const preparedQuery = prepareSearchQuery(q);
   let shops = [...allShops];
+  const relevanceByShopId = new Map<string, number>();
 
   if (q) {
-    const terms = expandQuery(q);
-    shops = shops.filter((s) => {
-      const hay = [s.name, s.area, s.category, s.address, ...(s.categories ?? [])]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
-      return terms.some((t) => hay.includes(t));
-    });
+    shops = shops
+      .map((shop) => {
+        const score = scoreShopRelevance(shop, preparedQuery);
+        relevanceByShopId.set(shop.id, score);
+        return { shop, score };
+      })
+      .filter((entry) => entry.score > 0)
+      .map((entry) => entry.shop);
   }
   if (req.cities?.length) shops = shops.filter((s) => req.cities!.includes(s.area));
   if (req.categories?.length) {
@@ -375,7 +444,11 @@ export function searchShops(
       break;
     case "relevance":
     default:
-      shops.sort(defaultSort);
+      shops.sort(
+        (a, b) =>
+          (relevanceByShopId.get(b.id) ?? 0) - (relevanceByShopId.get(a.id) ?? 0) ||
+          defaultSort(a, b),
+      );
       break;
   }
 
@@ -402,7 +475,7 @@ export function searchShops(
 
 /**
  * Lightweight autocomplete — returns up to N suggestions across products + shops.
- * Used by the live dropdown beneath the search bar. Cheap string matching only.
+ * Used by the live dropdown beneath the search bar with relevance-first ranking.
  */
 export interface AutocompleteSuggestion {
   type: "product" | "shop" | "brand" | "query";
@@ -418,42 +491,45 @@ export function buildAutocomplete(
   productsOrLimit: ProductIndex[] | number = [],
   limitArg = 8,
 ): AutocompleteSuggestion[] {
-  const query = q.trim().toLowerCase();
+  const query = q.trim();
   if (!query) return [];
+  const preparedQuery = prepareSearchQuery(query);
   const products = Array.isArray(productsOrLimit) ? productsOrLimit : [];
   const limit = typeof productsOrLimit === "number" ? productsOrLimit : limitArg;
-  const terms = expandQuery(query);
-  const out: AutocompleteSuggestion[] = [];
-  const matches = (hay: string) => terms.some((t) => hay.includes(t));
 
-  for (const p of products) {
-    if (out.length >= limit) break;
-    const hay = [p.name, p.brand, p.category, p.shopName].filter(Boolean).join(" ").toLowerCase();
-    if (matches(hay)) {
-      out.push({
+  const scoredProducts = products
+    .map((product) => ({
+      score: scoreProductAutocomplete(product, preparedQuery),
+      suggestion: {
         type: "product",
-        id: p.id,
-        label: p.name,
-        sublabel: [p.brand, p.shopName].filter(Boolean).join(" • "),
-        href: `/shop-view/${p.shopId}`,
-      });
-    }
-  }
+        id: product.id,
+        label: product.name,
+        sublabel: [product.brand, product.shopName].filter(Boolean).join(" • "),
+        href: product.canonicalProductId ? `/product/${product.canonicalProductId}` : `/shop-view/${product.shopId}`,
+      } satisfies AutocompleteSuggestion,
+    }))
+    .filter((entry) => entry.score > 0);
 
-  // Shops
-  for (const s of shops) {
-    if (out.length >= limit) break;
-    const hay = [s.name, s.area, s.category].filter(Boolean).join(" ").toLowerCase();
-    if (matches(hay)) {
-      out.push({
+  const scoredShops = shops
+    .map((shop) => ({
+      score: scoreShopRelevance(shop, preparedQuery),
+      suggestion: {
         type: "shop",
-        id: s.id,
-        label: s.name,
-        sublabel: s.area,
-        href: `/shop-view/${s.id}`,
-      });
-    }
-  }
+        id: shop.id,
+        label: shop.name,
+        sublabel: shop.area,
+        href: `/shop-view/${shop.id}`,
+      } satisfies AutocompleteSuggestion,
+    }))
+    .filter((entry) => entry.score > 0);
 
-  return out.slice(0, limit);
+  return [...scoredProducts, ...scoredShops]
+    .sort(
+      (a, b) =>
+        b.score - a.score ||
+        Number(b.suggestion.type === "product") - Number(a.suggestion.type === "product") ||
+        a.suggestion.label.localeCompare(b.suggestion.label, "ar"),
+    )
+    .slice(0, limit)
+    .map((entry) => entry.suggestion);
 }

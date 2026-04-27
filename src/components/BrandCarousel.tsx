@@ -122,7 +122,7 @@ export function BrandCarousel({ brands, hideAbove = "lg" }: Props) {
       <div className="mt-5 flex items-center justify-between gap-3 px-1">
         <div className="flex flex-1 items-center min-w-0">
           {useDots ? (
-            <div className="flex items-center gap-1.5" role="tablist" aria-label="انتقال بين البراندات">
+            <div className="flex items-center gap-0.5" role="tablist" aria-label="انتقال بين البراندات">
               {brands.map((_, idx) => {
                 const isActive = idx === activeIndex;
                 return (
@@ -133,11 +133,15 @@ export function BrandCarousel({ brands, hideAbove = "lg" }: Props) {
                     aria-selected={isActive}
                     aria-label={`اذهب إلى البراند ${idx + 1}`}
                     onClick={() => scrollToIndex(idx)}
-                    className={cn(
-                      "h-1 rounded-full transition-all duration-300",
-                      isActive ? "w-6 bg-foreground" : "w-1 bg-border hover:bg-muted-foreground/50",
-                    )}
-                  />
+                    className="group flex h-7 w-7 items-center justify-center rounded-full transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] hover:bg-surface/70"
+                  >
+                    <span
+                      className={cn(
+                        "h-1 rounded-full transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] duration-300",
+                        isActive ? "w-6 bg-foreground" : "w-1 bg-border group-hover:bg-muted-foreground/50",
+                      )}
+                    />
+                  </button>
                 );
               })}
             </div>
@@ -158,8 +162,8 @@ export function BrandCarousel({ brands, hideAbove = "lg" }: Props) {
             disabled={!canPrev}
             aria-label="السابق"
             className={cn(
-              "flex h-7 w-7 items-center justify-center rounded-full transition-all",
-              "hover:bg-surface hover:text-primary active:scale-95",
+              "flex h-7 w-7 items-center justify-center rounded-full transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter]",
+              "hover:bg-surface hover:text-primary active:scale-[0.96]",
               "disabled:opacity-30 disabled:pointer-events-none",
             )}
           >
@@ -178,8 +182,8 @@ export function BrandCarousel({ brands, hideAbove = "lg" }: Props) {
             disabled={!canNext}
             aria-label="التالي"
             className={cn(
-              "flex h-7 w-7 items-center justify-center rounded-full transition-all",
-              "hover:bg-surface hover:text-primary active:scale-95",
+              "flex h-7 w-7 items-center justify-center rounded-full transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter]",
+              "hover:bg-surface hover:text-primary active:scale-[0.96]",
               "disabled:opacity-30 disabled:pointer-events-none",
             )}
           >

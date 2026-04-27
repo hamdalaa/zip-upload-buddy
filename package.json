@@ -5,17 +5,20 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && npm run aeo:prerender",
     "build:dev": "vite build --mode development",
     "host:always-on": "zsh ./scripts/always-on-localhost.sh",
     "host:install": "zsh ./scripts/install-launch-agent.sh",
     "host:status": "zsh ./scripts/status-launch-agent.sh",
+    "seo:sitemap": "node scripts/seo/generate-sitemap.mjs",
+    "aeo:prerender": "node scripts/seo/prerender-aeo.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@fastify/cors": "^11.2.0",
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-alert-dialog": "^1.1.14",

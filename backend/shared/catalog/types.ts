@@ -8,6 +8,8 @@ export type StoreStatus =
   | "failed";
 
 export type ConnectorType =
+  | "alnomoor_trpc"
+  | "elryan_api"
   | "shopify"
   | "threed_iraq"
   | "tlcommerce_api"
@@ -142,6 +144,8 @@ export interface CatalogProductDraft {
   categoryPath: string[];
   sourceUrl: string;
   imageUrl?: string;
+  primaryImageUrl?: string;
+  images?: string[];
   availability: "in_stock" | "out_of_stock" | "preorder" | "unknown";
   currency: string;
   livePrice?: number;
@@ -293,6 +297,9 @@ export interface SearchDocument {
   freshnessAt: string;
   sourceUrl: string;
   categoryPath: string;
+  imageUrl?: string;
+  currency?: string;
+  offerLabel?: string;
   sellerName?: string;
 }
 
@@ -304,6 +311,39 @@ export interface AuditLogRecord {
   syncRunId?: string;
   details: Record<string, unknown>;
   createdAt: string;
+}
+
+export interface SiteSettingsPayload {
+  hero: {
+    badgeText: string;
+    title: string;
+    subtitle: string;
+    storeMetricLabel: string;
+    productMetricLabel: string;
+    coverageMetricValue: string;
+    coverageMetricLabel: string;
+  };
+  seo: {
+    title: string;
+    description: string;
+  };
+  featured: {
+    storeIds: string[];
+    brandSlugs: string[];
+    categoryKeys: string[];
+  };
+  theme: {
+    primaryHue: number;
+    accentHue: number;
+    surfaceTone: "light" | "warm" | "cool";
+  };
+}
+
+export interface SiteSettingsRecord {
+  id: string;
+  payload: SiteSettingsPayload;
+  updatedBy: string;
+  updatedAt: string;
 }
 
 export interface RawSnapshotRecord {

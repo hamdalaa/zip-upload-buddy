@@ -1,4 +1,10 @@
 import { catalogConfig } from "../config.js";
+import { extractDomain, extractRootDomain } from "../catalog/normalization.js";
+import {
+  guardedFetch,
+  readJsonResponseBounded,
+  readTextResponseBounded,
+} from "../security/outboundRequestGuard.js";
 
 export interface CatalogHttpClientSession {
   cookiesJson?: string;
@@ -16,36 +22,40 @@ export class CatalogHttpClient implements CatalogHttpClientLike {
 
   async fetchText(url: string): Promise<string> {
     const response = await this.fetchWithRetry(url, "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-    return response.text();
+    return readTextResponseBounded(response);
   }
 
   async fetchJson(url: string, init?: RequestInit): Promise<unknown> {
     const response = await this.fetchWithRetry(url, "application/json,text/plain,*/*", init);
-    return response.json();
+    return readJsonResponseBounded(response);
   }
 
   private async fetchWithRetry(url: string, accept: string, init?: RequestInit): Promise<Response> {
     const candidates = buildFetchCandidates(url);
+    const allowedRootDomain = resolveAllowedRootDomain(url);
     let lastError: Error | undefined;
 
     for (const candidate of candidates) {
       for (let attempt = 0; attempt < 3; attempt++) {
         try {
-          const response = await fetch(candidate, {
-            method: init?.method ?? "GET",
-            body: init?.body,
-            headers: {
-              "user-agent": catalogConfig.probeUserAgent,
-              accept,
-              "accept-language": "en-US,en;q=0.9,ar-IQ;q=0.8,ar;q=0.7",
-              "cache-control": "no-cache",
-              pragma: "no-cache",
-              referer: candidate,
-              ...(init?.headers ?? {}),
-              ...(this.session?.headers ?? {}),
-              ...(this.session?.cookiesJson ? { cookie: this.session.cookiesJson } : {}),
+          const response = await guardedFetch(candidate, {
+            accept,
+            allowedRootDomain,
+            init: {
+              method: init?.method ?? "GET",
+              body: init?.body,
+              headers: {
+                "user-agent": catalogConfig.probeUserAgent,
+                "accept-language": "en-US,en;q=0.9,ar-IQ;q=0.8,ar;q=0.7",
+                "cache-control": "no-cache",
+                pragma: "no-cache",
+                referer: candidate,
+                ...(init?.headers ?? {}),
+                ...(this.session?.headers ?? {}),
+                ...(this.session?.cookiesJson ? { cookie: this.session.cookiesJson } : {}),
+              },
+              signal: init?.signal ?? AbortSignal.timeout(20_000),
             },
-            signal: init?.signal ?? AbortSignal.timeout(20_000),
           });
 
           if (shouldRetryStatus(response.status) && attempt < 2) {
@@ -103,4 +113,9 @@ function resolveRetryDelayMs(retryAfter: string | null, attempt: number): number
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function resolveAllowedRootDomain(url: string): string | undefined {
+  const domain = extractDomain(url);
+  return domain ? extractRootDomain(domain) : undefined;
 }

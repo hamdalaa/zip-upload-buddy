@@ -10,6 +10,7 @@ import type {
   RawSnapshotRecord,
   SearchDocument,
   SessionWorkflowRecord,
+  SiteSettingsRecord,
   StoreDomainRecord,
   StoreRecord,
   StoreSizeSummaryRecord,
@@ -31,6 +32,7 @@ export class MemoryCatalogRepository implements CatalogRepository {
   private readonly partnerFeeds = new Map<string, PartnerFeedRecord>();
   private readonly snapshots = new Map<string, RawSnapshotRecord>();
   private readonly auditLogs = new Map<string, AuditLogRecord>();
+  private readonly siteSettings = new Map<string, SiteSettingsRecord>();
   private readonly serviceTokens = new Map<string, ServiceTokenRecord>();
   private readonly requestNonces = new Map<string, number>();
 
@@ -45,6 +47,12 @@ export class MemoryCatalogRepository implements CatalogRepository {
 
   async listStores(): Promise<StoreRecord[]> {
     return [...this.stores.values()].sort((a, b) => a.name.localeCompare(b.name, "ar"));
+  }
+
+  async getStoresByIds(storeIds: string[]): Promise<StoreRecord[]> {
+    return [...new Set(storeIds)]
+      .map((storeId) => this.stores.get(storeId))
+      .filter((store): store is StoreRecord => Boolean(store));
   }
 
   async getStoreById(storeId: string): Promise<StoreRecord | undefined> {
@@ -98,6 +106,10 @@ export class MemoryCatalogRepository implements CatalogRepository {
 
   async getStoreSizeSummary(storeId: string): Promise<StoreSizeSummaryRecord | undefined> {
     return this.sizeSummaries.get(storeId);
+  }
+
+  async listStoreSizeSummaries(): Promise<StoreSizeSummaryRecord[]> {
+    return [...this.sizeSummaries.values()];
   }
 
   async saveAcquisitionProfile(profile: DomainAcquisitionProfile): Promise<void> {
@@ -156,6 +168,20 @@ export class MemoryCatalogRepository implements CatalogRepository {
 
   async createAuditLog(log: AuditLogRecord): Promise<void> {
     this.auditLogs.set(log.id, log);
+  }
+
+  async listAuditLogs(limit = 50, offset = 0): Promise<AuditLogRecord[]> {
+    return [...this.auditLogs.values()]
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .slice(offset, offset + limit);
+  }
+
+  async getSiteSettings(id = "default"): Promise<SiteSettingsRecord | undefined> {
+    return this.siteSettings.get(id);
+  }
+
+  async saveSiteSettings(settings: SiteSettingsRecord): Promise<void> {
+    this.siteSettings.set(settings.id, settings);
   }
 
   async syncServiceTokens(tokens: ServiceTokenRecord[]): Promise<void> {

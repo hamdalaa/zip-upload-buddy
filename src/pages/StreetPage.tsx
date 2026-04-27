@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ChevronLeft, Home } from "lucide-react";
 import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
+import { Seo } from "@/components/Seo";
 import { StreetShopsSection } from "@/components/StreetShopsSection";
 import type { Area } from "@/lib/types";
 
@@ -21,6 +22,11 @@ export function StreetPage({ area, title, subtitle, emoji }: Props) {
 
   return (
     <div className="min-h-screen flex flex-col bg-surface">
+      <Seo
+        title={`${title} في بغداد`}
+        description={`${subtitle}. استكشف محلات ${area}، التقييمات، العناوين، وروابط التواصل داخل حاير.`}
+        path={area === "شارع الربيعي" ? "/rubaie" : "/sinaa"}
+      />
       <TopNav />
 
       {/* Breadcrumb */}
@@ -36,6 +42,7 @@ export function StreetPage({ area, title, subtitle, emoji }: Props) {
       </div>
 
       <main className="flex-1 container py-5 md:py-8">
+        <h1 className="sr-only">{title}</h1>
         <StreetShopsSection
           area={area}
           title={title}
@@ -90,6 +97,11 @@ export function StreetsIndexPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-surface">
+      <Seo
+        title="شوارع الإلكترونيات في بغداد — الصناعة والربيعي"
+        description="استكشف شارع الصناعة وشارع الربيعي في بغداد: محلات الهواتف، الحاسبات، قطع PC، الشبكات، والشواحن مع فلاتر وروابط خرائط."
+        path="/street"
+      />
       <TopNav />
 
       {/* Breadcrumb */}

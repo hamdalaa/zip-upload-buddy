@@ -1,0 +1,26 @@
+{
+  "success": true,
+  "message": "تم إكمال الطلب بنجاح",
+  "data": {
+    "info": {
+      "item_id": "1750001002",
+      "product_id": "1750000002",
+      "name": "ايفون 17 برو ماكس 512 جيجابايت",
+      "brand": "Apple",
+      "brand_alias": "apple",
+      "image_url": "https://cdn.miswag.me/images/thumbs512/iphone-17-pro-max-512-main.png",
+      "url": "https://miswag.com/products/1750000002",
+      "category": "ألكترونيات > موبايلات و اجهزة يدوية > موبايلات",
+      "description": "وصف تفصيلي من ميتا Miswag لنسخة 512GB.",
+      "price": 2450000,
+      "original_price": 2450000,
+      "currency": "IQD",
+      "availability": "LimitedAvailability",
+      "images": [
+        "https://cdn.miswag.me/images/thumbs512/iphone-17-pro-max-512-main.png"
+      ],
+      "published": "2026-04-19 11:00:00"
+    },
+    "content": []
+  }
+}

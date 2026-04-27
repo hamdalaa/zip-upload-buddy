@@ -9,18 +9,18 @@ export default {
     container: {
       center: true,
       padding: {
-        DEFAULT: "1rem",
-        sm: "1.25rem",
-        md: "1.5rem",
-        lg: "2rem",
+        DEFAULT: "1.125rem",
+        sm: "1.5rem",
+        md: "1.75rem",
+        lg: "2.25rem",
       },
-      screens: { "2xl": "1400px" },
+      screens: { "2xl": "1480px" },
     },
     extend: {
       fontFamily: {
         sans: ['"SF Arabic"', '"SF Pro"', "-apple-system", "BlinkMacSystemFont", "system-ui", "sans-serif"],
         display: ['"SF Arabic"', '"SF Pro"', "-apple-system", "BlinkMacSystemFont", "system-ui", "sans-serif"],
-        mono: ['"JetBrains Mono"', "monospace"],
+        mono: ['"SF Arabic"', '"SF Pro"', "-apple-system", "BlinkMacSystemFont", "system-ui", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -108,6 +108,15 @@ export default {
         "gradient-mesh": "var(--gradient-mesh)",
         "gradient-aurora": "var(--gradient-aurora)",
         "gradient-rainbow": "var(--gradient-rainbow)",
+        "gradient-sunrise": "var(--gradient-sunrise)",
+        "gradient-ocean": "var(--gradient-ocean)",
+        "gradient-aurora-soft": "var(--gradient-aurora-soft)",
+        "gradient-violet-rose": "var(--gradient-violet-rose)",
+        "gradient-amber-rose": "var(--gradient-amber-rose)",
+        "gradient-iridescent": "var(--gradient-iridescent)",
+        "gradient-spotlight": "var(--gradient-spotlight)",
+        "gradient-conic-premium": "var(--gradient-conic-premium)",
+        "gradient-section-fade": "var(--gradient-section-fade)",
       },
       boxShadow: {
         glow: "var(--shadow-glow)",
@@ -161,6 +170,26 @@ export default {
         "ping-soft": {
           "75%, 100%": { transform: "scale(1.6)", opacity: "0" },
         },
+        "drift-1": {
+          "0%":   { transform: "translate(0, 0) rotate(0deg)" },
+          "25%":  { transform: "translate(30px, -18px) rotate(4deg)" },
+          "50%":  { transform: "translate(60px, 10px) rotate(-3deg)" },
+          "75%":  { transform: "translate(20px, 24px) rotate(2deg)" },
+          "100%": { transform: "translate(0, 0) rotate(0deg)" },
+        },
+        "drift-2": {
+          "0%":   { transform: "translate(0, 0) rotate(0deg)" },
+          "25%":  { transform: "translate(-26px, 14px) rotate(-5deg)" },
+          "50%":  { transform: "translate(-48px, -16px) rotate(3deg)" },
+          "75%":  { transform: "translate(-18px, -28px) rotate(-2deg)" },
+          "100%": { transform: "translate(0, 0) rotate(0deg)" },
+        },
+        "drift-3": {
+          "0%":   { transform: "translate(0, 0) rotate(0deg)" },
+          "33%":  { transform: "translate(22px, 28px) rotate(6deg)" },
+          "66%":  { transform: "translate(-18px, 16px) rotate(-4deg)" },
+          "100%": { transform: "translate(0, 0) rotate(0deg)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -177,6 +206,9 @@ export default {
         "bounce-subtle": "bounce-subtle 2s ease-in-out infinite",
         "spin-slow": "spin-slow 20s linear infinite",
         "ping-soft": "ping-soft 1.5s cubic-bezier(0, 0, 0.2, 1) infinite",
+        "drift-1": "drift-1 18s ease-in-out infinite",
+        "drift-2": "drift-2 22s ease-in-out infinite",
+        "drift-3": "drift-3 26s ease-in-out infinite",
       },
       transitionTimingFunction: {
         ios: "cubic-bezier(0.32, 0.72, 0, 1)",

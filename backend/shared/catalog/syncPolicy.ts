@@ -15,6 +15,8 @@ export function chooseSyncPriority(hint: SyncPriorityHint): SyncPriorityTier {
 
 export function connectorDefaultPriority(connectorType: ConnectorType): SyncPriorityTier {
   switch (connectorType) {
+    case "alnomoor_trpc":
+    case "elryan_api":
     case "shopify":
     case "threed_iraq":
     case "tlcommerce_api":

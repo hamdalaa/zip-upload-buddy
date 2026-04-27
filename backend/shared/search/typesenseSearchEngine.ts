@@ -61,15 +61,36 @@ export class TypesenseSearchEngine implements SearchEngine {
       // Ignore initial delete failures when the store is not indexed yet.
     }
     if (documents.length === 0) return;
-    await collection.documents().import(documents, {
+    await collection.documents().import(
+      documents.map((document) => ({
+        id: document.id,
+        storeId: document.storeId,
+        storeName: document.storeName,
+        normalizedTitle: document.normalizedTitle,
+        title: document.title,
+        brand: document.brand,
+        model: document.model,
+        sku: document.sku,
+        livePrice: document.livePrice,
+        originalPrice: document.originalPrice,
+        onSale: document.onSale,
+        availability: document.availability,
+        freshnessAt: document.freshnessAt,
+        sourceUrl: document.sourceUrl,
+        categoryPath: document.categoryPath,
+        sellerName: document.sellerName,
+      })),
+      {
       action: "upsert",
-    });
+      },
+    );
   }
 
   async search(query: SearchQueryInput): Promise<SearchResult> {
     await this.ensureReady();
     const collection = this.client.collections<SearchDocument>(catalogConfig.typesense.collectionName);
     const filters: string[] = [];
+    const hasQuery = Boolean(query.q?.trim());
     if (query.storeId) filters.push(`storeId:=${query.storeId}`);
     if (query.onSale != null) filters.push(`onSale:=${query.onSale}`);
     if (query.availability) filters.push(`availability:=${query.availability}`);
@@ -79,7 +100,13 @@ export class TypesenseSearchEngine implements SearchEngine {
     const searchParams: SearchParams<SearchDocument> = {
       q: query.q || "*",
       query_by: "normalizedTitle,title,brand,model,sku,storeName,categoryPath",
-      sort_by: "onSale:desc,freshnessAt:desc",
+      query_by_weights: "12,10,8,7,9,3,2",
+      prefix: "true,true,true,true,false,false,false",
+      prioritize_exact_match: true,
+      prioritize_token_position: true,
+      prioritize_num_matching_fields: true,
+      text_match_type: "max_score",
+      sort_by: hasQuery ? "_text_match:desc,onSale:desc,freshnessAt:desc" : "onSale:desc,freshnessAt:desc",
       per_page: query.limit ?? 20,
     };
     if (filters.length > 0) {

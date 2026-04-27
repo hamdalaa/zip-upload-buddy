@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" role="img" aria-labelledby="title desc">
+  <title id="title">Image not found</title>
+  <desc id="desc">Neutral product placeholder used when no product image is available.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#eef8fc"/>
+      <stop offset="1" stop-color="#dbeaf2"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#f4f9fc"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="640" rx="56" fill="url(#bg)"/>
+  <path d="M0 160h640M0 320h640M0 480h640M160 0v640M320 0v640M480 0v640" stroke="#cfe0ea" stroke-width="1" opacity=".55"/>
+  <rect x="126" y="134" width="388" height="372" rx="42" fill="url(#card)" stroke="#c8dce8" stroke-width="4"/>
+  <rect x="176" y="184" width="288" height="206" rx="28" fill="#edf7fb" stroke="#cfe0ea" stroke-width="3"/>
+  <circle cx="396" cy="236" r="28" fill="#bceefd"/>
+  <path d="M191 368l82-82 55 55 36-36 83 83" fill="none" stroke="#93aec0" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="320" cy="288" r="94" fill="none" stroke="#d9e8f0" stroke-width="18"/>
+  <path d="M257 225l126 126M383 225L257 351" stroke="#0f1a2e" stroke-width="18" stroke-linecap="round"/>
+  <text x="320" y="456" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="36" font-weight="700" fill="#0f1a2e">Image not found</text>
+  <text x="320" y="494" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="600" fill="#60758a">Hayr product placeholder</text>
+</svg>

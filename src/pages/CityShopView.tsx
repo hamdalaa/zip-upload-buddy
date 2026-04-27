@@ -28,14 +28,17 @@ import {
 } from "lucide-react";
 import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
+import { Seo } from "@/components/Seo";
 import { Button } from "@/components/ui/button";
 import { LightboxViewer } from "@/components/LightboxViewer";
 import { EmptyState } from "@/components/EmptyState";
 import { StarRating } from "@/components/StarRating";
-import { getCityIndexEntry, loadCity, type CityFile } from "@/lib/cityData";
+import { useCityDetailQuery } from "@/lib/catalogQueries";
+import { getCityIndexEntry } from "@/lib/cityData";
 import { buildGoogleMapsUrl } from "@/lib/googleMaps";
 import { optimizeImageUrl } from "@/lib/imageUrl";
 import { cn } from "@/lib/utils";
+import { absoluteUrl, breadcrumbJsonLd, truncateMeta } from "@/lib/seo";
 
 const ENGLISH_DAY_TO_AR: Record<string, string> = {
   Monday: "الإثنين",
@@ -54,32 +57,32 @@ function formatHours(line: string): string {
   return `${ar}: ${time}`;
 }
 
+function normalizeCityRouteShopId(slug: string, shopId: string): string {
+  const trimmed = shopId.trim();
+  if (!trimmed) return trimmed;
+  const prefixed = `city_${slug}_`;
+  return trimmed.startsWith(prefixed) ? trimmed.slice(prefixed.length) : trimmed;
+}
+
 export default function CityShopView() {
   const { slug = "", shopId = "" } = useParams<{ slug: string; shopId: string }>();
   const navigate = useNavigate();
   const meta = getCityIndexEntry(slug);
-  const [data, setData] = useState<CityFile | null>(null);
-  const [loading, setLoading] = useState(true);
+  const cityQuery = useCityDetailQuery(slug);
+  const data = cityQuery.data ?? null;
+  const loading = cityQuery.isLoading && !data;
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-
-  useEffect(() => {
-    let alive = true;
-    setLoading(true);
-    loadCity(slug).then((nextData) => {
-      if (alive) {
-        setData(nextData);
-        setLoading(false);
-      }
-    });
-
-    return () => {
-      alive = false;
-    };
-  }, [slug]);
+  const normalizedShopId = normalizeCityRouteShopId(slug, shopId);
 
   // Keyboard navigation handled inside LightboxViewer
 
-  const shop = data?.stores.find((entry) => entry.id === shopId || entry.place_id === shopId);
+  const shop = data?.stores.find(
+    (entry) =>
+      entry.id === shopId ||
+      entry.place_id === shopId ||
+      entry.id === normalizedShopId ||
+      entry.place_id === normalizedShopId,
+  );
 
   if (loading) {
     return (
@@ -125,9 +128,66 @@ export default function CityShopView() {
     name: shop.name,
     address: shop.address,
   });
+  const cityShopPath = `/city/${encodeURIComponent(slug)}/shop/${encodeURIComponent(shopId)}`;
+  const cityShopDescription = truncateMeta(
+    `${shop.name} في ${meta.cityAr}${shop.category ? ` ضمن ${shop.category}` : ""}. العنوان، الصور، تقييم Google، الهاتف، وروابط خرائط Google داخل حاير.`,
+  );
 
   return (
     <div className="min-h-screen flex flex-col bg-[linear-gradient(180deg,hsl(var(--surface))_0%,hsl(var(--background))_16%,hsl(var(--surface))_100%)]">
+      <Seo
+        title={`${shop.name} — محل إلكترونيات في ${meta.cityAr}`}
+        description={cityShopDescription}
+        path={cityShopPath}
+        image={heroImage}
+        structuredData={[
+          breadcrumbJsonLd([
+            { name: "الرئيسية", path: "/" },
+            { name: "كل محلات العراق", path: "/iraq" },
+            { name: meta.cityAr, path: `/city/${slug}` },
+            { name: shop.name, path: cityShopPath },
+          ]),
+          {
+            "@context": "https://schema.org",
+            "@type": ["LocalBusiness", "ElectronicsStore"],
+            "@id": `${absoluteUrl(cityShopPath)}#local-business`,
+            name: shop.name,
+            url: absoluteUrl(cityShopPath),
+            ...(heroImage ? { image: absoluteUrl(heroImage) } : {}),
+            ...(shop.phone ? { telephone: shop.phone } : {}),
+            ...(shop.website || mapsUrl ? { sameAs: [shop.website, mapsUrl].filter(Boolean) } : {}),
+            ...(shop.address
+              ? {
+                  address: {
+                    "@type": "PostalAddress",
+                    streetAddress: shop.address,
+                    addressLocality: meta.cityAr,
+                    addressCountry: "IQ",
+                  },
+                }
+              : {}),
+            ...(typeof shop.lat === "number" && typeof shop.lng === "number"
+              ? {
+                  geo: {
+                    "@type": "GeoCoordinates",
+                    latitude: shop.lat,
+                    longitude: shop.lng,
+                  },
+                }
+              : {}),
+            ...(typeof shop.rating === "number" && shop.rating > 0
+              ? {
+                  aggregateRating: {
+                    "@type": "AggregateRating",
+                    ratingValue: shop.rating,
+                    reviewCount: shop.reviewCount ?? 1,
+                  },
+                }
+              : {}),
+            priceRange: "IQD",
+          },
+        ]}
+      />
       <TopNav />
 
       <div className="bg-background border-b border-border">
@@ -170,7 +230,7 @@ export default function CityShopView() {
                   referrerPolicy="no-referrer"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                <div className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-black/50 px-3 py-1.5 text-xs font-medium text-white opacity-0 backdrop-blur-md transition-all duration-300 group-hover:opacity-100">
+                <div className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-black/50 px-3 py-1.5 text-xs font-medium text-white opacity-0 backdrop-blur-md transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] duration-300 group-hover:opacity-100">
                   <Expand className="h-3.5 w-3.5" />
                   عرض المعرض
                 </div>
@@ -317,7 +377,7 @@ export default function CityShopView() {
                         cx="40"
                         cy="40"
                         r={radius}
-                        className={cn("fill-none transition-all duration-700 ease-out", toneRing)}
+                        className={cn("fill-none transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] duration-700 ease-out", toneRing)}
                         strokeWidth="6"
                         strokeLinecap="round"
                         strokeDasharray={`${dash} ${circumference}`}
@@ -395,7 +455,7 @@ export default function CityShopView() {
                         key={`${image}-${index}`}
                         type="button"
                         onClick={() => setLightboxIndex(index)}
-                        className="group relative aspect-square overflow-hidden rounded-lg bg-muted ring-1 ring-border transition-all hover:ring-2 hover:ring-primary focus:outline-none focus:ring-2 focus:ring-primary"
+                        className="group relative aspect-square overflow-hidden rounded-lg bg-muted ring-1 ring-border transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] hover:ring-2 hover:ring-primary focus:outline-none focus:ring-2 focus:ring-primary"
                         aria-label={`فتح الصورة ${index + 1}`}
                       >
                         <img
@@ -552,7 +612,7 @@ function QuickFlag({
   return (
     <div
       className={cn(
-        "group relative flex items-center gap-2 overflow-hidden rounded-2xl border px-3 py-2.5 text-xs font-bold transition-all duration-200",
+        "group relative flex items-center gap-2 overflow-hidden rounded-2xl border px-3 py-2.5 text-xs font-bold transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] duration-200",
         isOk && "border-success/30 bg-success/8 text-success hover:border-success/50 hover:bg-success/12 hover:shadow-soft-md",
         isOff && "border-destructive/20 bg-destructive/8 text-destructive/85 hover:border-destructive/40 hover:bg-destructive/12",
         neutral && "border-border/70 bg-background/80 text-muted-foreground hover:border-border",

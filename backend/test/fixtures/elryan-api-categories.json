@@ -1,0 +1,25 @@
+{
+  "hits": {
+    "total": 2,
+    "hits": [
+      {
+        "_source": {
+          "id": 42,
+          "name": "الإلكترونيات",
+          "parent_id": 2,
+          "product_count": 2,
+          "is_active": true
+        }
+      },
+      {
+        "_source": {
+          "id": 64,
+          "name": "العروض الخاصة",
+          "parent_id": 2,
+          "product_count": 999,
+          "is_active": true
+        }
+      }
+    ]
+  }
+}

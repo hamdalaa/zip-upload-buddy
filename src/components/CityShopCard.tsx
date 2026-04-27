@@ -9,13 +9,13 @@ import {
   MapPin,
   MessageCircle,
   Phone,
+  Star,
   XCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { StarRating } from "./StarRating";
-import { CATEGORY_IMAGES } from "@/lib/mockData";
 import { buildGoogleMapsUrl } from "@/lib/googleMaps";
 import { optimizeImageUrl } from "@/lib/imageUrl";
+import { getFallbackProductImage } from "@/lib/productVisuals";
 import type { CityShop } from "@/lib/cityData";
 
 interface Props {
@@ -81,7 +81,7 @@ function formatPhone(raw?: string): string | null {
 
 export function CityShopCard({ shop, citySlug }: Props) {
   const [imgFailed, setImgFailed] = useState(false);
-  const fallback = CATEGORY_IMAGES[(shop.category || shop.suggested_category || "Computing") as keyof typeof CATEGORY_IMAGES];
+  const fallback = getFallbackProductImage(shop.category || shop.suggested_category || "Computing");
   const rawImg = shop.imageUrl && !imgFailed ? shop.imageUrl : fallback;
   const img = optimizeImageUrl(rawImg, { width: 720, height: 520 }) ?? rawImg;
   const mapsUrl = buildGoogleMapsUrl({
@@ -152,6 +152,18 @@ export function CityShopCard({ shop, citySlug }: Props) {
           )}
         </div>
 
+        {typeof shop.rating === "number" && shop.rating > 0 && (
+          <div className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-black/35 px-2.5 py-1 text-[10px] font-semibold text-white backdrop-blur-sm">
+            <Star className="h-3 w-3 fill-warning text-warning" />
+            <span className="tabular-nums">{shop.rating.toFixed(1)}</span>
+            {reviews > 0 && (
+              <span className="tabular-nums text-white/80">
+                ({reviews.toLocaleString("en-US")})
+              </span>
+            )}
+          </div>
+        )}
+
         <div className="absolute bottom-0 inset-x-0 p-4 text-white">
           <div className="inline-flex items-center gap-1 rounded-full bg-black/35 px-2.5 py-1 text-[11px] font-semibold backdrop-blur-sm">
             <MapPin className="h-3 w-3 text-primary" />
@@ -160,11 +172,6 @@ export function CityShopCard({ shop, citySlug }: Props) {
           <h3 className="mt-3 font-display text-[1.8rem] font-bold leading-[0.94] drop-shadow-[0_2px_10px_rgba(0,0,0,0.35)] sm:text-3xl sm:leading-[0.9]">
             {shop.name}
           </h3>
-          {typeof shop.rating === "number" && shop.rating > 0 && (
-            <div className="mt-2">
-              <StarRating rating={shop.rating} reviews={reviews} size="xs" className="[&_span]:text-white" />
-            </div>
-          )}
         </div>
       </Link>
 

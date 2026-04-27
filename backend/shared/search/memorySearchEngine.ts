@@ -1,7 +1,8 @@
 import type { SearchDocument } from "../catalog/types.js";
 import type { SearchQueryInput } from "../repositories/contracts.js";
 import type { SearchEngine, SearchResult } from "./contracts.js";
-import { compactText, normalizeText } from "../catalog/normalization.js";
+import { compactText } from "../catalog/normalization.js";
+import { scoreProductIntentMatch, scoreSearchTextMatch } from "./relevance.js";
 
 export class MemorySearchEngine implements SearchEngine {
   private readonly documents = new Map<string, SearchDocument[]>();
@@ -23,13 +24,13 @@ export class MemorySearchEngine implements SearchEngine {
     if (query.maxPrice != null) docs = docs.filter((doc) => (doc.livePrice ?? 0) <= query.maxPrice!);
 
     if (q) {
-      const queryTokens = normalizeText(query.q ?? "")
-        .split(/[\s/_\-(),]+/)
-        .filter((token) => token.length >= 2)
-        .map((token) => compactText(token));
-
-      docs = docs.filter((doc) => scoreDocument(doc, q, queryTokens) > 0);
-      docs.sort((a, b) => scoreDocument(b, q, queryTokens) - scoreDocument(a, q, queryTokens));
+      docs = docs.filter((doc) => scoreDocument(doc, query.q ?? "") > 0);
+      docs.sort(
+        (a, b) =>
+          scoreDocument(b, query.q ?? "") - scoreDocument(a, query.q ?? "") ||
+          Number(b.onSale) - Number(a.onSale) ||
+          b.freshnessAt.localeCompare(a.freshnessAt),
+      );
     } else {
       docs.sort((a, b) => Number(b.onSale) - Number(a.onSale) || b.freshnessAt.localeCompare(a.freshnessAt));
     }
@@ -42,50 +43,23 @@ export class MemorySearchEngine implements SearchEngine {
   }
 }
 
-function scoreDocument(doc: SearchDocument, q: string, queryTokens: string[]): number {
-  const haystacks = [
-    doc.normalizedTitle,
-    doc.title,
-    doc.brand ?? "",
-    doc.model ?? "",
-    doc.sku ?? "",
-    doc.storeName,
-    doc.categoryPath,
-  ]
-    .map((value) => compactText(String(value)))
-    .filter(Boolean);
+function scoreDocument(doc: SearchDocument, query: string): number {
+  const score = scoreSearchTextMatch(query, [
+    { value: doc.title, weight: 5 },
+    { value: doc.normalizedTitle, weight: 4 },
+    { value: doc.brand, weight: 3 },
+    { value: doc.model, weight: 2.5 },
+    { value: doc.sku, weight: 4 },
+    { value: doc.storeName, weight: 1 },
+    { value: doc.categoryPath, weight: 1.2 },
+  ]);
 
-  let score = 0;
-  for (const haystack of haystacks) {
-    if (haystack.includes(q)) score += 5;
-    for (const token of queryTokens) {
-      if (!token) continue;
-      if (haystack.includes(token)) score += 2;
-      const haystackTokens = haystack.split(/[\s/_\-(),]+/).filter(Boolean);
-      if (haystackTokens.some((candidate) => withinEditDistance(candidate, token, 1))) {
-        score += 1;
-      }
-    }
-  }
-  if (doc.onSale) score += 0.5;
-  return score;
-}
-
-function withinEditDistance(a: string, b: string, maxDistance: number): boolean {
-  if (a === b) return true;
-  if (Math.abs(a.length - b.length) > maxDistance) return false;
-  const prev = Array.from({ length: b.length + 1 }, (_, index) => index);
-  const curr = new Array(b.length + 1).fill(0);
-  for (let i = 1; i <= a.length; i++) {
-    curr[0] = i;
-    let rowMin = curr[0];
-    for (let j = 1; j <= b.length; j++) {
-      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
-      curr[j] = Math.min((curr[j - 1] ?? 0) + 1, (prev[j] ?? 0) + 1, (prev[j - 1] ?? 0) + cost);
-      rowMin = Math.min(rowMin, curr[j] ?? rowMin);
-    }
-    if (rowMin > maxDistance) return false;
-    for (let j = 0; j <= b.length; j++) prev[j] = curr[j];
-  }
-  return (prev[b.length] ?? Infinity) <= maxDistance;
+  return score + scoreProductIntentMatch(query, {
+    title: doc.title,
+    brand: doc.brand,
+    model: doc.model,
+    sku: doc.sku,
+    categoryPath: doc.categoryPath,
+    storeName: doc.storeName,
+  }) + (doc.onSale ? 0.5 : 0);
 }

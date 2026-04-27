@@ -1,7 +1,67 @@
 import type { CatalogConnector } from "./base.js";
-import { buildOffersFromProducts, extractNextPageProps } from "./extractors.js";
+import { buildOffersFromProducts } from "./extractors.js";
 import { compactText, extractDomain } from "../shared/catalog/normalization.js";
 import type { CatalogProductDraft, ProductVariantDraft } from "../shared/catalog/types.js";
+
+interface MasterstoreListResponse {
+  count?: number;
+  next?: string | null;
+  previous?: string | null;
+  pages_number?: number;
+  results?: unknown[];
+}
+
+interface MasterstoreListItem {
+  id?: number;
+  name?: string;
+  price_type?: string;
+  main_image?: string | null;
+  slug?: string;
+  brand?: number;
+  sub_category?: number;
+  video_url?: string | null;
+  top_pics?: boolean;
+  new?: boolean;
+  is_accessory?: boolean;
+  discount?: boolean;
+  pre_order?: boolean;
+}
+
+interface MasterstoreDetailColor {
+  id?: number;
+  name?: string;
+  color?: string;
+  color_hex_code?: string;
+}
+
+interface MasterstoreDetailSize {
+  id?: number;
+  size?: string;
+  order?: number;
+}
+
+interface MasterstoreDetail {
+  id?: number;
+  name?: string;
+  price_type?: string;
+  brand_name?: string;
+  main_image?: string | null;
+  slug?: string;
+  brand?: number;
+  sub_category?: number;
+  new?: boolean;
+  products_list?: Array<{ id?: number; name?: string; slug?: string; main_image?: string | null }>;
+  product_entries?: number[];
+  is_accessory?: boolean;
+  order_info?: Record<string, unknown>;
+  discount?: boolean;
+  pre_order?: boolean;
+  static_file?: Record<string, unknown> | null;
+  is_comparable?: boolean;
+  is_educational_discount_eligible?: boolean;
+  colors?: MasterstoreDetailColor[];
+  sizes?: MasterstoreDetailSize[];
+}
 
 export const masterstoreNextConnector: CatalogConnector = {
   type: "masterstore_next",
@@ -22,41 +82,43 @@ export const masterstoreNextConnector: CatalogConnector = {
       signals,
       capabilities: {
         supportsStructuredApi: true,
-        supportsHtmlCatalog: true,
+        supportsHtmlCatalog: false,
         supportsOffers: true,
         supportsVariants: true,
         supportsMarketplaceContext: false,
         fallbackToBrowser: false,
       },
       endpoints: {
-        products: new URL("/shop?page=1", homepageUrl).toString(),
+        products: buildMasterstoreApiListUrl(homepageUrl, 1),
       },
     };
   },
 
   async sync({ store, client, profile }) {
-    const baseUrl = store.website ?? profile.endpoints.products ?? "";
-    const firstPageUrl = profile.endpoints.products ?? new URL("/shop?page=1", baseUrl).toString();
-    const firstHtml = await client.fetchText(firstPageUrl);
-    const firstPageProps = extractNextPageProps(firstHtml);
-    const firstProducts = extractMasterstoreProducts(store.id, firstPageProps, baseUrl);
-    const productsCount = Number(firstPageProps?.productsCount ?? firstProducts.length);
-    const pageSize = Math.max(firstProducts.length, 1);
-    const totalPages = Math.max(1, Math.ceil(productsCount / pageSize));
+    const websiteUrl = store.website ?? "";
+    const firstPageUrl = profile.endpoints.products ?? buildMasterstoreApiListUrl(websiteUrl, 1);
+    const firstPage = await fetchMasterstoreListPage(client, firstPageUrl);
+    const firstProducts = (firstPage.results ?? [])
+      .map((item) => toMasterstoreBaseProduct(store.id, websiteUrl, item))
+      .filter((product): product is CatalogProductDraft => Boolean(product));
 
-    const shopPages = Array.from({ length: totalPages }, (_, index) => index + 1);
-    const shopProducts = await mapWithConcurrency(shopPages, 8, async (page) => {
-      const url = new URL(`/shop?page=${page}`, baseUrl).toString();
-      const html = page === 1 ? firstHtml : await client.fetchText(url);
-      const pageProps = page === 1 ? firstPageProps : extractNextPageProps(html);
-      return extractMasterstoreProducts(store.id, pageProps, baseUrl);
+    const totalPages =
+      typeof firstPage.pages_number === "number" && Number.isFinite(firstPage.pages_number)
+        ? Math.max(1, firstPage.pages_number)
+        : Math.max(1, Math.ceil((firstPage.count ?? firstProducts.length) / Math.max(firstProducts.length, 1)));
+
+    const pages = Array.from({ length: Math.max(totalPages - 1, 0) }, (_, index) => index + 2);
+    const pagedProducts = await mapWithConcurrency(pages, 6, async (page) => {
+      const response = await fetchMasterstoreListPage(client, buildMasterstoreApiListUrl(websiteUrl, page));
+      return (response.results ?? [])
+        .map((item) => toMasterstoreBaseProduct(store.id, websiteUrl, item))
+        .filter((product): product is CatalogProductDraft => Boolean(product));
     });
 
-    const baseProducts = dedupeCatalogProducts(shopProducts.flat());
-    const detailResults = await mapWithConcurrency(baseProducts, 10, async (product) => {
-      const html = await client.fetchText(product.sourceUrl);
-      const pageProps = extractNextPageProps(html);
-      return extractMasterstoreDetails(product, pageProps, html);
+    const baseProducts = dedupeCatalogProducts([...firstProducts, ...pagedProducts.flat()]);
+    const detailResults = await mapWithConcurrency(baseProducts, 8, async (product) => {
+      const detail = await fetchMasterstoreDetail(client, websiteUrl, product.sourceProductId);
+      return extractMasterstoreDetails(product, detail);
     });
 
     const products = dedupeCatalogProducts(detailResults.flatMap((result) => result.products));
@@ -66,129 +128,166 @@ export const masterstoreNextConnector: CatalogConnector = {
       products,
       variants,
       offers: buildOffersFromProducts(products),
-      estimatedCatalogSize: productsCount,
+      estimatedCatalogSize: firstPage.count ?? products.length,
       snapshots: [
-        { label: "shop_first_page", payload: { url: firstPageUrl, productsCount, pageSize, totalPages } },
+        {
+          label: "products_api",
+          payload: {
+            firstPageUrl,
+            totalPages,
+            count: firstPage.count ?? products.length,
+            collectedProducts: baseProducts.length,
+          },
+        },
       ],
     };
   },
 };
 
-function extractMasterstoreProducts(
+function fetchMasterstoreListPage(
+  client: { fetchJson(url: string, init?: RequestInit): Promise<unknown> },
+  url: string,
+): Promise<MasterstoreListResponse> {
+  return client.fetchJson(url) as Promise<MasterstoreListResponse>;
+}
+
+function fetchMasterstoreDetail(
+  client: { fetchJson(url: string, init?: RequestInit): Promise<unknown> },
+  websiteUrl: string,
+  slug: string,
+): Promise<MasterstoreDetail> {
+  return client.fetchJson(buildMasterstoreApiDetailUrl(websiteUrl, slug)) as Promise<MasterstoreDetail>;
+}
+
+function buildMasterstoreApiBaseUrl(websiteUrl: string): string {
+  return "https://backend.masterstoreiq.com/en/api";
+}
+
+function buildMasterstoreApiListUrl(websiteUrl: string, page: number): string {
+  const apiBase = buildMasterstoreApiBaseUrl(websiteUrl);
+  return `${apiBase}/products/?page=${page}`;
+}
+
+function buildMasterstoreApiDetailUrl(websiteUrl: string, slug: string): string {
+  const apiBase = buildMasterstoreApiBaseUrl(websiteUrl);
+  return `${apiBase}/products/${encodeURIComponent(slug)}/`;
+}
+
+function toMasterstoreBaseProduct(
   storeId: string,
-  pageProps: Record<string, unknown> | null,
-  baseUrl: string,
-): CatalogProductDraft[] {
-  const rawProducts = Array.isArray(pageProps?.products) ? pageProps.products : [];
+  websiteUrl: string,
+  item: unknown,
+): CatalogProductDraft | null {
   const now = new Date().toISOString();
-  const products: CatalogProductDraft[] = [];
-  for (const product of rawProducts) {
-    if (typeof product !== "object" || product === null || Array.isArray(product)) continue;
-    const slug = typeof product.slug === "string" ? product.slug : "";
-    if (!slug) continue;
-    products.push({
-      storeId,
-      sourceProductId: String(product.id ?? slug),
-      normalizedTitle: compactText(String(product.name ?? slug)),
-      title: String(product.name ?? slug),
-      brand: typeof product.brand_name === "string" ? product.brand_name : undefined,
-      model: undefined,
-      sku: undefined,
-      categoryPath: [],
-      sourceUrl: new URL(`/product/${slug}`, baseUrl).toString(),
-      imageUrl: typeof product.main_image === "string" ? product.main_image : undefined,
-      availability: "unknown",
-      currency: "IQD",
-      livePrice: undefined,
-      originalPrice: undefined,
-      onSale: Boolean(product.discount),
-      sourceConnector: "masterstore_next",
-      freshnessAt: now,
-      lastSeenAt: now,
-      brandTokens: typeof product.brand_name === "string" ? [compactText(product.brand_name)] : [],
-      modelTokens: [],
-      skuTokens: [],
-      rawPayload: product,
-    });
-  }
-  return products;
+  if (typeof item !== "object" || item === null || Array.isArray(item)) return null;
+  const product = item as MasterstoreListItem;
+  const slug = typeof product.slug === "string" ? product.slug : "";
+  if (!slug) return null;
+  return {
+    storeId,
+    sourceProductId: slug,
+    normalizedTitle: compactText(String(product.name ?? slug)),
+    title: String(product.name ?? slug),
+    brand: undefined,
+    model: undefined,
+    sku: undefined,
+    categoryPath: [],
+    sourceUrl: new URL(`/product/${slug}`, websiteUrl).toString(),
+    imageUrl: typeof product.main_image === "string" ? product.main_image : undefined,
+    availability: product.pre_order ? "preorder" : "unknown",
+    currency: "IQD",
+    livePrice: undefined,
+    originalPrice: undefined,
+    onSale: Boolean(product.discount),
+    sourceConnector: "masterstore_next",
+    freshnessAt: now,
+    lastSeenAt: now,
+    brandTokens: [],
+    modelTokens: [],
+    skuTokens: [],
+    rawPayload: product as Record<string, unknown>,
+  };
 }
 
 function extractMasterstoreDetails(
   baseProduct: CatalogProductDraft,
-  pageProps: Record<string, unknown> | null,
-  html: string,
+  detail: MasterstoreDetail,
 ): { products: CatalogProductDraft[]; variants: ProductVariantDraft[] } {
-  const details = pageProps?.MainProductDetails;
-  if (!details || typeof details !== "object" || Array.isArray(details)) {
+  if (!detail || typeof detail !== "object") {
     return { products: [baseProduct], variants: [] };
   }
 
-  const rawDetails = details as Record<string, unknown>;
-  const colors = Array.isArray(rawDetails.colors) ? rawDetails.colors : [];
-  const variantEntries = colors.flatMap((color) =>
-    typeof color === "object" && color && !Array.isArray(color) && Array.isArray((color as Record<string, unknown>).entries)
-      ? ((color as Record<string, unknown>).entries as unknown[])
-      : [],
-  );
+  const colors = Array.isArray(detail.colors) ? detail.colors : [];
+  const sizes = Array.isArray(detail.sizes) ? detail.sizes : [];
+  const entryIds = Array.isArray(detail.product_entries) ? detail.product_entries : [];
 
-  const variants: ProductVariantDraft[] = variantEntries
-    .filter((entry): entry is Record<string, unknown> => typeof entry === "object" && entry !== null && !Array.isArray(entry))
-    .map((entry) => {
-      const size = entry.product_size && typeof entry.product_size === "object" && (entry.product_size as Record<string, unknown>).size
-        ? String((entry.product_size as Record<string, unknown>).size)
-        : "";
-      const color = entry.product_color && typeof entry.product_color === "object" && (entry.product_color as Record<string, unknown>).color
-        ? String((entry.product_color as Record<string, unknown>).color)
-        : "";
-      const availability = String(entry.availability ?? "");
-      const livePrice = Number(entry.discounted_price ?? entry.price ?? 0) || undefined;
-      const originalPrice = Number(entry.price_after_discount ?? entry.price ?? 0) || livePrice;
-      return {
-        productSourceId: baseProduct.sourceProductId,
-        sourceVariantId: String(entry.id ?? `${baseProduct.sourceProductId}:${size}:${color}`),
-        title: [baseProduct.title, color, size].filter(Boolean).join(" / "),
-        sku: typeof entry.sku === "string" ? entry.sku : undefined,
-        availability: /out of stock|not available|unavailable/i.test(availability) ? "out_of_stock" : "in_stock",
-        livePrice,
-        originalPrice,
-        attributes: {
-          ...(color ? { color } : {}),
-          ...(size ? { size } : {}),
-        },
-        lastSeenAt: baseProduct.lastSeenAt,
-        rawPayload: entry,
-      };
-    });
+  const combinations =
+    colors.length > 0 && sizes.length > 0
+      ? colors.flatMap((color) => sizes.map((size) => ({ color, size })))
+      : colors.length > 0
+        ? colors.map((color) => ({ color, size: undefined }))
+        : sizes.length > 0
+          ? sizes.map((size) => ({ color: undefined, size }))
+          : [];
+
+  const variants: ProductVariantDraft[] =
+    combinations.length > 0
+      ? combinations.map((combo, index) => {
+          const color = combo.color?.color?.trim() || undefined;
+          const size = combo.size?.size?.trim() || undefined;
+          const sourceVariantId = String(entryIds[index] ?? `${baseProduct.sourceProductId}:${color ?? ""}:${size ?? ""}`);
+          return {
+            productSourceId: baseProduct.sourceProductId,
+            sourceVariantId,
+            title: [baseProduct.title, color, size].filter(Boolean).join(" / "),
+            sku: undefined,
+            availability: detail.pre_order ? "preorder" : "unknown",
+            livePrice: undefined,
+            originalPrice: undefined,
+            attributes: {
+              ...(color ? { color } : {}),
+              ...(size ? { size } : {}),
+            },
+            lastSeenAt: baseProduct.lastSeenAt,
+            rawPayload: {
+              entryId: entryIds[index],
+              color: combo.color,
+              size: combo.size,
+            },
+          };
+        })
+      : [];
 
   const inStock = variants.some((variant) => variant.availability === "in_stock");
-  const outOfStockFromPage = !inStock && /out of stock|Product isn't available/i.test(html);
   const availability: CatalogProductDraft["availability"] = inStock
     ? "in_stock"
-    : outOfStockFromPage
-      ? "out_of_stock"
+    : detail.pre_order
+      ? "preorder"
       : "unknown";
 
   const product: CatalogProductDraft = {
     ...baseProduct,
     storeId: baseProduct.storeId,
+    title: detail.name || baseProduct.title,
+    normalizedTitle: compactText(detail.name || baseProduct.title),
+    brand: detail.brand_name || baseProduct.brand,
     sku: variants[0]?.sku,
-    livePrice: minNumber(variants.map((variant) => variant.livePrice)),
-    originalPrice: minNumber(variants.map((variant) => variant.originalPrice)),
+    livePrice: undefined,
+    originalPrice: undefined,
     availability,
-    categoryPath: inferMasterstoreCategoryPath(pageProps),
-    rawPayload: rawDetails,
+    categoryPath: inferMasterstoreCategoryPath(detail),
+    imageUrl: detail.main_image ?? baseProduct.imageUrl,
+    rawPayload: detail as Record<string, unknown>,
   };
 
   return { products: [product], variants };
 }
 
-function inferMasterstoreCategoryPath(pageProps: Record<string, unknown> | null): string[] {
-  const list = Array.isArray(pageProps?.dropDownProductsList) ? pageProps.dropDownProductsList : [];
-  return list
-    .filter((item): item is Record<string, unknown> => typeof item === "object" && item !== null && !Array.isArray(item))
-    .slice(0, 1)
-    .flatMap((item) => (typeof item.name === "string" ? [item.name] : []));
+function inferMasterstoreCategoryPath(detail: MasterstoreDetail): string[] {
+  if (typeof detail.sub_category === "number") {
+    return [`sub_category:${detail.sub_category}`];
+  }
+  return [];
 }
 
 function minNumber(values: Array<number | undefined>): number | undefined {

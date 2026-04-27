@@ -119,9 +119,11 @@ function withUrlPage(url: string, page: number): string {
 function normalizeWooItem(storeId: string, item: unknown, fallbackSourceUrl: string) {
   if (!item || typeof item !== "object" || Array.isArray(item)) return null;
   const raw = item as Record<string, unknown>;
-  const image = Array.isArray(raw.images) && raw.images[0] && typeof raw.images[0] === "object"
-    ? (raw.images[0] as Record<string, unknown>).src
-    : undefined;
+  const images = Array.isArray(raw.images)
+    ? raw.images
+        .map((entry) => (typeof entry === "object" && entry !== null ? (entry as Record<string, unknown>).src : undefined))
+        .filter((entry): entry is string => typeof entry === "string" && entry.trim().length > 0)
+    : [];
   const prices = typeof raw.prices === "object" && raw.prices !== null ? raw.prices as Record<string, unknown> : {};
 
   return toCatalogProductDraft(
@@ -131,7 +133,8 @@ function normalizeWooItem(storeId: string, item: unknown, fallbackSourceUrl: str
       id: raw.id,
       name: raw.name,
       url: raw.permalink,
-      image,
+      image: images[0],
+      images,
       sku: raw.sku,
       price: prices.price,
       regular_price: prices.regular_price,

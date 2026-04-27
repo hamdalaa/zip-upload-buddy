@@ -3,7 +3,10 @@ import { Link } from "react-router-dom";
 import { ChevronLeft, Home, MapPin, Sparkles, Store } from "lucide-react";
 import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
+import { Seo } from "@/components/Seo";
 import { CITIES } from "@/lib/cityData";
+import { useCityListQuery } from "@/lib/catalogQueries";
+import { itemListJsonLd } from "@/lib/seo";
 
 // Local, optimized landmark images (generated)
 import baghdadImg from "@/assets/cities/baghdad.jpg";
@@ -45,18 +48,33 @@ const CITY_TAGLINE: Record<string, string> = {
 };
 
 export default function IraqCities() {
+  const citiesQuery = useCityListQuery();
+  const cities = citiesQuery.data && citiesQuery.data.length > 0 ? citiesQuery.data : CITIES;
   const total = useMemo(
-    () => CITIES.reduce((sum, c) => sum + c.count, 0),
-    [],
+    () => cities.reduce((sum, c) => sum + c.count, 0),
+    [cities],
   );
 
   const filtered = useMemo(
-    () => [...CITIES].sort((a, b) => b.count - a.count),
-    [],
+    () => [...cities].sort((a, b) => b.count - a.count),
+    [cities],
   );
 
   return (
     <div className="min-h-screen flex flex-col atlas-shell">
+      <Seo
+        title="محلات الإلكترونيات في العراق حسب المحافظة"
+        description={`دليل محلات الإلكترونيات في محافظات العراق: ${total.toLocaleString("en-US")} محل مفهرس مع صفحات مدن وروابط خرائط وتواصل.`}
+        path="/iraq"
+        structuredData={itemListJsonLd(
+          filtered.map((city) => ({
+            name: `محلات ${city.cityAr}`,
+            path: `/city/${encodeURIComponent(city.slug)}`,
+            image: CITY_IMAGES[city.slug],
+            description: CITY_TAGLINE[city.slug] ?? `${city.count} محل`,
+          })),
+        )}
+      />
       <TopNav />
 
       {/* Breadcrumb */}
@@ -101,7 +119,7 @@ export default function IraqCities() {
 
             {/* Stat chips */}
             <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
-              <div className="group inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-card/90 px-3.5 py-2 text-xs font-semibold shadow-[0_2px_10px_-4px_hsl(220_30%_20%/0.08)] backdrop-blur-sm transition-all hover:border-primary/40 hover:shadow-[0_6px_20px_-6px_hsl(var(--primary)/0.25)]">
+              <div className="group inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-card/90 px-3.5 py-2 text-xs font-semibold shadow-[0_2px_10px_-4px_hsl(220_30%_20%/0.08)] backdrop-blur-sm transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] hover:border-primary/40 hover:shadow-[0_6px_20px_-6px_hsl(var(--primary)/0.25)]">
                 <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary/15">
                   <Store className="h-3 w-3 text-primary" />
                 </span>
@@ -110,11 +128,11 @@ export default function IraqCities() {
                 </span>
                 <span className="text-muted-foreground">محل</span>
               </div>
-              <div className="group inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-card/90 px-3.5 py-2 text-xs font-semibold shadow-[0_2px_10px_-4px_hsl(220_30%_20%/0.08)] backdrop-blur-sm transition-all hover:border-accent/40 hover:shadow-[0_6px_20px_-6px_hsl(var(--accent)/0.25)]">
+              <div className="group inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-card/90 px-3.5 py-2 text-xs font-semibold shadow-[0_2px_10px_-4px_hsl(220_30%_20%/0.08)] backdrop-blur-sm transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] hover:border-accent/40 hover:shadow-[0_6px_20px_-6px_hsl(var(--accent)/0.25)]">
                 <span className="flex h-5 w-5 items-center justify-center rounded-full bg-accent/15">
                   <MapPin className="h-3 w-3 text-accent" />
                 </span>
-                <span className="text-foreground tabular-nums">{CITIES.length}</span>
+                <span className="text-foreground tabular-nums">{cities.length}</span>
                 <span className="text-muted-foreground">محافظات</span>
               </div>
             </div>
@@ -139,7 +157,7 @@ export default function IraqCities() {
                 <Link
                   key={c.slug}
                   to={`/city/${c.slug}`}
-                  className="group relative block overflow-hidden rounded-2xl border border-border/70 bg-card shadow-[0_2px_10px_-4px_hsl(220_30%_20%/0.08)] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_hsl(var(--primary)/0.25)] hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background animate-fade-in"
+                  className="group relative block overflow-hidden rounded-2xl border border-border/70 bg-card shadow-[0_2px_10px_-4px_hsl(220_30%_20%/0.08)] transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] duration-500 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_hsl(var(--primary)/0.25)] hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background animate-fade-in"
                   style={{
                     animationDelay: `${Math.min(idx * 50, 400)}ms`,
                     animationFillMode: "backwards",
@@ -197,7 +215,7 @@ export default function IraqCities() {
                             </p>
                           )}
                         </div>
-                        <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[0_8px_20px_-4px_hsl(var(--primary)/0.6)] ring-2 ring-white/25 transition-all duration-500 group-hover:scale-110 group-hover:-translate-x-1.5 group-hover:ring-white/40">
+                        <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[0_8px_20px_-4px_hsl(var(--primary)/0.6)] ring-2 ring-white/25 transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] duration-500 group-hover:scale-110 group-hover:-translate-x-1.5 group-hover:ring-white/40">
                           <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
                         </div>
                       </div>

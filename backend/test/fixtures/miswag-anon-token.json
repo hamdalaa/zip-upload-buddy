@@ -1,0 +1,7 @@
+{
+  "success": true,
+  "message": "تم إكمال الطلب بنجاح",
+  "data": {
+    "token": "test-miswag-anon-token"
+  }
+}

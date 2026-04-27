@@ -16,20 +16,26 @@ export function EmptyState({
   icon?: ReactNode;
 }) {
   return (
-    <div className={cn("relative overflow-hidden rounded-2xl border border-border bg-card p-10 text-center shadow-soft-md", className)}>
-      {/* Decorative aurora glow */}
-      <div className="pointer-events-none absolute inset-0 -z-10 opacity-60">
-        <div className="absolute -top-16 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-primary/15 blur-3xl" />
-        <div className="absolute -bottom-16 right-1/3 h-32 w-32 rounded-full bg-accent-violet/15 blur-3xl" style={{ background: "hsl(var(--accent-violet) / 0.18)" }} />
+    <div
+      className={cn(
+        "flex min-h-[60vh] w-full items-center justify-center",
+        className,
+      )}
+    >
+      <div className="search-surface mx-auto w-full max-w-md p-1.5">
+        <div className="search-core flex flex-col items-center gap-5 p-6 text-center sm:p-7">
+          <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl border border-primary/15 bg-primary-soft text-primary shadow-soft">
+            {icon ?? <SearchX className="h-6 w-6" strokeWidth={2.2} />}
+          </div>
+          <div className="space-y-1.5">
+            <h3 className="text-lg font-semibold tracking-tight text-foreground">{title}</h3>
+            {description && (
+              <p className="text-sm leading-relaxed text-muted-foreground">{description}</p>
+            )}
+          </div>
+          {action && <div className="flex justify-center">{action}</div>}
+        </div>
       </div>
-
-      <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-soft via-card to-violet-soft shadow-soft-md">
-        {icon ?? <SearchX className="h-7 w-7 text-primary" />}
-      </div>
-
-      <h3 className="font-display text-lg font-semibold text-foreground">{title}</h3>
-      {description && <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-muted-foreground">{description}</p>}
-      {action && <div className="mt-5 flex justify-center">{action}</div>}
     </div>
   );
 }

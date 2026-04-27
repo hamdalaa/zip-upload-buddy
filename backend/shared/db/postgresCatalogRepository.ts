@@ -13,6 +13,7 @@ import type {
   RawSnapshotRecord,
   SearchDocument,
   SessionWorkflowRecord,
+  SiteSettingsRecord,
   StoreDomainRecord,
   StoreRecord,
   StoreSizeSummaryRecord,
@@ -135,10 +136,10 @@ export class PostgresCatalogRepository implements CatalogRepository {
       `
       INSERT INTO store_domains (id, store_id, source_url, domain, root_domain, classification, is_primary, created_at)
       VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
-      ON CONFLICT (id) DO UPDATE SET
+      ON CONFLICT (store_id, root_domain) DO UPDATE SET
+        id = EXCLUDED.id,
         source_url = EXCLUDED.source_url,
         domain = EXCLUDED.domain,
-        root_domain = EXCLUDED.root_domain,
         classification = EXCLUDED.classification,
         is_primary = EXCLUDED.is_primary
       `,
@@ -148,6 +149,13 @@ export class PostgresCatalogRepository implements CatalogRepository {
 
   async listStores(): Promise<StoreRecord[]> {
     const result = await this.pool.query("SELECT * FROM stores ORDER BY name ASC");
+    return result.rows.map(this.mapStoreRow);
+  }
+
+  async getStoresByIds(storeIds: string[]): Promise<StoreRecord[]> {
+    if (storeIds.length === 0) return [];
+    const uniqueIds = [...new Set(storeIds)];
+    const result = await this.pool.query("SELECT * FROM stores WHERE id = ANY($1::text[])", [uniqueIds]);
     return result.rows.map(this.mapStoreRow);
   }
 
@@ -309,11 +317,11 @@ export class PostgresCatalogRepository implements CatalogRepository {
           `
           INSERT INTO catalog_products (
             id, store_id, source_product_id, normalized_title, title, brand, model, sku, seller_name, seller_id,
-            category_path, source_url, image_url, availability, currency, live_price, original_price, on_sale,
+            category_path, source_url, image_url, primary_image_url, images_json, availability, currency, live_price, original_price, on_sale,
             source_connector, freshness_at, last_seen_at, offer_label, offer_starts_at, offer_ends_at,
             brand_tokens, model_tokens, sku_tokens, raw_payload
           ) VALUES (
-            $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11::jsonb,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25::jsonb,$26::jsonb,$27::jsonb,$28::jsonb
+            $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11::jsonb,$12,$13,$14,$15::jsonb,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26::jsonb,$27::jsonb,$28::jsonb,$29::jsonb
           )
           `,
           [
@@ -330,6 +338,8 @@ export class PostgresCatalogRepository implements CatalogRepository {
             asJson(product.categoryPath),
             product.sourceUrl,
             product.imageUrl,
+            product.primaryImageUrl ?? product.imageUrl,
+            asJson(product.images ?? (product.imageUrl ? [product.imageUrl] : [])),
             product.availability,
             product.currency,
             product.livePrice,
@@ -442,6 +452,8 @@ export class PostgresCatalogRepository implements CatalogRepository {
         categoryPath: asStringArray(row.category_path),
         sourceUrl: String(row.source_url),
         imageUrl: row.image_url == null ? undefined : String(row.image_url),
+        primaryImageUrl: row.primary_image_url == null ? undefined : String(row.primary_image_url),
+        images: asStringArray(row.images_json),
         availability: String(row.availability) as CatalogProductDraft["availability"],
         currency: String(row.currency),
         livePrice: typeof row.live_price === "number" ? row.live_price : undefined,
@@ -529,12 +541,28 @@ export class PostgresCatalogRepository implements CatalogRepository {
       indexedVariantCount: row.indexed_variant_count,
       activeOfferCount: row.active_offer_count,
       categoryCount: row.category_count,
-      lastSuccessfulSyncAt: row.last_successful_sync_at?.toISOString(),
+      lastSuccessfulSyncAt: asOptionalIsoString(row.last_successful_sync_at),
       estimatedCatalogSize: row.estimated_catalog_size,
       coveragePct: Number(row.coverage_pct),
       syncPriorityTier: row.sync_priority_tier,
       computedAt: row.computed_at.toISOString(),
     };
+  }
+
+  async listStoreSizeSummaries(): Promise<StoreSizeSummaryRecord[]> {
+    const result = await this.pool.query("SELECT * FROM store_size_summaries");
+    return result.rows.map((row: DbRow) => ({
+      storeId: String(row.store_id),
+      indexedProductCount: Number(row.indexed_product_count ?? 0),
+      indexedVariantCount: Number(row.indexed_variant_count ?? 0),
+      activeOfferCount: Number(row.active_offer_count ?? 0),
+      categoryCount: Number(row.category_count ?? 0),
+      lastSuccessfulSyncAt: asOptionalIsoString(row.last_successful_sync_at),
+      estimatedCatalogSize: Number(row.estimated_catalog_size ?? 0),
+      coveragePct: Number(row.coverage_pct ?? 0),
+      syncPriorityTier: String(row.sync_priority_tier) as StoreSizeSummaryRecord["syncPriorityTier"],
+      computedAt: asRequiredIsoString(row.computed_at),
+    }));
   }
 
   async saveAcquisitionProfile(profile: DomainAcquisitionProfile): Promise<void> {
@@ -797,6 +825,9 @@ export class PostgresCatalogRepository implements CatalogRepository {
       freshnessAt: asRequiredIsoString(row.freshness_at),
       sourceUrl: String(row.source_url),
       categoryPath: asStringArray(row.category_path).join(" > "),
+      imageUrl: row.image_url == null ? undefined : String(row.image_url),
+      currency: row.currency == null ? undefined : String(row.currency),
+      offerLabel: row.offer_label == null ? undefined : String(row.offer_label),
       sellerName: row.seller_name == null ? undefined : String(row.seller_name),
     }));
   }
@@ -806,6 +837,61 @@ export class PostgresCatalogRepository implements CatalogRepository {
       `INSERT INTO audit_logs (id, actor, action, store_id, sync_run_id, details, created_at)
        VALUES ($1,$2,$3,$4,$5,$6::jsonb,$7)`,
       [log.id, log.actor, log.action, log.storeId, log.syncRunId, asJson(log.details), log.createdAt],
+    );
+  }
+
+  async listAuditLogs(limit = 50, offset = 0): Promise<AuditLogRecord[]> {
+    const result = await this.pool.query(
+      `
+      SELECT id, actor, action, store_id, sync_run_id, details, created_at
+      FROM audit_logs
+      ORDER BY created_at DESC
+      LIMIT $1 OFFSET $2
+      `,
+      [Math.max(1, Math.min(200, limit)), Math.max(0, offset)],
+    );
+    return result.rows.map((row: DbRow) => ({
+      id: String(row.id),
+      actor: String(row.actor),
+      action: String(row.action),
+      storeId: row.store_id == null ? undefined : String(row.store_id),
+      syncRunId: row.sync_run_id == null ? undefined : String(row.sync_run_id),
+      details: asUnknownRecord(row.details),
+      createdAt: asRequiredIsoString(row.created_at),
+    }));
+  }
+
+  async getSiteSettings(id = "default"): Promise<SiteSettingsRecord | undefined> {
+    const result = await this.pool.query(
+      `
+      SELECT id, payload, updated_by, updated_at
+      FROM site_settings
+      WHERE id = $1
+      LIMIT 1
+      `,
+      [id],
+    );
+    const row = result.rows[0] as DbRow | undefined;
+    if (!row) return undefined;
+    return {
+      id: String(row.id),
+      payload: asUnknownRecord(row.payload) as unknown as SiteSettingsRecord["payload"],
+      updatedBy: String(row.updated_by),
+      updatedAt: asRequiredIsoString(row.updated_at),
+    };
+  }
+
+  async saveSiteSettings(settings: SiteSettingsRecord): Promise<void> {
+    await this.pool.query(
+      `
+      INSERT INTO site_settings (id, payload, updated_by, updated_at)
+      VALUES ($1,$2::jsonb,$3,$4)
+      ON CONFLICT (id) DO UPDATE SET
+        payload = EXCLUDED.payload,
+        updated_by = EXCLUDED.updated_by,
+        updated_at = EXCLUDED.updated_at
+      `,
+      [settings.id, asJson(settings.payload), settings.updatedBy, settings.updatedAt],
     );
   }
 

@@ -23,6 +23,9 @@ export interface Shop {
   slug: string;
   seedKey: string;
   name: string;
+  city?: string;
+  cityAr?: string;
+  citySlug?: string;
   area: Area;
   category: Category;            // primary category (legacy)
   categories?: Category[];       // optional multi-category — preferred when present
@@ -49,6 +52,32 @@ export interface Shop {
   lastSyncAt?: string;
   lastProbeAt?: string;
   sourceStatus?: string;
+  rating?: number;
+  reviewCount?: number;
+  editorialSummary?: string;
+  reviewSummary?: string;
+  reviewsSample?: Array<{
+    rating?: number | null;
+    relativePublishTime?: string;
+    publishTime?: string;
+    text?: string;
+    authorName?: string;
+    authorPhotoUrl?: string;
+    reviewGoogleMapsUrl?: string;
+  }>;
+  quickSignals?: {
+    has_website?: boolean;
+    website_type?: string;
+    has_google_maps?: boolean;
+    has_rating?: boolean;
+    has_reviews?: boolean;
+    has_photos?: boolean;
+    open_now?: boolean | null;
+    business_status?: string;
+  };
+  openNow?: boolean | null;
+  businessStatus?: string;
+  workingHours?: string[];
 }
 
 export interface ShopSource {
@@ -77,10 +106,12 @@ export interface ProductIndex {
   originalPriceValue?: number; // IQD, for showing strikethrough/savings
   productUrl?: string;
   imageUrl?: string;           // product photo
+  images?: string[];
   rating?: number;             // 0..5
   reviewCount?: number;
   inStock?: boolean;
   crawledAt: string;
+  canonicalProductId?: string;
 }
 
 export interface BrandDealer {
@@ -95,6 +126,8 @@ export interface BrandDealer {
   notes?: string;
   createdAt: string;
   updatedAt: string;
+  storeCount?: number;
+  productCount?: number;
 }
 
 export interface CrawlRun {

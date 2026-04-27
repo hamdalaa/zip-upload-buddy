@@ -68,9 +68,29 @@ export function tokenizeModel(input: string): string[] {
 export function parseNumberish(input: unknown): number | undefined {
   if (typeof input === "number" && Number.isFinite(input)) return input;
   if (typeof input !== "string") return undefined;
-  const digits = input.replace(/[,،]/g, "").match(/-?\d+(\.\d+)?/);
-  if (!digits) return undefined;
-  const parsed = Number(digits[0]);
+  const match = input.match(/-?\d[\d.,،]*/);
+  if (!match) return undefined;
+  let numeric = match[0].replace(/،/g, ",");
+  const hasDot = numeric.includes(".");
+  const hasComma = numeric.includes(",");
+
+  if (hasDot && hasComma) {
+    const lastDot = numeric.lastIndexOf(".");
+    const lastComma = numeric.lastIndexOf(",");
+    const decimalSeparator = lastDot > lastComma ? "." : ",";
+    const thousandsSeparator = decimalSeparator === "." ? "," : ".";
+    numeric = numeric
+      .replace(new RegExp(`\\${thousandsSeparator}`, "g"), "")
+      .replace(decimalSeparator, ".");
+  } else if (hasDot && /^-?\d{1,3}(?:\.\d{3})+$/.test(numeric)) {
+    numeric = numeric.replace(/\./g, "");
+  } else if (hasComma && /^-?\d{1,3}(?:,\d{3})+$/.test(numeric)) {
+    numeric = numeric.replace(/,/g, "");
+  } else {
+    numeric = numeric.replace(/,/g, "");
+  }
+
+  const parsed = Number(numeric);
   return Number.isFinite(parsed) ? parsed : undefined;
 }
 

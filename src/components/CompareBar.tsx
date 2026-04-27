@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
-import { Scale, X, Eye, ExternalLink, MapPin, Trash2, Award } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Scale, X, Eye, MapPin, Trash2, Award } from "lucide-react";
 import { useUserPrefs } from "@/lib/userPrefs";
 import { useDataStore } from "@/lib/dataStore";
 import { Button } from "@/components/ui/button";
@@ -10,10 +11,12 @@ import {
   SheetTitle,
   SheetDescription,
 } from "@/components/ui/sheet";
-import { CATEGORY_IMAGES } from "@/lib/mockData";
-import { optimizeImageUrl } from "@/lib/imageUrl";
+import { getProductImageNotFound, getRenderableProductImageCandidates } from "@/lib/productVisuals";
+import { useSequentialImage } from "@/hooks/use-sequential-image";
+import { formatLegacyIQDPrice, isValidPrice } from "@/lib/prices";
+import type { ProductIndex } from "@/lib/types";
 
-const fmt = (n?: number) => (typeof n === "number" ? `${n.toLocaleString("en-US")} IQD` : "—");
+const fmt = (n?: number) => formatLegacyIQDPrice(n);
 
 export function CompareBar() {
   const { compare, toggleCompare, clearCompare } = useUserPrefs();
@@ -27,48 +30,31 @@ export function CompareBar() {
 
   if (items.length === 0) return null;
 
-  const prices = items.map((p) => p.priceValue).filter((v): v is number => typeof v === "number");
+  const prices = items.map((p) => p.priceValue).filter(isValidPrice);
   const min = prices.length ? Math.min(...prices) : undefined;
 
   return (
     <>
       {/* Sticky bottom bar — drawer-slide animation + glass */}
-      <div className="drawer-slide fixed inset-x-0 z-40 border-t border-border/80 bg-card/95 backdrop-blur-xl shadow-[0_-12px_40px_-12px_hsl(220_30%_20%/0.18)] bottom-[88px] lg:bottom-0">
+      <div className="drawer-slide fixed inset-x-0 z-40 border-t border-border bg-card/85 backdrop-blur-2xl shadow-soft-xl bottom-[88px] lg:bottom-0">
         <div className="container flex items-center gap-3 py-2.5">
-          <div className="inline-flex items-center gap-2 text-sm font-bold">
-            <span className="relative flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-primary to-violet text-primary-foreground shadow-soft-md">
+          <div className="inline-flex items-center gap-2 text-sm font-semibold">
+            <span className="relative flex h-7 w-7 items-center justify-center rounded-full bg-foreground text-background shadow-soft">
               <Scale className="h-4 w-4" />
               {items.length >= 2 && (
-                <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-rose ring-2 ring-card animate-pulse" />
+                <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-primary ring-2 ring-card animate-pulse" />
               )}
             </span>
             <span className="hidden sm:inline">سلة المقارنة</span>
-            <span className="rounded-full bg-gradient-primary px-2 py-0.5 text-[11px] text-primary-foreground shadow-soft">
+            <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-foreground tabular-stable">
               {items.length}/4
             </span>
           </div>
 
           <div className="flex flex-1 items-center gap-2 overflow-x-auto">
-            {items.map((p) => {
-              const rawImg = p.imageUrl ?? CATEGORY_IMAGES[p.category];
-              const img = optimizeImageUrl(rawImg, { width: 96, height: 96 }) ?? rawImg;
-              return (
-                <div
-                  key={p.id}
-                  className="relative flex shrink-0 items-center gap-2 rounded-md border border-border bg-background pl-2 pr-1 py-1 transition-all hover:border-primary/40 hover:shadow-soft"
-                >
-                  <img src={img} alt="" loading="lazy" decoding="async" className="h-9 w-9 rounded object-cover" />
-                  <span className="max-w-[120px] truncate text-xs">{p.name}</span>
-                  <button
-                    onClick={() => toggleCompare(p.id)}
-                    className="flex h-6 w-6 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-destructive transition-colors"
-                    aria-label="إزالة"
-                  >
-                    <X className="h-3.5 w-3.5" />
-                  </button>
-                </div>
-              );
-            })}
+            {items.map((p) => (
+              <CompareBarChip key={p.id} product={p} onRemove={() => toggleCompare(p.id)} />
+            ))}
           </div>
 
           <div className="flex items-center gap-1.5 shrink-0">
@@ -86,7 +72,7 @@ export function CompareBar() {
               size="sm"
               onClick={() => setOpen(true)}
               disabled={items.length < 2}
-              className={`btn-ripple h-8 gap-1 bg-gradient-primary text-primary-foreground hover:opacity-95 shadow-glow ${items.length >= 2 ? "animate-pulse-glow" : ""}`}
+              className="ios-tap h-8 gap-1 bg-foreground text-background hover:bg-foreground/90 shadow-soft"
             >
               <Eye className="h-3.5 w-3.5" />
               قارن الآن
@@ -113,13 +99,7 @@ export function CompareBar() {
                   {items.map((p) => (
                     <th key={p.id} className="text-right">
                       <div className="rounded-lg border border-border bg-card p-2">
-                        <img
-                          src={optimizeImageUrl(p.imageUrl ?? CATEGORY_IMAGES[p.category], { width: 320, height: 240 }) ?? p.imageUrl ?? CATEGORY_IMAGES[p.category]}
-                          alt=""
-                          loading="lazy"
-                          decoding="async"
-                          className="h-24 w-full rounded object-cover"
-                        />
+                        <CompareTableImage product={p} />
                         <div className="mt-2 line-clamp-2 text-xs font-bold">{p.name}</div>
                       </div>
                     </th>
@@ -132,13 +112,13 @@ export function CompareBar() {
                     <td key={p.id} className="py-2">
                       <div
                         className={`rounded-md p-2 text-center font-bold ${
-                          p.priceValue !== undefined && p.priceValue === min
+                          isValidPrice(p.priceValue) && p.priceValue === min
                             ? "bg-success/15 text-success border border-success/40"
                             : "bg-muted"
                         }`}
                       >
                         {fmt(p.priceValue)}
-                        {p.priceValue !== undefined && p.priceValue === min && (
+                        {isValidPrice(p.priceValue) && p.priceValue === min && (
                           <span className="mt-1 inline-flex items-center gap-1 text-[10px]">
                             <Award className="h-3 w-3" /> الأرخص
                           </span>
@@ -172,17 +152,18 @@ export function CompareBar() {
                 <Row label="إجراء">
                   {items.map((p) => {
                     const shop = shops.find((s) => s.id === p.shopId);
+                    const productHref = p.canonicalProductId
+                      ? `/product/${encodeURIComponent(p.canonicalProductId)}`
+                      : `/shop-view/${encodeURIComponent(p.shopId)}`;
                     return (
                       <td key={p.id} className="py-2">
                         <div className="flex flex-col gap-1.5">
-                          {p.productUrl && (
-                            <Button asChild size="sm" className="h-8 gap-1 bg-primary text-primary-foreground">
-                              <a href={p.productUrl} target="_blank" rel="noreferrer">
-                                <ExternalLink className="h-3 w-3" />
-                                المنتج
-                              </a>
-                            </Button>
-                          )}
+                          <Button asChild size="sm" className="h-8 gap-1 bg-primary text-primary-foreground">
+                            <Link to={productHref} onClick={() => setOpen(false)}>
+                              <Eye className="h-3 w-3" />
+                              صفحة المنتج
+                            </Link>
+                          </Button>
                           {shop?.googleMapsUrl && (
                             <Button asChild size="sm" variant="outline" className="h-8 gap-1">
                               <a href={shop.googleMapsUrl} target="_blank" rel="noreferrer">
@@ -212,4 +193,38 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
       {children}
     </tr>
   );
+}
+
+function CompareBarChip({ product, onRemove }: { product: ProductIndex; onRemove: () => void }) {
+  const fallback = getProductImageNotFound();
+  const { src, onError } = useSequentialImage(getRenderableProductImageCandidates(product), {
+    fallbackSrc: fallback,
+    optimize: { width: 96, height: 96 },
+    resetKey: product.id,
+  });
+
+  return (
+    <div className="relative flex shrink-0 items-center gap-2 rounded-md border border-border bg-background pl-2 pr-1 py-1 transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] hover:border-primary/40 hover:shadow-soft">
+      <img src={src} alt="" loading="lazy" decoding="async" onError={onError} className="h-9 w-9 rounded object-cover" />
+      <span className="max-w-[120px] truncate text-xs">{product.name}</span>
+      <button
+        onClick={onRemove}
+        className="flex h-6 w-6 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-destructive transition-colors"
+        aria-label="إزالة"
+      >
+        <X className="h-3.5 w-3.5" />
+      </button>
+    </div>
+  );
+}
+
+function CompareTableImage({ product }: { product: ProductIndex }) {
+  const fallback = getProductImageNotFound();
+  const { src, onError } = useSequentialImage(getRenderableProductImageCandidates(product), {
+    fallbackSrc: fallback,
+    optimize: { width: 320, height: 240 },
+    resetKey: product.id,
+  });
+
+  return <img src={src} alt="" loading="lazy" decoding="async" onError={onError} className="h-24 w-full rounded object-cover" />;
 }

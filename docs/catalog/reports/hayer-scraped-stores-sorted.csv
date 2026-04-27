@@ -1,0 +1,164 @@
+rank,store_id,store_name,website,area,primary_category,products
+1,manual_miswag,Miswag,https://miswag.com/,,Marketplace,73882
+2,city_mosul_ChIJ4RyzxkuTB0AR2wItPn7GgZE,Technical center المجمع التقني (صفاء الشيخ),http://tc-safa.com/,,Cameras,7763
+3,city_baghdad_ChIJJ_D-EsCBVxUR8kxlrW6YpvY,المدينة الالكترونية للحلول الهندسية والالكترونية,https://ecity-iq.com/,,Electronics,4233
+4,city_baghdad_ChIJH4P8BAB_VxUR6l-73kr7A3U,عالم القلعة,http://www.aalam-alqalaa.iq/,,Phones,3764
+5,scraped_pointiraq_com,Pointiraq,https://pointiraq.com/,Online,Electronics,2878
+6,city_basra_ChIJESSkBkuXxD8RuNOkCdjZhgA,شركة النبع للحاسبات و تقنيات المعلومات البصرة,http://store.alnabaa.com/,,Electronics,2242
+7,scraped_store_alnabaa_com,Al Nabaa Store,https://store.alnabaa.com/,Online,Electronics,2233
+8,city_erbil_ChIJSyJKHwAjB0ARZK-YbHq8e64,Darin Game,https://www.daringaming.com/,,Gaming,1924
+9,city_baghdad_ChIJddn1mI2BVxURUuvXQX2xddI,UrukTech Store,http://www.uruktech.com/,,Electronics,1823
+10,city_baghdad_ChIJB0WOYWF-VxURzL519ZXXS4U,عين الفهد جملة فقط,https://shop.aynalfahad.com/,,Phones,1552
+11,scraped_shop_aynalfahad_com,Shop Aynalfahad,https://shop.aynalfahad.com/,Online,Electronics,1534
+12,manual_elryan,ElRyan,https://www.elryan.com/,,Marketplace,1350
+13,city_erbil_ChIJZcCRuU8jB0ARrGEniO387g8,ElRyan Showroom (Samsung & Sony),https://www.elryan.com/,,Electronics,1350
+14,city_baghdad_ChIJRSZTjnGBVxURHtXfyYuYg20,Apple center,https://www.apple.com/,,Tablets,1185
+15,city_baghdad_ChIJczzfZH2BVxURbtacWPZTZu4,شركة العالمية للحاسبات - القيم العالمية,https://globaliraq.iq/,,Electronics,1123
+16,scraped_globaliraq_iq,Global Iraq,https://globaliraq.iq/,Online,Electronics,1119
+17,scraped_istyle_iq,Istyle,https://istyle.iq/,Online,Electronics,1111
+18,city_baghdad_ChIJ9wdmqcB_VxURSmGqzzdeY78,iSTYLE Apple Premium Reseller - Amirat Store,http://www.istyle.iq/,,Electronics,1111
+19,city_baghdad_ChIJHVwYzraBVxUR77zs1lxOO2Y,iSTYLE Apple Premium Reseller - Arasat Store,https://istyle.iq/,,Tablets,1111
+20,city_basra_ChIJ9StuMLGXxD8Ruz0RafOq4w4,iSTYLE Apple Premium Reseller - Basra Store,https://istyle.iq/,,Phones,1111
+21,city_sulaymaniyah_ChIJF0FeMwAtAEARDjb1DXAJTwg,Hawranj Store,https://hawranj.com/,,Electronics,1084
+22,city_karbala_ChIJk2niOo5pWRURdh5Duq2Jl0s,شركه الحافظ لبيع الاجهزه الكهربائيه,https://alhafidh.com/,,Electronics,1077
+23,city_basra_ChIJJaNUs1uZxD8RVlNBbj2xYcE,مجموعة الحافظ - المعرض الرئيسي (البصره) ALHAFIDH BASRA,http://www.alhafidh.com/,,Electronics,1074
+24,city_baghdad_ChIJ47OHlHyBVxURDc94Hk7NC54,معرض الحافظ بغداد,http://www.alhafidh.com/,,Smart Devices,1074
+25,city_sulaymaniyah_ChIJs9921eEtAEARw3kIpfg7sJY,Kurd Electronic,https://www.kurdelectronic.com/,,Electronics,1063
+26,city_baghdad_ChIJmUuuen2BVxURuImxXpCSDk0,الفواز للحاسبات,https://alfawaz.com.iq/,,Electronics,1055
+27,scraped_alfawaz_com_iq,Alfawaz,https://alfawaz.com.iq/,Online,Electronics,1049
+28,scraped_www_icenter_iraq_com,Icenter Iraq,https://www.icenter-iraq.com/,Online,Electronics,1009
+29,city_baghdad_ChIJReQL0x5_VxURE4TJwB2T3q0,iCenter Baghdad Al Mansour (Apple Authorised Reseller),https://www.icenter-iraq.com/,,Tablets,1009
+30,city_baghdad_ChIJ5UzswoCDVxURA3e9BW10PSk,iCenter Baghdad Rubaie (Apple Authorised Reseller),https://www.icenter-iraq.com/,,Tablets,1009
+31,city_basra_ChIJg7UsUTyXxD8RAHqIenB4COA,iCenter Basra (Apple Authorised Reseller and Service Provider),https://www.icenter-iraq.com/,,Electronics,1009
+32,manual_icenter,iCenter Iraq,https://www.icenter-iraq.com/,,Electronics,1009
+33,city_sulaymaniyah_ChIJd91fF8wvAEARRS6hOkuAlac,iCenter Sulaymaniyah (Bakhtyari),https://www.icenter-iraq.com/,,Phones,1009
+34,city_sulaymaniyah_ChIJIZPkISgvAEAR9bnGHib0RRc,iCenter Sulaymaniyah 60m (Apple Authorised Reseller and Service Provider),https://www.icenter-iraq.com/,,Electronics,1009
+35,city_erbil_ChIJBfQdtm0iB0ARd90KxAEGNpQ,ئای سەنتەر (هەولێر),https://www.icenter-iraq.com/,,Electronics,1009
+36,city_basra_ChIJW90Jr_qZxD8ReEtccoftuN8,مجمع الايمان للحاسبات,https://alemanmarket.com/,,Electronics,932
+37,city_sulaymaniyah_ChIJ4876gT0sAEARKvOejs5opto,سەنتەری دیما,https://dima.center/,,Electronics,920
+38,city_basra_ChIJzUa4YQCZxD8RJfuu1lVASug,Master Store Basra - Apple Premium Reseller,https://masterstoreiq.com/,,Networking,884
+39,city_kirkuk_ChIJFyEXufDXVBURg2sglIGIyi0,Master Store Kirkuk -Apple Premium Reseller & Authorised Service Provider,https://masterstoreiq.com/,,Electronics,884
+40,city_erbil_ChIJ5TUHbQAjB0AR3Q92RSA4tFg,Master Store-Apple Premium Reseller & Authorised Service Provider,http://www.masterstoreiq.com/,,Tablets,884
+41,scraped_www_masterstoreiq_com,Masterstoreiq,https://www.masterstoreiq.com/,Online,Electronics,884
+42,city_baghdad_ChIJ3QytHV2BVxUR56vJ6KfQ6FU,ماستر ستور - مركز خدمات معتمد من ابل,https://www.masterstoreiq.com/,,Accessories,884
+43,manual_alnomoor_com,Alnomoor,https://alnomoor.com/,,Electronics,882
+44,city_baghdad_ChIJRcluZiuDVxUR_7GoTIqXE_A,متجر مكازان بغداد,http://www.m5-baghdad.uk/,,Chargers,799
+45,city_baghdad_ChIJuyP6MAmBVxURGf7pWfuM-xw,3D elcetronics,https://www.3d-iraq.com/,,PC Parts,663
+46,city_baghdad_ChIJKy_JW2jVWRURk6T0YpeM91I,3D مركز,https://www.3d-iraq.com/,,Electronics,663
+47,scraped_www_3d_iraq_com,3d Iraq,https://www.3d-iraq.com/,Online,Electronics,663
+48,city_baghdad_ChIJB13bzYGBVxURKN8OmyX9Iak,مركز سمارت / شركة القاموس / ايفولس العراق,http://www.alkamous.com/,,Smart Devices,644
+49,city_erbil_ChIJp9PYOjcfB0ARa49ZKYP4lUM,PIT Designs - Erbil Web Design,https://pitdesigns.com/,,Electronics,516
+50,city_najaf_ChIJ0eYhKQDRXhURSJC_tlN0_14,جي فاير للموبايل,http://www.jifirephone.com/,,Tablets,499
+51,city_sulaymaniyah_ChIJGyDzRp4tAEARxTFqh63tk1M,iZone - Apple Store,https://www.izoneiraq.com/,,Electronics,473
+52,city_baghdad_ChIJw-ae_X2BVxURR8SxEAAIqZk,شركة جنة الفرح للحاسبات,http://www.alfarah-store.com/,,Electronics,443
+53,scraped_bytestoreiq_com,Bytestoreiq,https://bytestoreiq.com/,Online,Electronics,419
+54,city_baghdad_ChIJN5KHJAB_VxURNdLfVEb-e0k,بايت ستور,http://bytestoreiq.com/,,Electronics,419
+55,city_erbil_ChIJp6cTFFAjB0ARZQr2kHMW5rw,iZone,https://www.izoneiraq.com/,,Electronics,403
+56,export_www_izoneiraq_com,iZone Iraq,https://www.izoneiraq.com/,Online,Electronics,403
+57,city_baghdad_ChIJXbJRHcOBVxURfUoDqmzNUtU,شركة الشذر,http://www.alshather.com/,,Networking,361
+58,city_erbil_ChIJT5zOLbEjB0ARPVIFkwhakfg,LG Khoshnaw Company - Premium Shop,https://www.khoshnawcompany.com/,,Electronics,352
+59,city_erbil_ChIJJQhlMf8iB0ARgXZ8z5j9VvI,Help Tech Co. Ltd,http://www.helptechco.com/,,Electronics,335
+60,city_najaf_ChIJi3Vn9q7XXhURwivOFKZVF0Y,الحدراوي Alhadrawy,http://alhadrawy.com/,,Electronics,313
+61,city_erbil_ChIJOQlEprUjB0ARMu0HUb-F6ho,جبال زون - شەقامی ٦٠م,https://www.jibalzone.com/,,Phones,312
+62,city_basra_ChIJxaDbk1iXxD8Rpb4h5c3kfN0,شركة جبال للموبايلات,http://jibalzone.com/,,Phones,309
+63,city_basra_ChIJSao8W5SZxD8RIV73UGkFX8s,جبال زون - العشار,https://www.jibalzone.com/,,Phones,305
+64,city_kirkuk_ChIJzZIlgQjWVBURgseIPwLP3PY,جبال زون - كركوك,http://www.jibalzone.com/,,Electronics,302
+65,city_baghdad_ChIJSYqtAIp-VxURGCQMMwhTLAY,"Jibal zone , mansour",https://www.jibalzone.com/ar,,Phones,300
+66,city_nasiriyah_ChIJm255M37j3T8RebWH5_e9y4U,صيانة شركة جبال - الناصرية,http://jibalzone.com/,,Cameras,298
+67,city_mosul_ChIJn7TUbADrB0ARlrY1_or9W-4,جبال زون - الموصل,http://jibalzone.com/,,Accessories,293
+68,city_sulaymaniyah_ChIJP6UREBIvAEARCiDt-gmUHn8,جبال زون - سلێمانی,http://www.jibalzone.com/,,Phones,293
+69,scraped_www_jibalzone_com,Jibalzone,https://www.jibalzone.com/ar,Online,Electronics,287
+70,city_baghdad_ChIJg8UOg6l4VxURiZ-0wWN-7ew,Tmax فرع عكد النصارى,http://www.tmax-iraq.com/,,Electronics,253
+71,city_baghdad_ChIJ92BaLwCBVxURX0q40wA8iAg,RB Technology,https://rb-techsolutions.com/,,Networking,243
+72,city_erbil_ChIJT8gha_giB0ARAiLTI3sFX1s,شركة كانون لاجهزة الكمبيوتر,https://store.canon-erbil.com/,,Electronics,242
+73,city_basra_ChIJF6jPdx6XxD8R8xCjAhAs2mo,TCL Basra,https://tcliraq.com/,,Electronics,236
+74,city_mosul_ChIJn_UewB-VB0ARqz78XPEtrTE,تي سي ال موصل TCL Mosul,https://tcliraq.com/,,Electronics,236
+75,city_mosul_ChIJIUvNcVmVB0ARQSQiGerbgak,TCL_Denka Showroom Mosul,https://denkae.com/,,Electronics,231
+76,city_erbil_ChIJcx6TRuEjB0ARujZvRwWG3qw,تي سي ال و دينكا أربيل TCL & Denka Erbil,https://denkae.com/,,Electronics,231
+77,city_basra_ChIJBcS6HjOXxD8Rj_JZlr636L4,دنكا بصرة Denka Basra,https://denkae.com/,,Electronics,231
+78,city_sulaymaniyah_ChIJ-2NYxiAsAEAR3cQhn_2oLBw,Dream IT Company,http://www.dreamits.net/,,Electronics,227
+79,city_karbala_ChIJhWMUDkJpWRURFW5_YUXLBpI,العالم الرقمي - Digital World,http://store.digital-world.tech/,,Electronics,226
+80,city_baghdad_ChIJf3PtzUOBVxURVvJ5ANYWZwU,شركة قرطاج لتجارة معدات التصوير الاحترافي,https://qartaj.co/,,Cameras,200
+81,city_erbil_ChIJCdKF9X8jB0ARvDl11j-w1KQ,سما شارقة,https://www.alshariqa-erbil.com/,,PC Parts,198
+82,city_erbil_ChIJnUzGpDofB0ARUor96ihdm48,Technoline - Erbil Branch,http://technostar.biz/,,Electronics,187
+83,scraped_alwafi_net,Alwafi,https://alwafi.net/,Online,Electronics,176
+84,city_baghdad_ChIJcyDF5nqBVxURKWoNtyLUSrY,الوافي للحاسبات,http://alwafi.net/,,Electronics,176
+85,city_erbil_ChIJ2eRAkPUjB0ARqvUrznamUcs,MNC TECH,https://www.mnc-tech.store/,,Electronics,173
+86,city_erbil_ChIJp33QL0MjB0ARGj_3B6Bis7s,M Center Erbil,https://mcenter-iraq.com/,,Electronics,156
+87,city_baghdad_ChIJv3EnTACDVxURjVMnFwM6c_Q,WIWU Iraq,https://www.almatajiralthalath.com/,,Chargers,141
+88,city_baghdad_ChIJDffR3ZOBVxURZoC6VNBgox0,Free eye,https://www.free-eye.com/,,Networking,138
+89,city_baghdad_ChIJCbiJ4aCBVxURmsIP4FnmP0s,العين الحرة,http://www.free-eye.com/,,Networking,138
+90,city_basra_ChIJuwHkQjSZxD8R4LpaY2x0pGI,طروادة للحاسبات,http://www.troytechiraq.com/,,Electronics,104
+91,city_baghdad_ChIJIQzVt9WBVxURN4ECz9CCyxM,مكتب المحترف للحاسبات,http://the-pro-pc.com/,,Electronics,89
+92,city_baghdad_ChIJL6XyFbx_VxURwwlBbjLSuV0,TechGigz Store | متجر تيك كيكز,https://store.techgigz.com/,,Electronics,88
+93,city_baghdad_ChIJl2ICe41_VxURVkvWMLncMus,مكتبة الابداع - Alibda2015,https://alibda2015.net/,,Electronics,66
+94,city_najaf_ChIJXVsMCRPXXhUREuUO7MHmw5U,Hammar 2,http://www.hammar-iq.com/,,Smart Devices,50
+95,city_mosul_ChIJPyAfrv-VB0ARz5NllmuMlEs,الخان,https://khanstore-iq.com/,,Smart Devices,44
+96,city_baghdad_ChIJ36KlURHXWRURNfSwAQWDt94,الاردن سنتر Jordan Center,https://jordanstore.mymorabaa.com/,,Accessories,43
+97,city_baghdad_ChIJozrLdSeBVxURzIj2SbiGPpU,Karada store for electronic,https://karadastore.iq/,,Accessories,42
+98,city_baghdad_ChIJMbUAawCBVxUR9izqdwJCd_0,داش سكيور الكرادة,https://www.dashsecureai.com/,,Cameras,41
+99,city_baghdad_ChIJJwukj32BVxURn6SyhkXT6Fs,مكتب الواعظ للحاسبات,http://alwaidhcomputers.com/,,Electronics,28
+100,city_erbil_ChIJtQOOV-kjB0ARY84TtUYnbtw,Smartex Home,https://smartexhome.godaddysites.com/,,Smart Devices,27
+101,city_erbil_ChIJyWABfbsjB0ARSfhjfwRDVK8,LG Electronics Levant - Erbil Office,http://www.lg.com/levant_ar,,Electronics,23
+102,city_karbala_ChIJScKbpcprWRUR4-1-Q3KorJE,منتجات الكفيل,http://nooralkafeel.com/,,Phones,22
+103,city_sulaymaniyah_ChIJw33R42UvAEARzdtHIoMmjSU,BMW Sulaymaniyah (Al-Uroush Automotive),https://www.bmw-iraq.com/find-us/sulaymaniyah/?utm_source=Google&utm_medium=Organic&utm_campaign=GMB,,Chargers,19
+104,city_baghdad_ChIJ3bLASWt-VxURjZJt1hdwqZM,Nice Touch شركة نايس,http://www.nicetouchiraq.com/,,Smart Devices,17
+105,city_erbil_ChIJse_0Us4jB0ARch94vRlCGH4,SİEMENS ELECTRİC,http://www.siemens.com/,,Electronics,17
+106,city_erbil_ChIJ5QWigbEjB0ARBSgECovFUio,Pearl.center For electronics store,https://www.pearlcenter.net/,,Tablets,16
+107,city_erbil_ChIJa0M-bzsjB0ARSR-RRv5oLmI,Fazil Mobile مۆبایلی فاضل,http://www.poplme.co/fazilmobile,,Phones,13
+108,city_erbil_ChIJV5_8VxQjB0ARs8fuH6fwXaI,Lions Fort Company,https://www.lionsfortco.com/,,Electronics,13
+109,city_erbil_ChIJTx0Ub3IfB0ARPY-Cy22rWF0,MB it Solutions,https://mbitsolutions.net/,,Smart Devices,13
+110,city_baghdad_ChIJ-d0cBT6DVxURkKi8v0c5Uw4,ANKER,http://anker-iq.com/,,Chargers,12
+111,city_erbil_ChIJmcDxNv8iB0ARDK1TYnbWjdk,DIDAM,https://didamstore.thewayl.com/,,Networking,12
+112,city_najaf_ChIJNwEB8KbXXhURIZI5SG6qR7c,Mrphoneiraq,http://www.mrphoneiraq.com/,,Phones,10
+113,city_baghdad_ChIJpTxW5m6BVxUR4OUb7Q-ekmw,Future Art Broadcast Trading LTD (شركة فن المستقبل),https://www.fa-bt.com/,,Cameras,9
+114,city_mosul_ChIJnWyQhS-VB0ARcgp_gK_sKGI,شركة طاقة للحاسبات,http://taqagroup.net/,,Electronics,8
+115,city_erbil_ChIJEXHpwsQjB0AR21xb9tjPtwY,ڤانه للأثاث المكتبي - الفرع الرئيسي,https://www.vanafurniture.com/,,Electronics,8
+116,city_erbil_ChIJDa3lK0IiB0ARFhBOR-jgH88,ڤانە للأثاث المكتبي,http://www.vanafurniture.com/,,Electronics,8
+117,city_sulaymaniyah_ChIJsQ5_0HsuAEARjPbH387LemE,Samsung Customer Service Sulymania (Bayad),http://www.samsung.com/levant/home/,,Phones,7
+118,city_baghdad_ChIJI_8zVWF-VxUR9wVguG2Ijzc,مركز خدمات سامسونج,http://www.samsung.com/levant/home/,,Electronics,7
+119,city_baghdad_ChIJ3VzbUBB_VxURXmEWmLW45OY,AL-NABAA النبع للحاسبات,https://alnabaa.com/,,Electronics,6
+120,city_baghdad_ChIJKYdRymKBVxUR9JJj09DkQdA,AL-NABAA النبع للحاسبات,https://www.alnabaa.com/,,Electronics,6
+121,city_mosul_ChIJ6c_zWWWVB0ARu26AOuw2CfQ,AL-NABAA النبع للحاسبات,https://www.alnabaa.com/,,Electronics,6
+122,city_erbil_ChIJSY0TAYMjB0AR_ETrSkEuQso,ZMC Shop For Mobile Phones and Accessories,https://www.zmcexpress.com/,,Accessories,6
+123,city_erbil_ChIJ56DCqEEiB0ARQ7t-Ak05T3E,شركة الجبال,https://jibal.iq/,,Phones,6
+124,city_najaf_ChIJZ4hTGD7XXhURbv6OS7dMICw,شركة زين للإتصالات,https://www.iq.zain.com/ar?utm_source=GMB&utm_medium=organic&utm_campaign=ROS_25,,Phones,6
+125,city_erbil_ChIJPdLb0P8iB0ARS-AUGgyB4Mc,صيانة شركة جبال - اربيل,http://jibal.iq/,,Phones,6
+126,city_erbil_ChIJ1RF8Nv4iB0ARpqlQ3y1DNzs,مركز صيانة سامسونج اربيل - شركة جبال,http://jibal.iq/,,Electronics,6
+127,city_basra_ChIJd8D6g1aXxD8RchDoXtpwaLs,"7Arts, Web , Design & Printing | شركة الفنون السبعة",https://7arts.me/,,Electronics,5
+128,city_erbil_ChIJj9tV2oUhB0ARgT-nmEwWAVQ,Samasung,http://www.samsung.com/,,Electronics,5
+129,city_sulaymaniyah_ChIJs7CYYkctAEARobpsPLKiWvA,Smart technology,https://smarttechnology.pro/,,Smart Devices,4
+130,city_erbil_ChIJuQaieXEjB0ARZREltGf9R_c,TSB Smart Tech,http://www.tsb-smarttech.com/,,Smart Devices,4
+131,city_najaf_ChIJt_KbNEnXXhURs0D-j2XqsoQ,نظم للحلول التقنية,https://nudumsolutions.com/,,Tablets,4
+132,city_najaf_ChIJIxUwtqzRXhURsKZOca98SgM,ياس محمد مركز الياس,http://www.yaa8s.com/,,Electronics,4
+133,city_erbil_ChIJ56rkUvIjB0ARUg1r51HdOS4,Aspire Marketing Group,http://www.aspire.krd/,,Electronics,3
+134,city_sulaymaniyah_ChIJdxXUNjS4dw0RPp27_Lgag6U,Geno Iraq,https://genoiraq.com/,,Smart Devices,3
+135,city_baghdad_ChIJFT-SegB5VxUR2wY-kS55XBY,Noobs gaming store,https://apps.apple.com/tr/app/noobs/id6448675218?l=tr,,Gaming,3
+136,city_basra_ChIJ8Qq-zfiZxD8R47MpwHon_BA,Regal company,http://lg.com/,,Electronics,3
+137,city_erbil_ChIJSXavCs0jB0ARaKJJkTwuWTs,Smart Teeth Company,http://www.smart-iraq.com/,,Smart Devices,3
+138,city_basra_ChIJO8Luu-mZxD8RvTF6pOmj5tw,شركةLG خوشناو للاجهزةالكهربائية,http://www.lg.com/,,Electronics,3
+139,city_erbil_ChIJ89XXs_giB0ARSxy00dD6Pmc,کۆمپانیای های تێک,http://www.hightech.iq/,,Electronics,3
+140,city_baghdad_ChIJ3wZ-femBVxUR23Meq2QqgJ4,ALityan gaming center,http://alityan.com/,,PC Parts,2
+141,city_sulaymaniyah_ChIJv6z6RCEvAEARJMtGnbvFWbE,Doctech,https://doctech.dev/,,Smart Devices,2
+142,city_erbil_ChIJWxtpUOYjB0AR5y6Kx22HS5Y,Sadar Company,http://www.sadarsat.com/,,Cameras,2
+143,city_sulaymaniyah_ChIJ23J--YGuzSQRyN669ybbaHs,Terra Film,https://terraafilm.com/,,Cameras,2
+144,city_baghdad_ChIJ44HMqpOBVxURaWQJRdZZOcg,النواة الذهبية - ELNAWAT ELTHEHEBIYA,http://www.goldencore.iq/,,Cameras,2
+145,city_baghdad_ChIJT-0IOAB5VxUROFvC10kK_KI,امبليوم,http://www.embleme.iq/,,Electronics,2
+146,city_kirkuk_ChIJVd5vYD8rVRURWGzY0Xb7VkI,تيك لاند ستور,http://techland-store.com/,,Electronics,2
+147,city_basra_ChIJIQR5JgCZxD8RBDsbXhJ_VQQ,مركز اوميكا ستور,"https://maps.apple.com/place?address=%D8%A7%D9%84%D8%A8%D8%B5%D8%B1%D8%A9%D8%8C%20%E2%80%8F%D8%A7%D9%84%D8%B9%D8%B1%D8%A7%D9%82&coordinate=30.547993,47.776892&name=%D9%85%D9%88%D9%82%D8%B9%D9%8A&map=transit",,Accessories,2
+148,city_mosul_ChIJs_ArLbSVB0ARx9vtXK44iFU,مكتب الغانم لتجاره الحاسبات,https://maps.apple.com/,,Electronics,2
+149,city_baghdad_ChIJq-X4jn2BVxURZ8Y7b250cZ4,مكتب محارة,http://www.al-mahara.com/,,Electronics,2
+150,city_baghdad_ChIJE-e6t4KBVxUR46psWYUXAjE,Advanced Technology,http://atcommo.com/,,Networking,1
+151,city_mosul_ChIJf6U0RxiVB0ARQvsEPYtaECw,Aramex,https://www.aramex.com/iq/en,,Chargers,1
+152,city_kirkuk_ChIJ8ZeFVQDVVBURinM_Cw2DOeE,CIS college kirkuk,http://www.cis-college.com/,,PC Parts,1
+153,city_sulaymaniyah_ChIJs6Mjyf8tAEARVySBzIcXd0Q,KASKAR COMPANY شركة كاسكار,https://kaskarcom.com/,,Cameras,1
+154,city_erbil_ChIJ2edIqfgiB0ARjugPAJkfAHo,MIQDAD Computers,https://miqdadcomputers.com/,,Electronics,1
+155,city_baghdad_ChIJa7Np0xWBVxUR5M0k43bG7Eo,Spider Net,http://spniq.com/,,Networking,1
+156,city_sulaymaniyah_ChIJx3xujsEvAEARjCOwHAr3jgg,Telehome,http://telehome.me/,,Smart Devices,1
+157,city_baghdad_ChIJ8Ui8LmaBVxURNoPZAtbxgQs,الفا لتجارة قطع غيار لابتوب موبايل تابلت,http://alfalaptop.com/,,Electronics,1
+158,city_karbala_ChIJT0WxFAZvWRUR8kzidVC2Lbc,حيدرعراق للحاسبات وصيانة الموبايل,https://haidarlraq.blogspot.com/,,PC Parts,1
+159,city_baghdad_ChIJ9zX124h_VxURKkbY3y2CZiU,شركة إبلال,http://eblal.com/,,Smart Devices,1
+160,city_erbil_ChIJGUhRgnIiB0AR4uGf54YI-Q4,شركة جهانى كاميرا,http://www.cameraworldco.com/,,Electronics,1
+161,city_najaf_ChIJaQSPOAXXXhUR9xBsOaLZkZY,مكتب الفصول لخدمات الانترنت,https://haidersh2018.blogspot.com/,,Networking,1
+162,city_karbala_ChIJFaabyD9pWRURiCHzlNBU3qI,مكتب النور لتكنولوجيا المعلومات,http://alnoor.yoo7.com/,,Electronics,1
+163,city_kirkuk_ChIJmTAcUtDXVBURc7gtr8Sm22o,مکتب ڤژن للانظمة المراقبة,http://www.hikvision.com/,,Cameras,1

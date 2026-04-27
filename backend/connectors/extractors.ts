@@ -20,6 +20,7 @@ const PRODUCT_LINK_HINTS = [
   /\/products\/(?!search)/i,
   /\/item\//i,
   /\/p\//i,
+  /\/shop\/[^/?#]+/i,
 ];
 
 export interface CrawlCatalogOptions {
@@ -35,6 +36,24 @@ const DEFAULT_CRAWL_OPTIONS: Required<CrawlCatalogOptions> = {
   listingConcurrency: 4,
   detailConcurrency: 8,
 };
+
+export function normalizeCatalogImageUrl(value?: string | null, baseUrl?: string | null): string | undefined {
+  const trimmed = value?.trim();
+  if (!trimmed) return undefined;
+  if (trimmed === "Not found" || trimmed === "Image not found" || trimmed.startsWith("data:image/svg+xml")) return undefined;
+  if (/^(?:#|javascript:)/i.test(trimmed)) return undefined;
+
+  try {
+    const parsed = baseUrl ? new URL(trimmed, baseUrl) : new URL(trimmed);
+    if (parsed.protocol !== "https:" && parsed.protocol !== "http:") return undefined;
+    const host = parsed.hostname.replace(/^www\./i, "").toLowerCase();
+    if (host === "s3.elryan.com") return undefined;
+    if (host === "elryan.com" && !parsed.pathname.startsWith("/img/")) return undefined;
+    return parsed.toString();
+  } catch {
+    return undefined;
+  }
+}
 
 function readPositiveIntEnv(name: string): number | undefined {
   const raw = process.env[name];
@@ -191,6 +210,8 @@ export function toCatalogProductDraft(
   const originalPrice = priceInfo.originalPrice;
 
   const offerMetadata = toOfferMetadata(priceInfo, candidate);
+  const images = extractCandidateImages(candidate, url);
+  const primaryImageUrl = images[0];
 
   return {
     storeId,
@@ -204,7 +225,9 @@ export function toCatalogProductDraft(
     sellerId: sellerId ?? undefined,
     categoryPath,
     sourceUrl: url,
-    imageUrl: extractString(candidate, ["image", "image_url", "imageUrl", "thumbnail"]) ?? undefined,
+    imageUrl: primaryImageUrl,
+    primaryImageUrl,
+    images,
     availability,
     currency: extractString(candidate, ["currency", "currency_code"]) ?? "IQD",
     livePrice,
@@ -221,6 +244,57 @@ export function toCatalogProductDraft(
     skuTokens: sku ? tokenizeModel(sku) : [],
     rawPayload: candidate,
   };
+}
+
+function extractCandidateImages(candidate: Record<string, unknown>, baseUrl?: string): string[] {
+  const values = [
+    extractString(candidate, ["primaryImageUrl", "image", "image_url", "imageUrl", "thumbnail"]),
+    ...extractStringArray(candidate.images),
+    ...extractStringArray(candidate.gallery),
+    ...collectCandidateImageStrings(candidate),
+  ];
+
+  return [...new Set(values.map((value) => normalizeCatalogImageUrl(value, baseUrl)).filter(Boolean) as string[])];
+}
+
+function collectCandidateImageStrings(value: unknown, depth = 0): string[] {
+  if (depth > 4 || value == null) return [];
+  if (typeof value === "string") return looksLikeImageCandidate(value) ? [value] : [];
+  if (Array.isArray(value)) return value.flatMap((entry) => collectCandidateImageStrings(entry, depth + 1));
+  if (!isObject(value)) return [];
+
+  const out: string[] = [];
+  for (const [key, nested] of Object.entries(value)) {
+    const normalizedKey = compactText(key);
+    const keyLooksImage =
+      normalizedKey.includes("image") ||
+      normalizedKey.includes("img") ||
+      normalizedKey.includes("photo") ||
+      normalizedKey.includes("thumb") ||
+      normalizedKey.includes("gallery") ||
+      normalizedKey.includes("media") ||
+      normalizedKey === "src";
+    if (keyLooksImage || Array.isArray(nested) || isObject(nested)) {
+      out.push(...collectCandidateImageStrings(nested, depth + 1));
+    }
+  }
+  return out;
+}
+
+function looksLikeImageCandidate(value: string): boolean {
+  const trimmed = value.trim();
+  if (!trimmed || /^(?:#|javascript:)/i.test(trimmed)) return false;
+  if (/\.(?:avif|gif|jpe?g|png|webp)(?:[?#]|$)/i.test(trimmed)) return true;
+  if (/\/(?:image|images|img|media|catalog\/product|cdn-cgi\/image)\//i.test(trimmed)) return true;
+  return false;
+}
+
+function extractStringArray(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  return value
+    .filter((entry): entry is string => typeof entry === "string")
+    .map((entry) => entry.trim())
+    .filter(Boolean);
 }
 
 export function extractProductCandidates(payloads: unknown[]): Record<string, unknown>[] {
@@ -573,10 +647,12 @@ export function parseGenericProductDetailPage(
     .map((_, element) => $(element).text().trim())
     .get()
     .filter(Boolean);
-  const imageUrl =
+  const imageUrl = normalizeCatalogImageUrl(
     $('meta[property="og:image"]').attr("content") ||
-    $(".wp-post-image, .product-image img, .woocommerce-product-gallery__image img, img").first().attr("src") ||
-    undefined;
+      $(".wp-post-image, .product-image img, .woocommerce-product-gallery__image img, img").first().attr("src") ||
+      undefined,
+    sourceUrl,
+  );
 
   const availability = inferAvailabilityFromTextOrHtml(availabilityText, html);
   const now = nowIso();
@@ -591,6 +667,8 @@ export function parseGenericProductDetailPage(
     categoryPath: breadcrumbs,
     sourceUrl,
     imageUrl,
+    primaryImageUrl: imageUrl,
+    images: imageUrl ? [imageUrl] : [],
     availability,
     currency: "IQD",
     livePrice,

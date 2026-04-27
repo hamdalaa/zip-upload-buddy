@@ -1,22 +1,54 @@
+import path from "node:path";
 import { config as loadEnv } from "dotenv";
 import { z } from "zod";
 
 loadEnv();
 
 const inferredRepoRoot = process.cwd();
+const defaultSqlitePath = path.join(inferredRepoRoot, ".catalog-data", "catalog.sqlite");
+const defaultDocsEnabled = process.env.NODE_ENV !== "production";
 
 const DEFAULT_TYPESENSE_KEY = "change-me-search-key";
 const DEFAULT_SNAPSHOT_KEY = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
 const DEFAULT_TOKEN_PEPPER = "local-dev-pepper";
 const DEFAULT_SERVICE_TOKENS =
   "reader:dev-read-token:catalog.read,operator:dev-operator-token:catalog.queue|catalog.session|catalog.feed";
+const DEFAULT_ADMIN_LOGIN_SECRET = "local-admin-login-secret";
+const DEFAULT_ADMIN_SESSION_SECRET = "local-admin-session-secret-change-me";
+const DEFAULT_ALLOWED_ORIGINS = [
+  "https://hayeer.com",
+  "https://www.hayeer.com",
+  "https://h-db.site",
+  "https://www.h-db.site",
+  "https://cf.h-db.site",
+].join(",");
 
 const envSchema = z.object({
   PORT: z.coerce.number().int().positive().default(4400),
   CATALOG_BIND_HOST: z.string().min(1).default("127.0.0.1"),
+  CATALOG_TRUST_PROXY: z
+    .string()
+    .optional()
+    .transform((value) => value === "true"),
   CATALOG_REPO_ROOT: z.string().min(1).default(inferredRepoRoot),
+  CATALOG_API_BODY_LIMIT_BYTES: z.coerce.number().int().positive().default(128 * 1024),
+  CATALOG_API_MAX_URL_LENGTH: z.coerce.number().int().positive().default(2048),
+  CATALOG_PUBLIC_RATE_LIMIT_MAX: z.coerce.number().int().positive().default(120),
+  CATALOG_PUBLIC_RATE_LIMIT_WINDOW_MS: z.coerce.number().int().positive().default(60_000),
+  CATALOG_PUBLIC_SEARCH_RATE_LIMIT_MAX: z.coerce.number().int().positive().default(40),
+  CATALOG_ALLOWED_ORIGINS: z.string().default(DEFAULT_ALLOWED_ORIGINS),
+  CATALOG_DOCS_RATE_LIMIT_MAX: z.coerce.number().int().positive().default(10),
+  CATALOG_DOCS_ENABLED: z
+    .string()
+    .optional()
+    .transform((value) => (value == null ? defaultDocsEnabled : value === "true")),
+  CATALOG_OUTBOUND_MAX_RESPONSE_BYTES: z.coerce.number().int().positive().default(5 * 1024 * 1024),
+  CATALOG_OUTBOUND_MAX_REDIRECTS: z.coerce.number().int().min(0).max(5).default(3),
+  CATALOG_DB_DRIVER: z.enum(["sqlite", "postgres"]).default("sqlite"),
+  SQLITE_DATABASE_PATH: z.string().min(1).default(defaultSqlitePath),
   DATABASE_URL: z.string().url().default("postgres://catalog:catalog@localhost:5432/catalog"),
   REDIS_URL: z.string().url().default("redis://localhost:6379"),
+  CATALOG_SEARCH_DRIVER: z.enum(["sqlite", "typesense"]).optional(),
   TYPESENSE_URL: z.string().url().default("http://localhost:8108"),
   TYPESENSE_API_KEY: z.string().min(8).default(DEFAULT_TYPESENSE_KEY),
   STORAGE_BUCKET: z.string().min(1).default("catalog-snapshots"),
@@ -40,6 +72,9 @@ const envSchema = z.object({
     .optional()
     .transform((value) => value !== "false"),
   INTERNAL_REQUEST_MAX_SKEW_SECONDS: z.coerce.number().int().positive().default(300),
+  ADMIN_LOGIN_SECRET: z.string().min(8).default(DEFAULT_ADMIN_LOGIN_SECRET),
+  ADMIN_SESSION_SECRET: z.string().min(16).default(DEFAULT_ADMIN_SESSION_SECRET),
+  ADMIN_SESSION_TTL_HOURS: z.coerce.number().int().positive().max(168).default(12),
   CATALOG_ALLOW_INSECURE_DEFAULTS: z
     .string()
     .optional()
@@ -92,16 +127,59 @@ function parseInternalServiceTokens(raw: string): CatalogServiceTokenConfig[] {
   return tokens;
 }
 
+function parseAllowedOrigins(raw: string): string[] {
+  return [
+    ...new Set(
+      raw
+        .split(",")
+        .map((origin) => origin.trim().replace(/\/+$/, ""))
+        .filter(Boolean),
+    ),
+  ];
+}
+
 const allowInsecureDefaults =
   parsedEnv.CATALOG_ALLOW_INSECURE_DEFAULTS === true || process.env.NODE_ENV === "test";
 
 const parsedServiceTokens = parseInternalServiceTokens(parsedEnv.INTERNAL_SERVICE_TOKENS);
+const resolvedSearchDriver =
+  parsedEnv.CATALOG_SEARCH_DRIVER ?? (parsedEnv.CATALOG_DB_DRIVER === "sqlite" ? "sqlite" : "typesense");
 
 export const catalogConfig = {
   port: parsedEnv.PORT,
   bindHost: parsedEnv.CATALOG_BIND_HOST,
+  trustProxy: parsedEnv.CATALOG_TRUST_PROXY ?? false,
   repoRoot: parsedEnv.CATALOG_REPO_ROOT,
+  api: {
+    bodyLimitBytes: parsedEnv.CATALOG_API_BODY_LIMIT_BYTES,
+    maxUrlLength: parsedEnv.CATALOG_API_MAX_URL_LENGTH,
+  },
+  docs: {
+    enabled: parsedEnv.CATALOG_DOCS_ENABLED ?? defaultDocsEnabled,
+    rateLimitMax: parsedEnv.CATALOG_DOCS_RATE_LIMIT_MAX,
+  },
+  publicRateLimit: {
+    max: parsedEnv.CATALOG_PUBLIC_RATE_LIMIT_MAX,
+    windowMs: parsedEnv.CATALOG_PUBLIC_RATE_LIMIT_WINDOW_MS,
+    searchMax: parsedEnv.CATALOG_PUBLIC_SEARCH_RATE_LIMIT_MAX,
+  },
+  cors: {
+    allowedOrigins: parseAllowedOrigins(parsedEnv.CATALOG_ALLOWED_ORIGINS),
+  },
+  outbound: {
+    maxResponseBytes: parsedEnv.CATALOG_OUTBOUND_MAX_RESPONSE_BYTES,
+    maxRedirects: parsedEnv.CATALOG_OUTBOUND_MAX_REDIRECTS,
+  },
   databaseUrl: parsedEnv.DATABASE_URL,
+  sqliteDatabasePath: parsedEnv.SQLITE_DATABASE_PATH,
+  database: {
+    driver: parsedEnv.CATALOG_DB_DRIVER,
+    url: parsedEnv.DATABASE_URL,
+    sqlitePath: parsedEnv.SQLITE_DATABASE_PATH,
+  },
+  search: {
+    driver: resolvedSearchDriver,
+  },
   redisUrl: parsedEnv.REDIS_URL,
   typesense: {
     url: parsedEnv.TYPESENSE_URL,
@@ -122,6 +200,11 @@ export const catalogConfig = {
   tokenPepper: parsedEnv.TOKEN_PEPPER,
   requireSignedInternalRequests: parsedEnv.INTERNAL_REQUIRE_REQUEST_SIGNATURE ?? true,
   requestMaxSkewSeconds: parsedEnv.INTERNAL_REQUEST_MAX_SKEW_SECONDS,
+  admin: {
+    loginSecret: parsedEnv.ADMIN_LOGIN_SECRET,
+    sessionSecret: parsedEnv.ADMIN_SESSION_SECRET,
+    sessionTtlHours: parsedEnv.ADMIN_SESSION_TTL_HOURS,
+  },
   probeUserAgent: parsedEnv.PROBE_USER_AGENT,
   queuePrefix: parsedEnv.QUEUE_PREFIX,
   snapshotEncryptionKey: Buffer.from(parsedEnv.SNAPSHOT_ENCRYPTION_KEY_BASE64, "base64"),
@@ -133,7 +216,7 @@ if (catalogConfig.snapshotEncryptionKey.byteLength !== 32) {
 
 if (!allowInsecureDefaults) {
   const errors: string[] = [];
-  if (parsedEnv.TYPESENSE_API_KEY === DEFAULT_TYPESENSE_KEY) {
+  if (resolvedSearchDriver === "typesense" && parsedEnv.TYPESENSE_API_KEY === DEFAULT_TYPESENSE_KEY) {
     errors.push("TYPESENSE_API_KEY must be replaced with a strong secret.");
   }
   if (parsedEnv.SNAPSHOT_ENCRYPTION_KEY_BASE64 === DEFAULT_SNAPSHOT_KEY) {
@@ -145,7 +228,23 @@ if (!allowInsecureDefaults) {
   if (parsedEnv.INTERNAL_SERVICE_TOKENS === DEFAULT_SERVICE_TOKENS) {
     errors.push("INTERNAL_SERVICE_TOKENS must be replaced with scoped runtime tokens.");
   }
+  if (parsedEnv.ADMIN_LOGIN_SECRET === DEFAULT_ADMIN_LOGIN_SECRET) {
+    errors.push("ADMIN_LOGIN_SECRET must be replaced with a strong admin login secret.");
+  }
+  if (parsedEnv.ADMIN_SESSION_SECRET === DEFAULT_ADMIN_SESSION_SECRET) {
+    errors.push("ADMIN_SESSION_SECRET must be replaced with a strong admin session secret.");
+  }
   if (errors.length > 0) {
     throw new Error(errors.join(" "));
   }
 }
+
+export function assertProductionTrustProxy(options: { nodeEnv: string | undefined; trustProxy: boolean }) {
+  if (options.nodeEnv === "production" && !options.trustProxy) {
+    throw new Error(
+      "CATALOG_TRUST_PROXY=true is required in production so Cloudflare/nginx client IPs are used for auth rate limits and audit logs.",
+    );
+  }
+}
+
+assertProductionTrustProxy({ nodeEnv: process.env.NODE_ENV, trustProxy: catalogConfig.trustProxy });

@@ -6,6 +6,12 @@ import asus from "@/assets/brands/asus.png";
 import honor from "@/assets/brands/honor.png";
 import anker from "@/assets/brands/anker.svg";
 import ugreen from "@/assets/brands/ugreen.svg";
+import realme from "@/assets/brands/realme.png";
+import gigabyte from "@/assets/brands/gigabyte.svg";
+import sandisk from "@/assets/brands/sandisk.svg";
+import electronicCity from "@/assets/brands/electronic-city.svg";
+import allProducts from "@/assets/brands/all-products.svg";
+import logitech from "@/assets/brands/logitech.svg";
 
 export const BRAND_LOGOS: Record<string, string> = {
   apple,
@@ -14,6 +20,12 @@ export const BRAND_LOGOS: Record<string, string> = {
   honor,
   anker,
   ugreen,
+  realme,
+  gigabyte,
+  sandisk,
+  "electronic-city": electronicCity,
+  "all-products": allProducts,
+  logitech,
 };
 
 export function getBrandLogo(slug: string): string | undefined {
@@ -60,6 +72,12 @@ interface ResolveBrandIconOptions {
 
 const THESVG_REGISTRY_URL = "https://thesvg.org/api/registry.json";
 
+const THESVG_VARIANT_PREFERENCES: Partial<Record<string, TheSvgVariant>> = {
+  apple: "dark",
+  sony: "mono",
+  nvidia: "wordmark",
+};
+
 // Warm-start the most common local brands so they render immediately before
 // the registry request finishes.
 const THESVG_SLUG_MAP: Record<string, string> = {
@@ -67,6 +85,36 @@ const THESVG_SLUG_MAP: Record<string, string> = {
   samsung: "samsung",
   asus: "asus",
   honor: "honor",
+  huawei: "huawei",
+  xiaomi: "xiaomi",
+  oppo: "oppo",
+  vivo: "vivo",
+  oneplus: "oneplus",
+  motorola: "motorola",
+  google: "google",
+  sony: "sony",
+  playstation: "playstation",
+  xbox: "xbox",
+  microsoft: "microsoft",
+  acer: "acer",
+  lenovo: "lenovo",
+  hp: "hp",
+  dell: "dell",
+  msi: "msi",
+  intel: "intel",
+  amd: "amd",
+  nvidia: "nvidia",
+  corsair: "corsair",
+  razer: "razer",
+  jbl: "jbl",
+  bose: "bose",
+  beats: "beats",
+  epson: "epson",
+  panasonic: "panasonic",
+  redragon: "redragon",
+  "tp-link": "tp-link",
+  "cooler-master": "cooler-master",
+  deepcool: "deepcool",
 };
 
 let theSvgRegistryPromise: Promise<TheSvgRegistryIndex> | null = null;
@@ -159,7 +207,8 @@ export function getTheSvgIconUrl(slug: string, variant: TheSvgVariant = "default
 export function getTheSvgUrl(slug: string, variant: TheSvgVariant = "default"): string | undefined {
   const mapped = THESVG_SLUG_MAP[slug.toLowerCase()];
   if (!mapped) return undefined;
-  return getTheSvgIconUrl(mapped, variant);
+  const preferredVariant = THESVG_VARIANT_PREFERENCES[slug.toLowerCase()] ?? variant;
+  return getTheSvgIconUrl(mapped, preferredVariant);
 }
 
 export async function getTheSvgRegistry(): Promise<TheSvgRegistryIndex> {
@@ -192,7 +241,8 @@ export async function resolveTheSvgLogoUrl({
   const icon = findTheSvgIcon(registry, slug, brandName);
   if (!icon) return undefined;
 
-  const resolvedVariant = pickTheSvgVariant(icon, variant);
+  const preferredVariant = THESVG_VARIANT_PREFERENCES[slug.toLowerCase()] ?? variant;
+  const resolvedVariant = pickTheSvgVariant(icon, preferredVariant);
   if (!resolvedVariant) return undefined;
 
   return getTheSvgIconUrl(icon.slug, resolvedVariant);

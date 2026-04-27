@@ -10,7 +10,7 @@ export function BrandCard({ brand }: { brand: BrandDealer }) {
   return (
     <Link
       to={`/brand/${brand.slug}`}
-      className="group atlas-card tilt-3d relative flex flex-col text-right p-5 shadow-soft-md overflow-hidden"
+      className="group atlas-card tilt-3d relative flex flex-col overflow-hidden p-5 text-right shadow-soft-md"
     >
       {isVerified && (
         <span className="ribbon ribbon-violet">
@@ -29,7 +29,7 @@ export function BrandCard({ brand }: { brand: BrandDealer }) {
         </div>
 
         <div className="text-right">
-          <div className="font-numeric text-2xl sm:text-3xl font-semibold leading-none text-foreground">
+          <div className="font-numeric tabular-nums text-2xl font-semibold leading-none text-foreground sm:text-3xl">
             {brand.cities.length.toLocaleString("ar")}
           </div>
           <div className="mt-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">مدينة</div>
@@ -38,7 +38,7 @@ export function BrandCard({ brand }: { brand: BrandDealer }) {
 
       <div className="mt-5">
         <div className="flex flex-wrap items-center gap-2">
-          <h3 className="font-display text-xl sm:text-2xl font-semibold leading-tight text-foreground group-hover:text-violet transition-colors">{brand.brandName}</h3>
+          <h3 className="font-display text-balance text-xl font-semibold leading-tight text-foreground transition-colors group-hover:text-violet sm:text-2xl">{brand.brandName}</h3>
           {isVerified && (
             <span className="inline-flex items-center gap-1 rounded-full bg-emerald-soft px-2 py-0.5 text-[10px] font-semibold text-emerald">
               <ShieldCheck className="h-3 w-3" />
@@ -48,7 +48,7 @@ export function BrandCard({ brand }: { brand: BrandDealer }) {
         </div>
 
         <p className="mt-2 text-sm font-medium text-foreground/72">{brand.dealerName}</p>
-        <p className="mt-2 line-clamp-2 text-xs leading-6 text-muted-foreground">{brand.coverage}</p>
+        <p className="mt-2 line-clamp-2 text-pretty text-xs leading-6 text-muted-foreground">{brand.coverage}</p>
       </div>
 
       <div className="mt-5 flex items-center justify-between border-t border-border pt-4">

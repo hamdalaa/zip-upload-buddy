@@ -1,6 +1,7 @@
 import { Layers, Award } from "lucide-react";
 import { ProductCard } from "./ProductCard";
-import { CATEGORY_IMAGES } from "@/lib/mockData";
+import { CATEGORY_IMAGES } from "@/lib/categoryImages";
+import { formatLegacyIQDPrice, isValidPrice } from "@/lib/prices";
 import type { ScoredProduct } from "@/lib/search";
 import type { Shop } from "@/lib/types";
 
@@ -15,10 +16,10 @@ export function ComparisonGroup({
   items: ScoredProduct[];
   shopsById: Record<string, Shop>;
 }) {
-  const prices = items.map((i) => i.priceValue).filter((v): v is number => typeof v === "number");
+  const prices = items.map((i) => i.priceValue).filter(isValidPrice);
   const min = prices.length ? Math.min(...prices) : undefined;
   const max = prices.length ? Math.max(...prices) : undefined;
-  const fmt = (n: number) => `${n.toLocaleString("en-US")} IQD`;
+  const fmt = (n: number) => formatLegacyIQDPrice(n);
   const savings = min !== undefined && max !== undefined && max > min ? max - min : 0;
   const heroImg = items[0].imageUrl ?? CATEGORY_IMAGES[items[0].category];
 
@@ -67,7 +68,7 @@ export function ComparisonGroup({
             key={it.id}
             product={it}
             shopGoogleMapsUrl={shopsById[it.shopId]?.googleMapsUrl}
-            bestPrice={it.priceValue !== undefined && it.priceValue === min}
+            bestPrice={isValidPrice(it.priceValue) && it.priceValue === min}
             layout="grid"
           />
         ))}

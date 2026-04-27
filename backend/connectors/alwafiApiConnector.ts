@@ -124,7 +124,8 @@ function normalizeAlwafiProduct(
   const discountAmount = parseNumberish(item.discountPrice) ?? 0;
   const livePrice = typeof price === "number" ? Math.max(price - discountAmount, 0) : undefined;
   const originalPrice = typeof price === "number" ? price : undefined;
-  const imageUrl = firstAbsoluteImage(item.images, baseUrl);
+  const images = collectAbsoluteImages(item.images, baseUrl);
+  const imageUrl = images[0];
   const now = nowIso();
 
   return {
@@ -138,6 +139,8 @@ function normalizeAlwafiProduct(
     categoryPath: stringify(item.category) ? [String(item.category)] : [],
     sourceUrl: new URL(`/product/${id}`, baseUrl).toString(),
     imageUrl,
+    primaryImageUrl: imageUrl,
+    images,
     availability: (parseNumberish(item.countInStock) ?? 0) > 0 ? "in_stock" : "out_of_stock",
     currency: "IQD",
     livePrice,
@@ -156,15 +159,20 @@ function normalizeAlwafiProduct(
   };
 }
 
-function firstAbsoluteImage(value: unknown, baseUrl: string): string | undefined {
-  if (!Array.isArray(value)) return undefined;
-  const first = value.find((item) => typeof item === "string" && item.trim());
-  if (typeof first !== "string") return undefined;
-  try {
-    return new URL(first, baseUrl).toString();
-  } catch {
-    return undefined;
-  }
+function collectAbsoluteImages(value: unknown, baseUrl: string): string[] {
+  if (!Array.isArray(value)) return [];
+  return [...new Set(
+    value
+      .filter((item): item is string => typeof item === "string" && item.trim().length > 0)
+      .map((item) => {
+        try {
+          return new URL(item, baseUrl).toString();
+        } catch {
+          return undefined;
+        }
+      })
+      .filter((item): item is string => typeof item === "string"),
+  )];
 }
 
 function dedupeProducts(products: CatalogProductDraft[]): CatalogProductDraft[] {

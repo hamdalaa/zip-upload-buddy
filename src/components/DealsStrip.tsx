@@ -1,11 +1,12 @@
 import { Flame } from "lucide-react";
 import { ProductCard } from "./ProductCard";
 import { useDataStore } from "@/lib/dataStore";
+import { hasComparableDiscount } from "@/lib/prices";
 
 export function DealsStrip() {
   const { products } = useDataStore();
   const deals = products
-    .filter((p) => p.originalPriceValue && p.priceValue && p.originalPriceValue > p.priceValue)
+    .filter((p) => hasComparableDiscount(p.priceValue, p.originalPriceValue))
     .map((p) => ({
       ...p,
       score: 0,

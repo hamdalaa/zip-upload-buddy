@@ -2,8 +2,8 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 
 const FAV_KEY = "teh:favorites";
 const COMPARE_KEY = "teh:compare";
-/** Session-scoped: tour shows once per browser session (new tab → shows again). */
-const ONBOARD_SESSION_KEY = "teh:onboarded:session";
+/** Persistent: the welcome tour shows once per major onboarding version. */
+const ONBOARD_STORAGE_KEY = "teh:onboarded:beta-v2";
 
 type Ctx = {
   favorites: Set<string>;
@@ -49,7 +49,7 @@ export function UserPrefsProvider({ children }: { children: ReactNode }) {
   const [compare, setCompare] = useState<string[]>(() => loadArr(COMPARE_KEY));
   const [onboarded, setOnboardedState] = useState<boolean>(() => {
     try {
-      return sessionStorage.getItem(ONBOARD_SESSION_KEY) === "1";
+      return localStorage.getItem(ONBOARD_STORAGE_KEY) === "1";
     } catch {
       return false;
     }
@@ -88,8 +88,8 @@ export function UserPrefsProvider({ children }: { children: ReactNode }) {
   function setOnboarded(v: boolean) {
     setOnboardedState(v);
     try {
-      if (v) sessionStorage.setItem(ONBOARD_SESSION_KEY, "1");
-      else sessionStorage.removeItem(ONBOARD_SESSION_KEY);
+      if (v) localStorage.setItem(ONBOARD_STORAGE_KEY, "1");
+      else localStorage.removeItem(ONBOARD_STORAGE_KEY);
     } catch {/* ignore */}
   }
 
@@ -97,7 +97,7 @@ export function UserPrefsProvider({ children }: { children: ReactNode }) {
   function openTour() {
     setOnboardedState(false);
     try {
-      sessionStorage.removeItem(ONBOARD_SESSION_KEY);
+      localStorage.removeItem(ONBOARD_STORAGE_KEY);
     } catch {/* ignore */}
     setTourTrigger((n) => n + 1);
   }

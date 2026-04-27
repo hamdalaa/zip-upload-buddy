@@ -40,11 +40,12 @@ services:
     build:
       context: ..
       dockerfile: Dockerfile
-    command: ["node", "dist/api/server.js"]
+    command: ["node", "dist/api/start.js"]
     environment:
       PORT: 4400
       CATALOG_REPO_ROOT: /app
       CATALOG_BIND_HOST: 0.0.0.0
+      CATALOG_TRUST_PROXY: "true"
       DATABASE_URL: postgres://catalog:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}@postgres:5432/catalog
       REDIS_URL: redis://:${REDIS_PASSWORD:?set REDIS_PASSWORD}@redis:6379
       TYPESENSE_URL: http://typesense:8108
@@ -62,6 +63,7 @@ services:
       INTERNAL_REQUIRE_REQUEST_SIGNATURE: "true"
       INTERNAL_REQUEST_MAX_SKEW_SECONDS: ${INTERNAL_REQUEST_MAX_SKEW_SECONDS:-300}
       CATALOG_ALLOW_INSECURE_DEFAULTS: "false"
+      CATALOG_ALLOWED_ORIGINS: ${CATALOG_ALLOWED_ORIGINS:-}
     depends_on:
       - postgres
       - redis

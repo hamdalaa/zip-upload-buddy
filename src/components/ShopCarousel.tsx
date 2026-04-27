@@ -7,7 +7,7 @@ import type { Shop } from "@/lib/types";
 interface Props {
   shops: Shop[];
   /** Hide the carousel on this breakpoint and above (parent renders grid). */
-  hideAbove?: "sm" | "md" | "lg";
+  hideAbove?: "sm" | "md" | "lg" | "xl";
 }
 
 const MAX_DOTS = 7;
@@ -93,7 +93,13 @@ export function ShopCarousel({ shops, hideAbove = "lg" }: Props) {
   }, []);
 
   const hideClass =
-    hideAbove === "sm" ? "sm:hidden" : hideAbove === "md" ? "md:hidden" : "lg:hidden";
+    hideAbove === "sm"
+      ? "sm:hidden"
+      : hideAbove === "md"
+        ? "md:hidden"
+        : hideAbove === "lg"
+          ? "lg:hidden"
+          : "xl:hidden";
 
   if (shops.length === 0) return null;
 
@@ -106,8 +112,8 @@ export function ShopCarousel({ shops, hideAbove = "lg" }: Props) {
       <div className="relative">
         <div
           ref={scrollerRef}
-          className="-mx-5 flex snap-x snap-mandatory gap-3.5 overflow-x-auto px-5 pb-2 scroll-smooth"
-          style={{ scrollPaddingInline: "1.25rem", WebkitOverflowScrolling: "touch" }}
+          className="-mx-4 flex snap-x snap-mandatory items-stretch gap-3 overflow-x-auto px-4 pb-2 scroll-smooth sm:-mx-5 sm:gap-3.5 sm:px-5"
+          style={{ scrollPaddingInline: "1rem", WebkitOverflowScrolling: "touch" }}
           role="region"
           aria-label="قائمة المحلات قابلة للتمرير"
         >
@@ -115,7 +121,7 @@ export function ShopCarousel({ shops, hideAbove = "lg" }: Props) {
             <div
               key={shop.id}
               data-carousel-item
-              className="snap-center shrink-0 basis-[78%] sm:basis-[58%] md:basis-[44%]"
+              className="flex snap-center shrink-0 basis-[68%] self-stretch sm:basis-[46%] md:basis-[38%]"
               aria-roledescription="slide"
               aria-label={`${idx + 1} من ${total}`}
             >
@@ -135,7 +141,7 @@ export function ShopCarousel({ shops, hideAbove = "lg" }: Props) {
             "hidden sm:flex absolute end-1 top-[40%] -translate-y-1/2 z-10",
             "h-10 w-10 items-center justify-center rounded-full",
             "bg-background/95 backdrop-blur-md shadow-[0_8px_24px_-8px_hsl(220_30%_20%/0.25)] ring-1 ring-border",
-            "transition-all hover:scale-105 hover:text-primary hover:ring-primary/40",
+            "transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] hover:scale-105 hover:text-primary hover:ring-primary/40",
             "disabled:opacity-0 disabled:pointer-events-none",
           )}
         >
@@ -150,7 +156,7 @@ export function ShopCarousel({ shops, hideAbove = "lg" }: Props) {
             "hidden sm:flex absolute start-1 top-[40%] -translate-y-1/2 z-10",
             "h-10 w-10 items-center justify-center rounded-full",
             "bg-background/95 backdrop-blur-md shadow-[0_8px_24px_-8px_hsl(220_30%_20%/0.25)] ring-1 ring-border",
-            "transition-all hover:scale-105 hover:text-primary hover:ring-primary/40",
+            "transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] hover:scale-105 hover:text-primary hover:ring-primary/40",
             "disabled:opacity-0 disabled:pointer-events-none",
           )}
         >
@@ -163,7 +169,7 @@ export function ShopCarousel({ shops, hideAbove = "lg" }: Props) {
         {/* Pagination — dots OR slim progress bar */}
         <div className="flex flex-1 items-center min-w-0">
           {useDots ? (
-            <div className="flex items-center gap-1.5" role="tablist" aria-label="انتقال بين المحلات">
+            <div className="flex items-center gap-0.5" role="tablist" aria-label="انتقال بين المحلات">
               {shops.map((_, idx) => {
                 const isActive = idx === activeIndex;
                 return (
@@ -174,13 +180,17 @@ export function ShopCarousel({ shops, hideAbove = "lg" }: Props) {
                     aria-selected={isActive}
                     aria-label={`اذهب إلى المحل ${idx + 1}`}
                     onClick={() => scrollToIndex(idx)}
-                    className={cn(
-                      "h-1 rounded-full transition-all duration-300",
-                      isActive
-                        ? "w-6 bg-foreground"
-                        : "w-1 bg-border hover:bg-muted-foreground/50",
-                    )}
-                  />
+                    className="group flex h-7 w-7 items-center justify-center rounded-full transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] hover:bg-surface/70"
+                  >
+                    <span
+                      className={cn(
+                        "h-1 rounded-full transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] duration-300",
+                        isActive
+                          ? "w-6 bg-foreground"
+                          : "w-1 bg-border group-hover:bg-muted-foreground/50",
+                      )}
+                    />
+                  </button>
                 );
               })}
             </div>
@@ -202,8 +212,8 @@ export function ShopCarousel({ shops, hideAbove = "lg" }: Props) {
             disabled={!canPrev}
             aria-label="السابق"
             className={cn(
-              "flex h-7 w-7 items-center justify-center rounded-full transition-all",
-              "hover:bg-surface hover:text-primary active:scale-95",
+              "flex h-7 w-7 items-center justify-center rounded-full transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter]",
+              "hover:bg-surface hover:text-primary active:scale-[0.96]",
               "disabled:opacity-30 disabled:pointer-events-none",
             )}
           >
@@ -222,8 +232,8 @@ export function ShopCarousel({ shops, hideAbove = "lg" }: Props) {
             disabled={!canNext}
             aria-label="التالي"
             className={cn(
-              "flex h-7 w-7 items-center justify-center rounded-full transition-all",
-              "hover:bg-surface hover:text-primary active:scale-95",
+              "flex h-7 w-7 items-center justify-center rounded-full transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter]",
+              "hover:bg-surface hover:text-primary active:scale-[0.96]",
               "disabled:opacity-30 disabled:pointer-events-none",
             )}
           >

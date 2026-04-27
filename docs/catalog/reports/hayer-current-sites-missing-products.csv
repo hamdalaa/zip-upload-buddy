@@ -1,0 +1,691 @@
+rank,store_id,store_name,website,status,area,primary_category,products
+1,city_erbil_ChIJO4XOdpUjB0ARQiQCPCRa3s8,ARI GAMING,https://arigaming.com/,failed,,Electronics,0
+2,city_mosul_ChIJf0mipdPrB0ARH8AjdaoTFlY,AlMadar ISP,https://www.almadarisp.iq/,failed,,Networking,0
+3,city_erbil_ChIJY1e3SeMjB0ARmwEH_a2-Uh4,Alsuroor Company,https://alsurooriq.com/,failed,,Electronics,0
+4,city_erbil_ChIJq2pGJP8iB0ARsTgJw4pEjbc,Bery group showroom پێشانگای گروپی بێری,https://berygroup.com/,failed,,Electronics,0
+5,city_sulaymaniyah_ChIJe12di1QvAEARnfcxJg3OCkY,Darin Game,http://www.daringame.co/,failed,,Electronics,0
+6,city_basra_ChIJxzTANICXxD8RemZeYy_ODq0,DataNet Telecom LTD,http://datanetiraq.net/,failed,,Networking,0
+7,city_basra_ChIJlwvtDXSXxD8RWzwfDq4xzss,Deli Tools Basra عدد دلي البصرة,https://delitoolsbasra.com/en,failed,,Chargers,0
+8,city_najaf_ChIJ8QfqDo3XXhURdLH9eUOAVHc,Door Net دور نت لخدمات الانترنت والموبايل والحاسبات,http://www.door.net/,failed,,Phones,0
+9,scraped_www_elryan_com,Elryan,https://www.elryan.com/ar/,failed,Online,Electronics,0
+10,city_erbil_ChIJnaLjYwQhB0ARDvUUXMeFq1Y,GameStop,http://gamestop.com/,failed,,Electronics,0
+11,city_sulaymaniyah_ChIJ0UlBPfAvAEARNfcN6kGPl0Q,Gamesat Store,https://gamesatstore.com/,failed,,Gaming,0
+12,city_erbil_ChIJn2l9ZnwjB0ARLpK9wG5IDp0,High Smart Erbil,https://moderninvest.krd/,failed,,Smart Devices,0
+13,city_erbil_ChIJLwWCLjQhB0ARVsgZDBirXCo,Home Istanbul,https://www.homeistanbul.com/,failed,,Electronics,0
+14,city_erbil_ChIJiR7n890eB0ARC_j93BVXCrw,INSIGHT GROUP,http://www.insightgroup.me/,failed,,Electronics,0
+15,city_karbala_ChIJ8QJmKJZrWRURczPeMBDxulw,K.G.C,https://www.kgciq.com/,failed,,Gaming,0
+16,city_sulaymaniyah_ChIJYQ8nCiItAEARwkrKyv9GSdI,Kurdsat phone & pc,http://kurdsat.co/,failed,,Tablets,0
+17,city_sulaymaniyah_ChIJk3-Bzx0sAEARDfr-M0ECwKk,Kurdtel Telecommunications,http://kurdtel.net/,failed,,Phones,0
+18,city_erbil_ChIJ35S-SAAjB0ARM8_k8JwCb5U,Parooni company,https://paroonico.store/,failed,,Networking,0
+19,city_sulaymaniyah_ChIJZ7KyBlktAEARh0kOKHfCKsA,Pcnetiq,http://www.pcnetiq.com/,failed,,Gaming,0
+20,city_erbil_ChIJ2cVIJf8iB0ARqD6QNB-NwJg,RAM COMPUTER,http://www.ramerbil.com/,failed,,Electronics,0
+21,city_baghdad_ChIJ35zU8ROBVxURDSZW9QIhM60,SMART AE,http://www.smartae.com/,failed,,Smart Devices,0
+22,city_erbil_ChIJcWwCFbYjB0ARo1kGw6zcrNw,Sarbast Omar Company,http://sarbast-omer.com/,failed,,Electronics,0
+23,city_karbala_ChIJKZARAWRrWRUReKUu5PCHSVA,Shopping Shop - Karbala,http://www.shoppingshop.com/,failed,,Chargers,0
+24,city_basra_ChIJebK09yWZxD8RDhrClgJoMFs,Smartech,http://www.smartech-iq.com/,failed,,Smart Devices,0
+25,city_erbil_ChIJV70vHJ8jB0ARTg5OrouTCrY,Source Tech Co. Ltd,https://sourcetechco.com/,failed,,Networking,0
+26,city_erbil_ChIJWYupc-gjB0ARYy608l1mfbw,Tina Co. Erbil,http://www.tina-iq.net/,failed,,Networking,0
+27,city_sulaymaniyah_ChIJn2ZODJMuAEARx0kmu3iZ0Ao,Tishknet,https://www.tishknet.com/,failed,,Phones,0
+28,city_karbala_ChIJL3X0TW5rWRURMD9ILtGsHlk,Vaiotik – Security and Surveillance | شركة النخبة التقنية,http://www.et.iq/,failed,,Cameras,0
+29,city_erbil_ChIJaeNLsG0jB0ARW7j_wDgSJ0s,View Enterprise Company,http://www.view-enterprise.com/iraq,failed,,Electronics,0
+30,city_baghdad_ChIJ2fGTae1_VxURyig7BdxIPrE,Zero One Company for ICT Solutions,https://01solutions.net/,failed,,Electronics,0
+31,city_sulaymaniyah_ChIJqzZ2JAAtAEARZCN9foaikIg,codify,http://www.codify.ninja/,failed,,Cameras,0
+32,city_karbala_ChIJLWnQN-FpWRUR_Q_rn5mPAUM,smtkala,https://smtkala.ir/,failed,,Networking,0
+33,city_erbil_ChIJq5TX47shB0ARHy_SNRiZp9I,sonic company شركة سونيك,https://arh.company/,failed,,Electronics,0
+34,city_baghdad_ChIJG1mvHX6BVxURG0l6UueEaaE,الزبون للحاسبات والطابعات ALZABON computer&printers,https://maps.app.goo.gl/iMAAQb52fTZWLc1f8,failed,,Electronics,0
+35,city_baghdad_ChIJPwFwSXt_VxURimh9Pnu303A,بوينت المنصور,https://pointmobs.com/,failed,,Phones,0
+36,city_sulaymaniyah_ChIJHYyAUWwtAEAR-BTto5Srmdc,تاوەری تەندروستی سمارت,https://smarthealth.group/,failed,,Smart Devices,0
+37,city_basra_ChIJdQzURAihxD8RunOd4zqbp9Y,حيدر للهواتف النقالة,https://telegram.me/jokoo1,failed,,Phones,0
+38,city_basra_ChIJ52mUOtObxD8RD2ruDx0rtos,رايزن للحاسبات /Ryzen PC /Out world,https://microstoreiq.com/,failed,,Electronics,0
+39,city_erbil_ChIJGZZLqPgiB0ARH4oPKMEHHGQ,سدرة المنتهى للكومبيوتر,http://sidra-almuntaha.com/,failed,,Networking,0
+40,city_kirkuk_ChIJHSNOPbPXVBURqj4oxiTev1s,سوبرفون,http://superphone.online/,failed,,Phones,0
+41,city_baghdad_ChIJBWZkc6GBVxURWIHfbgYXW8I,شركة الموقع لتقنية المعلومات المحدودة,http://www.esite.iq/,failed,,Electronics,0
+42,city_erbil_ChIJFQMps88jB0AR4QT_8Mx_9NQ,شركة حوراء,http://www.hawra.com/,failed,,Phones,0
+43,city_kirkuk_ChIJL9UlcQDXVBUR21bbwUE25HY,شركة ردى,http://www.rada.com/,failed,,Tablets,0
+44,city_baghdad_ChIJb5Mygv5_VxURXGKTe3c5lwE,شركة روح التكاتف للتجارة العامة,http://www.aswar.iq/,failed,,Chargers,0
+45,city_baghdad_ChIJgfqQrNZ9VxUROB5T0sKi-Do,شركة سمارت نت,http://smartco.network/,failed,,Smart Devices,0
+46,city_kirkuk_ChIJCXrfUxDWVBURmpfg6mL5lLQ,شركة عيناي لتجارة قطع غيار الهواتف النقاله وصيانتها,http://www.aynay.com.iq/,failed,,Phones,0
+47,city_sulaymaniyah_ChIJB8VKm5otAEARFQ6DU30ZE6o,شركة نسائم البرکات,https://www.nasaemalbarakat.com/,failed,,Accessories,0
+48,city_erbil_ChIJxYYN3P8iB0ARQEtxSDvVTMA,شركة نيو داودي New Dawody Company,http://www.newdawody.net/,failed,,Phones,0
+49,city_kirkuk_ChIJP5_itzLXVBURlu_Z2hXRkLk,شركة هوا لهواتف نقالة,https://www.hawa.com.iq/,failed,,Phones,0
+50,city_baghdad_ChIJw8dd05eDVxURCikryd02TqU,طيف السحابة,http://cloud_tech.net/,failed,,Networking,0
+51,city_najaf_ChIJeZko5dTXXhURQOF6W8N5VUU,عالم ابل للهواتف والاكسسوارات,https://app.gini.iq/deeplink/appleworld,failed,,Electronics,0
+52,city_baghdad_ChIJ9cgcrgp-VxURgh0twaGgHNU,عين الفهد,http://www.aynalfahad.com/,failed,,Phones,0
+53,city_mosul_ChIJ_eDmvlTrB0ARUBMl75Nghw4,كلية العلوم البيئية,http://environmentalscience.uomosul.edu.iq/,failed,,Electronics,0
+54,city_nasiriyah_ChIJRT-NUeP93T8RyhGCqE1JEv8,مركز A and H للموبايل / شحن الالعاب والبرامج,http://www.assalcenter.iq.org/,failed,,Phones,0
+55,city_basra_ChIJo4Jdo1WZxD8RsdKZ5ms4wmw,مركز التاج للحاسبات,https://altajstore.com/,failed,,Electronics,0
+56,city_karbala_ChIJ-0ms6CNvWRURpdxPfvo4W2g,مركز التواصل للهواتف واجهزة الانترنت,http://altawasu.blogspot.com/,failed,,Tablets,0
+57,city_karbala_ChIJUz5H24xtWRURtlSmBsIztno,مزاد الطائي للسبح والفضة,http://www.jasim1991.com/,failed,,Electronics,0
+58,city_baghdad_ChIJq6gIhQKCVxURcB7pKd82FSU,معرض الدوحة للالكترونيات,http://www.shivaamvaj.com/,failed,,Electronics,0
+59,city_baghdad_ChIJaYiAFQB_VxURnS71_4MDmZw,معرض براندات بغداد للاجهزة الكهربائية والمنزلية الوكيل الحصري تبريد+شاشات TCL,https://brandat_baghdad.com/,failed,,Electronics,0
+60,city_karbala_ChIJ5cCKDCJrWRURkGZgF4lwXRs,مكتب دايود سنتر,http://www.instegram.com/diode.center,failed,,PC Parts,0
+61,city_najaf_ChIJO0YFJoHXXhURMYNqSgTFhxg,مكتب علي المدني للحاسبات وكاميرات المراقبة,http://alialmadani.com/,failed,,Electronics,0
+62,city_baghdad_ChIJ6arqXLiBVxURnW3lIkXnLw8,مكتب كاردينيا لخدمات الموبايل والحاسبات,http://cutt.us/DaAH,failed,,Phones,0
+63,city_baghdad_ChIJzRYrkWKBVxURNQnz01rLOBQ,نون ستوب گيم,http://www.nonstopgame.xyz/,failed,,Gaming,0
+64,city_nasiriyah_ChIJ-ctp6tLj3T8RL2j046xJAQE,هيكفجن ذي قار HIKVISION THIQAR,https://visionthiqar.com/,failed,,Electronics,0
+65,city_kirkuk_ChIJL17xd3XXVBURCCYDYmTAZaA,ورشه بلال ومحمد للبرمجة,http://www.bilalgh.cdhost.com/,failed,,Electronics,0
+66,city_mosul_ChIJc0qxXcu_B0ARMWrG3BYxXRk,يسر للبصريات,https://autodine.cloud/yusroptical,failed,,Electronics,0
+67,city_erbil_ChIJeVPG5XsjB0ARX-0ZvQGpD5I,پڕۆمیدیا,http://www.promediastore.com/,failed,,Cameras,0
+68,city_sulaymaniyah_ChIJp77aedEtAEAR306YCeY8Oi0,پێــشانگای ئارام,http://playstation.com/,failed,,Electronics,0
+69,city_sulaymaniyah_ChIJmxhf2cAxAEARExstAV8s7uY,ڕێژوان فۆن,http://rezhwan.net/,failed,,Phones,0
+70,city_erbil_ChIJm6qMQbcfB0ARFxX323XiQFg,AL Mujahaz AL Daqiq Forch Iraq,http://www.nanosupplier-iq.com/,indexable,,Chargers,0
+71,city_erbil_ChIJS2hbOj4jB0ARB1uI9eFYk_I,ALPHA TECH IT SOLUTIONS,http://www.e-alphatech.com/,indexable,,Networking,0
+72,city_erbil_ChIJj9tT55IjB0AR0KdCaaPcE2s,Abubazzar (Abualu )( abualu.com ) BSMA Company,https://abualu.com/,indexable,,Networking,0
+73,city_sulaymaniyah_ChIJN4suh6kvAEARtryojaJ6YbY,Adnan Camera - عدنان كاميرا,https://www.adnancamera.com/,indexable,,Cameras,0
+74,city_baghdad_ChIJryIDXviBVxURzthgc434gOU,Al-Hekma Electronics,http://www.alhekmh.com/,indexable,,Electronics,0
+75,city_baghdad_ChIJHwxaA36DVxUR0FngIgf0QUE,AlMATAJIR ALTHALATH - شركة المتاجر الثلاثة,https://hialmatajir.com/,indexable,,Chargers,0
+76,city_baghdad_ChIJUdoUuMyBVxURYBSbB2reGL4,Ardunic - اردونك,http://www.ardunic.com/,indexable,,Electronics,0
+77,city_erbil_ChIJBU0asyQfB0ARaAkXrXQEF4Q,Arena Erbil,https://arena-website-ashy.vercel.app/,indexable,,Gaming,0
+78,city_sulaymaniyah_ChIJ2y8nSectAEARN9KgyfU8p1c,BERNAME Company for IT Solutions,http://www.bername.com/,indexable,,Electronics,0
+79,city_erbil_ChIJ3bwFdJIjB0AR8BFC6LOmPfQ,BLUE TECH,http://bluetech.krd/,indexable,,Networking,0
+80,city_erbil_ChIJsQft-64jB0ARN87_jYx8ab4,Barakat Mobile Co.,https://barakatphone.com/,indexable,,Accessories,0
+81,city_baghdad_ChIJUyQ-9iyBVxURmZtUo50JUpA,Bilad Alrafidayn Tech Baghdad,https://brt-iq.com/,indexable,,Cameras,0
+82,city_baghdad_ChIJ4cx4m8GDVxURBU30v7OwAJA,Charge and go اشحن وامشي,https://charge-go.co/,indexable,,Chargers,0
+83,city_erbil_ChIJ931_OHgjB0ARKEfBVhacFTI,Chrani Company - Erbil Branch,http://www.chranico.com/,indexable,,Electronics,0
+84,city_erbil_ChIJ4fb6dMQjB0ARJmSCZoTbEkk,City Tech Solutions,http://citytech-solutions.com/,indexable,,Smart Devices,0
+85,city_sulaymaniyah_ChIJM-Elqc8tAEARjJo0XU3laGQ,Click IT,https://www.click2011.com/,indexable,,Electronics,0
+86,city_sulaymaniyah_ChIJmTzHp90vAEAR2p4loEgTNe0,Dasy2,http://www.dasy2.com/,indexable,,Phones,0
+87,city_sulaymaniyah_ChIJr04nmfsvAEARBLlIX8jNsrw,Day of Science,http://www.dayofscience.com/,indexable,,Smart Devices,0
+88,city_basra_ChIJfS9XBFGXxD8RZCJE5soCZuE,Electronic Gaming Center,https://foxgame.company.site/%D8%B3%D8%A7%D9%8A%D8%AF-%D8%A8%D8%B1%D9%8A%D9%83-%D9%84%D9%88%D8%AC%D8%AA%D9%83-p189398536,indexable,,Electronics,0
+89,city_erbil_ChIJ99Bh3tkjB0ARaRpLmvwPF3U,Empire Phone,https://empire-phone.com/,indexable,,Phones,0
+90,city_sulaymaniyah_ChIJdQ2FBIEuAEARmSRL0nOIP10,Faruk Investment Group Ltd,http://www.farukholding.com/,indexable,,Chargers,0
+91,city_basra_ChIJ2V12DSeZxD8RmO0-_jrv0L0,Future Technologies تقنيات المستقبل,http://futuretechiq.net/,indexable,,Phones,0
+92,city_erbil_ChIJB255OQAjB0ARe7lWF3FoL84,Gaming Pro,https://gaming-pro.store/,indexable,,Electronics,0
+93,city_kirkuk_ChIJlVvSaf7XVBURJxA8436ZIG4,Golden Byte Center,http://goldenbytecenter.com/,indexable,,Electronics,0
+94,city_erbil_ChIJHasd2pAjB0ARw57IWxvjE70,Golden Technology - التكنولوجيا الذهبية,https://gtiraq.com/,indexable,,Networking,0
+95,city_basra_ChIJyRm3QDeXxD8RrgcObC9c4yU,HIKVISION Authorized Service Station مركز صيانة المعتمد في العراق,http://ard-albasra.com/,indexable,,Networking,0
+96,city_erbil_ChIJ-y7i4j8hB0ARQlduTn3vUi0,Hama store,https://www.hama-store.com/,indexable,,Phones,0
+97,city_najaf_ChIJvR1pdtPXXhURd_rdpm28rs0,Hattra Smart Home | هترا المنزل الذكي,https://www.hattra.ir/,indexable,,Smart Devices,0
+98,city_erbil_ChIJP8wvjuUjB0ARdWQB1QDii3M,Hawler Camera company ( SHC ),http://www.hawler-camera.com/,indexable,,Cameras,0
+99,city_sulaymaniyah_ChIJYwE_NCgvAEAR0AFXW6AEIzk,High Smart,http://hi-smart.co/,indexable,,Electronics,0
+100,city_sulaymaniyah_ChIJUb1p_YktAEARhrdipKzZtlw,Hiwa Gaming,http://coderaran5.wixsite.com/hiwa-gaming/,indexable,,Electronics,0
+101,city_erbil_ChIJr_4j3FQiB0ARDGLOTaj8X6o,ISTAR ERBIL,https://get.stbsoft.com/,indexable,,Electronics,0
+102,city_erbil_ChIJv-y9TXghB0ARHQuzyp-0_bI,ITLOBBY,http://www.itlobby.co/,indexable,,Electronics,0
+103,city_baghdad_ChIJp2sPd_h-VxURRkxrUXJljU4,Iraqi Games Center,https://adwaa-ard-almarh.com/,indexable,,Electronics,0
+104,city_sulaymaniyah_ChIJ9TEHz2ktAEARGKu4F6ANUKY,Jihany Program Computer,http://www.jihanyprogram.com/,indexable,,Electronics,0
+105,city_erbil_ChIJw8l85QkjB0ARbhzrU4P85PM,KC GAMING,https://kurdistancommunity.com/,indexable,,Gaming,0
+106,manual_korektel,Korek Tel,https://korektel.com/,indexable,,Phones,0
+107,city_erbil_ChIJG349U2YjB0ARK1Pw_WvliFU,LG Service center (Khoshnaw /Erbil) مركز صيانه ال جي (خوشناو /اربيل),http://www.lg-svc.com/,indexable,,Electronics,0
+108,city_erbil_ChIJzyUrIQAjB0ARln1g8dFQKes,La Miami,https://lamiamierbil.com/,indexable,,Gaming,0
+109,city_erbil_ChIJbbqj_PMjB0AR81mGyEtMitI,M-Store,http://ms-iq.co/,indexable,,Electronics,0
+110,city_baghdad_ChIJCZEDFeODVxURugoL-xp5M34,Master Group,http://www.masteriraq.com/,indexable,,Smart Devices,0
+111,city_baghdad_ChIJZXbvfUaBVxUR9CSoMOcniUc,Mizzo shopping,https://mizzostore.com/,indexable,,Electronics,0
+112,city_erbil_ChIJCVPGK1AjB0ARBltY7LeLv-c,Nabaa Dar Alsalam - نبع دار السلام,http://nds-erbil.epizy.com/,indexable,,Electronics,0
+113,city_erbil_ChIJP_mAiVkhB0ARZkUhSpqEHgc,Nizar4Game,https://nzarstore.com/,indexable,,Gaming,0
+114,city_erbil_ChIJz5GYjXIjB0ARWgbpXNhhPrk,One Center,http://www.onestoreiraq.com/,indexable,,Accessories,0
+115,city_baghdad_ChIJr_-fzNWBVxUR3EhLK-UpsPU,PC MART STORE مكتب,http://pcmart.store/,indexable,,Electronics,0
+116,city_erbil_ChIJQfRQaoAjB0ARR0dWUKzeztE,R khoshnaw,https://dolikhoshnawati.com/,indexable,,Electronics,0
+117,city_erbil_ChIJK6KuAOojB0ARdM6_Ev3qjRk,Reflections Smart Technologies,https://www.rst-tech.me/,indexable,,Smart Devices,0
+118,city_erbil_ChIJA7NqmtYfB0AR1r6nhBJfEHA,SMART SUPPLY GENERAL TRADING,http://www.smartsupplyco.com/,indexable,,Smart Devices,0
+119,city_erbil_ChIJ0ybJpRcfB0ARmvJ9vh8Vpus,SOD- Sky of Development LLC.,https://www.sodiraq.com/,indexable,,Smart Devices,0
+120,city_baghdad_ChIJZR5mx4SBVxURawr3YkF9sWg,Smart AE Co.,http://www.smartae.ae/,indexable,,Smart Devices,0
+121,city_sulaymaniyah_ChIJx8y8pSctAEARC21xaqn4mZY,Smart Station Company,https://www.smartstation.krd/,indexable,,Smart Devices,0
+122,city_sulaymaniyah_ChIJ3eMQ4DotAEARHhzMgKSnZto,Smart Trader,http://www.smarttraderiraq.com/,indexable,,Smart Devices,0
+123,city_baghdad_ChIJXUP8PwB_VxURB8lIciu4A2U,Smart Wave Technology,http://www.swt-iq.com/,indexable,,Smart Devices,0
+124,city_baghdad_ChIJm8mDnaGBVxURyIZTsdMi-Mo,Smart Way Iraq,http://www.smartwayiq.com/,indexable,,Smart Devices,0
+125,city_erbil_ChIJ85YURMEjB0ARXTPKJKmEjBQ,Smart lifts Company,http://www.smartliftiraq.com/,indexable,,Smart Devices,0
+126,city_sulaymaniyah_ChIJ0ZAESAAvAEARphrbckqXm28,SmartHand,https://smarthand.co/,indexable,,Smart Devices,0
+127,city_sulaymaniyah_ChIJl2sHP3gtAEAR3jerm5Kj1qE,Tech Mart,https://techmart.krd/,indexable,,Gaming,0
+128,city_sulaymaniyah_ChIJqVnsGlctAEARby4VVxFYWPg,TopIT Company (Hikvision),http://www.topitcompany.io/,indexable,,Cameras,0
+129,city_kirkuk_ChIJVZ5xZwDXVBURKixL2SNgZ0w,U smart,https://usmart-iot.com/,indexable,,Smart Devices,0
+130,city_karbala_ChIJbUHUAF1pWRURK299KqGPde4,VLAN Store - فيلان ستور,http://www.vlan.store/,indexable,,Electronics,0
+131,city_baghdad_ChIJWXawoe1_VxURErLycQhQr1w,VOLT Smart Home And Security 1,http://volt-smart.com/,indexable,,Smart Devices,0
+132,city_sulaymaniyah_ChIJz__W6k4tAEARwU2J3Ry9Ivg,Vida Smart Home,https://www.vidasmarthome.net/,indexable,,Smart Devices,0
+133,city_sulaymaniyah_ChIJURZiXQAvAEAR_vrbRaKVajU,Volta Game Center,http://voltacenter.net/,indexable,,Gaming,0
+134,city_erbil_ChIJMz1Sig8ZB0ARukVAv0GGY1g,Wasil | واصل,http://www.wasil-iq.com/,indexable,,Chargers,0
+135,city_sulaymaniyah_ChIJd-HfUwAvAEARk8fLLWCfaKM,Wise Tech Company,https://www.wisetechnology.co/,indexable,,Electronics,0
+136,city_sulaymaniyah_ChIJjdsQDlItAEARUIG0_PVl5lE,iNexusNet System Integrator,http://nexusnet.co/,indexable,,Electronics,0
+137,city_erbil_ChIJgUGXO3wjB0ARBnyQu8QmfQA,joni soft,http://www.kurdishfirmware.com/,indexable,,Phones,0
+138,city_baghdad_ChIJeeF563x_VxUR5WbqXVvoR4A,smart station company,http://www.smartstation-iq.com/,indexable,,Smart Devices,0
+139,city_baghdad_ChIJKSyHv4KDVxURR_5Gj8nQgHY,اتقان سمارت هوم - siemens,http://www.eknx-iq.com/,indexable,,Smart Devices,0
+140,city_baqubah_ChIJxbDF3xJLVhURz7ZeE-P54ec,احمد عشتار (AHMED ISHTAR ),http://www.ishtarcenter.com/,indexable,,Gaming,0
+141,city_basra_ChIJGYa8tNGXxD8R3Lv_fIjAVho,الكلية التقنية الهندسية في البصرة,http://www.stu.edu.iq/,indexable,,Electronics,0
+142,city_mosul_ChIJl93Y4KrrB0ARY1AU85SINrQ,اللؤلؤة لمواد الفنون اليدوية,https://pearl.iqmenus.com/,indexable,,Chargers,0
+143,city_karbala_ChIJzdK-VutrWRURUr3vx7BDSbQ,المخيم الحسيني.,http://imamhussain.org/news/14278,indexable,,Phones,0
+144,city_erbil_ChIJTd2JjP4iB0ART_dd2sOOU2w,المركز الامريكي للعيون,http://www.bahranimc.com/,indexable,,Phones,0
+145,city_basra_ChIJG54C27aZxD8R8kfmwOn3Yco,المستقبل فون,https://future-phone.store/,indexable,,Phones,0
+146,city_najaf_ChIJ2eRCtjfXXhURmS988OmD3jE,الودق لتقنيات المعلومات,http://www.ishraqalwadaq.com/,indexable,,Electronics,0
+147,city_baghdad_ChIJxcTQWcWDVxURAmIZ6xMqvIo,انور ابل زيونة شارع الربيعي,https://anwar-apple.com/,indexable,,Phones,0
+148,city_kirkuk_ChIJG9A3fXvXVBURTKGHVL88hmw,ايفون كركوك,https://ikik-iq.web.app/,indexable,,Phones,0
+149,city_najaf_ChIJR2CpegDXXhUR8Z3GxdSKnew,حسين الالعاب الإلكترونية,https://husseingamng.github.io/P/,indexable,,Gaming,0
+150,city_nasiriyah_ChIJXVbJHjrj3T8RSgVEGPxPDDg,ساموراي كيمز,http://saigs.xyz/,indexable,,Electronics,0
+151,city_erbil_ChIJw7mwJLcjB0ARAXHce3K2yfU,سان سيفر,http://www.sansevar.com/,indexable,,Networking,0
+152,city_erbil_ChIJowRd0IUhB0ARw6g1dkUDVyI,سبيستون,http://www.spacetoon-irq.com/,indexable,,Gaming,0
+153,city_baghdad_ChIJYfodk2KBVxURejI7ZASob9E,شركة أنس لتجارة إكسسوارات الحاسب و الموبايل ANAS,https://www.anas-iq.com/,indexable,,Phones,0
+154,city_baghdad_ChIJgeD8vCOBVxURmKV7m-HLGs8,شركة اصالة الكواز ASALET AL-KAWAZ CO.LTD,http://www.asaletalkawaz.iq/,indexable,,Smart Devices,0
+155,city_mosul_ChIJA2Jx58LrB0ARVwKBf316M6A,شركة افق الموصل,http://www.almjmuaah.com/,indexable,,Electronics,0
+156,city_karbala_ChIJ22xcqt5rWRURDHy-d9-0hv4,شركة الاماني,http://www.alamani.iq/,indexable,,Phones,0
+157,city_baghdad_ChIJl1EGTAB_VxURnH-4VtQ00So,شركة البدائل الذكية,http://dizzha.com/,indexable,,Networking,0
+158,city_baghdad_ChIJidcJ0T-BVxURSWiiq8DvB9I,شركة البلسان التجارية,https://www.al-balsan.com/,indexable,,Electronics,0
+159,city_kirkuk_ChIJgXT8YLnXVBURpL95vbBpQr4,شركة التكنولوجيا التاسعة 9tech,http://ninetech.co/,indexable,,Electronics,0
+160,city_baghdad_ChIJGSAuYQCBVxURU6ZMyvl8ZLM,شركة الحلول الرقمية,http://digital-solutions.iq/,indexable,,Cameras,0
+161,city_baghdad_ChIJ8_prXuZ9VxURndKVo8GvIjU,شركة الخطوات الرقمية,https://www.ds.com.iq/,indexable,,Smart Devices,0
+162,city_basra_ChIJQ1SE0v6ZxD8RKBF-2val0pA,شركة الصرد للتجارة العامة المحدودة Al Sard Company for General Trading Ltd.,http://www.sardco.com/,indexable,,Chargers,0
+163,city_najaf_ChIJDTSzZ3zRXhUR68loKzi6p5Y,شركة العربي لتجارة الحاسبات,http://arabiiq.com/,indexable,,Electronics,0
+164,city_baghdad_ChIJ6QrBYgp-VxURqG6Gy86nzXE,شركة الغصن الدالي ( الدولي سابقا),http://dawlygroup.com/,indexable,,Cameras,0
+165,city_baghdad_ChIJvx7_JrWDVxURYKoBgXo_r5M,شركة اياد لتجارة مستلزمات التصوير الاحترافي,https://ayad-company.com/,indexable,,Cameras,0
+166,city_najaf_ChIJGZ7wKS7XXhURW5enabJ4V1M,شركة باقر للتكنولوجيا الحديثة,http://www.mf.com.iq/,indexable,,Tablets,0
+167,city_karbala_ChIJk8M4rippWRURJY7Bl6qLsRw,شركة تِل بغداد Tel Baghdad,https://telbaghdad.com/,indexable,,Phones,0
+168,city_karbala_ChIJL3UuEc5rWRURfFmlTZSqEao,شركة حاسبات العربي للتجارة العامة,http://www.alarabi.iq/,indexable,,Electronics,0
+169,city_baghdad_ChIJc9uXJe2BVxUROqQTwrSXUOw,شركة دار الناشر للحاسبات,http://www.alnashir.net/,indexable,,Networking,0
+170,city_erbil_ChIJT8_74r4jB0ARbqx6CCh596I,شركة دلتانت لخدمات الانترنت فايبر اوبتك,http://www.deltacomms.net/,indexable,,Networking,0
+171,city_baghdad_ChIJ3cVn1rh_VxURwnUQMsxGb44,شركة سمارت كنترول,https://smartcontrols-iq.com/,indexable,,Smart Devices,0
+172,city_basra_ChIJs-QRHnqXxD8RWmD0O5AC9mo,شركة عبر الشرق للالكترونيات,http://www.as-elect.com/,indexable,,Electronics,0
+173,city_baghdad_ChIJMRoZLH6BVxURGqpPthbBEgA,شركة عين بغداد كاميرات مراقبة,http://www.einbaghdad.com/,indexable,,Cameras,0
+174,city_sulaymaniyah_ChIJYRr6xIIuAEARw3TjFsA4M-Q,شركة فرياد,http://www.pfryad.weebly.com/,indexable,,Electronics,0
+175,city_kirkuk_ChIJ4Rqdw4ApVRURr2xSY46nPYw,شركة محمد للالكترونيات,https://itechkurd.net/,indexable,,Electronics,0
+176,city_karbala_ChIJ8xv5ZQBrWRURy9t727V-jwI,شركة ميامين العالم للتجارة العامة ((المستودع الرئيسي )),http://mayamen-world.com/,indexable,,Electronics,0
+177,city_basra_ChIJkxfZBeiZxD8RGJ0-_SpjoYA,شركة نسيم البصرة للاجهزة المنزلية,http://naseemalbasraa.com/,indexable,,Electronics,0
+178,city_sulaymaniyah_ChIJBecbpiAsAEARbMuJdUAd15A,فندق رمادا,https://www.ramadasulaymaniyah-salimstreet.com/,indexable,,PC Parts,0
+179,city_karbala_ChIJNcrDYvJrWRURiyfnGfTlOlo,فيض حسيني - كربلاء,http://www.fayzehusayni.com/,indexable,,Networking,0
+180,city_kirkuk_ChIJ642WkALXVBURPWVl-JwHpKI,قرطاسية الاخوين 2,https://the2bros.org/,indexable,,Gaming,0
+181,city_basra_ChIJR6IVN-qhxD8Rnv59K7uOTno,قسم هندسة الحاسبات,https://eng.uobasrah.edu.iq/computer-engineering-department,indexable,,Electronics,0
+182,city_erbil_ChIJf7JSRFQiB0ARrIie9e0A4bk,قەڵای هەولێر,https://www.hawlergov.org/app/en/node/539,indexable,,Accessories,0
+183,city_baqubah_ChIJff3-WVhLVhURKKIOk3FIn7M,كلية التربية الاساسية,http://www.basicedu.uodiyala.edu.iq/,indexable,,PC Parts,0
+184,city_kirkuk_ChIJNdDnVHXZVBURGx2UTRCrQDY,كلية التربية للعلوم الإنسانية,http://uokirkuk.edu.iq/education/,indexable,,PC Parts,0
+185,city_najaf_ChIJg2HO15TVXhURH8I_pQJJyJA,كوزمتك ناز,https://saltk.app/nazcosm,indexable,,Electronics,0
+186,city_basra_ChIJvRQYQhuZxD8RALFBP07LHoY,ليث للحاسبات,http://www.lcc-iq.shop/,indexable,,Electronics,0
+187,city_najaf_ChIJl9LyIeXXXhURUomYvMOPDOo,مجمع الكرعاوي لاكسسوارات الموبايل,https://chat.whatsapp.com/DYg6WEiCF6j9U8L2ROTWFk,indexable,,Accessories,0
+188,city_baghdad_ChIJ2Sp-QB2DVxUR_EmcJilojmM,مجموعة الافراح Al-Afrah Group,https://www.alafrah.iq/,indexable,,Electronics,0
+189,city_karbala_ChIJgz-PId1rWRUR-7qteJWDUlg,مجموعة الليث,http://www.laithgroup.com/,indexable,,Electronics,0
+190,city_basra_ChIJ2aKBNPqZxD8RU2GNDfIds_k,مجموعة الليث لتقنيات وتجارة الحاسبات Al Laith Group For Computer Techniques Trd Co.,http://www.al-laith.com/,indexable,,Electronics,0
+191,city_baghdad_ChIJ70LysMWDVxUR9bZJI8Du9G4,مركز الفرسان للهواتف النقاله,https://fursanmobile.iq/,indexable,,Phones,0
+192,city_basra_ChIJSfqkC8KZxD8RZhgeX7pv71s,مركز النور لكاميرات المراقبه في البصرة,https://alnoor-basra.my.canva.site/,indexable,,Electronics,0
+193,city_erbil_ChIJu6qiDI8jB0AR-mxGa4uxx9c,مركز الوسام الهندسي شركة لمعان الوسام لمعدات صيانة السيارات autel,http://www.lamaanalwissam.com/,indexable,,Electronics,0
+194,city_baghdad_ChIJ2dGkomB-VxURtgG6dN5lqTY,مركز تليفوني,https://www.telephony-store.com/,indexable,,Phones,0
+195,city_baghdad_ChIJ2UAJ9DJ9VxURgNRl9GEnv5g,مركز علي وليد للموبايل,http://www.aliwaleed.com/,indexable,,Electronics,0
+196,city_karbala_ChIJ8TAf0E5pWRURclA-NEIiW8U,مركز كربلاء لتكنولوجيا المعلومات,http://kcitiq.com/ar,indexable,,PC Parts,0
+197,city_basra_ChIJ1YFNwxyXxD8RF8hEd1eu3q4,مركز ناروتو,https://www.narutocenter.com/,indexable,,Phones,0
+198,city_erbil_ChIJhXC806YjB0ARJdhpQ0y1uMM,مستشفى بار الخاص,http://parhospital.org/,indexable,,Chargers,0
+199,city_baghdad_ChIJCY13CbeBVxURmHE9pyXmgYs,معرض مبيعات دي أل سي DLC - فرع بغداد,http://www.dlc-iq.com/,indexable,,Electronics,0
+200,city_baghdad_ChIJlS69dH2BVxURH9xK_PipGDc,مكتب التكنولوجيا المتقدمة,http://www.advantechco.com/,indexable,,PC Parts,0
+201,city_baghdad_ChIJqx7FY7iBVxURdMCkG0LEou4,مكتب الرائــــــد للحاسبــات,https://alraaed.store/,indexable,,PC Parts,0
+202,city_nasiriyah_ChIJAQgHWQDj3T8RfAMw97hKFPY,مكتب الريان ستور,https://hu90.net/,indexable,,Electronics,0
+203,city_mosul_ChIJ105xa8CVB0ARi_7wyZjoyjc,مكتب الشهد لتجارة الحاسبات والشبكات وكاميرات المراقبة,https://b12.io/client/UxWGWXb7/site_builder/?business_name=%D9%85%D9%83%D8%AA%D8%A8+%D8%A7%D9%84%D8%B4%D9%87%D8%AF+%D9%84%D9%84%D8%AD%D8%A7%D8%B3%D8%A8%D8%A7%D8%AA&business_description=%D9%85%D9%83%D8%AA%D8%A8+%D8%A7%D9%84%D8%B4%D9%87%D8%AF+%D9%8A%D9%82%D8%AF%D9%85+%D9%84%D9%83+%D8%A7%D9%84%D8%AD%D9%84+%D8%A7%D9%84%D8%A3%D9%85%D8%AB%D9%84+%D9%84%D8%AA%D8%A3%D9%85%D9%8A%D9%86+%D9%85%D9%86%D8%B2%D9%84%D9%83+%D8%A3%D9%88+%D8%B9%D9%85%D9%84%D9%83+%D8%A8%D8%A3%D8%AD%D8%AF%D8%AB+%D9%83%D8%A7%D9%85%D9%8A%D8%B1%D8%A7%D8%AA+%D8%A7%D9%84%D9%85%D8%B1%D8%A7%D9%82%D8%A8%D8%A9+%D8%B9%D8%A7%D9%84%D9%8A%D8%A9+%D8%A7%D9%84%D8%AF%D9%82%D8%A9.+%D9%86%D8%B6%D9%85%D9%86+%D9%84%D9%83+%D8%AA%D9%88%D9%81%D9%8A%D8%B1+%D8%A7%D9%84%D8%B7%D8%A7%D9%82%D8%A9+%D8%A8%D9%83%D9%81%D8%A7%D8%A1%D8%A9+%D9%85%D8%B9+%D8%A3%D9%86%D8%B8%D9%85%D8%A9+%D8%A7%D9%84%D8%B7%D8%A7%D9%82%D8%A9+%D8%A7%D9%84%D8%B4%D9%85%D8%B3%D9%8A%D8%A9+%D8%A7%D9%84%D9%85%D8%AA%D9%82%D8%AF%D9%85%D8%A9%D8%8C+%D8%A5%D8%B6%D8%A7%D9%81%D8%A9+%D8%A5%D9%84%D9%89+%D8%B4%D8%A8%D9%83%D8%A7%D8%AA+%D8%A7%D9%84%D8%A5%D9%86%D8%AA%D8%B1%D9%86%D8%AA+%D9%81%D8%A7%D8%A6%D9%82%D8%A9+%D8%A7%D9%84%D8%B3%D8%B1%D8%B9%D8%A9+%D9%84%D8%AA%D9%84%D8%A8%D9%8A%D8%A9+%D8%AC%D9%85%D9%8A%D8%B9+%D8%A7%D8%AD%D8%AA%D9%8A%D8%A7%D8%AC%D8%A7%D8%AA%D9%83.+%D8%A7%D8%AE%D8%AA%D8%B1+%D8%A7%D9%84%D8%A3%D9%81%D8%B6%D9%84+%D9%84%D8%AD%D9%85%D8%A7%D9%8A%D8%A9+%D9%88%D8%A7%D8%B3%D8%AA%D8%AF%D8%A7%D9%85%D8%A9+%D8%AD%D9%8A%D8%A7%D8%AA%D9%83+%D8%A7%D9%84%D9%8A%D9%88%D9%85%D9%8A%D8%A9.&utm_medium=chat&utm_source=openai-gpt&utm_content=website-generator&intent=ai-websites&nonce=sn%3AdOmWNpT,indexable,,Electronics,0
+204,city_nasiriyah_ChIJUQnzKQDj3T8R9Vq1e_2imMs,مكتب المبين للحاسبات,https://almubin20.com/,indexable,,PC Parts,0
+205,city_karbala_ChIJY6YQBABpWRURG_iPsatYJto,مكتب امباير,http://www.al-amery.org/,indexable,,Networking,0
+206,city_baghdad_ChIJO8NxGhvVWRURLeD7zxpsxBg,مكتب ستور كيم | store game,https://bio.site/storeg,indexable,,Gaming,0
+207,city_mosul_ChIJeYdE6zGVB0ARkv_ix1D1m-k,مكتب علي البغدادي للموبايل,https://qrid.cc/AliSaadShakir,indexable,,Phones,0
+208,city_basra_ChIJ95PjCACZxD8RSaPdoqipEyM,مكتب فواز,https://www.fawazoffice.com/,indexable,,Cameras,0
+209,city_erbil_ChIJhVZ1a2ojB0ARG_tljYK1xYs,مكتبة أمزون,https://amazon-erbil.com/,indexable,,Gaming,0
+210,city_erbil_ChIJn1lAdzgiB0ARr-vn77b7DF0,ملك لإلكترونيات,https://www.king-elc.com/,indexable,,Electronics,0
+211,city_erbil_ChIJ6Y7LRSgiB0ARmWl0uGVoL8U,هوادر للموبايل,http://www.hawdar.com/,indexable,,Phones,0
+212,city_sulaymaniyah_ChIJ8-iyf8QtAEARkGZxshsl6JU,ووشە فۆن,http://wshaphone.com/,indexable,,Phones,0
+213,city_erbil_ChIJLWnZrlcjB0ARy0RiczadKyk,پێشانگای ئۆپۆ لە هەولێر المعرض الرسمي اوبو,http://www.oppo.com/,indexable,,Phones,0
+214,city_erbil_ChIJzTyqeaYjB0ARJRnXbRWgd8Y,Al Sard Company for General Trading Ltd,http://www.sardco.com/,probe_pending,,Chargers,0
+215,city_kirkuk_ChIJlyMajdvXVBURJeXWAvPAPtU,CHRANI COMPANY - Kirkuk Branch,http://www.chranico.com/,probe_pending,,Electronics,0
+216,city_baghdad_ChIJTb940vvXWRURjzo9RniPgrU,COREX STORE,https://rana-desiner.my.canva.site/corex-store-linktree,probe_pending,,Networking,0
+217,city_baghdad_ChIJ9fb4Xgx_VxURkb1IAjMnong,"DLC Showroom | Hayy Al-Jami'a, Baghdad",https://dlc-iq.com/,probe_pending,,Electronics,0
+218,city_sulaymaniyah_ChIJM8Mc030tAEARszOBIiuczew,DLC Showroom | Sulaymaniyah Showroom,http://www.dlc-iq.com/,probe_pending,,Electronics,0
+219,city_sulaymaniyah_ChIJL6X5qUwvAEARlBHJqDxMmuY,Dream Technology - دريم تكنولوجي,http://dreamtech.iqmenus.com/,probe_pending,,Electronics,0
+220,city_erbil_ChIJXb4Tq50jB0ARQoIvq7G5g74,Erbil Group for Network solutions,http://www.almjmuaah.com/,probe_pending,,Networking,0
+221,city_erbil_ChIJ9TbInV4jB0ARDOOAJxMUnZ4,Korek Telecom,https://www.korektel.com/,probe_pending,,Electronics,0
+222,city_karbala_ChIJfcn7IMlrWRURelfgETHT6yY,Korek Telecom - كورك تيليكوم,https://www.korektel.com/,probe_pending,,Networking,0
+223,city_mosul_ChIJBXmlvYeVB0ARJGWmwovmdLE,Korek Telecom - كورك تيليكوم,https://www.korektel.com/,probe_pending,,Networking,0
+224,city_mosul_ChIJNzgxLpyVB0ARiO3U8XGvTFA,Korek Telecom - كورك تيليكوم,https://www.korektel.com/,probe_pending,,Networking,0
+225,city_mosul_ChIJQ0TMW2GnxD8RPivMQeTKnac,Korek Telecom - كورك تيليكوم,https://www.korektel.com/,probe_pending,,Networking,0
+226,city_najaf_ChIJAbkfegQpXxURjLtfaLZ5oEk,Korek Telecom - كورك تيليكوم,https://www.korektel.com/,probe_pending,,Networking,0
+227,city_erbil_ChIJW23wAJQZB0AReeGK4v4C6e0,Korek Telecom - کورەك تیلیکۆم - كورك تيليكوم,https://www.korektel.com/,probe_pending,,Networking,0
+228,city_kirkuk_ChIJhS95QU_XVBURGzFEyVj0uk0,Korek Telecom - کورەك تیلیکۆم - كورك تيليكوم,https://www.korektel.com/,probe_pending,,Electronics,0
+229,city_sulaymaniyah_ChIJ2epv0LUvAEARUEWQZLgZvPs,Korek Telecom - کورەك تیلیکۆم - كورك تيليكوم,https://www.korektel.com/,probe_pending,,Electronics,0
+230,city_erbil_ChIJzQFPk5wiB0ARRJ_AKMtiVJU,Korek Telecom Shop,http://www.korektel.com/,probe_pending,,Networking,0
+231,city_sulaymaniyah_ChIJj_wYLagvAEARHCiUrSuULO8,M Center Sulaymaniyah,http://www.mcenter-iraq.com/,probe_pending,,Phones,0
+232,city_sulaymaniyah_ChIJ7xIyGAcvAEAREN5zNoAS6Fw,Mi Store (by IT Lobby Co.),http://www.itlobby.co/,probe_pending,,Phones,0
+233,city_erbil_ChIJJaN8jtcjB0AR2JbPl814rYc,One Store - Apple,http://www.onestoreiraq.com/,probe_pending,,Accessories,0
+234,city_sulaymaniyah_ChIJLcGEE1otAEAR_irmcGd3oGI,Smart Trader Office Shawkati Mala,https://smarttraderiraq.com/,probe_pending,,Smart Devices,0
+235,city_baghdad_ChIJm63wZwCBVxURdQMo00z2X3Y,VOLT Smart Home and Security 2,http://www.volt-smart.com/,probe_pending,,Smart Devices,0
+236,city_kirkuk_ChIJcd_y_9XXVBURVr_WWUMP_Gc,جنيد فون للاتصالات والدفع الاكتروني,http://junaid-phone.odoo.com/,probe_pending,,Accessories,0
+237,city_kirkuk_ChIJY-iifgDXVBURvbObz7QlXhc,جيهان بازار,http://cbazar.net/,probe_pending,,Chargers,0
+238,city_basra_ChIJeZf0YgCZxD8R-42PdjK-YCg,داش سكيور,https://dashsecureai.com/,probe_pending,,Cameras,0
+239,city_sulaymaniyah_ChIJ9QwTSgAvAEARwTS8yfiFdvQ,سبيستون السليمانية 60 متري,https://spacetoon-irq.com/,probe_pending,,Gaming,0
+240,city_baghdad_ChIJORe-IwB9VxUR_EfBs3zMf_E,سرمد فون,http://www.sarmadstore-iq.com/,probe_pending,,Tablets,0
+241,city_najaf_ChIJ68UO-2rXXhURAVtIWUQJ5XI,شركة ابراج الاهرام Ahram.Co,http://www.abraj-alahram.com/,probe_pending,,Smart Devices,0
+242,city_baghdad_ChIJO14vnY5_VxUR2IN3s5Fxbgg,شركة التكنلوجيا الحديثة-MTC,http://www.mtciraq.com/,probe_pending,,Electronics,0
+243,city_kirkuk_ChIJwzP_IADXVBURhgvSrZ9Xozo,شركة الشبكة الضوئية,https://opticalnetiq.com/,probe_pending,,Networking,0
+244,city_basra_ChIJOS6hnZCZxD8Ru5JeYMZKpvc,شركة مايكرو للتقسيط,https://microstoreiq.com/,probe_pending,,Electronics,0
+245,city_kirkuk_ChIJc5dFbNYpVRURI0RNNn5fg08,عالم الكارتات والبطاقات الالكترونية,https://aaalm-altswq.vatrin.app/,probe_pending,,Gaming,0
+246,city_kirkuk_ChIJiX4VIXXZVBURgGXR-biilEM,كلية العلوم,http://uokirkuk.edu.iq/science/,probe_pending,,PC Parts,0
+247,city_kirkuk_ChIJeeEh3HTZVBURpx9xeIDx3FI,كلية القانون والعلوم السياسية,http://uokirkuk.edu.iq/law/,probe_pending,,PC Parts,0
+248,city_basra_ChIJR5ug5euhxD8R3oP63F0y3_w,كلية علوم الحاسوب وتكنولوجيا المعلومات,https://en.cit.uobasrah.edu.iq/,probe_pending,,Electronics,0
+249,city_kirkuk_ChIJQZKQEqXZVBURforfrEe21Bg,كلية علوم الحاسوب وتكنولوجيا المعلومات,https://uokirkuk.edu.iq/tec/,probe_pending,,PC Parts,0
+250,city_basra_ChIJr6qqqv-WxD8RZoGdTlljpO0,مجمع كليات باب الزبير,https://www.uobasrah.edu.iq/,probe_pending,,Phones,0
+251,city_baghdad_ChIJvdg6W3V-VxURlqAvDzILz0w,مكتب الرواسي للحاسبات والطابعات والاحبار,https://app.gini.iq/deeplink/al_rawasi_office,probe_pending,,Electronics,0
+252,city_baqubah_ChIJkbnoBahLVhURByji0YRlXQw,مكتب الميثاق للانترنيت والمبايل,http://mmethaq.blogspot.com/,probe_pending,,Electronics,0
+253,city_sulaymaniyah_ChIJpdf7DusvAEARpg-Oh_0K5XA,ووشە فۆن (بەختیاری),http://wshaphone.com/,probe_pending,,Tablets,0
+254,city_sulaymaniyah_ChIJ06KootEtAEAROZHQxbyP-1A,(IT Pro Hikvision) کۆمپانیای ئایتی پڕۆ,https://solo.to/itpro,social_only,,Cameras,0
+255,city_erbil_ChIJj46cA_UhB0ARH1f6_jxBw_I,(استنساخ ريكار١)Rekar Stationery1,https://linktr.ee/rekarstationery,social_only,,Electronics,0
+256,city_baghdad_ChIJRV4Ki5p_VxURVW_oE5cfYEw,3 Store Iraq -Al Mansour Branch,https://www.facebook.com/3Store.IQ/,social_only,,Phones,0
+257,city_mosul_ChIJQ_viM6_qB0ARpCoc-vCIuvo,3D Office,https://www.facebook.com/Yousef.3D/,social_only,,Tablets,0
+258,city_basra_ChIJc8hVUQCXxD8R9I5XOebPqZo,AL-HAJER PHONE | الهاجر فون,https://instagram.com/alhajir.phone,social_only,,Phones,0
+259,city_baghdad_ChIJNba9pa5_VxUR9H2lFeQP3tY,ALMADAR CENTER FOR MOBILE,http://www.facebook.com/almadarmobile,social_only,,Phones,0
+260,city_mosul_ChIJ8fvhFF6VB0AR_qaWKXbx1xA,AREA 50,https://instagram.com/area50_iq?igshid=YmMyMTA2M2Y=,social_only,,Gaming,0
+261,city_najaf_ChIJF21pXkHRXhURj3M1yKgz48k,Ahmed.f1 مركز احمد للانترنيت,http://facebook.com/ahmed.net.f1,social_only,,Cameras,0
+262,city_baghdad_ChIJ4cy49OB_VxURlohvvSl2Nk4,Al-3arab Storeمكتب العراب,https://www.facebook.com/Al3rab.Store/,social_only,,Electronics,0
+263,city_baghdad_ChIJZ40jNgDVWRURy3n1XkXTIbg,Al-Jawal Store | الجوال ستور,https://www.instagram.com/al_jawalstore?igsh=anFvOWhpOXpsMmQy&utm_source=qr,social_only,,Phones,0
+264,city_erbil_ChIJQSOzcQAfB0AR2YFD7adBez8,Ankawa Store,https://www.facebook.com/107106647338062/posts/pfbid0xyWvd1kUMQxxN2BzigX5VnPnLnAvVyqsGJG9mSNtsTEZq88CYBJrnV3tYWAfPsDpl/?,social_only,,Gaming,0
+265,city_basra_ChIJv8AJUgCXxD8RMKdt_SNk734,Apple Store,https://www.instagram.com/98h_iq?igsh=MTZ4M3IxazlkcWg2dw==,social_only,,Phones,0
+266,city_sulaymaniyah_ChIJC6zl-70tAEARTmm9xfO9-bY,Apple Store,https://instagram.com/lawand_for_store?igshid=NTc4MTIwNjQ2YQ==,social_only,,Phones,0
+267,city_kirkuk_ChIJtXeWkuzXVBURCH3-XkyDspU,Ardunic Kirkuk,https://www.facebook.com/ArdunicKirkuk/,social_only,,Electronics,0
+268,city_sulaymaniyah_ChIJTZNqKx8vAEARnecUb7B8UlE,Aryan center,https://www.facebook.com/aryan.mobile.shop.90?mibextid=9R9pXO,social_only,,Accessories,0
+269,city_kirkuk_ChIJ9yllLAApVRUR_OglzPdyebY,Asophone,http://snapchat.com/an4s_tech,social_only,,Accessories,0
+270,city_sulaymaniyah_ChIJ2VTXDBksAEAR_0ElzfgQ4s4,Asse Company,https://linktr.ee/assecompany,social_only,,Electronics,0
+271,city_sulaymaniyah_ChIJtT05WEktAEARRuHukk7JxKc,BARHAM PHONE Ashti,https://www.facebook.com/barhamphone,social_only,,Phones,0
+272,city_basra_ChIJURF4fKKZxD8RFDfPvfr6smg,BASRA STORE,https://instagram.com/basra.store?igshid=YmMyMTA2M2Y=,social_only,,Gaming,0
+273,city_baghdad_ChIJa-x-Rgl_VxUR1AO5HiFxjNg,BLACK NETWORK,https://www.facebook.com/BLACK1NETWORK/,social_only,,Networking,0
+274,city_baghdad_ChIJwcRu08aDVxURlZwiv13et1w,Baghdad Comics & Figures,https://www.facebook.com/Baghdad.comics,social_only,,Gaming,0
+275,city_mosul_ChIJKX60VuOVB0ARKGAzL0ubiQo,Berlin Gaming Centre,https://www.instagram.com/berlin._.game?igsh=MWl1MHRtMnc0NmtnaQ==,social_only,,Gaming,0
+276,city_sulaymaniyah_ChIJsRxlIdMtAEARmMUxaBZGz44,Best Cam - بێست کام,http://www.facebook.com/Best.Cam22,social_only,,Cameras,0
+277,city_sulaymaniyah_ChIJ3crNeAAtAEAR7Gp0ba6KAkw,Bilal phone,https://www.facebook.com/@BilalHomesPhone/?mibextid=LQQJ4d&mibextid=LQQJ4d,social_only,,Phones,0
+278,city_kirkuk_ChIJ4WN1yM7XVBUR-ByOCXtlUT4,Brand phone,https://instagram.com/brand_phone1?igshid=MzNlNGNkZWQ4Mg==,social_only,,Phones,0
+279,city_sulaymaniyah_ChIJhao--X4tAEARZUMrK-xkIv4,CENTER COMPUTER SARCHNAR,https://www.facebook.com/CENTERCOMPUTERSARCHNAR/,social_only,,PC Parts,0
+280,city_kirkuk_ChIJ2SvROwDXVBURnSEyMC4_zC8,COME TECHNOLOGY,https://www.facebook.com/soma%20for%20technology,social_only,,Cameras,0
+281,city_mosul_ChIJVyqTGaSVB0AR_wxtHs0Hqbo,Chocolate Mine,https://www.facebook.com/Chocolate-Mine-101402732100514/,social_only,,Phones,0
+282,city_erbil_ChIJJWmk2D8jB0ARTxg_pttuwZk,City-Technology,https://instagram.com/city_technology22?igshid=YmMyMTA2M2Y=,social_only,,Electronics,0
+283,city_erbil_ChIJKX2D3nslB0AR72eUOJfZTo4,Delivery Kurdistan,https://www.facebook.com/delkurdworld,social_only,,Networking,0
+284,city_baghdad_ChIJr-15ELbXWRURiPzmsi7pxiE,Digital Net Computer Center,http://www.facebook.com/Digitalnetcomputer,social_only,,Electronics,0
+285,city_mosul_ChIJM8b-EC6VB0AR03X0aSEVq2c,Discovery Integrated Solutions-2nd branch,https://linktr.ee/alfahham_group,social_only,,Smart Devices,0
+286,city_sulaymaniyah_ChIJlRInzsItAEAROke4IZKuw_g,Elite Gaming Center & Store,https://www.facebook.com/elitegc1?mibextid=LQQJ4d,social_only,,Electronics,0
+287,city_sulaymaniyah_ChIJ-wyhUF0tAEARb6Cz8wGWQpM,Empire Vape,https://www.facebook.com/Empire-Vape-283790942272737/,social_only,,Electronics,0
+288,city_basra_ChIJ557Bko2XxD8R8OkNBMCP3QI,Estore,https://instagram.com/elctronics.store?igshid=MmU2YjMzNjRlOQ==,social_only,,Phones,0
+289,city_kirkuk_ChIJjdMmwcbXVBURY2VWwkbFu0w,FUTURE OFFICE,https://www.facebook.com/Future-Office-509392942921249/,social_only,,Gaming,0
+290,city_nasiriyah_ChIJHRq0LwDj3T8RW3bYDEdu3mA,Falah zaincash مكتب فلاح,https://www.instagram.com/falah.zaincash?igsh=cTFkamZiZWhwOHR2,social_only,,Accessories,0
+291,city_kirkuk_ChIJS6CIKQDZVBUR5jIXUDBUMcs,Fantasy game centre,https://www.instagram.com/fgc4fgc?igsh=MWdpZTRuc3I2ZzFoZQ==,social_only,,Gaming,0
+292,city_karbala_ChIJMfpROYBrWRUR0SN4QXQYpIc,Friend,https://www.facebook.com/Friend4IQ/,social_only,,Electronics,0
+293,city_sulaymaniyah_ChIJz-o2DhksAEARURr1RxAju1I,Fryad Company,http://www.instagram.com/fryad_company,social_only,,Accessories,0
+294,city_mosul_ChIJyaTI1_yTB0ARdZ_x-S19YX0,GAME OVER,https://instagram.com/gam9.over?igshid=YmMyMTA2M2Y=,social_only,,Gaming,0
+295,city_baghdad_ChIJuTHBmOB5VxURRXzCen03yx4,GAME TIME store ( كيم تايم للحاسبات),https://www.facebook.com/GameTimeStore1/?ref=page_internal,social_only,,Gaming,0
+296,city_mosul_ChIJGeZ7GEKVB0AR41E9D90pQng,GG Center – PlayStation & PC,https://instagram.com/gg__center?igshid=NTdlMDg3MTY=,social_only,,Gaming,0
+297,city_erbil_ChIJH0tfjW0jB0ARHFtoLo9EMdY,Game Center Hawler,https://www.instagram.com/game.center.hawler,social_only,,Gaming,0
+298,city_baghdad_ChIJXULwV455VxURID9kKum5FG0,Game Over,https://www.facebook.com/profile.php?id=100067900000094&mibextid=ZbWKwL,social_only,,Gaming,0
+299,city_najaf_ChIJs0UF0uLWXhURxml1DUoUQsU,Game Zone,https://www.facebook.com/GameZone.IQ/,social_only,,Electronics,0
+300,city_kirkuk_ChIJRWjAEQDXVBURmwAJN_xhe7E,Games Master,https://www.instagram.com/games.master1?igsh=MWR1NDExMW1nc29mag%3D%3D&utm_source=qr,social_only,,Gaming,0
+301,city_baghdad_ChIJwYWMat1_VxUR4TT-xiW7Xlg,Games Store,https://www.facebook.com/Games.Store.ele.cds/,social_only,,Gaming,0
+302,city_erbil_ChIJOR0_VnsjB0ARl0KKR3p8aMo,Gamestop2,https://www.instagram.com/igame_stop_erbil?igsh=MWFoOWxyN2hmN3hmcA==,social_only,,Gaming,0
+303,city_basra_ChIJHUjt0eCZxD8RZ08nCqAaoTM,Gaming Station,https://instagram.com/gaming_.station?igshid=YmMyMTA2M2Y=,social_only,,Electronics,0
+304,city_mosul_ChIJ_yfKA2uVB0ARHlfNGuXl-RU,Gift City,https://t.me/nokiacare2022,social_only,,Phones,0
+305,city_basra_ChIJrR00UQCZxD8RGUS7BDtlfOs,Gigabyte store,https://www.instagram.com/gigabyte.basrah,social_only,,Networking,0
+306,city_sulaymaniyah_ChIJI3ZbBwwtAEARlDxx18GS6rE,Golden Center,https://wa.me/9647730525901,social_only,,Gaming,0
+307,city_baghdad_ChIJw-eaCACBVxUR5V9pLfHYdqg,Golden games كولدن كيمز,https://www.facebook.com/profile.php?id=100090196735083&mibextid=kFxxJD,social_only,,Gaming,0
+308,city_sulaymaniyah_ChIJiQdMdcctAEAR6ChQHjoCjzw,Goran Net 4.5G+,https://www.facebook.com/GoranNet4G?mibextid=LQQJ4d,social_only,,Electronics,0
+309,city_sulaymaniyah_ChIJX0OvZwAtAEARqLYXBQbLjj4,Haji Store,https://www.instagram.com/haji._.store?igsh=MTByanhoOGsxMjd6OQ%3D%3D&utm_source=qr,social_only,,Gaming,0
+310,city_erbil_ChIJHfGa76wjB0ARdW5ebIMNyrg,Halder Game شوێنی ھەڵدێر,http://facebook.com/haldergame,social_only,,Electronics,0
+311,city_erbil_ChIJW9AMZZUjB0ARJR0ylZJVUB0,Havalan Technology,https://instagram.com/havalan.technology?igshid=1mcj93r22hl8w,social_only,,Electronics,0
+312,city_erbil_ChIJS78pHw0jB0ARft25zKnr7UA,Hawkar for Computers HFC,https://www.facebook.com/share/1Bn5qCfroQ/,social_only,,Networking,0
+313,city_sulaymaniyah_ChIJX5R292cuAEAR5m4ydjTfbsw,Hemn Cars,https://m.facebook.com/Hemn.carss/,social_only,,Chargers,0
+314,city_kirkuk_ChIJa24ACUnVVBUR_skd4ihzHzc,Hemn phone,https://www.facebook.com/share/1FuowrmhHQ/?mibextid=wwXIfr%20%20%D8%A7%D9%84%D8%AA%D8%AE%D8%B7%D9%91%D9%8A%20%D8%A7%D9%84%D8%AA%D8%A7%D9%84%D9%8A,social_only,,Phones,0
+315,city_sulaymaniyah_ChIJQ_igqZcvAEARpTnwRvdgGMI,Hi store - Apple Authorized Reseller,https://heylink.me/hi617,social_only,,Phones,0
+316,city_erbil_ChIJvx_BhOYjB0ARorXE5neDAg8,Hussein Atary,https://www.tiktok.com/@ismail_atare?_t=8g0jwydKxW9&_r=1,social_only,,Gaming,0
+317,city_nasiriyah_ChIJ5_jMJNPj3T8RXYj-RCr_Jx8,I Store - آي ستور,https://www.facebook.com/i-store-113916886967962/,social_only,,Phones,0
+318,city_najaf_ChIJWTIELJ3XXhURSEeH6z8dTUw,IQ PC Gamers,https://www.facebook.com/IQPCGamers?mibextid=ZbWKwL,social_only,,Electronics,0
+319,city_baghdad_ChIJO3L2iLyDVxURB5OJy5VZdls,IT store (مركز اي تي قطع غيار الهاتف النقال),https://www.facebook.com/I.T.Store.IQ/,social_only,,Accessories,0
+320,city_mosul_ChIJ7as-9KyUB0ARGH9H7gDDj4U,Krm Center,http://www.facebook.com/kr87m,social_only,,Phones,0
+321,city_mosul_ChIJE2F8pse_B0ARV8OfG8vr_zk,Linux 4 ISP,http://www.facebook.com/linux4isp,social_only,,Networking,0
+322,city_baghdad_ChIJz9EhKfZ4VxURkQNikvW-mUE,Loading ...,https://m.facebook.com/Loading4Games/,social_only,,Gaming,0
+323,city_sulaymaniyah_ChIJRS3FexksAEAR316fh9vFahE,London phone,https://www.facebook.com/londonphones1/,social_only,,Phones,0
+324,city_baghdad_ChIJAbvD45KDVxURLalEudmhzos,MAXtech,https://www.facebook.com/maxtechbaghdad/,social_only,,Gaming,0
+325,city_basra_ChIJZ9IVRUCXxD8R56r6_PeN7lY,MEGA Tech,https://www.facebook.com/MEGATECH.IRAQ/,social_only,,Networking,0
+326,city_mosul_ChIJo6HTNxGVB0ARG_z1cKcuzXA,MUHAMED ALFATEH - محمد الفاتح,http://facebook.com/muhamedalfateh,social_only,,Phones,0
+327,city_erbil_ChIJt6Ry_CwZB0ARMrNpuHEZeco,Master Games,https://www.tiktok.com/@master_games3?_t=ZS-8xygrjnQSRd&_r=1,social_only,,Gaming,0
+328,city_karbala_ChIJJ2-GXZNrWRURbG0qrd_Ye_A,Mega it store مكتب ميكا كربلاء,https://www.facebook.com/MEGA4IT?mibextid=ZbWKwL,social_only,,Cameras,0
+329,city_sulaymaniyah_ChIJ4-j1PAAtAEAR2fI5dk_Vvr0,Mela Shop / مێلا شۆپ,https://www.facebook.com/share/1BTQpjjUJY/?mibextid=wwXIfr,social_only,,Accessories,0
+330,city_basra_ChIJPTlJ7gqZxD8R3243Q0b2-hs,Mi bassra,https://www.facebook.com/Mi-Bassra-373305599723373/,social_only,,Phones,0
+331,city_sulaymaniyah_ChIJ02ZID8wvAEARcXfx44FAFzk,Mini,https://www.facebook.com/pages/MiniPhone/870293189660762,social_only,,Accessories,0
+332,city_erbil_ChIJhQkfVgA7B0AR1I7M-a0WAPs,Mobile Nadr Mamzawa,https://linktr.ee/nadr404,social_only,,Phones,0
+333,city_sulaymaniyah_ChIJ3ef6bgAtAEARepw-vlb0_6g,Mobily zargta,https://www.tiktok.com/@mobaily.zargata?_t=8jxaPdMpSQX&_r=1,social_only,,Phones,0
+334,city_mosul_ChIJddo2EwCXB0ARlYZhxlSyHHk,Moon Phone,https://www.facebook.com/share/172FvynPdp/?mibextid=wwXIfr,social_only,,Phones,0
+335,city_sulaymaniyah_ChIJTzt1bwAvAEARL12vZUvFyE4,Msi Store,https://www.facebook.com/share/19sKPXcgX7/?mibextid=wwXIfr,social_only,,Accessories,0
+336,city_erbil_ChIJT3smeFojB0ARr4175mPiP6U,Muhammad shop camera,https://www.facebook.com/Muhammad-Shop-camera-233074973547289/,social_only,,Cameras,0
+337,city_karbala_ChIJgZIq4FVpWRURIklmb26a4Kc,NetPhone co. | شركة نت فون,https://m.facebook.com/nett.phone/?__tn__=C-R,social_only,,Phones,0
+338,city_mosul_ChIJE_iyKzCVB0ARtCCPTZiNVWU,OneTouch,https://www.facebook.com/OneTouch-Group-666186557062445,social_only,,Phones,0
+339,city_baghdad_ChIJIyfbGaaBVxURKiOUgPnqqDw,Orange Electronics (Orange Iraq),https://www.facebook.com/Orange.electronics.iq,social_only,,Chargers,0
+340,city_baghdad_ChIJ9fT-TefVWRURhXkGGz_FvPc,PXP Store,https://www.facebook.com/PxP-store-100609119388032/,social_only,,Electronics,0
+341,city_sulaymaniyah_ChIJXQ3_K8UtAEARRO8BgfaJQOI,Peshangay Ashti,https://instagram.com/peshangay_ashti?igshid=YmMyMTA2M2Y=,social_only,,Phones,0
+342,city_sulaymaniyah_ChIJw2r3uIQrAEARVbADbEWqa9E,Peshangay K( K پێشانگای),https://instagram.com/peshangayk?igshid=1wq7rege2wdhm,social_only,,Phones,0
+343,city_erbil_ChIJv5kjgA4jB0ARfhgoAbQEX_k,Phone store,https://t.snapchat.com/F5jSrjok,social_only,,Phones,0
+344,city_sulaymaniyah_ChIJLZlaFFwtAEARMJyM8DJIKuE,Photocopy Safa,http://www.facebook.com/kurdostan,social_only,,Electronics,0
+345,city_najaf_ChIJsfqkYwDRXhURkgO77FqHzds,RED للموبايل,https://www.instagram.com/bic.iw?igsh=ZTIydmJwdDNiem9w,social_only,,Phones,0
+346,city_erbil_ChIJFY7GOagjB0ARlvVc7W9THr8,ROYAL MOBILE,https://m.facebook.com/royalmobilebatta/,social_only,,Phones,0
+347,city_sulaymaniyah_ChIJ5eY5M58tAEAR7ECkCdt4jqE,RS store,https://www.facebook.com/share/18CgoWpEZf/?mibextid=wwXIfr,social_only,,Electronics,0
+348,city_baghdad_ChIJgXB0maPVWRUR9Y1t3lzLnFg,RT Phone,https://www.facebook.com/rtphone.iq/,social_only,,Accessories,0
+349,city_sulaymaniyah_ChIJvTP7e5EvAEARxHiCGeLwYPE,Rahand Style,https://www.facebook.com/OnlineShopping/,social_only,,Cameras,0
+350,city_sulaymaniyah_ChIJf9vcWp4tAEARHbSpyY-rAtY,Rozhawa Mobaile,https://www.facebook.com/pg/rozhawamobile/community/,social_only,,Accessories,0
+351,city_erbil_ChIJjVvtebMYB0ARnpGln8B-RYM,SHAHBAA STORE,https://www.facebook.com/shahbaa.store/,social_only,,Phones,0
+352,city_baghdad_ChIJVfMDA_PXWRURn1GVZS76b-o,Saif & Ziad | مكتب سيف وزياد,https://www.facebook.com/SAIF-ZIAD-755512204490187/,social_only,,Electronics,0
+353,city_kirkuk_ChIJ8f5aFADVVBURiEXBDZlXr_g,Sha Phone موبایلی شا,https://www.instagram.com/sha.phone.shoraw?igsh=MWxoamw0ZmF5cTMwcw==,social_only,,Accessories,0
+354,city_sulaymaniyah_ChIJ1xko9VYpAEAR1XE0y6nw5Ok,Smart Consultant bureau,https://www.facebook.com/share/19Gj3kmgxW/,social_only,,Smart Devices,0
+355,city_basra_ChIJpRBYdeCXxD8Rtkk9cuqIxDg,Smart technology,https://www.facebook.com/profile.php?id=100090907930942&mibextid=ZbWKwL,social_only,,Cameras,0
+356,city_baghdad_ChIJL_dhMXV_VxURhotkxi-rTpI,Smart.Co شركة سمارت,https://linktr.ee/smartsc.co,social_only,,Smart Devices,0
+357,city_najaf_ChIJge08mNvXXhURPODxh517ei8,Smile.najaf,http://facebook.com/smile.najaf/,social_only,,Phones,0
+358,city_mosul_ChIJWeCmYbu_B0ARZ4z4xa1K4kM,Spider العنكبوت,http://www.facebook.com/spider4pc.iq,social_only,,Gaming,0
+359,city_karbala_ChIJt6ZweQBpWRUR46a7NVicNDY,TIS Karbala Smart Home,https://www.facebook.com/tis.karbala?mibextid=wwXIfr,social_only,,Smart Devices,0
+360,city_mosul_ChIJc62d5KeVB0ARBQCmuy0ZoaI,Tawfeeq Aliraq Company-شركة توفيق العراق,https://www.facebook.com/TawfeeqALiraqCompany/,social_only,,Electronics,0
+361,city_baghdad_ChIJgQlqMQCBVxURiFw_LqWkiXM,Technical ‏World العالـم التقـني,https://www.facebook.com/profile.php?id=61559323532751,social_only,,Networking,0
+362,city_baghdad_ChIJF8sWXwB_VxUR2B7KjrznDb8,The Legends Hub Baghdad,https://www.instagram.com/legendshub.baghdad?igsh=c3YxaHFkYWF4aHdw&utm_source=qr,social_only,,Gaming,0
+363,city_baqubah_ChIJW6W0VwBLVhURGLLnbsYtw2s,Trend Phone,https://www.instagram.com/trendphones.1?igsh=d3J5emszdjgwdHRu&utm_source=qr,social_only,,Accessories,0
+364,city_sulaymaniyah_ChIJV720b70tAEARPJkdLzc7pl4,VR Gaming,https://www.instagram.com/vr_game_center_?igsh=djBpY3FjMG9uZDhh,social_only,,Gaming,0
+365,city_sulaymaniyah_ChIJA8XvFe0tAEARJnq3ougKCZo,Wenagry Pellu,https://instagram.com/pellu_photos?igshid=YmMyMTA2M2Y=,social_only,,Cameras,0
+366,city_kirkuk_ChIJO4-nq9rXVBURBvc5tOubcSc,Xiaomi Store,https://m.facebook.com/Xiaomi-store-kirkuk-100131479216104/?__tn__=C-R,social_only,,Phones,0
+367,city_sulaymaniyah_ChIJ_xljwKMvAEARRDgaYM-hefs,Xiaomi Store Slemani,http://instagram.com/xiaomi.store.slemani,social_only,,Phones,0
+368,city_erbil_ChIJU9kLR1YlB0AR0OLAmtzzBWE,Yadorwandzi,https://www.facebook.com/yado.ronaldo.12,social_only,,Gaming,0
+369,city_erbil_ChIJBdqU7g8jB0ARrOtsZD9E9wI,Yara Gaming,https://www.tiktok.com/@yara_gaming_store,social_only,,Gaming,0
+370,city_erbil_ChIJ0zyXyKElB0AR9RAftL3paAg,Yari Plus - یاری پڵەس,https://linktr.ee/yariplus23,social_only,,Gaming,0
+371,city_erbil_ChIJI-rFqhYjB0AR7Lfc2CSqNWA,Yusf Phone موبايلى يوسف,https://www.facebook.com/YTech4Shopping/,social_only,,Accessories,0
+372,city_sulaymaniyah_ChIJhw60XQAtAEARVjFuS-LeoIg,Zanko DJI store,https://www.facebook.com/share/1BDkuFMSxs/,social_only,,Cameras,0
+373,city_sulaymaniyah_ChIJMxVzYgAtAEAR549cnQv-CLg,Zanyar Phone,https://www.snapchat.com/add/hc-r,social_only,,Networking,0
+374,city_sulaymaniyah_ChIJBYbLjd4tAEARv-0H7i8_OUQ,Zanyar phone,https://invite.viber.com/?g2=AQAocQ%2B3Feiojk89aZmuG%2Fu9rGrRORmEHrZJOx4%2BQH%2FKNYFb7R2dav2O%2Bpzh8WlR,social_only,,Accessories,0
+375,city_sulaymaniyah_ChIJaa2uBAAtAEARO4FPHqU-884,Zewar Phone,https://www.instagram.com/zewarphone_8?igsh=aWxzbnJsYzBvMDEz,social_only,,Accessories,0
+376,city_sulaymaniyah_ChIJ1yWOpR4sAEARQSakBGLDy08,Zheer Center,http://www.facebook.com/ZheerCenter,social_only,,Electronics,0
+377,city_baghdad_ChIJl3XDjUt_VxUR7aNtCbb0mac,Zoom mobile زووم موبايل,http://www.facebook.com/zoommobile.iq,social_only,,Accessories,0
+378,city_najaf_ChIJYV627VPXXhURo0oL-Ly607o,Zoza phone,https://www.facebook.com/Zoza-phone-1217586271723609/,social_only,,Phones,0
+379,city_baqubah_ChIJqfLlOalLVhURpWWb6aaef-Q,center mumtaz,https://www.facebook.com/center.mumtaz/,social_only,,Cameras,0
+380,city_erbil_ChIJeRzuhK8jB0ARRux0amN3zVk,darbaz,https://t.me/darbazkhoshnaw,social_only,,Cameras,0
+381,city_erbil_ChIJKbzjTu4jB0ARHjiZcsUF24s,erbil center,https://www.facebook.com/search/top/?q=erbil%20center,social_only,,Tablets,0
+382,city_mosul_ChIJIUdxOwC_B0ARgT0aU5PAtaY,i store mosul,https://www.facebook.com/software19?mibextid=LQQJ4d,social_only,,Accessories,0
+383,city_erbil_ChIJUS35g14ZB0ARTyGj2TBnG_Q,iCell,https://www.facebook.com/I-Cell-109945530795785/,social_only,,Phones,0
+384,city_kirkuk_ChIJaUKVWrzXVBUR77WeIT6y8NM,imad_formobol,https://www.facebook.com/imad.formobil,social_only,,Phones,0
+385,city_baghdad_ChIJrdCQ_CV_VxURQ2IvO97tdlo,little hut games-العاب الكوخ الصغير,https://m.facebook.com/Gottage.Games/,social_only,,Gaming,0
+386,city_sulaymaniyah_ChIJGzT4ZyUtAEARtPopu2SgRnk,myphone mobile shop,https://www.facebook.com/aram.it2016,social_only,,Accessories,0
+387,city_karbala_ChIJdc-tpHdpWRURfS28CQyNBT0,one2oneازياء,https://www.facebook.com/one2oneqasim?mibextid=LQQJ4d,social_only,,Phones,0
+388,city_baghdad_ChIJ665RcACDVxURo1llBUTEUCc,siga,https://www.instagram.com/siga.gaming.center?igsh=MW9jbzgydWQ0ejJiMQ==&utm_source=qr,social_only,,Gaming,0
+389,city_erbil_ChIJo9UPwjMjB0ARN3tBTfI_tjs,sino for computer,https://www.facebook.com/SINO4Computer/,social_only,,Electronics,0
+390,city_erbil_ChIJNZDLMQAjB0ARA7AbEKGk6Uk,wsha phone erbil,https://www.facebook.com/WSHA.PHONE1?mibextid=AEUHqQ,social_only,,Phones,0
+391,city_basra_ChIJB72Qrr-ZxD8RpTrv7zCBs_0,أكتوبر ستور,https://instagram.com/octobersstore?utm_medium=copy_link,social_only,,Accessories,0
+392,city_kirkuk_ChIJ30R04I3VVBUR5Up9ywY6_bU,أمازون اوت ليت كركوك,https://www.facebook.com/profile.php?id=100083359207820,social_only,,Chargers,0
+393,city_basra_ChIJWRPYJ1mXxD8RoLM45rAb2TY,أوول فون,https://www.facebook.com/ALLPHONES.COMPANY/,social_only,,Phones,0
+394,city_kirkuk_ChIJozPTSsHXVBURqk11pLZNS4M,ئارام LG للالعاب الكترونية,https://m.facebook.com/AramLGelectronicspage/,social_only,,Electronics,0
+395,city_mosul_ChIJ7Y5I6zqVB0ARNwE9f3dt3Os,ابن الهيثم للبصريات,https://www.facebook.com/Ibn.al.Haytham.Opticals/,social_only,,Electronics,0
+396,city_baqubah_ChIJwcU4QQBLVhURWwOu18r3kDU,احمد فون مجمع القمة,https://www.instagram.com/ah_phone9?igsh=dGhla2w1bXIzbHMw,social_only,,Cameras,0
+397,city_baghdad_ChIJ2f1i7wKCVxURCB_-745mM5w,ادم للالكترونيات,https://facebook.com/adam4electronics,social_only,,Electronics,0
+398,city_karbala_ChIJ4X1veKhpWRURU9ptEqJRix8,ازياء حماده براند,https://m.facebook.com/alilegal2012,social_only,,Chargers,0
+399,city_nasiriyah_ChIJceGEf3fj3T8R2xr8yTs1FBs,استوديو حيدر مطوس,https://instagram.com/hr89k,social_only,,Cameras,0
+400,city_karbala_ChIJO3tNZtdrWRURsIvHkKB3ITQ,اسواق الدر النصراوي,https://www.facebook.com/%D9%85%D8%B1%D9%83%D8%B2-%D8%A7%D9%84%D8%AF%D8%B1-%D8%A7%D9%84%D9%86%D8%B5%D8%B1%D8%A7%D9%88%D9%8A-%D9%84%D9%84%D8%AA%D8%B3%D9%88%D9%82-683852291948965/,social_only,,Tablets,0
+401,city_nasiriyah_ChIJ2wCZBMbi3T8RG4J8o_RPUPI,اسواق المصطفى,https://www.facebook.com/almustafamarket1/,social_only,,Cameras,0
+402,city_najaf_ChIJLYsjBADXXhUR0Ny2prki6kQ,اكسسوارات xswaries,https://www.instagram.com/xswaries1?igsh=d29kNzRweXQxM2t5,social_only,,Chargers,0
+403,city_karbala_ChIJAfymfvprWRURaWm3SS4UX8o,اكسسوارات ريحانة,https://m.facebook.com/Rihanna.accessories/,social_only,,Chargers,0
+404,city_karbala_ChIJH4gPVqtpWRURKMup7-Tp1Mc,الإتحاد للإلكترونيات والإتصالات,http://www.facebook.com/ALAITIHAD4IQ,social_only,,Electronics,0
+405,city_basra_ChIJPyoGPVmXxD8RyA-4NwfU3xU,الاوحد للهواتف النقالة,https://www.facebook.com/alawhad.mobil/,social_only,,Phones,0
+406,city_baghdad_ChIJSaCPSfXVWRURGSr9FE8x0D0,الترا ستور للموبايل والالعاب وصيانتها,http://instagram.com/ultrastore_iq,social_only,,Gaming,0
+407,city_najaf_ChIJQ4LjJ__WXhURoMDODlxKxUU,الحمامي للحاسوب,http://www.fb.com/alhammami.iq,social_only,,Electronics,0
+408,city_karbala_ChIJv9jbTQBpWRUR8YDL2xehDtg,الحياة للانترنت والامزون,https://www.facebook.com/alhayatnetandamazon,social_only,,Gaming,0
+409,city_mosul_ChIJh4f7Q-6VB0AR9xUf1tGmsMg,الخوارزمي للحاسبات - Al Khawarizmi,https://www.facebook.com/khwarzmi.co/,social_only,,Electronics,0
+410,city_karbala_ChIJE9a4M-xrWRUR3BbeBCjJPTY,الراية لتجارة الحاسبات وخدمات الانترنت,https://www.facebook.com/alrayafornet/?ref=bookmarks,social_only,,PC Parts,0
+411,city_baghdad_ChIJ4dn6rER9VxURZZiz8IFtBgI,الزنبقة للموبايل والانترنت,https://m.facebook.com/ALzanpaqa,social_only,,Accessories,0
+412,city_baghdad_ChIJ18_PCoSCVxUR-TIUuEqXmEk,السنك للتسوق الإلكتروني,https://www.facebook.com/%D8%A7%D9%84%D8%B3%D9%86%D9%83-%D9%84%D9%84%D8%AA%D8%B3%D9%88%D9%82-%D8%A7%D9%84%D8%A7%D9%84%D9%83%D8%AA%D8%B1%D9%88%D9%86%D9%8A-Alsank-Electric-Shopping-1806823086266709/,social_only,,Electronics,0
+413,city_baghdad_ChIJ1caMy0nVWRURfTCK_aNs-A0,العراب سنتر - Al-Arrab Center,https://www.facebook.com/Al3rab.Center/,social_only,,Gaming,0
+414,city_baghdad_ChIJEd1g-G9_VxUR1B6cyNj4b4Y,العسل للهواتف النقالة,https://www.facebook.com/3asalco/,social_only,,Phones,0
+415,city_nasiriyah_ChIJ8_pOB8Pj3T8R1ybP2y1cvFo,الغيث فون لتجارة الموبايل,https://www.facebook.com/profile.php?id=100088853882452&mibextid=LQQJ4d,social_only,,Phones,0
+416,city_najaf_ChIJC9IRre8pXxURNayG87I45MM,الفنجان للادوات الاحتياطية,https://www.facebook.com/%D9%85%D8%B1%D9%83%D8%B2-%D8%A7%D9%84%D9%81%D9%86%D8%AC%D8%A7%D9%86-%D9%84%D9%82%D8%B7%D8%B9-%D8%BA%D9%8A%D8%A7%D8%B1-%D8%A7%D9%84%D8%B3%D9%8A%D8%A7%D8%B1%D8%A7%D8%AA-%D8%A7%D9%84%D8%A3%D9%85%D8%B1%D9%8A%D9%83%D9%8A%D8%A9-105273184713590/,social_only,,Chargers,0
+417,city_najaf_ChIJJ3QZheTWXhURlbsO-XgYFfM,الكرعاوي للموبايل,https://www.facebook.com/mudhar.musawi/,social_only,,Phones,0
+418,city_nasiriyah_ChIJnyXuiXjj3T8RPRiPkSXOuLk,الكهف لكاميرات المراقبة وشبكات الإنترنت,https://www.facebook.com/profile.php?id=61550890010421&mibextid=ZbWKwL,social_only,,Electronics,0
+419,city_nasiriyah_ChIJY3h8bmbj3T8RV36Dda1DOJ0,الكوثر قسم الكاميرات والالكترونيات,https://www.facebook.com/22alkaser/,social_only,,Electronics,0
+420,city_najaf_ChIJA9KI9eTWXhUREevA9F9P6_E,المتحدة لتقنيات الموبايل,https://www.facebook.com/profile.php?id=100064047756652&locale=ar_AR,social_only,,Phones,0
+421,city_basra_ChIJLRaWUSqZxD8ROYv5ComJbWc,المتحدة للاتصالات,https://www.instagram.com/19f89?igsh=eGQ0YXcyM254MmVn&utm_source=qr,social_only,,Accessories,0
+422,city_nasiriyah_ChIJtRa8_Sfj3T8RY4WILojnuS0,المثالي للموبايل,https://www.facebook.com/104973557527261/,social_only,,Accessories,0
+423,city_najaf_ChIJs_1yEwrTXhURBe3WtCPHaZk,المحترف للموبايل,http://www.facebook.com/mustafaprooo273,social_only,,Phones,0
+424,city_karbala_ChIJKecVCu1pWRURIsWrS4bDdtU,المخزن الالماني,https://www.facebook.com/share/1BAYrzKMuu/,social_only,,Chargers,0
+425,city_karbala_ChIJIYYEg_JoWRURWVfT4zu1Yak,المدار للحاسبات والانترنت,https://www.facebook.com/hade.akram,social_only,,Electronics,0
+426,city_najaf_ChIJ9UryC4vWXhURHX-YX4my87U,المدينة المائية,https://www.facebook.com/poolnjf/,social_only,,Electronics,0
+427,city_najaf_ChIJHWlVG6zQXhURB0T7fnEovRA,المركز الاستشاري لنظم الحاسبات,https://m.facebook.com/cccs123/about/?ref=page_internal&mt_nav=0,social_only,,Electronics,0
+428,city_nasiriyah_ChIJL5GeoCzj3T8R_qBmvNXKLyw,المسار للالكترونيات,http://facebook.com/wika5858,social_only,,Electronics,0
+429,city_baghdad_ChIJRbwyAi7WWRUR7PeDXZytxik,المستقبل للاتصالات,http://www.facebook.com/AFutureCenter,social_only,,Chargers,0
+430,city_baghdad_ChIJnYyDsdZ_VxURvE4ROitRJFw,المعرض العراقي للسيارات والطائرات الاسلكية - Iraqi RC Store,https://www.facebook.com/iraqircstore/,social_only,,Electronics,0
+431,city_baghdad_ChIJCzV1bBN5VxURHGhXjM4_r8M,المملكة للموبايل,https://www.facebook.com/%D8%A7%D9%84%D9%85%D9%85%D9%84%D9%83%D8%A9-%D9%84%D9%84%D9%85%D9%88%D8%A8%D8%A7%D9%8A%D9%84-1106624299352066/,social_only,,Chargers,0
+432,city_najaf_ChIJF-LDTwDXXhURTvDSMk78Twk,المنار للهواتف,https://www.facebook.com/almnarc,social_only,,Phones,0
+433,city_basra_ChIJL8Mms3WXxD8RnUKZagJu5pE,المنحة الذهبية للحاسبات,https://www.tiktok.com/@goldgrantit?_d=secCgwIARCbDRjEFSADKAESPgo8kQquE8/M/SXgoXNDGE7cwgR8fkYdpaytFJe5sFbhKFy9+4lHpwLsym/ZJnVjHJW42+dVFDbv0aTF76hgGgA=&language=en&sec_uid=MS4wLjABAAAAIEfQ9QBFXthMTV9IXe_G1FHQtjrHul6hBR9ETE_kgXbMdr1JDT09FXP5ivvnQMED&sec_user_id=MS4wLjABAAAAIEfQ9QBFXthMTV9IXe_G1FHQtjrHul6hBR9ETE_kgXbMdr1JDT09FXP5ivvnQMED&share_app_id=1233&share_author_id=6912681097591718918&share_link_id=46e85cdb-3ed4-4ac1-9e30-e20f06f05ae1&timestamp=1639571614&u_code=dga12g6bbkam48&user_id=6912681097591718918&utm_campaign=client_share&utm_medium=android&utm_source=copy&source=h5_m&_r=1,social_only,,Networking,0
+434,city_basra_ChIJNcO0UlqXxD8RtxYbh1cHHCA,الموسوي فون,https://www.instagram.com/m.h.z_110?igsh=Nmp5eWhkN2g0aDB5&utm_source=qr,social_only,,Phones,0
+435,city_najaf_ChIJB9KldADVXhURvD-Lm4T_GiM,الموسوي للهواتف النقالة,https://www.facebook.com/share/17pyskgrgp/,social_only,,Phones,0
+436,city_baghdad_ChIJDeqG7K13VxURqWNzjAFhAG0,الوصال ستور,https://www.facebook.com/alwisal.co,social_only,,Chargers,0
+437,city_basra_ChIJ97uHKwCXxD8RyAaXa5lFDcA,الوليد للحاسبات,https://www.facebook.com/profile.php?id=61558493835712&mibextid=LQQJ4d,social_only,,Electronics,0
+438,city_baghdad_ChIJGVbiatt9VxURZynDI93IVT8,الوليد للعب و مستلزمات الاطفال,https://www.facebook.com/alwaleed.toys/,social_only,,Gaming,0
+439,city_baghdad_ChIJA2Im1Yt_VxURZvhqoOvprcA,اليرموك فون,https://www.facebook.com/profile.php?id=100089905233894&mibextid=ZbWKwL,social_only,,Phones,0
+440,city_karbala_ChIJra3F4uBrWRUR3Q0FzSWSrDM,امازون كربلاء للبضائع الاوربية,https://www.instagram.com/ip.ozon2?igsh=djVmZjZjMjdraG5s,social_only,,Electronics,0
+441,city_najaf_ChIJHbhxps3VXhURZB1zWBvcSBI,امير للانترنت وكاميرات المراقبة والانترنيت الضوئي,https://www.facebook.com/%D8%A7%D9%85%D9%8A%D8%B1-%D9%84%D9%84%D8%A5%D9%86%D8%AA%D8%B1%D9%86%D8%AA-%D9%88%D9%83%D8%A7%D9%85%D9%8A%D8%B1%D8%A7%D8%AA-%D8%A7%D9%84%D9%85%D8%B1%D8%A7%D9%82%D8%A8%D8%A9-378058185921976/,social_only,,Cameras,0
+442,city_najaf_ChIJV3UR8CHXXhUR0WhHRMfyvds,انوار المدينه لتجارة المواد الكهربائيه,https://wa.me/message/ZSQPA5F5BU3XM1,social_only,,Electronics,0
+443,city_baghdad_ChIJT_IbdAB_VxURd6Tsqa9bwTQ,اي تي موبايل IT Mobile,https://www.instagram.com/it4mobile?igsh=MWY2Mzc2OWNkampwZg==,social_only,,Phones,0
+444,city_basra_ChIJVc7mTACXxD8Rvf80bWltUyw,اي شوب i shop,https://www.instagram.com/ishop.iq?igsh=aWR2bXhxajF4czhu,social_only,,Phones,0
+445,city_najaf_ChIJcxJe3hbXXhURv8QgPHYQXus,ايتونز سنتر,https://www.facebook.com/itunescenter,social_only,,Phones,0
+446,city_mosul_ChIJ41yaGz6VB0ARQ-DIOCGEObQ,بانوراما للموبايل,http://facebook.com/panomobi,social_only,,Phones,0
+447,city_baghdad_ChIJ3xvUYn95VxURrDY4YOE6TiU,بركو,https://instagram.com/parrko_iq?igshid=NTc4MTIwNjQ2YQ==,social_only,,Accessories,0
+448,city_karbala_ChIJiyi-PwBpWRURG3sRxGGVzjk,بلاك فون,https://www.instagram.com/phone.black1/profilecard/?igsh=MWYwbzBzeGgwNTA4ZQ==,social_only,,Accessories,0
+449,city_najaf_ChIJTQEgr-LXXhURqxcI7WF6XTQ,بوابه السلام لتجاره الهواتف النقاله,https://www.facebook.com/%D8%A8%D9%88%D8%A7%D8%A8%D8%A9-%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85-161100924241195/,social_only,,Phones,0
+450,city_baghdad_ChIJ01HwymKBVxUROV1nAQlL5wE,بيت المستقبل,https://m.facebook.com/lg.lifesgood.iraq/0772%20840%203070,social_only,,Smart Devices,0
+451,city_baghdad_ChIJ4SQt9ad5VxURFQPTzrWu6PQ,بيكسل تك Pixel Tech Store,https://instagram.com/pixel._tech?igshid=YmMyMTA2M2Y=,social_only,,Networking,0
+452,city_sulaymaniyah_ChIJIYCWcuUvAEARMSUKQcZDJDM,بڕاند هۆم,https://www.instagram.com/brand.home23?igsh=MWlrOGJ5YXVwZzJnag==,social_only,,Cameras,0
+453,city_sulaymaniyah_ChIJaV86mj4vAEARNnjXmozdbuI,بێتافۆن,https://www.facebook.com/BetaIPhone?mibextid=LQQJ4d,social_only,,Phones,0
+454,city_sulaymaniyah_ChIJE9ky41QtAEARD-qmMBs8wsE,بەرهەم فۆن ٢,https://www.facebook.com/barhamphone,social_only,,Phones,0
+455,city_baghdad_ChIJsWmTRIt5VxUR_G3-gqB0HfE,تاركت الكترو ستور,https://www.facebook.com/TargetElectroStore/,social_only,,Phones,0
+456,city_mosul_ChIJFdqaFEnrB0AR0cz0q-bD1Ys,تجهيزات مستلزمات الاسنان,https://instagram.com/bluetooth.iq?igshid=MDM4ZDc5MmU=,social_only,,Tablets,0
+457,city_nasiriyah_ChIJQbIQdyPj3T8Rcme4YoZwW0Q,تفاحة للحاسبات والالكترونيات,https://www.facebook.com/haji1973/,social_only,,Phones,0
+458,city_basra_ChIJifPFHPqhxD8RC9u1GDtDw24,تكنوفيشن,https://instagram.com/tchnovtion?igshid=MzRlODBiNWFlZA==,social_only,,Networking,0
+459,city_basra_ChIJPb9PtIGZxD8RDHvca3kUG30,ثائر للحاسـبات,https://opn.so/jFWiy,social_only,,Electronics,0
+460,city_baghdad_ChIJn1VHTwDXWRURamARGSLaC8s,ثري ستور العامرية,https://www.facebook.com/3Store.IQ?mibextid=LQQJ4d,social_only,,Chargers,0
+461,city_basra_ChIJHXU0v5OZxD8RZeM0QmvkhEQ,جرير سنتر للتسوق العائلي,https://www.facebook.com/%D8%AC%D8%B1%D9%8A%D8%B1-%D8%B3%D9%86%D8%AA%D8%B1-%D9%84%D9%84%D8%AA%D8%B3%D9%88%D9%82-%D8%A7%D9%84%D8%B9%D8%A7%D8%A6%D9%84%D9%8A-102119754937503/,social_only,,Electronics,0
+462,city_sulaymaniyah_ChIJ-a_dMfIzAEARZXLvxLzwt4w,جوانكارى و كۆمپیوتەری لەوەند,https://www.facebook.com/profile.php?id=100083210708541,social_only,,Smart Devices,0
+463,city_basra_ChIJrcrhDYeXxD8RF8agbV_hkog,جي ستور G store,https://www.instagram.com/gstore_iraq/,social_only,,Phones,0
+464,city_basra_ChIJJd59HNWhxD8RsnNImuVtYC0,حسن عزيز للبطاقات والألعاب,https://www.facebook.com/%202248252188757871,social_only,,Gaming,0
+465,city_baghdad_ChIJV2BfFKidVxURqxWzm1g86f0,حسين للموبايل,https://www.facebook.com/husseinformobile/,social_only,,Accessories,0
+466,city_basra_ChIJrw4XveyZxD8Ro-RHwgvhWwI,حيدر سيكا الاصل,https://instagram.com/haider.sega?igshid=MmU2YjMzNjRlOQ==,social_only,,Gaming,0
+467,city_basra_ChIJt-Pn4saYxD8RVv92qcLtYO8,حيدر كوكل للحاسبات,https://www.facebook.com/Hayder.google50/,social_only,,Electronics,0
+468,city_baghdad_ChIJaWlpaHB_VxUR0gH9ZS-Ey6w,خالد ART,https://www.facebook.com/khailedvoiec,social_only,,Electronics,0
+469,city_mosul_ChIJW1P7hrGVB0ARUphoMixmsDo,دبي للبصريات,https://www.instagram.com/dubai_optec?igsh=MWtoMG92MmNmd3R6aQ==,social_only,,Electronics,0
+470,city_kirkuk_ChIJgYnt4jApVRURh53NVyUR6Jo,دريم فون - Dream Phone,https://www.instagram.com/dream_1phone?igsh=MWVmaXBnc21tNW8xYQ==,social_only,,Phones,0
+471,city_karbala_ChIJP1hEnthrWRURQGXBgWgCI54,دكتور فون | Dr Phone,https://instagram.com/dr.phone111?igshid=YmMyMTA2M2Y=,social_only,,Accessories,0
+472,city_mosul_ChIJkXSS3cGVB0ARmfBEEtQiPFY,دَورة الحمّام,https://www.facebook.com/share/197oSWpsvi/,social_only,,Electronics,0
+473,city_erbil_ChIJ07q73IUhB0ARYMRfjXetxv8,دیجیتاڵ سیتی,https://www.facebook.com/share/1MQTh5Hw4L/?mibextid=wwXIfr,social_only,,Electronics,0
+474,city_baghdad_ChIJv167-Sl5VxURoXhQNszOYQA,رامبو للالكترونيات,https://www.facebook.com/Rainbow-phone-301508923893833,social_only,,Accessories,0
+475,city_najaf_ChIJH-hQIcLXXhUR1l5EIzw-jiE,رعد للموبايل,https://www.facebook.com/raadmobile?mibextid=ZbWKwL,social_only,,Phones,0
+476,city_nasiriyah_ChIJscmzJgDj3T8REPkTPE6BayM,زاركون,https://www.instagram.com/zircon215?igsh=MTdsd2FrcW1yNmNu,social_only,,Chargers,0
+477,city_sulaymaniyah_ChIJrUdApxotAEARZIrNX8iJxhw,زانستی کۆمپیوتەر,https://www.facebook.com/Science4Kurdish/,social_only,,Electronics,0
+478,city_baghdad_ChIJN1d1SBJ9VxUR4CUtUF-F-QE,زووم - ZOOM,https://www.facebook.com/zoom66street/,social_only,,Cameras,0
+479,city_karbala_ChIJBYS0391rWRURZupwx_ToOZg,سامسونك,https://www.facebook.com/ALALMYA.SAMSUNG.KARBALA/,social_only,,Electronics,0
+480,city_baghdad_ChIJo8CVLd99VxURvos6Z2KWQrs,سبيد ستور لخدمات الانترنت والحاسبات واكسسوارات الموبايل,https://linktr.ee/Speed.Store1,social_only,,PC Parts,0
+481,city_kirkuk_ChIJKYNkSxPZVBUR-iZI4_XBwVM,ستائر دمت,https://www.facebook.com/demet2021?mibextid=LQQJ4d,social_only,,Electronics,0
+482,city_baghdad_ChIJ-UZndGZ-VxURv9HxStnNJLg,سمارت,http://www.facebook.com/smart.iq2,social_only,,Phones,0
+483,city_baghdad_ChIJba94TeF4VxURo4R-7iaUsjk,سنتر بغداد للموبايلات,https://www.facebook.com/alkeesy.omer,social_only,,Phones,0
+484,city_baghdad_ChIJM7komkqBVxUR8ysLVfM3SCE,سور زحل / syber vision,https://l.facebook.com/l.php?u=https://www.bing.com/maps/default.aspx?v=2&pc=FACEBK&mid=8100&where1=%D8%A8%D8%BA%D8%AF%D8%A7%D8%AF%20-%20%D8%B4%D8%A7%D8%B1%D8%B9%20%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%87%20-%20%D9%85%D9%82%D8%A7%D8%A8%D9%84%20%D8%A7%D9%84%D8%AC%D8%A7%D9%85%D8%B9%D9%87%20%D8%A7%D9%84%D8%AA%D9%83%D9%86%D9%88%D9%84%D9%88%D8%AC%D9%8A%D8%A9%2C%20Baghdad%2C%20Iraq&FORM=FBKPL1&mkt=en-US&fbclid=IwZXh0bgNhZW0CMTAAYnJpZBExSlc5V1A0d0U5akhUWllPOXNydGMGYXBwX2lkEDIyMjAzOTE3ODgyMDA4OTIAAR4Dv9LzgSeqluo0wG9dig5edCSYvaYL7ao0VPA0nZv6er_aXLRzxZSfXbfLqw_aem_ukqQ2-pWxY1sjGdKQqtgaw&h=AT5MAmJ4LiBbLks2w-rFsp17ZHKJV1oObHk-nAsKE4TFyAxQtjgL3sNtU6_vjt885xdX84PEZ1mKdQ7F-fGfPtZedtqn4SXPSnddmEfQ0v8JJJqQyxTYlXDd2SQePrPfe0bh,social_only,,Cameras,0
+485,city_karbala_ChIJxRKxQ-BrWRURF3sxNmRWMnY,سوفينير,https://www.facebook.com/souvenirevents0/,social_only,,Chargers,0
+486,city_baghdad_ChIJ21GExAKCVxURvw1b11gevn8,سوق الالكترونيات بغداد,https://www.facebook.com/electronicssouqbaghdad/,social_only,,Phones,0
+487,city_sulaymaniyah_ChIJGZ4oCPctAEARS7H6g5uFeRQ,سوق السليمانية,https://www.instagram.com/rebin_galary?igsh=NnJjc2dqYms5aDFp&utm_source=qr,social_only,,Tablets,0
+488,city_baqubah_ChIJIx-6RjxLVhUR-2fBJrc64G8,سوني للانترنيت,https://www.facebook.com/profile.php?id=100003281608913&mibextid=ZbWKwL,social_only,,Cameras,0
+489,city_karbala_ChIJjQVPyT9rWRURRS9eeW_5dvE,سيلفي للموبايل - selfie mobile,https://instabio.cc/4022221nDUD33,social_only,,Phones,0
+490,city_baghdad_ChIJsbtOQJWDVxURlpHWhSsijPw,شاومي بغداد أنمار سنتر,https://www.facebook.com/%D8%B4%D8%A7%D9%88%D9%85%D9%8A-%D8%A8%D8%BA%D8%AF%D8%A7%D8%AF-Xaiomi-Bahgdad-148605392383783/,social_only,,Phones,0
+491,city_basra_ChIJd0s6T8eYxD8R8KuftoP-bYA,شركة الأنوار,https://www.instagram.com/alanwar.company.iq?igsh=YzkxZjRja3dwbGxk,social_only,,Phones,0
+492,city_baghdad_ChIJ59go-rl_VxURt0Vn2a5chG4,شركة الاحمدي,https://www.instagram.com/ah__ma__di1/profilecard/?igsh=MWh6bnp6YmMycWN3aQ==,social_only,,Accessories,0
+493,city_najaf_ChIJfZjy5qDXXhURxW0s6u_3DXY,شركة البرنس / لتجارة الهواتف النقالة والاكسسوارات ( جملة - مفرد ),https://m.facebook.com/prince.for.phone1,social_only,,Phones,0
+494,city_baghdad_ChIJAQAQHLaBVxUR8P3v69MYCZM,شركة الراية المضيئة لتجارة الأجهزة الكهربائية,https://www.facebook.com/1AlRaya,social_only,,Electronics,0
+495,city_najaf_ChIJBWtLi-TWXhURi4r5JjoRx-Y,شركة السعبري للهواتف النقاله والأكسسوارات,https://www.facebook.com/AL.saabri.Company/,social_only,,Phones,0
+496,city_najaf_ChIJjScMCvrXXhUR8nlIIBY5T8g,شركة الشريك للهواتف النقالة,https://www.facebook.com/share/fJ3sCwSfxHUZk5jZ/?mibextid=dGKdO6,social_only,,Phones,0
+497,city_baghdad_ChIJi6caiWKBVxURM1PZFZS0CmE,شركة اللمسه الذكيه,https://www.facebook.com/Smart.Touch.52,social_only,,Smart Devices,0
+498,city_erbil_ChIJgXfXPAAjB0ARzWz3H0oR0sE,شركة المتاجر الثلاثة,https://www.instagram.com/almatajir.althlath.ebl?igsh=MWxndXc1cDBwanVkbw%3D%3D&utm_source=qr,social_only,,Chargers,0
+499,city_baghdad_ChIJEe_FrIZ_VxURc19mWGCFd4Q,شركة الهاتف الاول,https://www.instagram.com/the_first_phone/,social_only,,Phones,0
+500,city_baghdad_ChIJ_xF98uuDVxUR5izwGmWAHt4,شركة الوضوح / الوكيل الرسمي لشركة نيكون في العراق,https://m.facebook.com/%D9%88%D9%83%D9%8A%D9%84-%D9%86%D9%8A%D9%83%D9%88%D9%86-%D9%81%D9%8A-%D8%A7%D9%84%D8%B9%D8%B1%D8%A7%D9%82-%D8%B4%D8%B1%D9%83%D8%A9-%D8%A7%D9%84%D9%88%D8%B6%D9%88%D8%AD-%D8%B9%D9%84%D8%A7%D8%A1-%D8%A7%D8%A8%D8%B1%D8%A7%D9%87%D9%8A%D9%85-%D8%A7%D9%84%D8%B9%D8%B2%D8%A7%D9%88%D9%8A-456678467741468/?ref=page_internal&mt_nav=0,social_only,,Cameras,0
+501,city_basra_ChIJm5tZTPqZxD8RBVCn_dFAHVQ,شركة اورنج للموبايلات والاكسسوارات,https://m.facebook.com/sms1.sms.sms/?ref=bookmarks,social_only,,Phones,0
+502,city_mosul_ChIJIwA4DnKVB0ARPJiqmToV1Kw,شركة اوسكار الموصل لتجارة الاخشاب,https://m.facebook.com/story.php?story_fbid=pfbid04JDyMraYfXBsixfYTF8NYN6k6P3ZmzZvjxfxN6U6iejtDNF2Td7wMidPgwgHJPugl&id=1385177708250228,social_only,,Phones,0
+503,city_kirkuk_ChIJm60sJgDXVBURuHIfTVKtCuk,شركة حوى للإتصالات HAWA COMPANY,https://www.instagram.com/7awa_c/?hl=ar,social_only,,Accessories,0
+504,city_najaf_ChIJvXR_iwLXXhURtvWd0g6AedA,شركة رقمي للهواتف,https://www.facebook.com/RAKMY11?mibextid=JRoKGi,social_only,,Phones,0
+505,city_kirkuk_ChIJIf0KrhbXVBUR5_vkDtwEsns,شركة روا لتجارة الهواتف النقالة,https://www.instagram.com/rawac.o?igsh=MTVibTgwdmVpajZhcQ==,social_only,,Electronics,0
+506,city_baghdad_ChIJi8iu9qSBVxURpKCMUbDyiWI,شركة سامسونك الوطنية,https://www.facebook.com/alwatnaa?mibextid=ZbWKwL,social_only,,Smart Devices,0
+507,city_najaf_ChIJhYjADgDXXhUR8FLt7j15jPY,شركة سما الغدير,https://www.instagram.com/sama.alghadeer?igsh=NTFoMW43eHF4b2Z2,social_only,,Phones,0
+508,city_najaf_ChIJ5zIoJIPXXhURLBdnq8bNeWk,شركة سهول الشرق للتجارة العامة,https://www.facebook.com/%D8%B4%D8%B1%D9%83%D8%A9-%D8%B3%D9%87%D9%88%D9%84-%D8%A7%D9%84%D8%B4%D8%B1%D9%82-%D9%84%D9%84%D8%AA%D8%AC%D8%A7%D8%B1%D8%A9-%D8%A7%D9%84%D8%B9%D8%A7%D9%85%D8%A9-104871210995054/,social_only,,Cameras,0
+509,city_najaf_ChIJsw6l1TbXXhURWXgr-ozgQug,شركة عالم الإقتصاد,https://www.facebook.com/eqtesadcom,social_only,,Smart Devices,0
+510,city_najaf_ChIJxdPWM63XXhUR3Jf2rPZrqQQ,شركة عطاء الحجار,https://t.me/alhajjar_1,social_only,,Phones,0
+511,city_erbil_ChIJtXiGG_cjB0AREgGGDC0QmTg,شركة عيون النسور,https://www.facebook.com/ALNSOOREYES.Co/,social_only,,Cameras,0
+512,city_kirkuk_ChIJ35sQ4kfXVBURn8xaxeVNXKc,شركة موبايلك للاتصالات,https://www.facebook.com/profile.php?id=100064033779591&mibextid=ZbWKwL,social_only,,Phones,0
+513,city_kirkuk_ChIJs4uu4A7WVBURd4wp_m5Lmng,شركة نوا للاتصالات - Nawa Co Telecom,http://www.facebook.com/nawa.company1,social_only,,Phones,0
+514,city_mosul_ChIJf9f-G-6VB0ARQoqboHaiNRY,شركة نينوى لتجارة الحاسبات,https://www.facebook.com/ninavahoffice/,social_only,,Electronics,0
+515,city_basra_ChIJ-y7YbRmXxD8ROcOyoiDG22s,شوبيني ستور,https://www.instagram.com/shopinisto/,social_only,,Phones,0
+516,city_baghdad_ChIJC8ohNAB5VxURZquWX-U8k5Q,شي ان العراق,https://www.instagram.com/shein__iq?igsh=MWJwbWF0aHV6YjNoZw==,social_only,,Chargers,0
+517,city_sulaymaniyah_ChIJ8ST0aNMtAEARl_gcIpfqGrc,شیرەمەنی چنگیان,https://www.facebook.com/Chngean/,social_only,,Tablets,0
+518,city_mosul_ChIJ_U0KYQCVB0ARmeIx0euwgh8,صدى ستور للموبايل,https://m.facebook.com/SadaStoreMOSUL/,social_only,,Phones,0
+519,city_najaf_ChIJk0p-_BTXXhURUdCoZEXkQfw,عادل للحاسوب,https://m.facebook.com/100057683820487/,social_only,,Electronics,0
+520,city_baghdad_ChIJ0d5ewHh-VxURNlvigrv715A,عاكسات نصر,https://www.facebook.com/nsrelc/,social_only,,Electronics,0
+521,city_basra_ChIJVdeYh3eZxD8R9qUkTYKVJAY,عالم الدجيتال,https://www.facebook.com/Oukitel-Iraq-%D8%A7%D9%88%D9%83%D8%AA%D9%84-%D8%A7%D9%84%D8%B9%D8%B1%D8%A7%D9%82-110343700443254/,social_only,,Cameras,0
+522,city_kirkuk_ChIJqxc8mg3XVBUR6ANIOMKNbBM,عبدالرحمن الشواني,https://www.facebook.com/company.Abdullrahman/,social_only,,Phones,0
+523,city_basra_ChIJp1vL3YeZxD8Rjhgmy9mSeV4,عبود ستور,https://instagram.com/ab_tm1992?igshid=NTc4MTIwNjQ2YQ==,social_only,,Phones,0
+524,city_baghdad_ChIJ3XF6Ihx8VxURaTfOjos1uF0,عدي للموبايل والانترنت,https://www.facebook.com/oday2014,social_only,,Phones,0
+525,city_baqubah_ChIJUQ_7Yy5JVhURwXT5gbP1okI,علاء الدوري للانترنيت,https://www.facebook.com/AlaaTatlesis?mibextid=ZbWKwL,social_only,,Gaming,0
+526,city_nasiriyah_ChIJaQkGaADl3T8RZpK4YC0IoSM,علي جعفر روضان جهاز,https://youtube.com/@ali.jafar1?si=8eMrzFL7GsKmBpcf,social_only,,Gaming,0
+527,city_kirkuk_ChIJnwfMsqHXVBURqVo-mCYqHnw,علي حويجة لخدمات الموبايل,https://www.instagram.com/alihwija_phone?igsh=NWNwZGV5cHo0aHk5,social_only,,Cameras,0
+528,city_najaf_ChIJ05_h5ULXXhURXiQkVczx2VM,"عمارة الطابق الاول مختبر سكما و عيادة Tom Cat ,,الطابق الثاني قاعه العاب الكترونية دراگون سنتر",https://www.facebook.com/profile.php?id=100091329586814&mibextid=LQQJ4d,social_only,,Gaming,0
+529,city_mosul_ChIJG3VW8zGVB0ARMThagLfGlwE,عمر ستور للاتصالات Omar-Store,https://www.facebook.com/O-Store-782362328609003/,social_only,,Electronics,0
+530,city_karbala_ChIJoza2CTlpWRURPLY9jgQfTDM,عين كربلاء للكاميرات وتقنية الاتصالات كربلاء,https://www.facebook.com/CCTV1080?mibextid=ZbWKwL,social_only,,Electronics,0
+531,city_erbil_ChIJP7tq0Y8jB0ARqxVlYDWZPF8,قامشلو للكمبيوتر,https://www.facebook.com/qamshlo.computer/,social_only,,Electronics,0
+532,city_karbala_ChIJ38nbqj9pWRURsdCdfvwCytU,قرطاسية حسن الاعرجي الفرع الرئيسي,https://www.facebook.com/%D9%82%D8%B1%D8%B7%D8%A7%D8%B3%D9%8A%D8%A9-%D8%AD%D8%B3%D9%86-%D8%A7%D9%84%D8%A7%D8%B9%D8%B1%D8%AC%D9%8A-1964297370263807/,social_only,,Electronics,0
+533,city_najaf_ChIJz1ucNP_XXhURlyEz59KeyPk,قيصر الحلو لخدمات الانترنت,https://www.facebook.com/kaahssr.h?mibextid=LQQJ4d,social_only,,Accessories,0
+534,city_baghdad_ChIJQwKJcWl_VxURgK2f7_crCaQ,كان دو اليابان Noble House CanDo Japan,https://www.facebook.com/CanDoIraq,social_only,,Electronics,0
+535,city_baghdad_ChIJu3LlK7d_VxURAm3luZpDQxo,كراند سنتر للموبايل,https://www.facebook.com/profile.php?id=100088201261791&mibextid=LQQJ4d,social_only,,Phones,0
+536,city_baghdad_ChIJBxPpE-2DVxUR-GKmWhK-Q1Y,كلاس للهواتف,https://www.facebook.com/classformobilenew?mibextid=LQQJ4d,social_only,,Accessories,0
+537,city_karbala_ChIJDeWFrxBpWRURI_RzfInHaYQ,كلمات المصطفى للاتصالات,https://www.facebook.com/kalimat.almostafa/,social_only,,Phones,0
+538,city_najaf_ChIJM4wCIwDXXhURpUpR4OUzaVI,كوكب الشمس للحاسبات,https://www.instagram.com/p/DMqO0Zko9PK/?igsh=MTZoOWU0M2xqYTdpag==,social_only,,PC Parts,0
+539,city_baghdad_ChIJ59Izjvp5VxURZuDd8OmizCU,لابتوب الشاوي ... بغداد ..,https://www.facebook.com/alshowi2,social_only,,Electronics,0
+540,city_basra_ChIJkbIRi4iZxD8R0sgX5ZmpPWY,لابتوب براند سنتر,https://www.facebook.com/Windows.Center.For.Computer/,social_only,,Electronics,0
+541,city_karbala_ChIJkxsmQxVpWRURIk0zvr7UcaA,لابتوب كربلاء,https://www.facebook.com/laptop.karbala,social_only,,Electronics,0
+542,city_nasiriyah_ChIJP3o8NXHj3T8RbsM3peP-nFU,لارسا موبايل,https://www.instagram.com/larsa_mobile1?igsh=MWxxNmIzZzl6NmR2Nw%3D%3D&utm_source=qr,social_only,,Phones,0
+543,city_baghdad_ChIJ819zDgB_VxURbrRZiLw4hZg,لوزين,https://www.instagram.com/luzineiq?igsh=NDFlemhiaXBxbWhk,social_only,,Electronics,0
+544,city_baqubah_ChIJscpghR9LVhURWbjYM5yFrBk,ليزر للالعاب,https://www.facebook.com/profile.php?id=100075949340526&mibextid=LQQJ4d,social_only,,Gaming,0
+545,city_basra_ChIJETXlVTKZxD8RRGMRRuiEHw8,مؤيد بلي ستيشن,https://instagram.com/m_play1?igshid=MmU2YjMzNjRlOQ==,social_only,,Electronics,0
+546,city_baghdad_ChIJVVxlt0d_VxURN80dUKjsbLQ,مارفل للاجهزة الكهربائية - المنصور,https://facebook.com/Marvelforelectronics/,social_only,,Electronics,0
+547,city_kirkuk_ChIJGwqPgjvXVBUReJq3DRoluC4,متجر 07 فون,http://www.instagram.com/07pho,social_only,,Phones,0
+548,city_nasiriyah_ChIJkSOZaW3j3T8RXNPcDpSul1A,متجر العاب اطفال,https://www.instagram.com/baba_nuyl7?igsh=MWRmbTZzem0zZzd3eQ==&utm_source=qr,social_only,,Gaming,0
+549,city_baghdad_ChIJH53PwvqBVxURQCPZfQ7co6A,متجر الكرادة للألعاب,https://www.facebook.com/karada.gaming/,social_only,,Gaming,0
+550,city_baghdad_ChIJY_DVbj55VxURxVV0ZnkJnI0,متجر تكنو ستور,https://www.facebook.com/Techno-store__%D8%AA%D9%83%D9%86%D9%88-%D8%B3%D8%AA%D9%88%D8%B1-410060252503172/,social_only,,Phones,0
+551,city_basra_ChIJt-4P1NOXxD8R5TcmdNvV048,متجر ماريو,https://www.instagram.com/super_mario_shop?igsh=MWRxY2FwN3RlNmhwcQ==,social_only,,Gaming,0
+552,city_mosul_ChIJ0dpYkdmVB0ARmFqhaogrfQY,متجر هدايا DANTEEL,https://instagram.com/danteel_shop?igshid=MzNlNGNkZWQ4Mg==,social_only,,Chargers,0
+553,city_karbala_ChIJsZk2PwBpWRUReyyXsvkKizk,متجر واوي,https://www.instagram.com/wawesoftware/profilecard/?igsh=MWhjbnRjcTkzbTFuaA==,social_only,,Gaming,0
+554,city_najaf_ChIJh5iBi-TWXhURh_Tn_QROxv0,مجمع,https://www.facebook.com/suniraq/,social_only,,PC Parts,0
+555,city_najaf_ChIJf3hwL7XXXhUR5zv-WtO6ML4,مجمع الشراع الترفيهي,http://facebook.com/al.shirae,social_only,,Phones,0
+556,city_karbala_ChIJu3ay4NBrWRURoPh0q-WInMs,مجمع الفهد لتجارة الاجهزة الكهربائية و المنزلية,https://web.facebook.com/Alfahadcompany1,social_only,,Networking,0
+557,city_nasiriyah_ChIJacARnC_j3T8R2l6ms884V-w,مجمع حيدر الكرواتي,https://www.facebook.com/305334576768555/,social_only,,Electronics,0
+558,city_karbala_ChIJHwpQcqlpWRURMYctH4j9zb4,مجمع ريحانة,https://www.facebook.com/%D9%85%D8%AC%D9%85%D8%B9-%D8%B1%D9%8A%D8%AD%D8%A7%D9%86%D8%A9-371836062976514/,social_only,,Chargers,0
+559,city_najaf_ChIJdSlt7szVXhURL_cWx8oNAOs,مجمع عباس الاحمر للموبايل,https://www.facebook.com/Abbasred1,social_only,,Phones,0
+560,city_najaf_ChIJ4YrDJA7WXhURWU2vuvFH0Io,مجمع عقيل علوية فرع الكوفة الاطارات والبطاريات والزيوت والفلاتر,https://www.facebook.com/profile.php?id=61558620193190&mibextid=LQQJ4d,social_only,,Electronics,0
+561,city_baghdad_ChIJdUNJs2KBVxURPeNb-5TpIHw,مجموعة الاجدل للحاسبات والاجهزة الالكترونيه,https://www.facebook.com/alajdalgrouppage/,social_only,,Electronics,0
+562,city_baghdad_ChIJEXd9XC1_VxURDj_9ZKjdWAo,محل كامرات مراقبة واجهزة لاسلكية,http://www.facebook.com/adnankaht,social_only,,Electronics,0
+563,city_karbala_ChIJ8YwjtuBrWRURiVURkk5tfQE,محلات المصطفى للبيع بالتقسيط,https://www.facebook.com/Dar.elelem,social_only,,Electronics,0
+564,city_sulaymaniyah_ChIJ5TGbagAtAEARvFrMZpCkPto,محلات بيوتي لتجارة الرفوف( بيوتي ره ف),https://www.facebook.com/share/1C5Z8ZUjJH/,social_only,,Phones,0
+565,city_karbala_ChIJkQ48Cy1rWRURrAFbYOuGbD0,محلات محمد منيدح,https://www.facebook.com/profile.php?id=100093606264104&mibextid=LQQJ4d,social_only,,Chargers,0
+566,city_baghdad_ChIJx2gCJgR5VxURW-SL6bpF_zY,مركز آرسنال,https://www.facebook.com/profile.php?id=100064383024138&mibextid=ZbWKwL,social_only,,Chargers,0
+567,city_basra_ChIJL4ynMtGXxD8RjhERS-3hm-k,مركز ابن المدينة,https://www.instagram.com/_glz/,social_only,,Accessories,0
+568,city_karbala_ChIJQ7GTTllrWRURaIRPrYQnL1o,مركز البارون للموبايل,https://instagram.com/centerbaron?igshid=MWQ1ZGUxMzBkMA==,social_only,,Phones,0
+569,city_baghdad_ChIJLfW8Iqx5VxURKw0W9jm9Wi8,مركز الباشا 2 للموبايل,https://www.facebook.com/%D9%85%D8%B1%D9%83%D8%B2-%D8%A7%D9%84%D8%A8%D8%A7%D8%B4%D8%A7-2-%D9%84%D9%84%D9%85%D9%88%D8%A8%D8%A7%D9%8A%D9%84-391409854526085/,social_only,,Chargers,0
+570,city_basra_ChIJKbaRkRyZxD8Rk5wgct4CCpU,مركز التقنية الضوئية,https://www.facebook.com/355081768236816/posts/359416927803300/,social_only,,Electronics,0
+571,city_karbala_ChIJJ4vrHOxrWRURV9eTsrihSS8,مركز الجزيرة للحاسبات,https://www.facebook.com/%D9%85%D8%B1%D9%83%D8%B2-%D8%A7%D9%84%D8%AC%D8%B2%D9%8A%D8%B1%D8%A9-%D9%84%D9%84%D8%AD%D8%A7%D8%B3%D8%A8%D8%A7%D8%AA-143262149128749/,social_only,,Electronics,0
+572,city_kirkuk_ChIJ-eTiFb7XVBUR3Zq4JgYkQec,مركز السفير للصوتيات الفرع 2,http://www.facebook.com/z.safeer,social_only,,Cameras,0
+573,city_baghdad_ChIJsw4Hf4p_VxURf7XBxYQx2Yk,مركز الضمان للهواتف النقالة,https://l.facebook.com/l.php?u=https%3A%2F%2Ffb.me%2Faldhmancenter&h=AT22yp-YgknUDHMlTXb57l8nxbhwZydgXAUOVQryjK-6Yv6_C-opf6DpiuWW9TCBFCkekOrQr6-x7c53RgUgDFkOB_NF9r2msT7HWnXOlCVHTDaWu3pWwA6UYhiWFX8gsfcZ7A,social_only,,Accessories,0
+574,city_basra_ChIJ1bkxaVmXxD8RvFaBcWXzat4,مركز العراب للهواتف النقالة,http://www.facebook.com/alarrab.center,social_only,,Electronics,0
+575,city_baghdad_ChIJGSaycwB9VxURUIExqzUGU-Q,مركز العربية,https://www.instagram.com/alarabiya_mobile?igsh=MWQxd3UzajlpNGJyeg%3D%3D&utm_source=qr,social_only,,Phones,0
+576,city_kirkuk_ChIJkwjOj0HXVBURP3KSEJMsmcE,مركز العمدة للاكسسوارات الموبايل,https://www.facebook.com/share/1GR1dCxvRs/,social_only,,Phones,0
+577,city_mosul_ChIJve20AgDrB0AR6rHgDH0HJnU,مركز المستقبل,https://www.instagram.com/the.futur2022?igsh=ZmZ1OW55ZXYyMnpk,social_only,,Accessories,0
+578,city_karbala_ChIJCzNZ3ixvWRUR72mHcCapEPA,مركز المهندس غسان اليساري للانترنت والتصوير وصيانة المبايل,https://www.facebook.com/gassan.ahmed1993,social_only,,Electronics,0
+579,city_baqubah_ChIJkcgClalLVhUR-afUNfY0TGI,مركز الموج2 للموبايل,https://www.facebook.com/Almaoj2.Mobile/,social_only,,Accessories,0
+580,city_erbil_ChIJk3HyejMiB0ARoWdhFF0meYc,مركز الهدايا,https://www.instagram.com/giftcenter.erbil/,social_only,,Cameras,0
+581,city_karbala_ChIJpU5n-yNrWRUR0iqQM1xcI2I,مركز الو,https://www.facebook.com/%D9%85%D8%B1%D9%83%D8%B2-%D8%A7%D9%84%D9%88-Center-Alo-1609539569322636/,social_only,,Electronics,0
+582,city_karbala_ChIJMexX_l5pWRURbItiqpjnBL8,مركز الوان للأتصالات,https://www.facebook.com/alwankarbalaa/,social_only,,Phones,0
+583,city_baghdad_ChIJlb9YCXnVWRURTyhJwAn33AI,مركز باندا للالعاب الالكترونية,https://www.facebook.com/5r5i.5ic/,social_only,,Electronics,0
+584,city_baghdad_ChIJlXLak2h_VxURNPyrb6n49K8,مركز تي موبايل,https://instagram.com/t_mobilecenter1,social_only,,Phones,0
+585,city_basra_ChIJH-_OQOifxD8RT7ZnZ86YDs4,مركز حيدر,https://www.facebook.com/85ha.cc?mibextid=ZbWKwL,social_only,,Electronics,0
+586,city_nasiriyah_ChIJcehBDSTj3T8R8nkucm6i3C8,مركز حيدر تكنولوجيا للموبايل,https://web.facebook.com/haydertech1/,social_only,,Phones,0
+587,city_baghdad_ChIJl0XKcqTVWRUR5OeUK7nDfUo,مركز حيدر سمارت,http://facebook.com/haidersmart216,social_only,,Smart Devices,0
+588,city_basra_ChIJs2kZx4CZxD8R5l3y7Nr-hZ4,مركز دبي للهواتف النقالة,https://www.facebook.com/100010334250408,social_only,,Phones,0
+589,city_karbala_ChIJJdIiGNFrWRURwppMbKdhQMo,مركز زيرو ون للحاسبات,https://www.facebook.com/zero1iq/,social_only,,Electronics,0
+590,city_basra_ChIJb4YDXNSZxD8Rpg8UmkZFEoA,مركز عالم المستعمل,https://www.instagram.com/aleman__pc?igsh=OGFsdTFteG9tNGI3,social_only,,PC Parts,0
+591,city_baqubah_ChIJbZOCYaFMVhURtxzp3xCJiaM,مركز علاء للالعاب,https://www.facebook.com/alaa1.center/,social_only,,Phones,0
+592,city_karbala_ChIJkw97IR1rWRURM_rTCaOG5w8,مركز فؤاد فون الاتصالات,https://m.facebook.com/fouadphonecenter,social_only,,Phones,0
+593,city_kirkuk_ChIJ_UQdRf4pVRUR5kwgDoFpVC4,مركز كناري لخدمات الحاسبات,https://www.facebook.com/kanary.co/?fref=ts,social_only,,Electronics,0
+594,city_najaf_ChIJKfuVvnDXXhURoApJER6sVzw,مركز ليزر لتجارة اكسسوارات الموبايل,https://t.me/lezar_centar,social_only,,Accessories,0
+595,city_mosul_ChIJURJO33-VB0AR2690YI9CHwY,مريم ستايل,https://www.facebook.com/profile.php?id=100089617051077&mibextid=ZbWKwL,social_only,,Phones,0
+596,city_kirkuk_ChIJCSGqXkDVVBURqxgWjjPEU5g,مستر فيب كركوك,http://instagram.com/mr.vape.kirkuk,social_only,,Electronics,0
+597,city_karbala_ChIJ37wM3CNqWRUR8PoJMUX4M7U,مصور النورس,https://www.facebook.com/%D9%85%D8%B5%D9%88%D8%B1-%D8%A7%D9%84%D9%86%D9%88%D8%B1%D8%B3-507861642935648/,social_only,,Phones,0
+598,city_baghdad_ChIJC1AyGbaBVxURpWNt8tGtwsQ,معرض الشامل للاثاث,http://www.facebook.com/alshamil.furniture98,social_only,,Chargers,0
+599,city_baghdad_ChIJyRh5Ofl_VxURt7MyyJwVgVU,معرض المستقبل التسوق عبر الانترنت,https://www.facebook.com/share/17E8i41hc7/,social_only,,Cameras,0
+600,city_baqubah_ChIJEcC8klhNVhURBUHfXkkzOg8,معرض المهندس للبيع بالتقسيط المريح,https://wa.me/message/EG6W4VYCII4DG1,social_only,,Accessories,0
+601,city_baghdad_ChIJbb5Od7LXWRURMep26ylssR8,معرض سمارت هوم - smart home,https://instagram.com/smart.home33?igshid=YmMyMTA2M2Y=,social_only,,Smart Devices,0
+602,city_karbala_ChIJNWEJgcdrWRURkdar1U5vBNo,معرض سنايبر للالعاب الالكترونية,https://www.facebook.com/profile.php?id=100064089609842,social_only,,Gaming,0
+603,city_basra_ChIJLwTNS_qZxD8RZ0bgno-hQ-Q,معرض عالم الوطني,https://www.facebook.com/alwataniworld/,social_only,,Phones,0
+604,city_kirkuk_ChIJ14z2Mg_WVBURT60mK581lH0,معرض عبدالخالق,https://www.facebook.com/Abdukhaleqstore/,social_only,,Electronics,0
+605,city_kirkuk_ChIJC_kBTS3XVBUReV7K-AgQi28,معرض عبدالخالق 2 || Abdulkhaleq Store 2,https://www.facebook.com/Abdukhaleqstore/,social_only,,Electronics,0
+606,city_mosul_ChIJMw32Sr2VB0ARdO4QU78nd4Q,معرض ميكاواط للصناعيات والانارة الحديثة Mega Watt,https://www.facebook.com/megawatt2021/,social_only,,Networking,0
+607,city_baghdad_ChIJH0hFfIZ9VxURQ36wAfDgV4k,معرض نورسين,https://www.facebook.com/%D9%85%D8%B9%D8%B1%D8%B6-%D9%86%D9%88%D8%B1%D8%B3%D9%8A%D9%86-440517262787265/,social_only,,Cameras,0
+608,city_basra_ChIJkxHnTlGZxD8Rj-3CrdcCSyk,"مكتب A plus للطابعات والأحبار ""مركز الصيانة""",https://www.facebook.com/profile.php?id=100083290247403&mibextid=LQQJ4d,social_only,,PC Parts,0
+609,city_mosul_ChIJgxdwpciVB0ARLb9i6g1KnZU,مكتب Galaxy للبرمجيات,https://www.facebook.com/galaxy.office,social_only,,Gaming,0
+610,city_karbala_ChIJgUcTr5dpWRUR5pdhwB-2Fyo,مكتب GamePlay,https://www.facebook.com/gameplaybest1/,social_only,,Gaming,0
+611,city_baghdad_ChIJJ4ptitx9VxUR1kEaaLKigBY,مكتب Mhm اكسسوارت موبايل,http://www.facebook.com/adv.center,social_only,,Phones,0
+612,city_baghdad_ChIJ29fPagB5VxURKGvueKFjufk,مكتب exotech,https://www.instagram.com/exotech.iq?igsh=MXM0YzBlMjNxeHR2dg==,social_only,,Networking,0
+613,city_mosul_ChIJwTM9dQCVB0ARs4jGsFeEb3I,مكتب أوسكار للموبايل,https://www.facebook.com/share/1YCzYfnxAS/?mibextid=wwXIfr,social_only,,Phones,0
+614,city_karbala_ChIJ4w63BWBpWRURHWTix2YOl5Q,مكتب الاتحاد للكامرات,https://m.facebook.com/aleetehad/?ref=bookmarks,social_only,,Cameras,0
+615,city_baqubah_ChIJUzVoLfhNVhURU1CqvQ9BuUc,مكتب الاثير لصيانة وبيع الهواتف,https://t.me/MrFox2,social_only,,Cameras,0
+616,city_karbala_ChIJjQEnAexrWRURt4xQcECGz_g,مكتب الاجيال للحاسبات و الاجهزة الرقميه,http://www.facebook.com/alajialofcomputers,social_only,,Electronics,0
+617,city_najaf_ChIJb7ZKIvjXXhURniLAmSY6Xd4,مكتب الاصدقاء للحاسبات والموبايل وصيانة الاجهزه الذكيه,https://www.facebook.com/www.officefriendes?mibextid=ZbWKwL,social_only,,Electronics,0
+618,city_basra_ChIJ8S0fruShxD8R8h3rgMmSY-k,مكتب الامير ستور ( بأدارة ملا حارث ),https://t.me/quql3,social_only,,Cameras,0
+619,city_mosul_ChIJH-g2lCWVB0ARw-gI0HRwI5k,مكتب الجزيرة,https://www.facebook.com/AljazeeraHd/,social_only,,Networking,0
+620,city_mosul_ChIJkyC6bYKVB0ARyORNnxsW6EA,مكتب الحيالي لتجارة كامرات المراقبة,https://www.facebook.com/alhayalicamera11?mibextid=LQQJ4d,social_only,,Cameras,0
+621,city_najaf_ChIJu3dyXgDXXhURP3TefoyQFE0,مكتب الرضا للبيع بالتقسيط,https://www.facebook.com/share/17oChSwmXf/,social_only,,PC Parts,0
+622,city_najaf_ChIJ43JCjk7XXhUR5H7ipIxUTBU,مكتب الروان,https://www.instagram.com/alrwan_mobile?igsh=MW5lM2xwcDUxZ3lwcg==,social_only,,Accessories,0
+623,city_karbala_ChIJ9yJ8_QdpWRURsYfyav4iObE,مكتب الزمان للموبايل ومنفذ النقيب كي كارد,https://www.facebook.com/share/p/17rdcKw6fj/,social_only,,Cameras,0
+624,city_kirkuk_ChIJj6AABYjXVBURhJH8-PqwDWU,مكتب السلام للحاسبات وكاميرات المراقبة الحديثه,https://www.facebook.com/ali090ali,social_only,,Electronics,0
+625,city_nasiriyah_ChIJk9ik7U3j3T8Rfe390FUxtU0,مكتب الطاووس للإلكترونيات,https://www.facebook.com/profile.php?id=100024443717812,social_only,,Electronics,0
+626,city_mosul_ChIJyZVdnemVB0ARL2V_KL0lKpE,مكتب العالمي لكاميرات المراقبة,https://www.facebook.com/global.mosul/,social_only,,Electronics,0
+627,city_mosul_ChIJIe6FHgCXB0ARMEyGgLk_Ar0,مكتب الماس فون كوكجلي,https://www.facebook.com/profile.php?id=100090094180836&mibextid=LQQJ4d,social_only,,Cameras,0
+628,city_najaf_ChIJVS1avBzXXhURxY611CBgk0w,مكتب المشكاة لتكنولوجيا الحاسبات والشبكات والمراقبة,https://m.facebook.com/ALMSHKAT2012/?locale2=ar_AR,social_only,,Electronics,0
+629,city_baghdad_ChIJFzpULaZ-VxURZAaTUDdyvuI,مكتب المعرفة للتكنلوجيا,https://www.facebook.com/%D8%B4%D8%B1%D9%83%D8%A9-%D8%A7%D9%84%D9%85%D8%B9%D8%B1%D9%81%D8%A9-%D9%84%D9%84%D8%AA%D9%83%D9%86%D9%88%D9%84%D9%88%D8%AC%D9%8A%D8%A7-1670007493254352/,social_only,,Electronics,0
+630,city_najaf_ChIJh32LGD_XXhURJlbiw6u6q1I,مكتب الملك لخدمات الانترنت وكامرات,https://www.facebook.com/hussein95iq,social_only,,Cameras,0
+631,city_mosul_ChIJtyCKFuXrB0ARMzDRzTmQLkg,مكتب الملوك للإلكترونيات,https://www.facebook.com/almlook3/,social_only,,Phones,0
+632,city_mosul_ChIJXasHiC-VB0AR21KnarOZkl8,مكتب المميز,https://www.facebook.com/share/1QjmmeMv4d/,social_only,,Electronics,0
+633,city_karbala_ChIJmcQ1mkdpWRURpb7KKl0CQJg,مكتب المهندس للطباعة والاستنساخ,https://m.facebook.com/Offic.Engineer/,social_only,,Electronics,0
+634,city_mosul_ChIJq1CE4V-VB0ARWXmIlJx4IJs,مكتب المورد الطبي,https://www.facebook.com/ALMawridMMB/,social_only,,Cameras,0
+635,city_najaf_ChIJvdgejhXVXhUR9BJTYSAPCiA,مكتب الموعود للحاسوب والانترنت,http://www.facebook.com/mou3ood,social_only,,PC Parts,0
+636,city_baghdad_ChIJK300fcJ5VxURCfk0AH_ByBQ,مكتب النبأ للالعاب الالكترونية(Adel Games),http://www.facebook.com/219816428906338,social_only,,Gaming,0
+637,city_mosul_ChIJE-2F5K2XB0AR1PwJ1CZCh3k,مكتب اياد العراقي للموبايل,http://www.fb.com/ayad.22,social_only,,Tablets,0
+638,city_mosul_ChIJB87QMMuVB0AROHfFIf3dm_g,مكتب برشلونة,https://www.facebook.com/haetm.kald,social_only,,Electronics,0
+639,city_najaf_ChIJpSpoSv_VXhURGdZdsb7GZSk,مكتب تقنية للحاسبات,http://www.facebook.com/taqania.net,social_only,,PC Parts,0
+640,city_basra_ChIJnz3mPJaXxD8RziJG87phpDA,مكتب جبل,https://www.facebook.com/jabl.office/,social_only,,Gaming,0
+641,city_baghdad_ChIJkaAns2KBVxUR5shyb8RfaJM,مكتب حيدر ماستر للحاسبات,https://www.facebook.com/HayderMasterOffice?mibextid=JRoKGi,social_only,,PC Parts,0
+642,city_baghdad_ChIJf3oQGIx4VxUR4CInht-HRFs,مكتب دانية,https://www.facebook.com/pages/category/Marketing-Agency/%D9%85%D9%83%D8%AA%D8%A8-%D8%AF%D8%A7%D9%86%D9%8A%D8%A9-530197446994646/,social_only,,Gaming,0
+643,city_baghdad_ChIJDbGJVMZ_VxURcJvWNKGJpzM,مكتب دكتور اي تي للحاسبات والأنترنت,https://facebook.com/dritirq,social_only,,PC Parts,0
+644,city_mosul_ChIJzWzBr_6XB0ARHgfS7hCGAEc,مكتب دودو فون,https://www.facebook.com/profile.php?id=100024455779127&mibextid=LQQJ4d,social_only,,Electronics,0
+645,city_basra_ChIJy2mNSfqZxD8RwlYPBdlWW7M,مكتب ديار الحاسوب,https://www.facebook.com/diar.alhasoob/,social_only,,Electronics,0
+646,city_najaf_ChIJqW8J3gbWXhUR9Qh3gGh5Noo,مكتب سبايدر للإلكترونيات,https://www.instagram.com/spider_najaf/,social_only,,Electronics,0
+647,city_baqubah_ChIJTQ_w219NVhURoQYplUZG_JU,مكتب سوفت سنتر,https://www.facebook.com/Soft-Center-103157311666641/,social_only,,Gaming,0
+648,city_baqubah_ChIJp4EzIxlLVhURk6TeEZDUNAw,مكتب صدى التقنية للموبايلات والحاسبات,http://www.facebook.com/Sada.ALteqnia,social_only,,Phones,0
+649,city_baghdad_ChIJp7Clnk55VxURGP5VKzjikSY,مكتب عبدالله الشمري,https://www.facebook.com/share/1Bnejpkd8q/,social_only,,Electronics,0
+650,city_baqubah_ChIJ--AvRg1LVhURg4scw2msSqw,مكتب عزت عشتار للالكترونيات,http://www.facebook.com/ezzat.ishtar.1,social_only,,Phones,0
+651,city_kirkuk_ChIJe3gSuzrXVBURt2gFAyZ98sA,مكتب عين المستقبل للالكترونيات,https://www.instagram.com/futureeye25?igsh=MXZhYnJ5dzNrbXF4cg==,social_only,,Cameras,0
+652,city_mosul_ChIJqw4EI3nqB0AR588gbJxgPVQ,مكتب غيث نت,https://www.facebook.com/ghaith.khalid,social_only,,Electronics,0
+653,city_baghdad_ChIJM9NQ2KcqWBUREJVLDWrwNkM,مكتب قتيبة للحاسبات والألعاب الألكترونية,https://m.facebook.com/Kuteba84/,social_only,,Electronics,0
+654,city_karbala_ChIJr7vt3kNtWRURuGC2SllVagc,مكتب كرستال للموبايلات و الحاسبات و كامرات المراقبه,https://www.facebook.com/%D9%85%D9%83%D8%AA%D8%A8-%D9%83%D8%B1%D8%B3%D8%AA%D8%A7%D9%84-%D9%84%D9%84%D9%85%D9%88%D8%A8%D8%A7%D9%8A%D9%84%D8%A7%D8%AA-%D9%88-%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D8%A8%D8%A7%D8%AA-102878877999647/,social_only,,PC Parts,0
+655,city_najaf_ChIJC3GUDajXXhURVjXL-boMmYE,مكتب كوكل لتقنيات الإنترنت,https://www.facebook.com/googlenajaf/,social_only,,PC Parts,0
+656,city_baghdad_ChIJKZBi6JR_VxURMasdkZ2QhQg,مكتب لابتوب اون لاين للحاسبات,https://www.facebook.com/lapt0p0nline?mibextid=LQQJ4d,social_only,,Electronics,0
+657,city_mosul_ChIJ2_8AGtKTB0ARVnMIjHxLUWI,مكتب لاي فاي,https://www.facebook.com/lifi.maktab,social_only,,Electronics,0
+658,city_kirkuk_ChIJs1bxNSnZVBURMwwKL3kQqIk,مكتب ليان,https://www.facebook.com/sarmad.wahab.9,social_only,,Gaming,0
+659,city_kirkuk_ChIJw_dphULZVBURJqXOwETh_9M,مكتب ميترو للموبايل و الانترنيت,https://www.facebook.com/Metronet0/,social_only,,Accessories,0
+660,city_najaf_ChIJ-SN_SeTWXhURDSeFU4sqbME,مكتبة الحسام,https://www.facebook.com/alhusam.iq?mibextid=ZbWKwL,social_only,,Gaming,0
+661,city_najaf_ChIJbXqrvDsrXxURKNwb-D4zAVQ,مكتبة المجتبى للطباعه والاستنساخ,https://www.facebook.com/almujtaba2017/,social_only,,PC Parts,0
+662,city_najaf_ChIJ5_8P-3TXXhURL8AGjtvK6Jk,مكتبة الناسخ,https://www.instagram.com/p/CUAwwFcq4pw/?utm_medium=copy_link,social_only,,Gaming,0
+663,city_mosul_ChIJZc0vh96XB0ARRKSBC8fHxtc,مكتبة شكراً,https://t.me/sv1900,social_only,,Cameras,0
+664,city_basra_ChIJ-6PlduOXxD8Rug81eI1qctY,مكتبة كورال,https://instagram.com/coral.bookstore?igshid=YmMyMTA2M2Y=,social_only,,Gaming,0
+665,city_najaf_ChIJqYmqJ0fXXhURRnKIzUF5F30,منتظر للحاسبات,https://www.facebook.com/%D9%85%D9%86%D8%AA%D8%B8%D8%B1-%D9%84%D9%84%D8%AD%D8%A7%D8%B3%D8%A8%D8%A7%D8%AA-%D9%88%D8%A7%D9%84%D9%85%D9%88%D8%A8%D8%A7%D9%8A%D9%84-%D8%A8%D9%84%D8%AA%D9%82%D8%B5%D9%8A%D8%AF-343086969477623/,social_only,,PC Parts,0
+666,city_basra_ChIJO0QNxDmXxD8RrgX4BfILFOw,منعم للإلكترونيات والهدايا,http://facebook.com/mun3m.tech,social_only,,Electronics,0
+667,city_erbil_ChIJBdQU5_MhB0ARAI18St7CY2U,موبایل ادریس,https://solo.to/edreesmobile,social_only,,Cameras,0
+668,city_baqubah_ChIJBRlC4yqzVxUR9FW5LTeCvEw,ميلانو,https://www.facebook.com/profile.php?id=100018044837435&mibextid=D4KYlr,social_only,,Phones,0
+669,city_sulaymaniyah_ChIJH1h9wC0tAEAR99tEtQmgn6s,مۆبایل و کۆمپیوتەرى کاروان pkf4pc,https://www.facebook.com/jihanymobail,social_only,,PC Parts,0
+670,city_sulaymaniyah_ChIJJZLVW34tAEAR--dDAcvZGds,مۆبایلی بەرهەم,https://www.facebook.com/barhammobile,social_only,,Electronics,0
+671,city_sulaymaniyah_ChIJcYDUCNUtAEARzKOw432kEIw,مۆبایلی کاسۆ,https://www.instagram.com/kaso_mobile,social_only,,Phones,0
+672,city_sulaymaniyah_ChIJr3wx4DQvAEARm4ylnYq_PVE,مۆبایلی گۆگڵ پڵەس,https://www.facebook.com/googleplusshop,social_only,,Phones,0
+673,city_basra_ChIJ9YD8f02ZxD8RancfaPGgyMs,نايت لايت للكهربائيات والانارة الحديثة - NIGHT LIGHT,https://instagram.com/n3niq,social_only,,Networking,0
+674,city_karbala_ChIJ5cty9VFpWRURPE0tAN0qXvA,نبيل موبايل,https://instagram.com/nabil_mobil?igshid=YmMyMTA2M2Y=,social_only,,PC Parts,0
+675,city_baghdad_ChIJ2-MssXeDVxURIbUXPoq4O7s,نورس ستور,https://www.facebook.com/SkyCenterMobile?mibextid=LQQJ4d,social_only,,Accessories,0
+676,city_basra_ChIJlb7L7huXxD8R1-Uu2cqzLOM,نيتورك فون,https://instagram.com/ii10dd?utm_medium=copy_link,social_only,,Accessories,0
+677,city_erbil_ChIJq6qqqmoiB0ARmWI-l-a69rE,نيروسوفت موبايل و كومبيوتر,http://www.facebook.com/nerosoft1,social_only,,Phones,0
+678,city_baghdad_ChIJ53WjEAB_VxURrpPryqNE_eM,نيكست ليفل -المنصور,https://www.instagram.com/nextlevel_iq?igsh=NTd3c2gzamljN25z,social_only,,Electronics,0
+679,city_kirkuk_ChIJIwTyaCcrVRURporGOc5VxxU,نەبەز فۆن Nabaz phone,https://www.facebook.com/pages/Nabaz-Phone/324328334104279,social_only,,Accessories,0
+680,city_baghdad_ChIJY9u4vGKBVxUR1Fa3RgKe0t4,هافت العراق,https://www.facebook.com/havit.iq/,social_only,,Networking,0
+681,city_sulaymaniyah_ChIJy5fqAcQpAEARhxYXiR_1MSQ,هەرزان بازاڕ و مۆبیلیات و کارەبایی سەردەم Mobyliati Sardam,http://www.facebook.com/sardam.co,social_only,,Phones,0
+682,city_kirkuk_ChIJw1OwwQjWVBURoqf45FBIxns,ورشة سالار,https://www.facebook.com/SalarServiceCenter,social_only,,Electronics,0
+683,city_baghdad_ChIJK8BVyLJ9VxURnXQhXxLeDuc,وميض البرق للحاسبات و البليستايشن و منظومات المراقبة,https://m.facebook.com/wameedhalbarq,social_only,,Networking,0
+684,city_mosul_ChIJh6T0XQCVB0ARH8f9PJfWD9g,يسر الزهور للبصريات,https://www.instagram.com/yusroptical?igsh=cHdhNDV2ZWNvMzF2&utm_source=qr,social_only,,Electronics,0
+685,city_erbil_ChIJX44AyyUjB0ARXQk7bIUy4Dc,پێشانگای نۆڤا NOVA,https://m.facebook.com/Novaaccessories2/,social_only,,Accessories,0
+686,city_sulaymaniyah_ChIJs8vmerQrAEARvkMwQ-ZZf-M,پێشانگای کارەبایی و ئاووئاوەڕۆی فەردین و خالد,https://www.facebook.com/profile.php?id=100086001492921,social_only,,Cameras,0
+687,city_sulaymaniyah_ChIJFRNiJgApAEARuOUmdWpgEo0,پێشانگای کوردستان,http://www.tiktok.com/@peshangaikurdstan,social_only,,Electronics,0
+688,city_sulaymaniyah_ChIJySckoDEtAEARKNbqHoEnTBM,چاویلكە‌سازی زانكۆ,https://www.facebook.com/zanko.optical?mibextid=LQQJ4d,social_only,,Electronics,0
+689,city_erbil_ChIJH530F1YiB0AR3bVl65u7D8E,کۆمپانیای جیهانی کامێرا - عالم الكاميرا,https://www.facebook.com/cameraworldco,social_only,,Electronics,0
+690,city_erbil_ChIJEWZhmzkjB0ARS5CT_xVJHVg,کۆمپانیای نەوزاد,http://www.facebook.com/nawzad.a.alaadin,social_only,,Electronics,0

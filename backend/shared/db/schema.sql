@@ -88,6 +88,8 @@ CREATE TABLE IF NOT EXISTS catalog_products (
   category_path JSONB NOT NULL DEFAULT '[]'::jsonb,
   source_url TEXT NOT NULL,
   image_url TEXT,
+  primary_image_url TEXT,
+  images_json JSONB NOT NULL DEFAULT '[]'::jsonb,
   availability TEXT NOT NULL,
   currency TEXT NOT NULL,
   live_price DOUBLE PRECISION,
@@ -244,4 +246,11 @@ CREATE TABLE IF NOT EXISTS audit_logs (
   sync_run_id TEXT,
   details JSONB NOT NULL DEFAULT '{}'::jsonb,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS site_settings (
+  id TEXT PRIMARY KEY,
+  payload JSONB NOT NULL DEFAULT '{}'::jsonb,
+  updated_by TEXT NOT NULL,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );

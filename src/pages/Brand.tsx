@@ -1,16 +1,20 @@
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
+import { Seo } from "@/components/Seo";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/EmptyState";
 import { ProductCard } from "@/components/ProductCard";
 import { useDataStore } from "@/lib/dataStore";
-import { getBrandDetail, type BrandDetailResponse } from "@/lib/catalogApi";
+import { useBrandProductsQuery, useBrandSummaryQuery } from "@/lib/catalogQueries";
+import { isValidPrice } from "@/lib/prices";
 import { OFFICIAL_DEALER_BRANCHES } from "@/lib/officialDealers";
+import type { BrandDealer } from "@/lib/types";
 import { getBrandBackground } from "@/lib/brandBackgrounds";
 import { useBrandLogo } from "@/hooks/useBrandLogo";
-import type { BrandDealer } from "@/lib/types";
+import { BrandPageSkeleton } from "@/components/skeletons/PageSkeletons";
+import { BackendErrorState } from "@/components/BackendErrorState";
 import {
   ChevronLeft,
   ExternalLink,
@@ -23,33 +27,63 @@ import {
   Building2,
   Package,
 } from "lucide-react";
+import { breadcrumbJsonLd, itemListJsonLd, truncateMeta } from "@/lib/seo";
 
 const Brand = () => {
   const { slug } = useParams<{ slug: string }>();
   const { brands, products } = useDataStore();
+  const [visibleProductCount, setVisibleProductCount] = useState(24);
   const fallbackBrand = brands.find((b) => b.slug === slug);
-  const [brandDetail, setBrandDetail] = useState<BrandDetailResponse | null>(null);
+  const brandSummaryQuery = useBrandSummaryQuery(slug);
+  const brandProductsQuery = useBrandProductsQuery(slug, visibleProductCount, 0);
+  const brandSummary = brandSummaryQuery.data;
+  const brandProducts = brandProductsQuery.data;
 
-  useEffect(() => {
-    if (!slug) return;
-    let active = true;
-    getBrandDetail(slug)
-      .then((payload) => {
-        if (!active) return;
-        setBrandDetail(payload);
-      })
-      .catch(() => {
-        if (!active) return;
-        setBrandDetail(null);
-      });
-
-    return () => {
-      active = false;
-    };
-  }, [slug]);
-
-  const brand = fallbackBrand ?? brandDetail?.brand;
+  const brand = fallbackBrand ?? brandSummary?.brand;
+  const brandName = brand?.brandName;
   const logoSrc = useBrandLogo(brand?.slug, brand?.brandName, "default");
+
+  const related = useMemo(
+    () =>
+      brandProducts?.items ??
+      (brandName
+        ? products.filter((p) => p.brand?.toLowerCase() === brandName.toLowerCase())
+        : []),
+    [brandName, brandProducts?.items, products],
+  );
+  const storeNames = useMemo(
+    () => [...new Set((brandSummary?.topStores ?? []).map((store) => store.name).filter(Boolean))],
+    [brandSummary?.topStores],
+  );
+  const topCategories = useMemo(
+    () => [...new Set(related.map((product) => product.category).filter(Boolean))].slice(0, 4),
+    [related],
+  );
+  const pricedProducts = useMemo(
+    () =>
+      related
+        .map((product) => product.priceValue)
+        .filter(isValidPrice),
+    [related],
+  );
+
+  if ((brandSummaryQuery.isLoading || brandProductsQuery.isLoading) && !brand) {
+    return <BrandPageSkeleton />;
+  }
+
+  if (!brand && (brandSummaryQuery.isError || brandProductsQuery.isError)) {
+    return (
+      <BackendErrorState
+        title="تعذّر تحميل صفحة البراند"
+        description="ما گدرنا نوصل لبيانات البراند من السيرفر. جرّب إعادة المحاولة أو شوف باقي البراندات."
+        error={(brandSummaryQuery.error as Error | null) ?? (brandProductsQuery.error as Error | null)}
+        onRetry={() => {
+          void brandSummaryQuery.refetch();
+          void brandProductsQuery.refetch();
+        }}
+      />
+    );
+  }
 
   if (!brand) {
     return (
@@ -70,21 +104,16 @@ const Brand = () => {
     );
   }
 
-  const related =
-    brandDetail?.products ??
-    products.filter(
-      (p) => p.brand?.toLowerCase() === brand.brandName.toLowerCase(),
-    );
   const branches = OFFICIAL_DEALER_BRANCHES.filter((b) => b.brandSlug === brand.slug);
   const isVerified = brand.verificationStatus === "verified";
   const background = getBrandBackground(brand.slug);
   const initial = brand.brandName.slice(0, 1);
   const logoClassName = brand.slug === "apple" ? "brightness-0" : "";
-  const storeNames = [...new Set((brandDetail?.stores ?? []).map((store) => store.name).filter(Boolean))];
-  const topCategories = [...new Set(related.map((product) => product.category).filter(Boolean))].slice(0, 4);
-  const pricedProducts = related
-    .map((product) => product.priceValue)
-    .filter((value): value is number => typeof value === "number" && Number.isFinite(value));
+  const totalProducts = brandSummary?.totalProducts ?? related.length;
+  const brandPath = `/brand/${encodeURIComponent(brand.slug)}`;
+  const brandDescription = truncateMeta(
+    `${brand.brandName} في العراق: منتجات، وكلاء، وفروع موثوقة داخل حاير. ${totalProducts.toLocaleString("en-US")} منتج مفهرس وروابط شراء من متاجر محلية.`,
+  );
   const insights = {
     storeNames,
     topCategories,
@@ -94,6 +123,27 @@ const Brand = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-[linear-gradient(180deg,hsl(var(--surface))_0%,hsl(var(--background))_14%,hsl(var(--surface))_100%)]">
+      <Seo
+        title={`${brand.brandName} في العراق — أسعار ووكلاء`}
+        description={brandDescription}
+        path={brandPath}
+        image={logoSrc}
+        structuredData={[
+          breadcrumbJsonLd([
+            { name: "الرئيسية", path: "/" },
+            { name: "البراندات", path: "/brands" },
+            { name: brand.brandName, path: brandPath },
+          ]),
+          itemListJsonLd(
+            related.slice(0, 12).map((product) => ({
+              name: product.name,
+              path: `/product/${encodeURIComponent(product.canonicalProductId || product.id)}`,
+              image: product.images?.[0] ?? product.imageUrl,
+              description: product.priceText ?? product.category,
+            })),
+          ),
+        ]}
+      />
       <TopNav />
 
       {/* Breadcrumbs */}
@@ -277,7 +327,7 @@ const Brand = () => {
           <div className="mt-6 grid grid-cols-2 gap-2.5 md:grid-cols-4">
             <StatTile icon={Building2} value={branches.length} label="فرع رسمي" />
             <StatTile icon={MapPin} value={brand.cities.length} label="مدينة" />
-            <StatTile icon={Package} value={related.length} label="منتج مفهرس" />
+            <StatTile icon={Package} value={totalProducts} label="منتج مفهرس" />
             <StatTile
               icon={ShieldCheck}
               value={isVerified ? "✓" : "—"}
@@ -311,7 +361,7 @@ const Brand = () => {
               {branches.map((b) => (
                 <article
                   key={b.id}
-                  className="group flex flex-col overflow-hidden rounded-2xl border border-border/70 bg-background/85 transition-all duration-500 hover:-translate-y-1 hover:border-primary/35 hover:shadow-soft-xl"
+                  className="group flex flex-col overflow-hidden rounded-2xl border border-border/70 bg-background/85 transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] duration-500 hover:-translate-y-1 hover:border-primary/35 hover:shadow-soft-xl"
                 >
                   <div className="relative aspect-video w-full overflow-hidden bg-muted">
                     {b.mainImage ? (
@@ -382,9 +432,9 @@ const Brand = () => {
           <h2 className="mb-4 flex items-center gap-2 text-xl font-bold border-b border-border pb-3">
             <Package className="h-5 w-5 text-primary" />
             منتجات {brand.brandName} على حاير
-            {related.length > 0 && (
+            {totalProducts > 0 && (
               <span className="rounded-full bg-primary/10 text-primary px-2 py-0.5 text-xs font-bold">
-                {related.length}
+                {totalProducts}
               </span>
             )}
           </h2>
@@ -394,11 +444,24 @@ const Brand = () => {
               description="رح نضيف منتجات قريباً من المحلات والوكلاء الرسميين."
             />
           ) : (
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {related.map((p) => (
-                <ProductCard key={p.id} product={{ ...p, score: 0 }} />
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {related.map((p) => (
+                  <ProductCard key={p.id} product={{ ...p, score: 0 }} compact />
+                ))}
+              </div>
+              {slug && totalProducts > related.length && (
+                <div className="mt-5 flex justify-center">
+                  <Button
+                    variant="outline"
+                    onClick={() => setVisibleProductCount((count) => count + 24)}
+                    disabled={brandProductsQuery.isFetching}
+                  >
+                    {brandProductsQuery.isFetching ? "جارٍ التحميل..." : "عرض المزيد"}
+                  </Button>
+                </div>
+              )}
+            </>
           )}
         </section>
 
@@ -444,7 +507,7 @@ function RelatedBrandLink({ brand }: { brand: BrandDealer }) {
   return (
     <Link
       to={`/brand/${brand.slug}`}
-      className="group relative flex items-center gap-3 overflow-hidden rounded-2xl border border-border/70 bg-background/85 p-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:bg-background hover:shadow-soft-lg"
+      className="group relative flex items-center gap-3 overflow-hidden rounded-2xl border border-border/70 bg-background/85 p-3 transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:bg-background hover:shadow-soft-lg"
     >
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/0 via-primary/0 to-primary/[0.06] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
@@ -484,7 +547,7 @@ function RelatedBrandLink({ brand }: { brand: BrandDealer }) {
         </div>
       </div>
 
-      <ChevronLeft className="relative h-4 w-4 shrink-0 text-muted-foreground/40 transition-all duration-300 group-hover:-translate-x-0.5 group-hover:text-primary" />
+      <ChevronLeft className="relative h-4 w-4 shrink-0 text-muted-foreground/40 transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] duration-300 group-hover:-translate-x-0.5 group-hover:text-primary" />
     </Link>
   );
 }

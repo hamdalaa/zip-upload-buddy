@@ -8,7 +8,12 @@ import {
   parseGenericProductDetailPage,
 } from "./extractors.js";
 
-const PRODUCT_URL_HINTS = [/\/product(?:\/|$|\?)/i, /\/item(?:\/|$|\?)/i, /\/p\//i];
+const PRODUCT_URL_HINTS = [
+  /\/product(?:\/|$|\?)/i,
+  /\/item(?:\/|$|\?)/i,
+  /\/p\//i,
+  /\/shop\/[^/?#]+/i,
+];
 const LISTING_URL_HINTS = [
   /\/shop(?:\/|$|\?)/i,
   /\/products?(?:\/|$|\?)/i,

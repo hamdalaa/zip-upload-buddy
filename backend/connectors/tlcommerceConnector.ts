@@ -135,6 +135,7 @@ function normalizeTlcommerceProduct(
   const quantity = parseNumberish(item.quantity) ?? 0;
   const preOrder = item.pre_order === true || item.pre_order === 1 || item.pre_order === "1";
   const now = nowIso();
+  const images = collectTlcommerceImages(item, baseUrl);
 
   return {
     storeId,
@@ -147,7 +148,9 @@ function normalizeTlcommerceProduct(
     sellerId: stringify(item.seller) ?? undefined,
     categoryPath: [],
     sourceUrl: new URL(`/products/${slug}`, baseUrl).toString(),
-    imageUrl: absolutize(item.thumbnail_image ?? item.image_from_gallery, baseUrl),
+    imageUrl: images[0],
+    primaryImageUrl: images[0],
+    images,
     availability: preOrder ? "preorder" : quantity > 0 ? "in_stock" : "out_of_stock",
     currency: "IQD",
     livePrice,
@@ -164,6 +167,22 @@ function normalizeTlcommerceProduct(
     skuTokens: [],
     rawPayload: item,
   };
+}
+
+function collectTlcommerceImages(item: Record<string, unknown>, baseUrl: string): string[] {
+  const gallery = Array.isArray(item.gallery) ? item.gallery : Array.isArray(item.images) ? item.images : [];
+  const values = [
+    item.image_from_gallery,
+    item.main_image,
+    item.thumbnail_image,
+    ...gallery,
+  ];
+
+  return [...new Set(
+    values
+      .map((value) => absolutize(value, baseUrl))
+      .filter((value): value is string => typeof value === "string" && value.length > 0),
+  )];
 }
 
 function applyDiscount(

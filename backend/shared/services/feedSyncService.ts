@@ -1,9 +1,12 @@
 import { buildSearchDocument } from "../catalog/searchDocuments.js";
+import { extractDomain, extractRootDomain, parseNumberish } from "../catalog/normalization.js";
+import { normalizeCatalogPrice } from "../catalog/pricing.js";
 import { summarizeStoreSize } from "../catalog/storeSizing.js";
 import { createId, nowIso } from "../catalog/normalization.js";
 import type { CatalogProductDraft, PartnerFeedRecord } from "../catalog/types.js";
 import type { CatalogRepository } from "../repositories/contracts.js";
 import type { SearchEngine } from "../search/contracts.js";
+import { guardedFetch, readJsonResponseBounded } from "../security/outboundRequestGuard.js";
 import { CoverageService } from "./coverageService.js";
 
 export interface FeedSyncInput {
@@ -38,7 +41,7 @@ export class FeedSyncService {
     if (!store) throw new Error(`Store ${storeId} not found.`);
 
     try {
-      const payload = await fetchJsonFeed(input.sourceUrl, input.authHeaders);
+      const payload = await fetchJsonFeed(input.sourceUrl, input.authHeaders, resolveAllowedRootDomain(input.sourceUrl));
       const products = mapFeedProducts(storeId, payload, input.fieldMap);
       await this.repository.replaceCatalogSnapshot(storeId, products, [], []);
       const summary = summarizeStoreSize({
@@ -95,18 +98,25 @@ export class FeedSyncService {
   }
 }
 
-async function fetchJsonFeed(sourceUrl: string, authHeaders?: Record<string, string>): Promise<unknown[]> {
-  const response = await fetch(sourceUrl, {
-    headers: {
-      accept: "application/json,text/plain,*/*",
-      ...(authHeaders ?? {}),
+async function fetchJsonFeed(
+  sourceUrl: string,
+  authHeaders?: Record<string, string>,
+  allowedRootDomain?: string,
+): Promise<unknown[]> {
+  const response = await guardedFetch(sourceUrl, {
+    accept: "application/json,text/plain,*/*",
+    allowedRootDomain,
+    init: {
+      headers: {
+        ...(authHeaders ?? {}),
+      },
+      signal: AbortSignal.timeout(30_000),
     },
-    signal: AbortSignal.timeout(30_000),
   });
   if (!response.ok) {
     throw new Error(`Failed to fetch partner feed ${sourceUrl}: ${response.status}`);
   }
-  const payload = await response.json();
+  const payload = await readJsonResponseBounded<unknown>(response);
   if (Array.isArray(payload)) return payload;
   if (payload && typeof payload === "object") {
     const items = (payload as Record<string, unknown>).items;
@@ -135,6 +145,7 @@ function mapFeedProducts(
     const availabilityRaw = String(mapField(source, "availability") ?? "").toLowerCase();
     const livePrice = numberOrUndefined(mapField(source, "price"));
     const originalPrice = numberOrUndefined(mapField(source, "originalPrice"));
+    const images = collectFeedImages(source, fieldMap);
     products.push({
       storeId,
       sourceProductId: String(mapField(source, "id") ?? sourceUrl),
@@ -145,7 +156,9 @@ function mapFeedProducts(
       sku: stringOrUndefined(mapField(source, "sku")),
       categoryPath: stringToPath(stringOrUndefined(mapField(source, "category"))),
       sourceUrl,
-      imageUrl: stringOrUndefined(mapField(source, "imageUrl") ?? mapField(source, "image")),
+      imageUrl: images[0],
+      primaryImageUrl: images[0],
+      images,
       availability: availabilityRaw.includes("out")
         ? "out_of_stock"
         : availabilityRaw.includes("pre")
@@ -170,6 +183,29 @@ function mapFeedProducts(
   return products;
 }
 
+function collectFeedImages(source: Record<string, unknown>, fieldMap?: Record<string, string>): string[] {
+  const read = (logical: string) => {
+    const sourceKey = fieldMap?.[logical] ?? logical;
+    return source[sourceKey];
+  };
+
+  const values = [
+    read("primaryImageUrl"),
+    read("imageUrl"),
+    read("image"),
+    read("thumbnail"),
+    ...(Array.isArray(read("images")) ? read("images") as unknown[] : []),
+    ...(Array.isArray(read("gallery")) ? read("gallery") as unknown[] : []),
+  ];
+
+  return [...new Set(
+    values
+      .filter((value): value is string => typeof value === "string")
+      .map((value) => value.trim())
+      .filter(Boolean),
+  )];
+}
+
 function stringOrUndefined(value: unknown): string | undefined {
   if (typeof value !== "string") return undefined;
   const trimmed = value.trim();
@@ -177,15 +213,15 @@ function stringOrUndefined(value: unknown): string | undefined {
 }
 
 function numberOrUndefined(value: unknown): number | undefined {
-  if (typeof value === "number" && Number.isFinite(value)) return value;
-  if (typeof value === "string") {
-    const parsed = Number(value.replace(/[,،]/g, ""));
-    return Number.isFinite(parsed) ? parsed : undefined;
-  }
-  return undefined;
+  return normalizeCatalogPrice(parseNumberish(value));
 }
 
 function stringToPath(value?: string): string[] {
   if (!value) return [];
   return value.split(/[>/|]+/).map((item) => item.trim()).filter(Boolean);
+}
+
+function resolveAllowedRootDomain(url: string): string | undefined {
+  const domain = extractDomain(url);
+  return domain ? extractRootDomain(domain) : undefined;
 }

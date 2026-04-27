@@ -47,6 +47,7 @@ export class RecordingQueue {
   readonly probeJobs: Array<{ storeId: string; actor: string }> = [];
   readonly syncJobs: Array<{ storeId: string; actor: string }> = [];
   readonly discoveryJobs: Array<{ actor: string }> = [];
+  readonly maintenanceJobs: Array<{ actor: string; task: "reindex-identities" | "audit-quality" }> = [];
 
   async enqueueProbe(payload: { storeId: string; actor: string }) {
     this.probeJobs.push(payload);
@@ -58,5 +59,9 @@ export class RecordingQueue {
 
   async enqueueDiscoveryRescan(payload: { actor: string }) {
     this.discoveryJobs.push(payload);
+  }
+
+  async enqueueMaintenance(payload: { actor: string; task: "reindex-identities" | "audit-quality" }) {
+    this.maintenanceJobs.push(payload);
   }
 }

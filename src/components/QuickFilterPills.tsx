@@ -29,7 +29,7 @@ export function QuickFilterPills() {
               key={f.id}
               type="button"
               onClick={() => go(f.params)}
-              className="filter-pill press shrink-0"
+              className="filter-pill ios-tap shrink-0"
             >
               <Icon className="h-3.5 w-3.5" />
               {f.label}

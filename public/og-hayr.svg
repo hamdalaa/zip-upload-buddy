@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">حاير — دليل إلكترونيات العراق</title>
+  <desc id="desc">بطاقة مشاركة لموقع حاير.</desc>
+  <rect width="1200" height="630" fill="#eef9ff"/>
+  <path d="M0 0h1200v630H0z" fill="url(#grid)"/>
+  <defs>
+    <pattern id="grid" width="72" height="72" patternUnits="userSpaceOnUse">
+      <path d="M72 0H0v72" fill="none" stroke="#cce7f4" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect x="70" y="72" width="1060" height="486" rx="56" fill="#fff" fill-opacity=".68" stroke="#c7deea"/>
+  <text x="1020" y="170" direction="rtl" text-anchor="end" font-family="Arial, sans-serif" font-size="54" font-weight="700" fill="#071223">حاير</text>
+  <text x="1020" y="305" direction="rtl" text-anchor="end" font-family="Arial, sans-serif" font-size="86" font-weight="800" fill="#071223">دليل إلكترونيات العراق</text>
+  <text x="1020" y="390" direction="rtl" text-anchor="end" font-family="Arial, sans-serif" font-size="34" font-weight="500" fill="#38516a">ابحث، قارن، وافتح المحل المناسب قبل ما تلف السوق.</text>
+  <g transform="translate(110 130)">
+    <rect width="320" height="320" rx="44" fill="#f8fdff" stroke="#c7deea"/>
+    <path d="M154 57 253 92l-17 78 52 58-72 18-38 67-59-52-79 2 34-72-30-72 79-10z" fill="#fff" stroke="#d9ebf3" stroke-width="3"/>
+    <circle cx="154" cy="114" r="15" fill="#e7d7bd"/>
+    <circle cx="154" cy="114" r="5" fill="#00a7d8"/>
+    <circle cx="121" cy="183" r="15" fill="#e7d7bd"/>
+    <circle cx="121" cy="183" r="5" fill="#00a7d8"/>
+    <circle cx="221" cy="223" r="15" fill="#e7d7bd"/>
+    <circle cx="221" cy="223" r="5" fill="#00a7d8"/>
+  </g>
+</svg>

@@ -1,4 +1,5 @@
 import type { Area, Category, ProductIndex } from "./types";
+import { isValidPrice } from "./prices";
 
 // ============================================================
 // Brand aliases — bilingual (en/ar) + common misspellings.
@@ -251,7 +252,7 @@ export function searchProducts(products: ProductIndex[], opts: SearchOpts): Scor
   const meaningful = qTrim ? scored.filter((p) => p.score >= MIN_SCORE) : scored;
 
   if (sort === "price") {
-    return meaningful.sort((a, b) => (a.priceValue ?? Infinity) - (b.priceValue ?? Infinity));
+    return meaningful.sort((a, b) => (isValidPrice(a.priceValue) ? a.priceValue : Infinity) - (isValidPrice(b.priceValue) ? b.priceValue : Infinity));
   }
   if (sort === "freshness") {
     return meaningful.sort((a, b) => new Date(b.crawledAt).getTime() - new Date(a.crawledAt).getTime());
@@ -269,7 +270,7 @@ export function searchProducts(products: ProductIndex[], opts: SearchOpts): Scor
     if (b.score !== a.score) return b.score - a.score;
     const tDiff = new Date(b.crawledAt).getTime() - new Date(a.crawledAt).getTime();
     if (tDiff !== 0) return tDiff;
-    return (a.priceValue ?? Infinity) - (b.priceValue ?? Infinity);
+    return (isValidPrice(a.priceValue) ? a.priceValue : Infinity) - (isValidPrice(b.priceValue) ? b.priceValue : Infinity);
   });
 }
 
@@ -293,7 +294,7 @@ export function groupComparable(results: ScoredProduct[]): {
   const loose: ScoredProduct[] = [];
   for (const [key, items] of buckets) {
     if (items.length >= 2) {
-      const sorted = [...items].sort((a, b) => (a.priceValue ?? Infinity) - (b.priceValue ?? Infinity));
+      const sorted = [...items].sort((a, b) => (isValidPrice(a.priceValue) ? a.priceValue : Infinity) - (isValidPrice(b.priceValue) ? b.priceValue : Infinity));
       groups.push({ key, brand: sorted[0].brand, representativeName: sorted[0].name, items: sorted });
     } else {
       loose.push(items[0]);

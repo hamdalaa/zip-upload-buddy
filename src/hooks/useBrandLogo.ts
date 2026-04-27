@@ -9,7 +9,7 @@ import {
 export function useBrandLogo(slug?: string, brandName?: string, variant: TheSvgVariant = "default") {
   const [logoSrc, setLogoSrc] = useState<string | undefined>(() => {
     if (!slug) return undefined;
-    return getTheSvgUrl(slug, variant) ?? getBrandLogo(slug);
+    return getBrandLogo(slug) ?? getTheSvgUrl(slug, variant);
   });
 
   useEffect(() => {
@@ -19,7 +19,12 @@ export function useBrandLogo(slug?: string, brandName?: string, variant: TheSvgV
     }
 
     const fallback = slug ? getBrandLogo(slug) : undefined;
-    const warmStart = slug ? getTheSvgUrl(slug, variant) ?? fallback : fallback;
+    if (fallback) {
+      setLogoSrc(fallback);
+      return;
+    }
+
+    const warmStart = slug ? getTheSvgUrl(slug, variant) : undefined;
     setLogoSrc(warmStart);
 
     let active = true;

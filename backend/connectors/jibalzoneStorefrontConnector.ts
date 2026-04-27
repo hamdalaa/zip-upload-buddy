@@ -73,16 +73,28 @@ export const jibalzoneStorefrontConnector: CatalogConnector = {
   },
 };
 
-function parseJibalzoneProductPage(storeId: string, productUrl: string, html: string): CatalogProductDraft | null {
+export function parseJibalzoneProductPage(storeId: string, productUrl: string, html: string): CatalogProductDraft | null {
   const titleMatch = html.match(/<h1[^>]*class="product_title[^"]*"[^>]*>([\s\S]*?)<\/h1>/i);
   const title = cleanHtml(titleMatch?.[1] ?? "");
   if (!title) return null;
 
-  const priceMatches = [...html.matchAll(/class="jibal-Price-amount amount"[^>]*>([\s\S]*?)<\/span>/gi)]
-    .map((match) => parseNumberish(cleanHtml(match[1] ?? "")))
+  const mainPriceHtml =
+    (html.match(/<p[^>]*class="price"[^>]*data-entity-id=['"]main['"][^>]*>([\s\S]*?)<\/p>/i) ?? [])[1] ??
+    (html.match(/<meta[^>]*property=["']product:price:amount["'][^>]*content=["']([^"']+)["'][^>]*>/i) ?? [])[1] ??
+    "";
+  const mainCurrency =
+    (html.match(/<meta[^>]*property=["']product:price:currency["'][^>]*content=["']([^"']+)["'][^>]*>/i) ?? [])[1] ??
+    "IQD";
+  const priceMatches = [...mainPriceHtml.matchAll(/class="jibal-Price-amount amount"[^>]*>([\s\S]*?)<\/span>/gi)]
+    .map((match) => parseJibalPrice(cleanHtml(match[1] ?? ""), mainCurrency))
     .filter((value): value is number => typeof value === "number" && Number.isFinite(value));
-  const livePrice = priceMatches.length > 0 ? Math.min(...priceMatches) : undefined;
-  const originalPrice = priceMatches.length > 1 ? Math.max(...priceMatches) : livePrice;
+  const fallbackPrice = priceMatches.length > 0
+    ? undefined
+    : parseJibalPrice(cleanHtml(mainPriceHtml), mainCurrency);
+  const validPrices = (priceMatches.length > 0 ? priceMatches : [fallbackPrice])
+    .filter((value): value is number => typeof value === "number" && Number.isFinite(value));
+  const livePrice = validPrices.length > 0 ? Math.min(...validPrices) : undefined;
+  const originalPrice = validPrices.length > 1 ? Math.max(...validPrices) : livePrice;
 
   const availabilityText = cleanHtml(
     (html.match(/Availability[\s\S]{0,150}?<span[^>]*>([\s\S]*?)<\/span>/i) ?? [])[1] ?? "",
@@ -94,6 +106,7 @@ function parseJibalzoneProductPage(storeId: string, productUrl: string, html: st
 
   const inStock = /instock/i.test(html) || /In Stock/i.test(availabilityText);
   const outOfStock = /outofstock|out of stock|sold out|unavailable/i.test(html) || /Out of Stock/i.test(availabilityText);
+  const images = extractJibalzoneImages(html);
 
   return {
     storeId,
@@ -105,7 +118,9 @@ function parseJibalzoneProductPage(storeId: string, productUrl: string, html: st
     sku: sku || undefined,
     categoryPath: categoryTrail,
     sourceUrl: productUrl,
-    imageUrl: (html.match(/class="wp-post-image"[^>]*src="([^"]+)"/i) ?? [])[1] ?? undefined,
+    imageUrl: images[0],
+    primaryImageUrl: images[0],
+    images,
     availability: inStock ? "in_stock" : outOfStock ? "out_of_stock" : "unknown",
     currency: "IQD",
     livePrice,
@@ -124,6 +139,29 @@ function parseJibalzoneProductPage(storeId: string, productUrl: string, html: st
       availabilityText,
     },
   };
+}
+
+function parseJibalPrice(value: string, currency: string): number | undefined {
+  const parsed = parseNumberish(value);
+  if (typeof parsed !== "number" || !Number.isFinite(parsed)) return undefined;
+  if (/\biqd\b|د\.?ع|دينار/i.test(value)) return parsed;
+  if (/usd/i.test(currency) || /\busd\b|\$/i.test(value)) return Math.round(parsed * 1515.68);
+  return parsed;
+}
+
+function extractJibalzoneImages(html: string): string[] {
+  const candidates = [
+    ...[...html.matchAll(/<meta[^>]*property=["']og:image["'][^>]*content=["']([^"']+)["'][^>]*>/gi)].map((match) => match[1]),
+    ...[...html.matchAll(/class=["'][^"']*jibal-product-gallery__image[^"']*["'][\s\S]{0,500}?<img[^>]*src=["']([^"']+)["']/gi)].map((match) => match[1]),
+    ...[...html.matchAll(/<img[^>]*src=["']([^"']+)["'][^>]*(?:images-slider|images-thumb|product-gallery|wp-post-image)[^>]*>/gi)].map((match) => match[1]),
+    ...[...html.matchAll(/<img[^>]*(?:images-slider|images-thumb|product-gallery|wp-post-image)[^>]*src=["']([^"']+)["'][^>]*>/gi)].map((match) => match[1]),
+  ];
+  return [...new Set(
+    candidates
+      .filter((value): value is string => typeof value === "string")
+      .map((value) => value.trim())
+      .filter((value) => /^https?:\/\//i.test(value) && !/emoji|favicon|logo|payment|app-store/i.test(value)),
+  )];
 }
 
 function cleanHtml(input: string): string {

@@ -20,6 +20,7 @@ export interface DataStoreValue {
     trending: ProductIndex[];
     latest: ProductIndex[];
   };
+  prefetchProductIndex: () => Promise<void>;
   registerProducts: (products: ProductIndex[]) => void;
   addShop: (
     input: Omit<Shop, "id" | "slug" | "seedKey" | "createdAt" | "updatedAt" | "discoverySource" | "verified" | "verificationStatus"> & { verified?: boolean },

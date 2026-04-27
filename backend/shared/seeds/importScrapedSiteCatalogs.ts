@@ -8,6 +8,7 @@ import {
   nowIso,
   slugify,
 } from "../catalog/normalization.js";
+import { normalizeCatalogPrice } from "../catalog/pricing.js";
 import type {
   CatalogProductDraft,
   OfferDraft,
@@ -200,11 +201,11 @@ function toProductDraft(
   const categoryPath = row.product_type?.trim() ? [row.product_type.trim()] : [];
   const livePrice =
     typeof row.min_price === "number"
-      ? row.min_price
+      ? normalizeCatalogPrice(row.min_price)
       : minNumber(variants.map((variant) => variant.livePrice));
   const originalPrice =
     typeof row.min_compare_at_price === "number" && typeof livePrice === "number" && row.min_compare_at_price > livePrice
-      ? row.min_compare_at_price
+      ? normalizeCatalogPrice(row.min_compare_at_price)
       : maxNumber(variants.map((variant) => variant.originalPrice));
   const availability = row.in_stock === true ? "in_stock" : row.in_stock === false ? "out_of_stock" : "unknown";
   const sku = variants.find((variant) => variant.sku)?.sku;
@@ -270,6 +271,11 @@ function toVariantDraft(row: ScrapedVariantRow, timestamp: string): ProductVaria
       ["option3", row.option3],
     ].filter((entry): entry is [string, string] => typeof entry[1] === "string" && entry[1].trim().length > 0),
   );
+  const livePrice = typeof row.price === "number" ? normalizeCatalogPrice(row.price) : undefined;
+  const originalPrice =
+    typeof row.compare_at_price === "number" && livePrice && row.compare_at_price > livePrice
+      ? normalizeCatalogPrice(row.compare_at_price)
+      : livePrice;
 
   return {
     productSourceId,
@@ -277,13 +283,8 @@ function toVariantDraft(row: ScrapedVariantRow, timestamp: string): ProductVaria
     title: row.title?.trim() || row.product_title?.trim() || sourceVariantId,
     sku: row.sku?.trim() || undefined,
     availability: row.available === true ? "in_stock" : row.available === false ? "out_of_stock" : "unknown",
-    livePrice: typeof row.price === "number" ? row.price : undefined,
-    originalPrice:
-      typeof row.compare_at_price === "number" && typeof row.price === "number" && row.compare_at_price > row.price
-        ? row.compare_at_price
-        : typeof row.price === "number"
-          ? row.price
-          : undefined,
+    livePrice,
+    originalPrice,
     attributes,
     lastSeenAt: timestamp,
     rawPayload: row as Record<string, unknown>,

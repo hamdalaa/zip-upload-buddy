@@ -1,0 +1,103 @@
+{
+  "hits": {
+    "total": 3,
+    "hits": [
+      {
+        "_source": {
+          "id": 2045,
+          "sku": "LED43A11SAFFS-674ed158988906003d817cee",
+          "slug": "elryan-led43a11saffs-43-smart-atv-fhd-led-tv-1373685",
+          "url_key": "elryan-led43a11saffs-43-smart-atv-fhd-led-tv-1373685",
+          "url_path": "elryan-led43a11saffs-43-smart-atv-fhd-led-tv-1373685.html",
+          "name": "شاشة الريان 43 سمارت - ATV - FHD",
+          "image": "/1/2/123-1_15.jpg",
+          "small_image": "/1/2/123-1_15.jpg",
+          "thumbnail": "/1/2/123-1_15.jpg",
+          "media_gallery": [
+            { "image": "/1/2/123-1_15.jpg" },
+            { "image": "/1/2/1234-1_15.jpg" }
+          ],
+          "category": [
+            { "category_id": 42, "name": "الإلكترونيات" },
+            { "category_id": 80, "name": "شاشات" }
+          ],
+          "category_ids": [42, 80],
+          "stock": {
+            "qty": 0,
+            "is_in_stock": false,
+            "stock_status": 0
+          },
+          "regular_price": 150,
+          "original_price": 150,
+          "final_price": 150,
+          "special_price": 0,
+          "updated_at": "2026-03-16 11:36:08"
+        }
+      },
+      {
+        "_source": {
+          "id": 5022,
+          "sku": "9-961V-Rose",
+          "slug": "braun-9961v-silk-epilator-rose-5889",
+          "url_key": "braun-9961v-silk-epilator-rose-5889",
+          "url_path": "braun-9961v-silk-epilator-rose-5889.html",
+          "name": "جهاز براون لازالة الشعر 9-961V - زهري",
+          "image": "/1/-/1-silk-epil-9-skinspa-9-961v-witb.jpg",
+          "small_image": "/1/-/1-silk-epil-9-skinspa-9-961v-witb.jpg",
+          "thumbnail": "/1/-/1-silk-epil-9-skinspa-9-961v-witb.jpg",
+          "media_gallery": [
+            { "image": "/1/-/1-silk-epil-9-skinspa-9-961v-witb.jpg" },
+            { "image": "/5/-/5-silk-epil-9-skinspa-9-961v-package.jpg" }
+          ],
+          "category": [
+            { "category_id": 42, "name": "الإلكترونيات" },
+            { "category_id": 59, "name": "العناية الشخصية" }
+          ],
+          "category_ids": [42, 59],
+          "stock": {
+            "qty": 4,
+            "is_in_stock": true,
+            "stock_status": 1
+          },
+          "regular_price": 203,
+          "original_price": 203,
+          "final_price": 180,
+          "special_price": 180,
+          "updated_at": "2024-11-06 00:04:01"
+        }
+      },
+      {
+        "_source": {
+          "id": 70016,
+          "sku": "IPHONE16-256-DESERT",
+          "slug": "apple-iphone-16-pro-max-256gb-desert",
+          "url_key": "apple-iphone-16-pro-max-256gb-desert",
+          "url_path": "apple-iphone-16-pro-max-256gb-desert.html",
+          "name": "Apple iPhone 16 Pro Max 256GB",
+          "image": "/i/p/iphone-16-pro-max.jpg",
+          "small_image": "/i/p/iphone-16-pro-max.jpg",
+          "thumbnail": "/i/p/iphone-16-pro-max.jpg",
+          "media_gallery": [
+            { "image": "/i/p/iphone-16-pro-max.jpg" }
+          ],
+          "category": [
+            { "category_id": 42, "name": "الإلكترونيات" },
+            { "category_id": 77, "name": "هواتف" }
+          ],
+          "category_ids": [42, 77],
+          "stock": {
+            "qty": 5,
+            "is_in_stock": true,
+            "stock_status": 1
+          },
+          "regular_price": 1475,
+          "original_price": 1475,
+          "final_price": 1399,
+          "special_price": 1399,
+          "brand": "Apple",
+          "updated_at": "2026-04-01 10:00:00"
+        }
+      }
+    ]
+  }
+}

@@ -8,9 +8,12 @@ export function ProductRailSkeleton({ items = 6 }: { items?: number }) {
         <Skeleton className="h-5 w-40" />
         <Skeleton className="h-3 w-16" />
       </div>
-      <div className="flex gap-3 overflow-hidden px-4 pb-4">
+      <div className="flex gap-3 overflow-hidden px-4 pb-4 sm:gap-4 sm:px-6">
         {Array.from({ length: items }).map((_, i) => (
-          <div key={i} className="shrink-0 w-[150px] sm:w-[170px] md:w-[190px]">
+          <div
+            key={i}
+            className="min-w-0 shrink-0 basis-[78%] sm:basis-[calc((100%-1rem)/2)] lg:basis-[calc((100%-2rem)/3)] xl:basis-[calc((100%-3rem)/4)] 2xl:basis-[calc((100%-4rem)/5)]"
+          >
             <ProductSkeleton />
           </div>
         ))}

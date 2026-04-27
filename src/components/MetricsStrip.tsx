@@ -1,14 +1,12 @@
 import { useDataStore } from "@/lib/dataStore";
 import { getPublicProductCount, getPublicStoreCount } from "@/lib/catalogCounts";
-import { relativeArabicTime } from "@/lib/search";
-import { CountUp } from "@/components/CountUp";
-import { Store, Boxes, RefreshCw } from "lucide-react";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { Store, Boxes } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export function MetricsStrip() {
-  const { shops, products, shopSources, summary } = useDataStore();
-  const lastCrawl = shopSources
-    .filter((s) => s.lastCrawledAt)
-    .sort((a, b) => new Date(b.lastCrawledAt!).getTime() - new Date(a.lastCrawledAt!).getTime())[0];
+  const { shops, products, summary } = useDataStore();
+  const { ref, revealed } = useScrollReveal<HTMLDivElement>();
 
   const items = [
     {
@@ -17,7 +15,6 @@ export function MetricsStrip() {
       sub: "شارع الصناعة + الربيعي",
       icon: Store,
       color: "text-cyan bg-cyan-soft",
-      animated: true,
     },
     {
       value: getPublicProductCount(summary.totalProducts, products.length),
@@ -25,39 +22,41 @@ export function MetricsStrip() {
       sub: "بحث محلي فوري",
       icon: Boxes,
       color: "text-violet bg-violet-soft",
-      animated: true,
-    },
-    {
-      value: lastCrawl ? relativeArabicTime(lastCrawl.lastCrawledAt!) : "—",
-      label: "آخر تحديث",
-      sub: "خرائط Google",
-      icon: RefreshCw,
-      color: "text-emerald bg-emerald-soft",
-      animated: false,
     },
   ];
 
   return (
-    <div className="atlas-panel relative divide-y divide-border overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 -z-10 mesh-bg opacity-70" />
-      {items.map((it) => {
+    <div
+      ref={ref}
+      className={cn(
+        "relative divide-y divide-border overflow-hidden rounded-[2rem] bg-card ring-1 ring-border reveal-init",
+        revealed && "reveal-on",
+      )}
+    >
+      {items.map((it, i) => {
         const Icon = it.icon;
         return (
           <div
             key={it.label}
-            className="group flex items-baseline justify-between gap-4 px-5 py-4 text-right transition-colors hover:bg-primary-soft/40"
+            className="group flex items-baseline justify-between gap-4 px-5 py-5 text-right transition-[background-color] hover:bg-primary-soft/70"
+            style={{ transitionDelay: revealed ? `${i * 80}ms` : "0ms" }}
           >
             <div className="flex min-w-0 items-center gap-3">
-              <span className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${it.color} transition-transform group-hover:scale-110`}>
+              <span
+                className={cn(
+                  "inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-[transform,box-shadow] group-hover:scale-105",
+                  it.color ?? "bg-muted",
+                )}
+              >
                 <Icon className="h-4 w-4" />
               </span>
               <div className="min-w-0">
-                <div className="text-sm font-semibold text-foreground">{it.label}</div>
+                <div className="text-sm font-bold text-foreground">{it.label}</div>
                 <div className="mt-1 text-[11px] text-muted-foreground">{it.sub}</div>
               </div>
             </div>
-            <div className="font-numeric text-2xl sm:text-3xl font-semibold leading-none text-rainbow">
-              {it.animated && typeof it.value === "number" ? <CountUp value={it.value} /> : it.value}
+            <div className="font-numeric text-2xl font-semibold leading-none tabular-stable text-foreground sm:text-3xl">
+              {typeof it.value === "number" ? it.value.toLocaleString("en-US") : it.value}
             </div>
           </div>
         );

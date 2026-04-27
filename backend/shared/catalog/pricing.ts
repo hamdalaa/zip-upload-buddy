@@ -1,5 +1,9 @@
 import { parseNumberish } from "./normalization.js";
 
+export function normalizeCatalogPrice(value?: number): number | undefined {
+  return typeof value === "number" && Number.isFinite(value) && value > 0 ? value : undefined;
+}
+
 export function resolveSaleFlags(livePrice?: number, originalPrice?: number): {
   livePrice?: number;
   originalPrice?: number;
@@ -7,13 +11,26 @@ export function resolveSaleFlags(livePrice?: number, originalPrice?: number): {
   discountAmount?: number;
   discountPercent?: number;
 } {
-  if (livePrice == null && originalPrice == null) return { onSale: false };
-  if (livePrice != null && originalPrice != null && originalPrice > livePrice) {
-    const discountAmount = originalPrice - livePrice;
-    const discountPercent = Math.round((discountAmount / originalPrice) * 100);
-    return { livePrice, originalPrice, onSale: true, discountAmount, discountPercent };
+  const normalizedLivePrice = normalizeCatalogPrice(livePrice);
+  const normalizedOriginalPrice = normalizeCatalogPrice(originalPrice);
+
+  if (normalizedLivePrice == null && normalizedOriginalPrice == null) return { onSale: false };
+  if (
+    normalizedLivePrice != null &&
+    normalizedOriginalPrice != null &&
+    normalizedOriginalPrice > normalizedLivePrice
+  ) {
+    const discountAmount = normalizedOriginalPrice - normalizedLivePrice;
+    const discountPercent = Math.round((discountAmount / normalizedOriginalPrice) * 100);
+    return {
+      livePrice: normalizedLivePrice,
+      originalPrice: normalizedOriginalPrice,
+      onSale: true,
+      discountAmount,
+      discountPercent,
+    };
   }
-  return { livePrice, originalPrice, onSale: false };
+  return { livePrice: normalizedLivePrice, originalPrice: normalizedOriginalPrice, onSale: false };
 }
 
 export function inferPricePair(

@@ -1,5 +1,7 @@
+import { alnomoorTrpcConnector } from "./alnomoorTrpcConnector.js";
 import { alwafiApiConnector } from "./alwafiApiConnector.js";
 import type { CatalogConnector } from "./base.js";
+import { elryanApiConnector } from "./elryanApiConnector.js";
 import { genericJsonCatalogConnector } from "./genericJsonCatalogConnector.js";
 import { genericSitemapHtmlConnector } from "./genericSitemapHtmlConnector.js";
 import { jibalzoneStorefrontConnector } from "./jibalzoneStorefrontConnector.js";
@@ -15,6 +17,8 @@ import { woocommerceConnector } from "./woocommerceConnector.js";
 
 export const connectorRegistry: CatalogConnector[] = [
   socialOnlyConnector,
+  alnomoorTrpcConnector,
+  elryanApiConnector,
   shopifyConnector,
   threedIraqConnector,
   tlcommerceConnector,

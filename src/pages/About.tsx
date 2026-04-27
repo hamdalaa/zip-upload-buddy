@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
+import { Seo } from "@/components/Seo";
 import { Button } from "@/components/ui/button";
 import { CATALOG_BASELINE_COUNTS } from "@/lib/catalogCounts";
 import developerPortrait from "@/assets/developer-portrait.jpg";
@@ -22,6 +23,12 @@ import developerPortrait from "@/assets/developer-portrait.jpg";
 export default function About() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
+      <Seo
+        title="عن حاير — دليل إلكترونيات عراقي"
+        description="حاير منصة عراقية تجمع محلات ومنتجات الإلكترونيات من بغداد وباقي المحافظات حتى تقارن الأسعار، تشوف تقييمات Google، وتوصل للمحل بثقة."
+        path="/about"
+        image={developerPortrait}
+      />
       <TopNav />
 
       {/* Hero — calmer, single focal point */}
@@ -206,7 +213,7 @@ export default function About() {
                     href="https://instagram.com/hamadalaatech"
                     target="_blank"
                     rel="noreferrer noopener"
-                    className="group/slot relative flex aspect-[3/2] items-center justify-center overflow-hidden rounded-2xl border border-dashed border-border/70 bg-surface/40 transition-all hover:-translate-y-0.5 hover:border-violet/40 hover:bg-violet/5"
+                    className="group/slot relative flex aspect-[3/2] items-center justify-center overflow-hidden rounded-2xl border border-dashed border-border/70 bg-surface/40 transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] hover:-translate-y-0.5 hover:border-violet/40 hover:bg-violet/5"
                   >
                     <div className="flex flex-col items-center gap-1.5 text-center">
                       <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-violet/10 text-violet transition-transform group-hover/slot:scale-110">
@@ -254,7 +261,7 @@ function ContactPill({
       href={href}
       target={href.startsWith("http") ? "_blank" : undefined}
       rel={href.startsWith("http") ? "noreferrer noopener" : undefined}
-      className={`inline-flex items-center justify-center gap-1.5 rounded-full border px-3 py-2 text-xs font-bold transition-all hover:-translate-y-0.5 active:scale-95 ${toneClass}`}
+      className={`inline-flex items-center justify-center gap-1.5 rounded-full border px-3 py-2 text-xs font-bold transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] hover:-translate-y-0.5 active:scale-[0.96] ${toneClass}`}
     >
       {icon}
       {label}

@@ -1,13 +1,12 @@
-import { getRating } from "./googleRatings";
 import type { Shop } from "./types";
 import type { CityShop } from "./cityData";
 
-export function getShopReviewCount(shop: Pick<Shop, "googleMapsUrl">): number {
-  return getRating(shop)?.userRatingCount ?? 0;
+export function getShopReviewCount(shop: Pick<Shop, "googleMapsUrl" | "reviewCount">): number {
+  return typeof shop.reviewCount === "number" ? shop.reviewCount : 0;
 }
 
-export function getShopRatingValue(shop: Pick<Shop, "googleMapsUrl">): number {
-  return getRating(shop)?.rating ?? 0;
+export function getShopRatingValue(shop: Pick<Shop, "googleMapsUrl" | "rating">): number {
+  return typeof shop.rating === "number" ? shop.rating : 0;
 }
 
 export function compareShopsByPopularity(a: Shop, b: Shop) {

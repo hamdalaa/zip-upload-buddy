@@ -33,7 +33,7 @@ function pushRecent(q: string) {
   localStorage.setItem(RECENT_KEY, JSON.stringify(cur.slice(0, MAX_RECENT)));
 }
 
-export function CommandPalette() {
+export function CommandPalette({ forceOpenToken = 0 }: { forceOpenToken?: number }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const nav = useNavigate();
@@ -50,6 +50,10 @@ export function CommandPalette() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
+
+  useEffect(() => {
+    if (forceOpenToken > 0) setOpen(true);
+  }, [forceOpenToken]);
 
   const topShops = useMemo(() => shops.slice(0, 8), [shops]);
   const topBrands = useMemo(() => brands.slice(0, 8), [brands]);

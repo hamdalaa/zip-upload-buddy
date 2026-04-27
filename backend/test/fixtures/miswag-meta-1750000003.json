@@ -1,0 +1,26 @@
+{
+  "success": true,
+  "message": "تم إكمال الطلب بنجاح",
+  "data": {
+    "info": {
+      "item_id": "1750001003",
+      "product_id": "1750000003",
+      "name": "شاحن انكر للايفون 20 واط",
+      "brand": "Anker",
+      "brand_alias": "anker",
+      "image_url": "https://cdn.miswag.me/images/thumbs512/anker-charger-20w-main.png",
+      "url": "https://miswag.com/products/1750000003",
+      "category": "ألكترونيات > اجهزة و ملحقات الكترونيه متنوعة > اجهزة و ملحقات متنوعة",
+      "description": "شاحن سريع أصلي من Anker.",
+      "price": 35000,
+      "original_price": 40000,
+      "currency": "IQD",
+      "availability": "OutOfStock",
+      "images": [
+        "https://cdn.miswag.me/images/thumbs512/anker-charger-20w-main.png"
+      ],
+      "published": "2026-04-20 08:00:00"
+    },
+    "content": []
+  }
+}

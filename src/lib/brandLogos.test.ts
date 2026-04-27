@@ -1,7 +1,9 @@
 import {
   buildTheSvgRegistryIndex,
   findTheSvgIcon,
+  getBrandLogo,
   getTheSvgIconUrl,
+  getTheSvgUrl,
   pickTheSvgVariant,
   type TheSvgRegistryIcon,
 } from "./brandLogos";
@@ -50,5 +52,17 @@ describe("brandLogos", () => {
 
   it("builds icon URLs", () => {
     expect(getTheSvgIconUrl("msi", "mono")).toBe("https://thesvg.org/icons/msi/mono.svg");
+  });
+
+  it("uses local fallback logos for brands missing a remote logo", () => {
+    expect(getBrandLogo("realme")).toContain("realme");
+    expect(getBrandLogo("gigabyte")).toContain("gigabyte");
+    expect(getBrandLogo("sandisk")).toContain("sandisk");
+  });
+
+  it("applies preferred theSVG variants for low-contrast brands", () => {
+    expect(getTheSvgUrl("apple")).toBe("https://thesvg.org/icons/apple/dark.svg");
+    expect(getTheSvgUrl("sony")).toBe("https://thesvg.org/icons/sony/mono.svg");
+    expect(getTheSvgUrl("nvidia")).toBe("https://thesvg.org/icons/nvidia/wordmark.svg");
   });
 });

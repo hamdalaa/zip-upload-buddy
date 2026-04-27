@@ -38,10 +38,10 @@ export class ProbeService {
         ? this.client.withSession({ cookiesJson: session.cookiesJson, headers: session.headers })
         : this.client;
       const homepageUrl = store.website ?? "about:blank";
-      const homepageHtml = store.website ? await client.fetchText(homepageUrl) : "";
-
       const strategyHint = buildStrategyHint(store, homepageUrl);
       let selected = strategyHint;
+      const homepageHtml = selected ? "" : store.website ? await client.fetchText(homepageUrl) : "";
+
       if (!selected) {
         selected =
           (await Promise.all(
@@ -144,6 +144,26 @@ function nextStatus(store: StoreRecord, connectorType: ConnectorProfileRecord["c
 }
 
 function buildStrategyHint(store: StoreRecord, homepageUrl: string): ProbeResult | null {
+  if (/^https?:\/\/(?:www\.)?elryan\.com(?:\/|$)/i.test(homepageUrl)) {
+    return {
+      connectorType: "elryan_api",
+      confidence: 0.99,
+      signals: ["domain_strategy_hint:elryan_api"],
+      capabilities: {
+        supportsStructuredApi: true,
+        supportsHtmlCatalog: false,
+        supportsOffers: true,
+        supportsVariants: true,
+        supportsMarketplaceContext: false,
+        fallbackToBrowser: false,
+      },
+      endpoints: {
+        categories: "https://www.elryan.com/api/catalog/vue_storefront_magento_ar/category/_search",
+        products: "https://www.elryan.com/api/catalog/vue_storefront_magento_ar/product/_search",
+      },
+    };
+  }
+
   const strategy = typeof store.metadata?.strategy === "string" ? store.metadata.strategy : undefined;
   if (!strategy) return null;
 

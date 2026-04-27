@@ -271,7 +271,7 @@ export function LightboxViewer({ images, index, onClose, onIndexChange, title }:
                 <button
                   type="button"
                   onClick={goPrev}
-                  className="pointer-events-auto inline-flex size-11 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md transition-all hover:bg-white/20 hover:scale-105"
+                  className="pointer-events-auto inline-flex size-11 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] hover:bg-white/20 hover:scale-105"
                   aria-label="السابق"
                 >
                   <ChevronRight className="h-5 w-5" />
@@ -279,7 +279,7 @@ export function LightboxViewer({ images, index, onClose, onIndexChange, title }:
                 <button
                   type="button"
                   onClick={goNext}
-                  className="pointer-events-auto inline-flex size-11 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md transition-all hover:bg-white/20 hover:scale-105"
+                  className="pointer-events-auto inline-flex size-11 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] hover:bg-white/20 hover:scale-105"
                   aria-label="التالي"
                 >
                   <ChevronLeft className="h-5 w-5" />
@@ -300,7 +300,7 @@ export function LightboxViewer({ images, index, onClose, onIndexChange, title }:
                       type="button"
                       onClick={() => onIndexChange(i)}
                       className={cn(
-                        "relative size-14 shrink-0 overflow-hidden rounded-lg transition-all duration-200 sm:size-12",
+                        "relative size-14 shrink-0 overflow-hidden rounded-lg transition-[transform,border-color,box-shadow,background-color,color,opacity,width,filter] duration-200 sm:size-12",
                         i === safeIndex
                           ? "opacity-100 ring-2 ring-white"
                           : "opacity-50 hover:opacity-100",

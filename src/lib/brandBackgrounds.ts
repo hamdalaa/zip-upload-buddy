@@ -1,10 +1,10 @@
 // Brand background registry — premium showroom imagery per brand.
 // Used as priority background on /brands and /brand/:slug.
-import apple from "@/assets/brands/bg-apple.jpg";
-import samsung from "@/assets/brands/bg-samsung.jpg";
-import asus from "@/assets/brands/bg-asus.jpg";
-import honor from "@/assets/brands/bg-honor.jpg";
-import anker from "@/assets/brands/bg-anker.jpg";
+import apple from "@/assets/brands/bg-apple.webp";
+import samsung from "@/assets/brands/bg-samsung.webp";
+import asus from "@/assets/brands/bg-asus.webp";
+import honor from "@/assets/brands/bg-honor.webp";
+import anker from "@/assets/brands/bg-anker.webp";
 
 export const BRAND_BACKGROUNDS: Record<string, string> = {
   apple,

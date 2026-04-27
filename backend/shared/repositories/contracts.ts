@@ -11,6 +11,7 @@ import type {
   RawSnapshotRecord,
   SearchDocument,
   SessionWorkflowRecord,
+  SiteSettingsRecord,
   StoreDomainRecord,
   StoreRecord,
   StoreSizeSummaryRecord,
@@ -42,6 +43,7 @@ export interface CatalogRepository {
   upsertStore(store: StoreRecord): Promise<void>;
   upsertStoreDomain(domain: StoreDomainRecord): Promise<void>;
   listStores(): Promise<StoreRecord[]>;
+  getStoresByIds(storeIds: string[]): Promise<StoreRecord[]>;
   getStoreById(storeId: string): Promise<StoreRecord | undefined>;
   updateStore(storeId: string, patch: Partial<StoreRecord>): Promise<void>;
   upsertConnectorProfile(profile: ConnectorProfileRecord): Promise<void>;
@@ -62,6 +64,7 @@ export interface CatalogRepository {
   }>;
   saveStoreSizeSummary(summary: StoreSizeSummaryRecord): Promise<void>;
   getStoreSizeSummary(storeId: string): Promise<StoreSizeSummaryRecord | undefined>;
+  listStoreSizeSummaries(): Promise<StoreSizeSummaryRecord[]>;
   saveAcquisitionProfile(profile: DomainAcquisitionProfile): Promise<void>;
   getAcquisitionProfile(storeId: string): Promise<DomainAcquisitionProfile | undefined>;
   listAcquisitionProfiles(): Promise<DomainAcquisitionProfile[]>;
@@ -74,6 +77,9 @@ export interface CatalogRepository {
   saveRawSnapshot(snapshot: RawSnapshotRecord): Promise<void>;
   listSearchDocuments(): Promise<SearchDocument[]>;
   createAuditLog(log: AuditLogRecord): Promise<void>;
+  listAuditLogs(limit?: number, offset?: number): Promise<AuditLogRecord[]>;
+  getSiteSettings(id?: string): Promise<SiteSettingsRecord | undefined>;
+  saveSiteSettings(settings: SiteSettingsRecord): Promise<void>;
   syncServiceTokens(tokens: ServiceTokenRecord[]): Promise<void>;
   getServiceTokenByHash(tokenHash: string): Promise<ServiceTokenRecord | undefined>;
   registerRequestNonce(nonceHash: string, expiresAt: string): Promise<boolean>;
